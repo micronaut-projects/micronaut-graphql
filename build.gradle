@@ -5,12 +5,6 @@ plugins {
     id "net.ltgt.apt-idea" version "0.18" apply false
 }
 
-ext {
-    cglibVersion       = "2.2.2"
-    graphqlJavaVersion = "2018-11-23T06-31-20-93e0f57"
-    objenesisVersion   = "1.4"
-}
-
 apply plugin: "java"
 apply plugin: "groovy"
 apply plugin: "maven"
@@ -28,7 +22,7 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom("io.micronaut:micronaut-bom:1.0.1")
+        mavenBom("io.micronaut:micronaut-bom:${micronautVersion}")
     }
 }
 
