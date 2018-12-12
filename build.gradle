@@ -1,0 +1,51 @@
+plugins {
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+    id "com.github.johnrengelman.shadow" version "4.0.2" apply false
+    id "net.ltgt.apt-eclipse" version "0.18" apply false
+    id "net.ltgt.apt-idea" version "0.18" apply false
+}
+
+ext {
+    cglibVersion       = "2.2.2"
+    graphqlJavaVersion = "2018-11-23T06-31-20-93e0f57"
+    objenesisVersion   = "1.4"
+}
+
+apply plugin: "java"
+apply plugin: "groovy"
+apply plugin: "maven"
+
+group "io.micronaut.configuration"
+version "0.1-SNAPSHOT"
+
+sourceCompatibility = 8
+
+repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("io.micronaut:micronaut-bom:1.0.1")
+    }
+}
+
+dependencies {
+    annotationProcessor("io.micronaut:micronaut-inject-java")
+    annotationProcessor("io.micronaut:micronaut-validation")
+    compile("com.graphql-java:graphql-java:${graphqlJavaVersion}")
+    compile("io.micronaut:micronaut-http")
+    compile("io.micronaut:micronaut-http-server")
+    compile("io.micronaut:micronaut-inject")
+    compileOnly("io.micronaut:micronaut-inject-java")
+    testCompile("cglib:cglib-nodep:${cglibVersion}")
+    testCompile("io.micronaut:micronaut-http-client")
+    testCompile("io.micronaut:micronaut-http-server-netty")
+    testCompile("io.micronaut:micronaut-inject-groovy")
+    testCompile("org.objenesis:objenesis:${objenesisVersion}")
+    testCompile("org.spockframework:spock-core") {
+        exclude(group: "org.codehaus.groovy", module: "groovy-all")
+    }
+}

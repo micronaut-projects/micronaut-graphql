@@ -1,0 +1,13 @@
+rootProject.name = "micronaut-graphql"
+
+String[] samples = [
+        "hello-world",
+        "hello-world-java-tools"
+]
+
+samples.each { name ->
+    include name
+    def project = findProject(":${name}")
+    project.name = "micronaut-graphql-samples-${name}"
+    project.projectDir = new File(settingsDir, "samples/${name}")
+}
