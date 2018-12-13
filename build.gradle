@@ -98,7 +98,7 @@ subprojects { Project subproject ->
         testCompile "cglib:cglib-nodep:${cglibVersion}"
         testRuntime "ch.qos.logback:logback-classic:${logbackClassicVersion}"
         testCompile "io.micronaut:micronaut-inject-groovy:${micronautVersion}"
-        testCompile "io.micronaut.test:micronaut-test-spock:1.0.0.RC2"
+        testCompile "io.micronaut.test:micronaut-test-spock:${micronautTestVersion}"
         testCompile "org.codehaus.groovy:groovy-test:${groovyVersion}"
         testCompile "org.objenesis:objenesis:${objenesisVersion}"
     }
