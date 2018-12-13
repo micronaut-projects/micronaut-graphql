@@ -1,2 +1,17 @@
-TODO.
+To use the Micronaut GraphQL integration you must have the `micronaut-graphql` dependency on your classpath:
 
+.build.gradle
+[source,groovy,subs="attributes"]
+----
+compile "io.micronaut.graphql:micronaut-graphql:{version}"
+----
+
+.pom.xml
+[source,xml]
+----
+<dependency>
+    <groupId>io.micronaut.graphql</groupId>
+    <artifactId>micronaut-graphql</artifactId>
+    <version>{version}</version>
+</dependency>
+----
