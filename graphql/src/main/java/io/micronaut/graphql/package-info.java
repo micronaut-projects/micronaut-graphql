@@ -15,7 +15,7 @@
  */
 
 /**
- * GraphQL configuration classes.
+ * Micronaut GraphQL integration.
  *
  * @author Marcel Overdijk
  * @since 1.0
