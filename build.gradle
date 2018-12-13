@@ -1,45 +1,113 @@
-plugins {
-    id "io.spring.dependency-management" version "1.0.6.RELEASE"
-    id "com.github.johnrengelman.shadow" version "4.0.2" apply false
-    id "net.ltgt.apt-eclipse" version "0.18" apply false
-    id "net.ltgt.apt-idea" version "0.18" apply false
+buildscript {
+    repositories {
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:${grailsVersion}"
+        classpath "org.grails:grails-docs:${grailsVersion}"
+        classpath "com.bmuschko:gradle-nexus-plugin:2.3.1"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
+        classpath "io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1"
+    }
 }
 
-apply plugin: "java"
-apply plugin: "groovy"
-apply plugin: "maven"
-
-group "io.micronaut.configuration"
-version "0.1-SNAPSHOT"
-
-sourceCompatibility = 8
+plugins {
+    id "com.github.hierynomus.license" version "0.14.0" apply false
+}
 
 repositories {
-    jcenter()
     mavenCentral()
     mavenLocal()
+    maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://repo.grails.org/grails/core" }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("io.micronaut:micronaut-bom:${micronautVersion}")
+version project.projectVersion
+
+subprojects { Project subproject ->
+
+    group "io.micronaut.graphql"
+    version project.projectVersion
+
+    ext {
+        isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
+        isConfiguration = subproject.projectDir.parentFile.name == "configurations"
     }
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+
+    apply plugin: "java"
+    apply plugin: "groovy"
+
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
+
+    apply from: "https://raw.githubusercontent.com/micronaut-projects/micronaut-core/01e2b1ef1255b584e9e5c1965d334e1190e2ade5/gradle/publishing.gradle"
+
+    jar {
+        manifest {
+            attributes("Automatic-Module-Name": "${subproject.group}.${subproject.name}".replaceAll('[^\\w\\.\\$_]', "_"))
+            attributes("Implementation-Version": projectVersion)
+            attributes("Implementation-Title": "Micronaut GraphQL")
+        }
+    }
+
+    bintray.publish = true
+
+    tasks.withType(Test) {
+
+        jvmArgs "-Duser.country=US"
+        jvmArgs "-Duser.language=en"
+
+        testLogging {
+            exceptionFormat = "full"
+        }
+
+        afterSuite {
+            System.out.print(".")
+            System.out.flush()
+        }
+
+        reports.html.enabled = !System.getenv("TRAVIS")
+        reports.junitXml.enabled = !System.getenv("TRAVIS")
+    }
+
+    configurations {
+        documentation
+        all {
+            resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+                String group = details.requested.group
+                if (group == "org.codehaus.groovy") {
+                    details.useVersion(groovyVersion)
+                }
+                if (group == "org.ow2.asm") {
+                    details.useVersion(asmVersion)
+                }
+            }
+        }
+    }
+
+    dependencies {
+        documentation "org.codehaus.groovy:groovy-templates:${groovyVersion}"
+        documentation "org.codehaus.groovy:groovy-dateutil:${groovyVersion}"
+        testCompile "cglib:cglib-nodep:${cglibVersion}"
+        testRuntime "ch.qos.logback:logback-classic:${logbackClassicVersion}"
+        testCompile "io.micronaut:micronaut-inject-groovy:${micronautVersion}"
+        testCompile "io.micronaut.test:micronaut-test-spock:1.0.0.RC2"
+        testCompile "org.codehaus.groovy:groovy-test:${groovyVersion}"
+        testCompile "org.objenesis:objenesis:${objenesisVersion}"
+    }
+
+    groovydoc {
+        classpath += project.configurations.documentation
+    }
+
+    task allDeps(type: DependencyReportTask) {}
 }
 
-dependencies {
-    annotationProcessor("io.micronaut:micronaut-inject-java")
-    annotationProcessor("io.micronaut:micronaut-validation")
-    compile("com.graphql-java:graphql-java:${graphqlJavaVersion}")
-    compile("io.micronaut:micronaut-http")
-    compile("io.micronaut:micronaut-http-server")
-    compile("io.micronaut:micronaut-inject")
-    compileOnly("io.micronaut:micronaut-inject-java")
-    testCompile("cglib:cglib-nodep:${cglibVersion}")
-    testCompile("io.micronaut:micronaut-http-client")
-    testCompile("io.micronaut:micronaut-http-server-netty")
-    testCompile("io.micronaut:micronaut-inject-groovy")
-    testCompile("org.objenesis:objenesis:${objenesisVersion}")
-    testCompile("org.spockframework:spock-core") {
-        exclude(group: "org.codehaus.groovy", module: "groovy-all")
-    }
-}
+apply from: "https://raw.githubusercontent.com/micronaut-projects/micronaut-core/ae8c52a65b4315d0f36edf362295d645559f496e/gradle/docs.gradle"

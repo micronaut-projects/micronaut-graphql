@@ -1,13 +1,15 @@
-rootProject.name = "micronaut-graphql"
+rootProject.name = "graphql"
 
-String[] samples = [
-        "hello-world",
-        "hello-world-java-tools"
-]
+include "graphql"
 
-samples.each { name ->
-    include name
-    def project = findProject(":${name}")
-    project.name = "micronaut-graphql-samples-${name}"
-    project.projectDir = new File(settingsDir, "samples/${name}")
-}
+//String[] samples = [
+//        "hello-world",
+//        "hello-world-java-tools"
+//]
+//
+//samples.each { name ->
+//    include name
+//    def project = findProject(":${name}")
+//    project.name = "micronaut-graphql-samples-${name}"
+//    project.projectDir = new File(settingsDir, "samples/${name}")
+//}
