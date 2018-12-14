@@ -15,3 +15,13 @@ compile "io.micronaut.graphql:micronaut-graphql:{version}"
     <version>{version}</version>
 </dependency>
 ----
+
+The `micronaut-graphql` module transitively includes the `graphql-java` dependency and provides a Micronaut `GraphQLController`
+which enables query execution via HTTP.
+
+As outlined in https://graphql.org/learn/serving-over-http the following HTTP requests are supported:
+
+* `GET` request with `query`, `operationName` and `variables` query parameters. The `variables` query parameter must be json encoded.
+* `POST` request with `application/json` body and keys `query` (String), `operationName` (String) and `variables` (Map).
+
+Both produce a `application/json` response.
