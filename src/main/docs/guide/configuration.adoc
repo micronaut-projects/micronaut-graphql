@@ -1,1 +1,11 @@
-TODO.
+The following configuration properties can be set:
+
+.src/main/resources/application.yml
+[source,yaml]
+----
+graphql:
+  enabled: true // <1>
+  url: /graphql // <2>
+----
+<1> Enables/disables the GraphQL integration. Default `true`.
+<2> Configures the GraphQL endpoint url. Default `/graphql`.
