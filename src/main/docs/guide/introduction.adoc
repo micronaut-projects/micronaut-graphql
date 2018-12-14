@@ -25,3 +25,5 @@ As outlined in https://graphql.org/learn/serving-over-http the following HTTP re
 * `POST` request with `application/json` body and keys `query` (String), `operationName` (String) and `variables` (Map).
 
 Both produce a `application/json` response.
+
+You only must define a bean of type `graphql.GraphQL` containing the GraphQL schema and runtime wiring.
