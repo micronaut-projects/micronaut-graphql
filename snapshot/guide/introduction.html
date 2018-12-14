@@ -99,6 +99,26 @@ function addJsClass() {
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>The <code>micronaut-graphql</code> module transitively includes the <code>graphql-java</code> dependency and provides a Micronaut <code>GraphQLController</code>
+which enables query execution via HTTP.</p>
+</div>
+<div class="paragraph">
+<p>As outlined in <a href="https://graphql.org/learn/serving-over-http" class="bare">https://graphql.org/learn/serving-over-http</a> the following HTTP requests are supported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>GET</code> request with <code>query</code>, <code>operationName</code> and <code>variables</code> query parameters. The <code>variables</code> query parameter must be json encoded.</p>
+</li>
+<li>
+<p><code>POST</code> request with <code>application/json</code> body and keys <code>query</code> (String), <code>operationName</code> (String) and <code>variables</code> (Map).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Both produce a <code>application/json</code> response.</p>
+</div>
 
 
                 <div style="clear:both;margin-top:15px;"></div>

@@ -81,7 +81,27 @@ function addJsClass() {
 
 
 <div class="paragraph">
-<p>TODO.</p>
+<p>The following configuration properties can be set:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml" data-lang="yaml">graphql:
+  enabled: true <i class="conum" data-value="1"></i><b>(1)</b>
+  url: /graphql <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables/disables the GraphQL integration. Default <code>true</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configures the GraphQL endpoint url. Default <code>/graphql</code>.</td>
+</tr>
+</table>
 </div>
 
 
