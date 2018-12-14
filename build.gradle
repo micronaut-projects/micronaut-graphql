@@ -96,11 +96,11 @@ subprojects { Project subproject ->
         documentation "org.codehaus.groovy:groovy-templates:${groovyVersion}"
         documentation "org.codehaus.groovy:groovy-dateutil:${groovyVersion}"
         testCompile "cglib:cglib-nodep:${cglibVersion}"
-        testRuntime "ch.qos.logback:logback-classic:${logbackClassicVersion}"
         testCompile "io.micronaut:micronaut-inject-groovy:${micronautVersion}"
         testCompile "io.micronaut.test:micronaut-test-spock:${micronautTestVersion}"
         testCompile "org.codehaus.groovy:groovy-test:${groovyVersion}"
         testCompile "org.objenesis:objenesis:${objenesisVersion}"
+        testRuntime "ch.qos.logback:logback-classic:${logbackClassicVersion}"
     }
 
     groovydoc {
