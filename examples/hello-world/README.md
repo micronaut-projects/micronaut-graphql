@@ -1,6 +1,6 @@
 # Micronaut GraphQL Hello World example
 
-Start application:
+Start the application:
 
     ./gradlew clean :graphql-example-hello-world:run
 

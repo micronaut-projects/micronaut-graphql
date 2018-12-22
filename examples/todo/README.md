@@ -1,6 +1,6 @@
 # Micronaut GraphQL To-Do example
 
-Start application:
+Start the application:
 
     ./gradlew clean :graphql-example-todo:run
 

@@ -1,6 +1,6 @@
 # Micronaut GraphQL To-Do SPQR example
 
-Start application:
+Start the application:
 
     ./gradlew clean :graphql-example-todo-spqr:run
 
