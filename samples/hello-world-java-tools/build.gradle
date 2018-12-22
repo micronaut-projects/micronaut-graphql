@@ -1,5 +1,0 @@
-apply from: "../samples.gradle"
-
-dependencies {
-    compile("com.graphql-java-kickstart:graphql-java-tools:${graphqlJavaToolsVersion}")
-}

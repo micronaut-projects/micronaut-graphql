@@ -2,14 +2,16 @@ rootProject.name = "graphql"
 
 include "graphql"
 
-//String[] samples = [
-//        "hello-world",
-//        "hello-world-java-tools"
-//]
-//
-//samples.each { name ->
-//    include name
-//    def project = findProject(":${name}")
-//    project.name = "micronaut-graphql-samples-${name}"
-//    project.projectDir = new File(settingsDir, "samples/${name}")
-//}
+String[] examples = [
+        "hello-world",
+        "todo",
+        "todo-java-tools",
+        "todo-spqr"
+]
+
+examples.each { name ->
+    include name
+    def project = findProject(":${name}")
+    project.name = "graphql-example-${name}"
+    project.projectDir = new File(settingsDir, "examples/${name}")
+}

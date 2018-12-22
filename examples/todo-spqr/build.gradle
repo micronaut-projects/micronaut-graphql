@@ -1,0 +1,5 @@
+apply from: "../examples.gradle"
+
+dependencies {
+    compile("io.leangen.graphql:spqr:${graphqlSpqrVersion}")
+}
