@@ -27,3 +27,8 @@ As outlined in https://graphql.org/learn/serving-over-http the following HTTP re
 Both produce a `application/json` response.
 
 You only must define a bean of type `graphql.GraphQL` containing the GraphQL schema and runtime wiring.
+
+The `graphql.GraphQL` bean can be defined by just using the https://github.com/graphql-java/graphql-java[GraphQL Java] implementation,
+or in combination with other integration libraries like https://github.com/graphql-java-kickstart/graphql-java-tools[GraphQL Java Tools]
+and https://github.com/leangen/graphql-spqr[GraphQL SPQR].
+There are various https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples[examples] provided in the repository.
