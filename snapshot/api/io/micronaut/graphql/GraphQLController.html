@@ -72,13 +72,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -123,6 +123,25 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected static java.lang.String</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLController.html#APPLICATION_JSON_UTF8">APPLICATION_JSON_UTF8</a></span></code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.summary">
@@ -186,6 +205,27 @@ extends java.lang.Object</pre>
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="APPLICATION_JSON_UTF8">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>APPLICATION_JSON_UTF8</h4>
+<pre>protected static final&nbsp;java.lang.String APPLICATION_JSON_UTF8</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../constant-values.html#io.micronaut.graphql.GraphQLController.APPLICATION_JSON_UTF8">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -217,14 +257,14 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>get</h4>
-<pre>@Get(produces="application/json; charset=UTF-8")
+<pre>@Get(produces="application/json;charset=UTF-8")
 public&nbsp;org.reactivestreams.Publisher&lt;io.micronaut.http.HttpResponse&lt;<a href="../../../io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql">GraphQLResponseBody</a>&gt;&gt;&nbsp;get(@QueryValue(value="query")
-                                                                                                                                               java.lang.String&nbsp;query,
-                                                                                                                                               @Nullable @QueryValue(value="operationName")
-                                                                                                                                               java.lang.String&nbsp;operationName,
-                                                                                                                                               @Nullable @QueryValue(value="variables")
-                                                                                                                                               java.lang.String&nbsp;variables,
-                                                                                                                                               io.micronaut.http.HttpRequest&nbsp;httpRequest)</pre>
+                                                                                                                                              java.lang.String&nbsp;query,
+                                                                                                                                              @Nullable @QueryValue(value="operationName")
+                                                                                                                                              java.lang.String&nbsp;operationName,
+                                                                                                                                              @Nullable @QueryValue(value="variables")
+                                                                                                                                              java.lang.String&nbsp;variables,
+                                                                                                                                              io.micronaut.http.HttpRequest&nbsp;httpRequest)</pre>
 <div class="block">Handles the GraphQL <code>GET</code> requests.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -244,10 +284,10 @@ public&nbsp;org.reactivestreams.Publisher&lt;io.micronaut.http.HttpResponse&lt;<
 <li class="blockList">
 <h4>post</h4>
 <pre>@Post(consumes="application/json",
-      produces="application/json; charset=UTF-8")
+      produces="application/json;charset=UTF-8")
 public&nbsp;org.reactivestreams.Publisher&lt;io.micronaut.http.HttpResponse&lt;<a href="../../../io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql">GraphQLResponseBody</a>&gt;&gt;&nbsp;post(@Body
-                                                                                                                                                                                    <a href="../../../io/micronaut/graphql/GraphQLRequestBody.html" title="class in io.micronaut.graphql">GraphQLRequestBody</a>&nbsp;body,
-                                                                                                                                                                                    io.micronaut.http.HttpRequest&nbsp;httpRequest)</pre>
+                                                                                                                                                                                   <a href="../../../io/micronaut/graphql/GraphQLRequestBody.html" title="class in io.micronaut.graphql">GraphQLRequestBody</a>&nbsp;body,
+                                                                                                                                                                                   io.micronaut.http.HttpRequest&nbsp;httpRequest)</pre>
 <div class="block">Handles the GraphQL <code>POST</code> requests.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -310,13 +350,13 @@ public&nbsp;org.reactivestreams.Publisher&lt;io.micronaut.http.HttpResponse&lt;<
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
