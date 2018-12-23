@@ -23,6 +23,7 @@ import graphql.GraphQL
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpResponse
@@ -39,8 +40,6 @@ import spock.lang.Specification
 import javax.annotation.Nullable
 import javax.inject.Singleton
 import java.util.concurrent.CompletableFuture
-
-import static io.micronaut.http.MediaType.APPLICATION_JSON
 
 /**
  * @author Marcel Overdijk
@@ -211,6 +210,7 @@ class GraphQLControllerSpec extends Specification {
 
         @Bean
         @Singleton
+        @Requires(property = "spec.name", value = "GraphQLControllerSpec")
         GraphQL graphQL() {
             graphQL
         }
