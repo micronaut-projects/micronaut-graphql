@@ -19,10 +19,8 @@ package io.micronaut.graphql
 import graphql.GraphQL
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
+import io.micronaut.context.env.Environment
 import io.micronaut.context.env.PropertySource
-import io.micronaut.graphql.ExecutionResultHandler
-import io.micronaut.graphql.GraphQLController
-import io.micronaut.graphql.GraphQLInvocation
 import spock.lang.Specification
 
 /**
@@ -33,7 +31,7 @@ class GraphQLFactorySpec extends Specification {
 
     void "test no graphql bean provided"() {
         given:
-        ApplicationContext context = new DefaultApplicationContext("test")
+        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.start()
 
         expect:
@@ -47,7 +45,7 @@ class GraphQLFactorySpec extends Specification {
 
     void "test graphql bean provided"() {
         given:
-        ApplicationContext context = new DefaultApplicationContext("test")
+        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.registerSingleton(Mock(GraphQL))
         context.start()
 
@@ -62,9 +60,8 @@ class GraphQLFactorySpec extends Specification {
 
     void "test graphql disabled"() {
         given:
-        ApplicationContext context = new DefaultApplicationContext("test")
+        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                "test",
                 ["graphql.enabled": false]
         ))
         context.registerSingleton(Mock(GraphQL))
