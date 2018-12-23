@@ -40,6 +40,8 @@ import javax.annotation.Nullable
 import javax.inject.Singleton
 import java.util.concurrent.CompletableFuture
 
+import static io.micronaut.http.MediaType.APPLICATION_JSON
+
 /**
  * @author Marcel Overdijk
  * @since 1.0

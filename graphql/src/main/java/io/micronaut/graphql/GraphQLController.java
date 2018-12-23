@@ -47,7 +47,7 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON;
 @Requires(beans = GraphQL.class)
 public class GraphQLController {
 
-    private static final String APPLICATION_JSON_UTF8 = APPLICATION_JSON + "; charset=UTF-8";
+    protected static final String APPLICATION_JSON_UTF8 = APPLICATION_JSON + ";charset=UTF-8";
 
     private final GraphQLInvocation graphQLInvocation;
     private final ExecutionResultHandler executionResultHandler;
