@@ -21,6 +21,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.Environment
 import io.micronaut.context.env.PropertySource
+import io.micronaut.http.annotation.Controller
 import spock.lang.Specification
 
 /**
@@ -53,6 +54,26 @@ class GraphQLFactorySpec extends Specification {
         context.containsBean(ExecutionResultHandler)
         context.containsBean(GraphQLInvocation)
         context.containsBean(GraphQLController)
+        context.getBeanDefinition(GraphQLController).getAnnotation(Controller).getRequiredValue(String) == "/graphql"
+
+        cleanup:
+        context.close()
+    }
+
+    void "test custom graphql url"() {
+        given:
+        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
+        context.environment.addPropertySource(PropertySource.of(
+                ["graphql.url": "/custom-graphql"]
+        ))
+        context.registerSingleton(Mock(GraphQL))
+        context.start()
+
+        expect:
+        context.containsBean(ExecutionResultHandler)
+        context.containsBean(GraphQLInvocation)
+        context.containsBean(GraphQLController)
+        context.getBeanDefinition(GraphQLController).getAnnotation(Controller).getRequiredValue(String) == "/custom-graphql"
 
         cleanup:
         context.close()
