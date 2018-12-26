@@ -20,6 +20,7 @@ import graphql.GraphQL;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.util.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
@@ -31,17 +32,17 @@ import javax.inject.Singleton;
  * @since 1.0
  */
 @Factory
-@Requires(property = "graphql.enabled", value = "true", defaultValue = "true")
+@Requires(property = "graphql.enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Requires(beans = GraphQL.class)
 public class GraphQLFactory {
 
     /**
-     * Creates the {@link ExecutionResultHandler} bean.
+     * Creates the {@link GraphQLExecutionResultHandler} bean.
      */
     @Bean
     @Singleton
-    public ExecutionResultHandler executionResultHandler() {
-        return new DefaultExecutionResultHandler();
+    public GraphQLExecutionResultHandler graphQLExecutionResultHandler() {
+        return new DefaultGraphQLExecutionResultHandler();
     }
 
     /**

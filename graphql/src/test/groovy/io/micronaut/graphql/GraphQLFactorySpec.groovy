@@ -36,7 +36,7 @@ class GraphQLFactorySpec extends Specification {
         context.start()
 
         expect:
-        !context.containsBean(ExecutionResultHandler)
+        !context.containsBean(GraphQLExecutionResultHandler)
         !context.containsBean(GraphQLInvocation)
         !context.containsBean(GraphQLController)
 
@@ -51,7 +51,7 @@ class GraphQLFactorySpec extends Specification {
         context.start()
 
         expect:
-        context.containsBean(ExecutionResultHandler)
+        context.containsBean(GraphQLExecutionResultHandler)
         context.containsBean(GraphQLInvocation)
         context.containsBean(GraphQLController)
         context.getBeanDefinition(GraphQLController).getAnnotation(Controller).getRequiredValue(String) == "/graphql"
@@ -70,7 +70,7 @@ class GraphQLFactorySpec extends Specification {
         context.start()
 
         expect:
-        context.containsBean(ExecutionResultHandler)
+        context.containsBean(GraphQLExecutionResultHandler)
         context.containsBean(GraphQLInvocation)
         context.containsBean(GraphQLController)
         context.getBeanDefinition(GraphQLController).getAnnotation(Controller).getRequiredValue(String) == "/custom-graphql"
@@ -89,7 +89,7 @@ class GraphQLFactorySpec extends Specification {
         context.start()
 
         expect:
-        !context.containsBean(ExecutionResultHandler)
+        !context.containsBean(GraphQLExecutionResultHandler)
         !context.containsBean(GraphQLInvocation)
         !context.containsBean(GraphQLController)
 

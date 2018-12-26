@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
@@ -43,20 +44,20 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON;
  * @since 1.0
  */
 @Controller("${graphql.url:/graphql}")
-@Requires(property = "graphql.enabled", value = "true", defaultValue = "true")
+@Requires(property = "graphql.enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Requires(beans = GraphQL.class)
 public class GraphQLController {
 
     protected static final String APPLICATION_JSON_UTF8 = APPLICATION_JSON + ";charset=UTF-8";
 
     private final GraphQLInvocation graphQLInvocation;
-    private final ExecutionResultHandler executionResultHandler;
+    private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
     private final ObjectMapper objectMapper;
 
-    public GraphQLController(GraphQLInvocation graphQLInvocation, ExecutionResultHandler executionResultHandler,
+    public GraphQLController(GraphQLInvocation graphQLInvocation, GraphQLExecutionResultHandler graphQLExecutionResultHandler,
             ObjectMapper objectMapper) {
         this.graphQLInvocation = graphQLInvocation;
-        this.executionResultHandler = executionResultHandler;
+        this.graphQLExecutionResultHandler = graphQLExecutionResultHandler;
         this.objectMapper = objectMapper;
     }
 
@@ -91,7 +92,12 @@ public class GraphQLController {
         if (query == null) {
             query = "";
         }
-        return executeRequest(query, body.getOperationName(), body.getVariables(), httpRequest);
+        return executeRequest(
+                query,
+                body.getOperationName(),
+                body.getVariables(),
+                httpRequest
+        );
     }
 
     private Map<String, Object> convertVariablesJson(String jsonMap) {
@@ -112,6 +118,6 @@ public class GraphQLController {
             HttpRequest httpRequest) {
         GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
         Publisher<ExecutionResult> executionResult = graphQLInvocation.invoke(invocationData, httpRequest);
-        return executionResultHandler.handleExecutionResult(executionResult);
+        return graphQLExecutionResultHandler.handleExecutionResult(executionResult);
     }
 }

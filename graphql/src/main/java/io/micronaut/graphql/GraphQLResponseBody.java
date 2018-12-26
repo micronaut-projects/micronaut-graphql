@@ -19,6 +19,7 @@ package io.micronaut.graphql;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.annotation.concurrent.Immutable;
 import java.util.Map;
 
 /**
@@ -27,6 +28,7 @@ import java.util.Map;
  * @author Marcel Overdijk
  * @since 1.0
  */
+@Immutable
 public class GraphQLResponseBody {
 
     private final Map<String, Object> specification;

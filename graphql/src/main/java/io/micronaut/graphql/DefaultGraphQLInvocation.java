@@ -24,11 +24,13 @@ import io.micronaut.http.HttpRequest;
 import org.reactivestreams.Publisher;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 /**
  * The default GraphQL invocation.
  *
  * @author Marcel Overdijk
+ * @author graemerocher
  * @since 1.0
  */
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
@@ -36,6 +38,11 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
     private final GraphQL graphQL;
     private final GraphQLContextBuilder contextBuilder;
 
+    /**
+     * Default constructor.
+     * @param graphQL The {@link GraphQL} instance
+     * @param contextBuilder The {@link GraphQLContextBuilder} instance
+     */
     public DefaultGraphQLInvocation(GraphQL graphQL, GraphQLContextBuilder contextBuilder) {
         this.graphQL = graphQL;
         this.contextBuilder = contextBuilder;
@@ -43,14 +50,15 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
     @Override
     public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest) {
-        Object context = contextBuilder != null ? contextBuilder.build(httpRequest) : null;
-        ExecutionInput executionInput = ExecutionInput.newExecutionInput()
-                .context(context)
-                .query(invocationData.getQuery())
-                .operationName(invocationData.getOperationName())
-                .variables(invocationData.getVariables())
-                .build();
-        CompletableFuture<ExecutionResult> executionResult = graphQL.executeAsync(executionInput);
-        return Publishers.fromCompletableFuture(executionResult);
+        return Publishers.fromCompletableFuture(() -> {
+            Object context = contextBuilder != null ? contextBuilder.build(httpRequest) : null;
+            ExecutionInput executionInput = ExecutionInput.newExecutionInput()
+                    .context(context)
+                    .query(invocationData.getQuery())
+                    .operationName(invocationData.getOperationName())
+                    .variables(invocationData.getVariables())
+                    .build();
+            return graphQL.executeAsync(executionInput);
+        });
     }
 }

@@ -17,23 +17,22 @@
 package io.micronaut.graphql;
 
 import graphql.ExecutionResult;
-import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpResponse;
 import org.reactivestreams.Publisher;
 
 /**
- * The default GraphQL execution result handler.
+ * The GraphQL execution result handler.
  *
  * @author Marcel Overdijk
  * @since 1.0
  */
-public class DefaultExecutionResultHandler implements ExecutionResultHandler {
+public interface GraphQLExecutionResultHandler {
 
-    @Override
-    public Publisher<HttpResponse<GraphQLResponseBody>> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher) {
-        return Publishers.map(executionResultPublisher, executionResult -> {
-            GraphQLResponseBody body = new GraphQLResponseBody(executionResult.toSpecification());
-            return HttpResponse.ok(body);
-        });
-    }
+    /**
+     * Handles the execution result.
+     *
+     * @param executionResultPublisher the execution result
+     * @return the response body
+     */
+    Publisher<HttpResponse<GraphQLResponseBody>> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher);
 }

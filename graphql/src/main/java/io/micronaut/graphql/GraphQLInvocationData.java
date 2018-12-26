@@ -17,6 +17,7 @@
 package io.micronaut.graphql;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 import java.util.Collections;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import java.util.Map;
  * @author Marcel Overdijk
  * @since 1.0
  */
+@Immutable
 public class GraphQLInvocationData {
 
     private final String query;
