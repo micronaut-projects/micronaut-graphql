@@ -66,7 +66,7 @@
 <!--   -->
 </a></div>
 <!-- ========= END OF TOP NAVBAR ========= -->
-<div class="contentContainer"><a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a name="I:A">
+<div class="contentContainer"><a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a name="I:A">
 <!--   -->
 </a>
 <h2 class="title">A</h2>
@@ -89,31 +89,19 @@
 </a>
 <h2 class="title">D</h2>
 <dl>
-<dt><a href="io/micronaut/graphql/DefaultExecutionResultHandler.html" title="class in io.micronaut.graphql"><span class="typeNameLink">DefaultExecutionResultHandler</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
+<dt><a href="io/micronaut/graphql/DefaultGraphQLExecutionResultHandler.html" title="class in io.micronaut.graphql"><span class="typeNameLink">DefaultGraphQLExecutionResultHandler</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
 <div class="block">The default GraphQL execution result handler.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultExecutionResultHandler.html#DefaultExecutionResultHandler--">DefaultExecutionResultHandler()</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultExecutionResultHandler.html" title="class in io.micronaut.graphql">DefaultExecutionResultHandler</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultGraphQLExecutionResultHandler.html#DefaultGraphQLExecutionResultHandler--">DefaultGraphQLExecutionResultHandler()</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultGraphQLExecutionResultHandler.html" title="class in io.micronaut.graphql">DefaultGraphQLExecutionResultHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/graphql/DefaultGraphQLInvocation.html" title="class in io.micronaut.graphql"><span class="typeNameLink">DefaultGraphQLInvocation</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
 <div class="block">The default GraphQL invocation.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultGraphQLInvocation.html#DefaultGraphQLInvocation-graphql.GraphQL-io.micronaut.graphql.GraphQLContextBuilder-">DefaultGraphQLInvocation(GraphQL, GraphQLContextBuilder)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultGraphQLInvocation.html" title="class in io.micronaut.graphql">DefaultGraphQLInvocation</a></dt>
-<dd>&nbsp;</dd>
-</dl>
-<a name="I:E">
-<!--   -->
-</a>
-<h2 class="title">E</h2>
-<dl>
-<dt><a href="io/micronaut/graphql/ExecutionResultHandler.html" title="interface in io.micronaut.graphql"><span class="typeNameLink">ExecutionResultHandler</span></a> - Interface in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphQL execution result handler.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLFactory.html#executionResultHandler--">executionResultHandler()</a></span> - Method in class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLFactory.html" title="class in io.micronaut.graphql">GraphQLFactory</a></dt>
-<dd>
-<div class="block">Creates the <a href="io/micronaut/graphql/ExecutionResultHandler.html" title="interface in io.micronaut.graphql"><code>ExecutionResultHandler</code></a> bean.</div>
+<div class="block">Default constructor.</div>
 </dd>
 </dl>
 <a name="I:G">
@@ -159,8 +147,16 @@
 <dd>
 <div class="block">The GraphQL controller.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLController.html#GraphQLController-io.micronaut.graphql.GraphQLInvocation-io.micronaut.graphql.ExecutionResultHandler-com.fasterxml.jackson.databind.ObjectMapper-">GraphQLController(GraphQLInvocation, ExecutionResultHandler, ObjectMapper)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLController.html" title="class in io.micronaut.graphql">GraphQLController</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLController.html#GraphQLController-io.micronaut.graphql.GraphQLInvocation-io.micronaut.graphql.GraphQLExecutionResultHandler-com.fasterxml.jackson.databind.ObjectMapper-">GraphQLController(GraphQLInvocation, GraphQLExecutionResultHandler, ObjectMapper)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLController.html" title="class in io.micronaut.graphql">GraphQLController</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/graphql/GraphQLExecutionResultHandler.html" title="interface in io.micronaut.graphql"><span class="typeNameLink">GraphQLExecutionResultHandler</span></a> - Interface in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
+<dd>
+<div class="block">The GraphQL execution result handler.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLFactory.html#graphQLExecutionResultHandler--">graphQLExecutionResultHandler()</a></span> - Method in class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLFactory.html" title="class in io.micronaut.graphql">GraphQLFactory</a></dt>
+<dd>
+<div class="block">Creates the <a href="io/micronaut/graphql/GraphQLExecutionResultHandler.html" title="interface in io.micronaut.graphql"><code>GraphQLExecutionResultHandler</code></a> bean.</div>
+</dd>
 <dt><a href="io/micronaut/graphql/GraphQLFactory.html" title="class in io.micronaut.graphql"><span class="typeNameLink">GraphQLFactory</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
 <div class="block">The GraphQL factory.</div>
@@ -199,9 +195,9 @@
 </a>
 <h2 class="title">H</h2>
 <dl>
-<dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultExecutionResultHandler.html#handleExecutionResult-org.reactivestreams.Publisher-">handleExecutionResult(Publisher&lt;ExecutionResult&gt;)</a></span> - Method in class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultExecutionResultHandler.html" title="class in io.micronaut.graphql">DefaultExecutionResultHandler</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultGraphQLExecutionResultHandler.html#handleExecutionResult-org.reactivestreams.Publisher-">handleExecutionResult(Publisher&lt;ExecutionResult&gt;)</a></span> - Method in class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultGraphQLExecutionResultHandler.html" title="class in io.micronaut.graphql">DefaultGraphQLExecutionResultHandler</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/graphql/ExecutionResultHandler.html#handleExecutionResult-org.reactivestreams.Publisher-">handleExecutionResult(Publisher&lt;ExecutionResult&gt;)</a></span> - Method in interface io.micronaut.graphql.<a href="io/micronaut/graphql/ExecutionResultHandler.html" title="interface in io.micronaut.graphql">ExecutionResultHandler</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLExecutionResultHandler.html#handleExecutionResult-org.reactivestreams.Publisher-">handleExecutionResult(Publisher&lt;ExecutionResult&gt;)</a></span> - Method in interface io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLExecutionResultHandler.html" title="interface in io.micronaut.graphql">GraphQLExecutionResultHandler</a></dt>
 <dd>
 <div class="block">Handles the execution result.</div>
 </dd>
@@ -250,7 +246,7 @@
 <div class="block">Sets the variables.</div>
 </dd>
 </dl>
-<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;</div>
+<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:S">S</a>&nbsp;</div>
 <!-- ======= START OF BOTTOM NAVBAR ====== -->
 <div class="bottomNav"><a name="navbar.bottom">
 <!--   -->
