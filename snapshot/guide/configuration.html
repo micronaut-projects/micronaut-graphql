@@ -88,7 +88,13 @@ function addJsClass() {
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml" data-lang="yaml">graphql:
   enabled: true <i class="conum" data-value="1"></i><b>(1)</b>
-  url: /graphql <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+  path: /graphql <i class="conum" data-value="2"></i><b>(2)</b>
+graphiql:
+  enabled: false <i class="conum" data-value="3"></i><b>(3)</b>
+  path: /graphiql <i class="conum" data-value="4"></i><b>(4)</b>
+  template-path: classpath:graphiql/index.html <i class="conum" data-value="5"></i><b>(5)</b>
+  template-parameters: <i class="conum" data-value="6"></i><b>(6)</b>
+  page-title: GraphiQL <i class="conum" data-value="7"></i><b>(7)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -99,7 +105,27 @@ function addJsClass() {
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configures the GraphQL endpoint url. Default <code>/graphql</code>.</td>
+<td>Configures the GraphQL endpoint path. Default <code>/graphql</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Enables/disables the GraphiQL IDE. Default <code>false</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Configures the GraphiQL endpoint path. Default <code>/graphiql</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Configures the GraphiQL template path. Default <code>classpath:graphiql/index.html</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Configures the GraphiQL template parameters. Default: none.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Configures the GraphiQL page title. Default <code>GraphiQL</code>.</td>
 </tr>
 </table>
 </div>
