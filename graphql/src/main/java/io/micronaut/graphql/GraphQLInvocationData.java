@@ -34,6 +34,13 @@ public class GraphQLInvocationData {
     private final String operationName;
     private final Map<String, Object> variables;
 
+    /**
+     * Default constructor.
+     *
+     * @param query         the query
+     * @param operationName the operation name
+     * @param variables     the variables
+     */
     public GraphQLInvocationData(String query, @Nullable String operationName, @Nullable Map<String, Object> variables) {
         this.query = query;
         this.operationName = operationName;

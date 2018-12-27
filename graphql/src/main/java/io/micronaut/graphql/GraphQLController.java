@@ -45,6 +45,13 @@ public class GraphQLController implements GraphQLOperations {
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
     private final ObjectMapper objectMapper;
 
+    /**
+     * Default constructor.
+     *
+     * @param graphQLInvocation             the {@link GraphQLInvocation} instance
+     * @param graphQLExecutionResultHandler the {@link GraphQLExecutionResultHandler} instance
+     * @param objectMapper                  the {@link ObjectMapper} instance
+     */
     public GraphQLController(GraphQLInvocation graphQLInvocation, GraphQLExecutionResultHandler graphQLExecutionResultHandler,
             ObjectMapper objectMapper) {
         this.graphQLInvocation = graphQLInvocation;

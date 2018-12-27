@@ -34,6 +34,11 @@ public class GraphQLResponseBody {
 
     private final Map<String, Object> specification;
 
+    /**
+     * Default constructor.
+     *
+     * @param specification the response body data
+     */
     @JsonCreator
     public GraphQLResponseBody(Map<String, Object> specification) {
         this.specification = specification;
