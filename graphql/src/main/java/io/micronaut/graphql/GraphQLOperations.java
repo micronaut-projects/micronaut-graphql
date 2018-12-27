@@ -37,14 +37,14 @@ public interface GraphQLOperations {
 
     String APPLICATION_JSON_UTF8 = APPLICATION_JSON + ";charset=UTF-8";
 
-    @Get(produces = APPLICATION_JSON_UTF8)
+    @Get(produces = APPLICATION_JSON_UTF8, single = true)
     @SingleResult
     Publisher<GraphQLResponseBody> get(
             @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
             @Nullable @QueryValue("variables") String variables);
 
-    @Post(consumes = APPLICATION_JSON, produces = APPLICATION_JSON_UTF8)
+    @Post(consumes = APPLICATION_JSON, produces = APPLICATION_JSON_UTF8, single = true)
     @SingleResult
     Publisher<GraphQLResponseBody> post(@Body GraphQLRequestBody body);
 }
