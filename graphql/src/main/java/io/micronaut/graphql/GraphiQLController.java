@@ -17,7 +17,6 @@
 package io.micronaut.graphql;
 
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.context.annotation.Value;
 import io.micronaut.context.env.DefaultPropertyPlaceholderResolver;
 import io.micronaut.context.env.PropertyPlaceholderResolver;
 import io.micronaut.context.exceptions.ConfigurationException;
@@ -54,7 +53,7 @@ public class GraphiQLController {
     protected static final String TEXT_HTML_UTF8 = TEXT_HTML + ";charset=UTF-8";
 
     private final GraphiQLConfiguration graphiQLConfiguration;
-    private final String graphqlPath;
+    private final GraphQLConfiguration graphQLConfiguration;
     private final ResourceResolver resourceResolver;
 
     private String cachedTemplate;
@@ -63,13 +62,13 @@ public class GraphiQLController {
      * Default constructor.
      *
      * @param graphiQLConfiguration the {@link GraphiQLConfiguration} instance
-     * @param graphqlPath           the GraphQL path
+     * @param graphQLConfiguration  the {@link GraphQLConfiguration} instance
      * @param resourceResolver      the {@link ResourceResolver} instance
      */
-    public GraphiQLController(GraphiQLConfiguration graphiQLConfiguration, @Value("${graphql.path:/graphql}") String graphqlPath,
+    public GraphiQLController(GraphiQLConfiguration graphiQLConfiguration, GraphQLConfiguration graphQLConfiguration,
             ResourceResolver resourceResolver) {
         this.graphiQLConfiguration = graphiQLConfiguration;
-        this.graphqlPath = graphqlPath;
+        this.graphQLConfiguration = graphQLConfiguration;
         this.resourceResolver = resourceResolver;
     }
 
@@ -85,7 +84,7 @@ public class GraphiQLController {
                 if (cachedTemplate == null) {
                     String rawTemplate = loadTemplate(graphiQLConfiguration.getTemplatePath());
                     Map<String, String> parameters = new HashMap<>();
-                    parameters.put("graphqlPath", graphqlPath);
+                    parameters.put("graphqlPath", graphQLConfiguration.getPath());
                     parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
                     if (graphiQLConfiguration.getTemplateParameters() != null) {
                         graphiQLConfiguration.getTemplateParameters().forEach((name, value) ->

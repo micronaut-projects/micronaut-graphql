@@ -36,8 +36,8 @@ import java.util.Map;
  * @author Marcel Overdijk
  * @since 1.0
  */
-@Controller("${graphql.path:/graphql}")
-@Requires(property = "graphql.enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+@Controller("${" + GraphQLConfiguration.PATH + ":" + GraphQLConfiguration.DEFAULT_PATH + "}")
+@Requires(property = GraphQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Requires(beans = GraphQL.class)
 public class GraphQLController implements GraphQLOperations {
 

@@ -6,6 +6,17 @@ The following configuration properties can be set:
 graphql:
   enabled: true // <1>
   path: /graphql // <2>
+graphiql:
+  enabled: false // <3>
+  path: /graphiql // <4>
+  template-path: classpath:graphiql/index.html // <5>
+  template-parameters: // <6>
+  page-title: GraphiQL // <7>
 ----
 <1> Enables/disables the GraphQL integration. Default `true`.
 <2> Configures the GraphQL endpoint path. Default `/graphql`.
+<3> Enables/disables the GraphiQL IDE. Default `false`.
+<4> Configures the GraphiQL endpoint path. Default `/graphiql`.
+<5> Configures the GraphiQL template path. Default `classpath:graphiql/index.html`.
+<6> Configures the GraphiQL template parameters. Default: none.
+<7> Configures the GraphiQL page title. Default `GraphiQL`.

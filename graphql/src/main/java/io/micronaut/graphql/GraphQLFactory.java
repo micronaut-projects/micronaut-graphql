@@ -32,7 +32,7 @@ import javax.inject.Singleton;
  * @since 1.0
  */
 @Factory
-@Requires(property = "graphql.enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+@Requires(property = GraphQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Requires(beans = GraphQL.class)
 public class GraphQLFactory {
 

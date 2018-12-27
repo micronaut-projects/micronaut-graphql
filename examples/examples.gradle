@@ -24,7 +24,6 @@ dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
     compile(project(":graphql"))
-    compile(project(":graphiql"))
     compile("io.micronaut:micronaut-http-client")
     compile("io.micronaut:micronaut-http-server-netty")
     compile("io.micronaut:micronaut-inject")

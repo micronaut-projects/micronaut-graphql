@@ -28,7 +28,7 @@ import spock.lang.Specification
  * @author Marcel Overdijk
  * @since 1.0
  */
-class GraphQLFactorySpec extends Specification {
+class GraphQLConfigurationSpec extends Specification {
 
     void "test no graphql bean provided"() {
         given:
