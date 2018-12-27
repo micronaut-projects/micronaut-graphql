@@ -18,7 +18,6 @@ package io.micronaut.graphql;
 
 import graphql.ExecutionResult;
 import io.micronaut.core.async.publisher.Publishers;
-import io.micronaut.http.HttpResponse;
 import org.reactivestreams.Publisher;
 
 /**
@@ -30,10 +29,7 @@ import org.reactivestreams.Publisher;
 public class DefaultGraphQLExecutionResultHandler implements GraphQLExecutionResultHandler {
 
     @Override
-    public Publisher<HttpResponse<GraphQLResponseBody>> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher) {
-        return Publishers.map(executionResultPublisher, executionResult -> {
-            GraphQLResponseBody body = new GraphQLResponseBody(executionResult.toSpecification());
-            return HttpResponse.ok(body);
-        });
+    public Publisher<GraphQLResponseBody> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher) {
+        return Publishers.map(executionResultPublisher, executionResult -> new GraphQLResponseBody(executionResult.toSpecification()));
     }
 }

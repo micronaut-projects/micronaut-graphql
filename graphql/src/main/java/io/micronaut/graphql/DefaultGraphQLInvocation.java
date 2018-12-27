@@ -23,9 +23,6 @@ import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import org.reactivestreams.Publisher;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
-
 /**
  * The default GraphQL invocation.
  *

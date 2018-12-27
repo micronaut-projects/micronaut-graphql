@@ -22,20 +22,13 @@ import graphql.GraphQL;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
-import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Post;
-import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.http.context.ServerRequestContext;
 import org.reactivestreams.Publisher;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
-
-import static io.micronaut.http.MediaType.APPLICATION_JSON;
 
 /**
  * The GraphQL controller.
@@ -46,9 +39,7 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON;
 @Controller("${graphql.url:/graphql}")
 @Requires(property = "graphql.enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Requires(beans = GraphQL.class)
-public class GraphQLController {
-
-    protected static final String APPLICATION_JSON_UTF8 = APPLICATION_JSON + ";charset=UTF-8";
+public class GraphQLController implements GraphQLOperations {
 
     private final GraphQLInvocation graphQLInvocation;
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
@@ -62,41 +53,31 @@ public class GraphQLController {
     }
 
     /**
-     * Handles the GraphQL {@code GET} requests.
+     * Handles the incoming GraphQL {@code GET} requests.
      *
      * @param query         the GraphQL query
      * @param operationName the GraphQL operation name
      * @param variables     the GraphQL variables
-     * @param httpRequest   the HTTP request
      * @return the GraphQL response
      */
-    @Get(produces = APPLICATION_JSON_UTF8)
-    public Publisher<HttpResponse<GraphQLResponseBody>> get(
-            @QueryValue("query") String query,
-            @Nullable @QueryValue("operationName") String operationName,
-            @Nullable @QueryValue("variables") String variables,
-            HttpRequest httpRequest) {
-        return executeRequest(query, operationName, convertVariablesJson(variables), httpRequest);
+    @Override
+    public Publisher<GraphQLResponseBody> get(String query, String operationName, String variables) {
+        return executeRequest(query, operationName, convertVariablesJson(variables));
     }
 
     /**
-     * Handles the GraphQL {@code POST} requests.
+     * Handles the incoming GraphQL {@code POST} requests.
      *
      * @param body        the GraphQL request body
-     * @param httpRequest the HTTP request
      * @return the GraphQL response
      */
-    @Post(consumes = APPLICATION_JSON, produces = APPLICATION_JSON_UTF8)
-    public Publisher<HttpResponse<GraphQLResponseBody>> post(@Body GraphQLRequestBody body, HttpRequest httpRequest) {
+    @Override
+    public Publisher<GraphQLResponseBody> post(GraphQLRequestBody body) {
         String query = body.getQuery();
         if (query == null) {
             query = "";
         }
-        return executeRequest(
-                query,
-                body.getOperationName(),
-                body.getVariables(),
-                httpRequest
+        return executeRequest(query, body.getOperationName(), body.getVariables()
         );
     }
 
@@ -111,11 +92,8 @@ public class GraphQLController {
         }
     }
 
-    private Publisher<HttpResponse<GraphQLResponseBody>> executeRequest(
-            String query,
-            String operationName,
-            Map<String, Object> variables,
-            HttpRequest httpRequest) {
+    private Publisher<GraphQLResponseBody> executeRequest(String query, String operationName, Map<String, Object> variables) {
+        HttpRequest httpRequest = ServerRequestContext.currentRequest().orElse(null);
         GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
         Publisher<ExecutionResult> executionResult = graphQLInvocation.invoke(invocationData, httpRequest);
         return graphQLExecutionResultHandler.handleExecutionResult(executionResult);

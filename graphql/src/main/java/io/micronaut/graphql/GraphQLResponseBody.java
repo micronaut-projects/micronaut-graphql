@@ -17,6 +17,7 @@
 package io.micronaut.graphql;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.annotation.concurrent.Immutable;
@@ -33,6 +34,7 @@ public class GraphQLResponseBody {
 
     private final Map<String, Object> specification;
 
+    @JsonCreator
     public GraphQLResponseBody(Map<String, Object> specification) {
         this.specification = specification;
     }

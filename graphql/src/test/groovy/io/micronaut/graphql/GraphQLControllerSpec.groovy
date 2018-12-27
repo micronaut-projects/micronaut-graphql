@@ -25,19 +25,11 @@ import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
-import io.micronaut.http.HttpHeaders
-import io.micronaut.http.HttpResponse
-import io.micronaut.http.HttpStatus
-import io.micronaut.http.annotation.Body
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Post
-import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
-import javax.annotation.Nullable
 import javax.inject.Singleton
 import java.util.concurrent.CompletableFuture
 
@@ -80,12 +72,10 @@ class GraphQLControllerSpec extends Specification {
         String query = "{ foo }"
 
         when:
-        def response = client.get(query)
+        GraphQLResponseBody response = client.get(query, null, null).blockingFirst()
 
         then:
-        response.status == HttpStatus.OK
-        response.header(HttpHeaders.CONTENT_TYPE) == GraphQLController.APPLICATION_JSON_UTF8
-        response.body()["data"] == "bar"
+        response.getSpecification()["data"] == "bar"
 
         and:
         executionInput.query == query
@@ -99,12 +89,10 @@ class GraphQLControllerSpec extends Specification {
         String operationName = "myQuery"
 
         when:
-        def response = client.get(query, operationName, null)
+        GraphQLResponseBody response = client.get(query, operationName, null).blockingFirst()
 
         then:
-        response.status == HttpStatus.OK
-        response.header(HttpHeaders.CONTENT_TYPE) == GraphQLController.APPLICATION_JSON_UTF8
-        response.body()["data"] == "bar"
+        response.getSpecification()["data"] == "bar"
 
         and:
         executionInput.query == query
@@ -119,12 +107,10 @@ class GraphQLControllerSpec extends Specification {
         String variables = '{"variable": "variableValue"}'
 
         when:
-        def response = client.get(query, operationName, variables)
+        GraphQLResponseBody response = client.get(query, operationName, variables).blockingFirst()
 
         then:
-        response.status == HttpStatus.OK
-        response.header(HttpHeaders.CONTENT_TYPE) == GraphQLController.APPLICATION_JSON_UTF8
-        response.body()["data"] == "bar"
+        response.getSpecification()["data"] == "bar"
 
         and:
         executionInput.query == query
@@ -138,12 +124,10 @@ class GraphQLControllerSpec extends Specification {
         body.query = "{ foo }"
 
         when:
-        def response = client.post(body)
+        GraphQLResponseBody response = client.post(body).blockingFirst()
 
         then:
-        response.status == HttpStatus.OK
-        response.header(HttpHeaders.CONTENT_TYPE) == GraphQLController.APPLICATION_JSON_UTF8
-        response.body()["data"] == "bar"
+        response.getSpecification()["data"] == "bar"
 
         and:
         executionInput.query == body.query
@@ -158,12 +142,10 @@ class GraphQLControllerSpec extends Specification {
         body.operationName = "myQuery"
 
         when:
-        def response = client.post(body)
+        GraphQLResponseBody response = client.post(body).blockingFirst()
 
         then:
-        response.status == HttpStatus.OK
-        response.header(HttpHeaders.CONTENT_TYPE) == GraphQLController.APPLICATION_JSON_UTF8
-        response.body()["data"] == "bar"
+        response.getSpecification()["data"] == "bar"
 
         and:
         executionInput.query == body.query
@@ -179,12 +161,10 @@ class GraphQLControllerSpec extends Specification {
         body.variables = ["variable": "variableValue"]
 
         when:
-        def response = client.post(body)
+        GraphQLResponseBody response = client.post(body).blockingFirst()
 
         then:
-        response.status == HttpStatus.OK
-        response.header(HttpHeaders.CONTENT_TYPE) == GraphQLController.APPLICATION_JSON_UTF8
-        response.body()["data"] == "bar"
+        response.getSpecification()["data"] == "bar"
 
         and:
         executionInput.query == body.query
@@ -193,16 +173,7 @@ class GraphQLControllerSpec extends Specification {
     }
 
     @Client("/graphql")
-    static interface GraphQLClient {
-
-        @Get("{?query}")
-        HttpResponse<Map> get(@QueryValue String query)
-
-        @Get("{?query,operationName,variables}")
-        HttpResponse<Map> get(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
-
-        @Post
-        HttpResponse<Map> post(@Body GraphQLRequestBody body)
+    static interface GraphQLClient extends GraphQLOperations {
     }
 
     @Factory

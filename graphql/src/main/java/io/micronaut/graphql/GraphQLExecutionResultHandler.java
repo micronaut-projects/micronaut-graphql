@@ -17,7 +17,6 @@
 package io.micronaut.graphql;
 
 import graphql.ExecutionResult;
-import io.micronaut.http.HttpResponse;
 import org.reactivestreams.Publisher;
 
 /**
@@ -34,5 +33,5 @@ public interface GraphQLExecutionResultHandler {
      * @param executionResultPublisher the execution result
      * @return the response body
      */
-    Publisher<HttpResponse<GraphQLResponseBody>> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher);
+    Publisher<GraphQLResponseBody> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher);
 }
