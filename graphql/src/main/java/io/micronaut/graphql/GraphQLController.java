@@ -68,7 +68,7 @@ public class GraphQLController implements GraphQLOperations {
     /**
      * Handles the incoming GraphQL {@code POST} requests.
      *
-     * @param body        the GraphQL request body
+     * @param body the GraphQL request body
      * @return the GraphQL response
      */
     @Override
