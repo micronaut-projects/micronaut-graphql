@@ -19,18 +19,18 @@ package io.micronaut.graphql;
 import io.micronaut.http.HttpRequest;
 
 /**
- * The GraphQL context builder.
+ * The GraphQL root builder.
  *
  * @author Marcel Overdijk
  * @since 1.0
  */
-public interface GraphQLContextBuilder {
+public interface GraphQLRootBuilder {
 
     /**
-     * Builds the GraphQL context object to pass to all data fetchers.
+     * Builds the GraphQL root object to start the query execution on.
      *
      * @param httpRequest the HTTP request
-     * @return the context object
+     * @return the root object
      */
     Object build(HttpRequest httpRequest);
 }

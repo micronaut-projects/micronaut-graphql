@@ -50,7 +50,8 @@ public class GraphQLFactory {
      */
     @Bean
     @Singleton
-    public GraphQLInvocation graphQLInvocation(GraphQL graphQL, @Nullable GraphQLContextBuilder graphQLContextBuilder) {
-        return new DefaultGraphQLInvocation(graphQL, graphQLContextBuilder);
+    public GraphQLInvocation graphQLInvocation(GraphQL graphQL, @Nullable GraphQLContextBuilder graphQLContextBuilder,
+            @Nullable GraphQLRootBuilder graphQLRootBuilder) {
+        return new DefaultGraphQLInvocation(graphQL, graphQLContextBuilder, graphQLRootBuilder);
     }
 }

@@ -33,27 +33,31 @@ import org.reactivestreams.Publisher;
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
     private final GraphQL graphQL;
-    private final GraphQLContextBuilder contextBuilder;
+    private final GraphQLContextBuilder graphQLContextBuilder;
+    private final GraphQLRootBuilder graphQLRootBuilder;
 
     /**
      * Default constructor.
      *
      * @param graphQL        the {@link GraphQL} instance
-     * @param contextBuilder the {@link GraphQLContextBuilder} instance
+     * @param graphQLContextBuilder the {@link GraphQLContextBuilder} instance
      */
-    public DefaultGraphQLInvocation(GraphQL graphQL, GraphQLContextBuilder contextBuilder) {
+    public DefaultGraphQLInvocation(GraphQL graphQL, GraphQLContextBuilder graphQLContextBuilder, GraphQLRootBuilder graphQLRootBuilder) {
         this.graphQL = graphQL;
-        this.contextBuilder = contextBuilder;
+        this.graphQLContextBuilder = graphQLContextBuilder;
+        this.graphQLRootBuilder = graphQLRootBuilder;
     }
 
     @Override
     public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest) {
         return Publishers.fromCompletableFuture(() -> {
-            Object context = contextBuilder != null ? contextBuilder.build(httpRequest) : null;
+            Object context = graphQLContextBuilder != null ? graphQLContextBuilder.build(httpRequest) : null;
+            Object root = graphQLRootBuilder != null ? graphQLRootBuilder.build(httpRequest) : null;
             ExecutionInput executionInput = ExecutionInput.newExecutionInput()
-                    .context(context)
                     .query(invocationData.getQuery())
                     .operationName(invocationData.getOperationName())
+                    .context(context)
+                    .root(root)
                     .variables(invocationData.getVariables())
                     .build();
             return graphQL.executeAsync(executionInput);
