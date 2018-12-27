@@ -81,7 +81,11 @@
 <dl>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLContextBuilder.html#build-io.micronaut.http.HttpRequest-">build(HttpRequest)</a></span> - Method in interface io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.graphql">GraphQLContextBuilder</a></dt>
 <dd>
-<div class="block">Builds the GraphQL context.</div>
+<div class="block">Builds the GraphQL context object to pass to all data fetchers.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLRootBuilder.html#build-io.micronaut.http.HttpRequest-">build(HttpRequest)</a></span> - Method in interface io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.graphql">GraphQLRootBuilder</a></dt>
+<dd>
+<div class="block">Builds the GraphQL root object to start the query execution on.</div>
 </dd>
 </dl>
 <a name="I:D">
@@ -99,7 +103,7 @@
 <dd>
 <div class="block">The default GraphQL invocation.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultGraphQLInvocation.html#DefaultGraphQLInvocation-graphql.GraphQL-io.micronaut.graphql.GraphQLContextBuilder-">DefaultGraphQLInvocation(GraphQL, GraphQLContextBuilder)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultGraphQLInvocation.html" title="class in io.micronaut.graphql">DefaultGraphQLInvocation</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultGraphQLInvocation.html#DefaultGraphQLInvocation-graphql.GraphQL-io.micronaut.graphql.GraphQLContextBuilder-io.micronaut.graphql.GraphQLRootBuilder-">DefaultGraphQLInvocation(GraphQL, GraphQLContextBuilder, GraphQLRootBuilder)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultGraphQLInvocation.html" title="class in io.micronaut.graphql">DefaultGraphQLInvocation</a></dt>
 <dd>
 <div class="block">Default constructor.</div>
 </dd>
@@ -179,7 +183,7 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLFactory.html#GraphQLFactory--">GraphQLFactory()</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLFactory.html" title="class in io.micronaut.graphql">GraphQLFactory</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLFactory.html#graphQLInvocation-graphql.GraphQL-io.micronaut.graphql.GraphQLContextBuilder-">graphQLInvocation(GraphQL, GraphQLContextBuilder)</a></span> - Method in class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLFactory.html" title="class in io.micronaut.graphql">GraphQLFactory</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLFactory.html#graphQLInvocation-graphql.GraphQL-io.micronaut.graphql.GraphQLContextBuilder-io.micronaut.graphql.GraphQLRootBuilder-">graphQLInvocation(GraphQL, GraphQLContextBuilder, GraphQLRootBuilder)</a></span> - Method in class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLFactory.html" title="class in io.micronaut.graphql">GraphQLFactory</a></dt>
 <dd>
 <div class="block">Creates the <a href="io/micronaut/graphql/GraphQLInvocation.html" title="interface in io.micronaut.graphql"><code>GraphQLInvocation</code></a> bean.</div>
 </dd>
@@ -212,6 +216,10 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLResponseBody.html#GraphQLResponseBody-java.util.Map-">GraphQLResponseBody(Map&lt;String, Object&gt;)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql">GraphQLResponseBody</a></dt>
 <dd>
 <div class="block">Default constructor.</div>
+</dd>
+<dt><a href="io/micronaut/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.graphql"><span class="typeNameLink">GraphQLRootBuilder</span></a> - Interface in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
+<dd>
+<div class="block">The GraphQL root builder.</div>
 </dd>
 </dl>
 <a name="I:H">

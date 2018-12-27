@@ -160,8 +160,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../io/micronaut/graphql/GraphQLInvocation.html" title="interface in io.micronaut.graphql">GraphQLInvocation</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLFactory.html#graphQLInvocation-graphql.GraphQL-io.micronaut.graphql.GraphQLContextBuilder-">graphQLInvocation</a></span>(graphql.GraphQL&nbsp;graphQL,
-                 <a href="../../../io/micronaut/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.graphql">GraphQLContextBuilder</a>&nbsp;graphQLContextBuilder)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLFactory.html#graphQLInvocation-graphql.GraphQL-io.micronaut.graphql.GraphQLContextBuilder-io.micronaut.graphql.GraphQLRootBuilder-">graphQLInvocation</a></span>(graphql.GraphQL&nbsp;graphQL,
+                 <a href="../../../io/micronaut/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.graphql">GraphQLContextBuilder</a>&nbsp;graphQLContextBuilder,
+                 <a href="../../../io/micronaut/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.graphql">GraphQLRootBuilder</a>&nbsp;graphQLRootBuilder)</code>
 <div class="block">Creates the <a href="../../../io/micronaut/graphql/GraphQLInvocation.html" title="interface in io.micronaut.graphql"><code>GraphQLInvocation</code></a> bean.</div>
 </td>
 </tr>
@@ -216,7 +217,7 @@ public&nbsp;<a href="../../../io/micronaut/graphql/GraphQLExecutionResultHandler
 <div class="block">Creates the <a href="../../../io/micronaut/graphql/GraphQLExecutionResultHandler.html" title="interface in io.micronaut.graphql"><code>GraphQLExecutionResultHandler</code></a> bean.</div>
 </li>
 </ul>
-<a name="graphQLInvocation-graphql.GraphQL-io.micronaut.graphql.GraphQLContextBuilder-">
+<a name="graphQLInvocation-graphql.GraphQL-io.micronaut.graphql.GraphQLContextBuilder-io.micronaut.graphql.GraphQLRootBuilder-">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -226,7 +227,9 @@ public&nbsp;<a href="../../../io/micronaut/graphql/GraphQLExecutionResultHandler
  @Singleton
 public&nbsp;<a href="../../../io/micronaut/graphql/GraphQLInvocation.html" title="interface in io.micronaut.graphql">GraphQLInvocation</a>&nbsp;graphQLInvocation(graphql.GraphQL&nbsp;graphQL,
                                                              @Nullable
-                                                             <a href="../../../io/micronaut/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.graphql">GraphQLContextBuilder</a>&nbsp;graphQLContextBuilder)</pre>
+                                                             <a href="../../../io/micronaut/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.graphql">GraphQLContextBuilder</a>&nbsp;graphQLContextBuilder,
+                                                             @Nullable
+                                                             <a href="../../../io/micronaut/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.graphql">GraphQLRootBuilder</a>&nbsp;graphQLRootBuilder)</pre>
 <div class="block">Creates the <a href="../../../io/micronaut/graphql/GraphQLInvocation.html" title="interface in io.micronaut.graphql"><code>GraphQLInvocation</code></a> bean.</div>
 </li>
 </ul>
