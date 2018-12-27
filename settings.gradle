@@ -1,6 +1,7 @@
 rootProject.name = "graphql"
 
 include "graphql"
+include "graphiql"
 
 String[] examples = [
         "hello-world",

@@ -45,7 +45,7 @@ public class GraphQLResponseBody {
     }
 
     @JsonAnyGetter
-    @JsonInclude(JsonInclude.Include.ALWAYS)
+    @JsonInclude
     public Map<String, Object> getSpecification() {
         return specification;
     }
