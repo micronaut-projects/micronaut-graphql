@@ -5,7 +5,7 @@ The following configuration properties can be set:
 ----
 graphql:
   enabled: true // <1>
-  url: /graphql // <2>
+  path: /graphql // <2>
 ----
 <1> Enables/disables the GraphQL integration. Default `true`.
-<2> Configures the GraphQL endpoint url. Default `/graphql`.
+<2> Configures the GraphQL endpoint path. Default `/graphql`.

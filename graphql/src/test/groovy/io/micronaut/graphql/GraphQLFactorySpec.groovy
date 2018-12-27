@@ -60,11 +60,11 @@ class GraphQLFactorySpec extends Specification {
         context.close()
     }
 
-    void "test custom graphql url"() {
+    void "test custom graphql path"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.url": "/custom-graphql"]
+                ["graphql.path": "/custom-graphql"]
         ))
         context.registerSingleton(Mock(GraphQL))
         context.start()

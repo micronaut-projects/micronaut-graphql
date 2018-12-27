@@ -56,12 +56,12 @@ class GraphiQLConfigurationSpec extends Specification {
         context.close()
     }
 
-    void "test custom graphiql url"() {
+    void "test custom graphiql path"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
                 ["graphiql.enabled": true,
-                 "graphiql.url"    : "/custom-graphiql"]
+                 "graphiql.path"   : "/custom-graphiql"]
         ))
         context.start()
 

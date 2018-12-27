@@ -23,6 +23,7 @@ import io.micronaut.context.env.PropertyPlaceholderResolver;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.io.IOUtils;
 import io.micronaut.core.io.ResourceResolver;
+import io.micronaut.core.naming.NameUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.value.MapPropertyResolver;
 import io.micronaut.core.value.PropertyResolver;
@@ -46,26 +47,30 @@ import static io.micronaut.http.MediaType.TEXT_HTML;
  * @author Marcel Overdijk
  * @since 1.0
  */
-@Controller("${graphiql.url:/graphiql}")
-@Requires(property = "graphiql.enabled", value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
+@Controller("${" + GraphiQLConfiguration.PATH + ":" + GraphiQLConfiguration.DEFAULT_PATH + "}")
+@Requires(property = GraphiQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphiQLController {
 
     protected static final String TEXT_HTML_UTF8 = TEXT_HTML + ";charset=UTF-8";
 
+    private final GraphiQLConfiguration graphiQLConfiguration;
+    private final String graphqlPath;
     private final ResourceResolver resourceResolver;
-    private final String graphqlUrl;
 
     private String cachedTemplate;
 
     /**
      * Default constructor.
      *
-     * @param resourceResolver the {@link ResourceResolver} instance
-     * @param graphqlUrl       the GraphQL URL
+     * @param graphiQLConfiguration the {@link GraphiQLConfiguration} instance
+     * @param graphqlPath           the GraphQL path
+     * @param resourceResolver      the {@link ResourceResolver} instance
      */
-    public GraphiQLController(ResourceResolver resourceResolver, @Value("${graphql.url:/graphql}") String graphqlUrl) {
+    public GraphiQLController(GraphiQLConfiguration graphiQLConfiguration, @Value("${graphql.path:/graphql}") String graphqlPath,
+            ResourceResolver resourceResolver) {
+        this.graphiQLConfiguration = graphiQLConfiguration;
+        this.graphqlPath = graphqlPath;
         this.resourceResolver = resourceResolver;
-        this.graphqlUrl = graphqlUrl;
     }
 
     /**
@@ -78,9 +83,17 @@ public class GraphiQLController {
         if (cachedTemplate == null) {
             synchronized (this) {
                 if (cachedTemplate == null) {
-                    String rawTemplate = loadTemplate("classpath:graphiql/index.html");
+                    String rawTemplate = loadTemplate(graphiQLConfiguration.getTemplatePath());
                     Map<String, String> parameters = new HashMap<>();
-                    parameters.put("graphqlUrl", graphqlUrl);
+                    parameters.put("graphqlPath", graphqlPath);
+                    parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
+                    if (graphiQLConfiguration.getTemplateParameters() != null) {
+                        graphiQLConfiguration.getTemplateParameters().forEach((name, value) ->
+                                // De-capitalize and de-hyphenate the parameter names.
+                                // Otherwise `graphiql.template-parameters.magicWord` would be put as `magic-word` in the parameters map
+                                // as Micronaut normalises properties and stores them lowercase hyphen separated.
+                                parameters.put(NameUtils.decapitalize(NameUtils.dehyphenate(name)), value));
+                    }
                     cachedTemplate = replaceParameters(rawTemplate, parameters);
                 }
             }
@@ -108,5 +121,4 @@ public class GraphiQLController {
         PropertyPlaceholderResolver propertyPlaceholderResolver = new DefaultPropertyPlaceholderResolver(propertyResolver);
         return propertyPlaceholderResolver.resolvePlaceholders(str).get();
     }
-
 }

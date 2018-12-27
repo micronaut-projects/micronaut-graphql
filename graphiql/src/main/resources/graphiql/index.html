@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>${pageTitle}</title>
     <style>
         body {
             height: 100%;
@@ -88,7 +89,7 @@
     function graphQLFetcher(graphQLParams) {
         // This example expects a GraphQL server at the path /graphql.
         // Change this to point wherever you host your GraphQL server.
-        return fetch('${graphqlUrl}', {
+        return fetch('${graphqlPath}', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
