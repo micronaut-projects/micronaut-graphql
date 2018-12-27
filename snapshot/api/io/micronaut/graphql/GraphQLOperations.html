@@ -199,14 +199,15 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>get</h4>
-<pre>@Get(produces="application/json;charset=UTF-8")
+<pre>@Get(produces="application/json;charset=UTF-8",
+     single=true)
  @SingleResult
 org.reactivestreams.Publisher&lt;<a href="../../../io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql">GraphQLResponseBody</a>&gt;&nbsp;get(@QueryValue(value="query")
-                                                                                                                      java.lang.String&nbsp;query,
-                                                                                                                      @Nullable @QueryValue(value="operationName")
-                                                                                                                      java.lang.String&nbsp;operationName,
-                                                                                                                      @Nullable @QueryValue(value="variables")
-                                                                                                                      java.lang.String&nbsp;variables)</pre>
+                                                                                                                                        java.lang.String&nbsp;query,
+                                                                                                                                        @Nullable @QueryValue(value="operationName")
+                                                                                                                                        java.lang.String&nbsp;operationName,
+                                                                                                                                        @Nullable @QueryValue(value="variables")
+                                                                                                                                        java.lang.String&nbsp;variables)</pre>
 </li>
 </ul>
 <a name="post-io.micronaut.graphql.GraphQLRequestBody-">
@@ -216,10 +217,11 @@ org.reactivestreams.Publisher&lt;<a href="../../../io/micronaut/graphql/GraphQLR
 <li class="blockList">
 <h4>post</h4>
 <pre>@Post(consumes="application/json",
-      produces="application/json;charset=UTF-8")
+      produces="application/json;charset=UTF-8",
+      single=true)
  @SingleResult
 org.reactivestreams.Publisher&lt;<a href="../../../io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql">GraphQLResponseBody</a>&gt;&nbsp;post(@Body
-                                                                                                                                                           <a href="../../../io/micronaut/graphql/GraphQLRequestBody.html" title="class in io.micronaut.graphql">GraphQLRequestBody</a>&nbsp;body)</pre>
+                                                                                                                                                                              <a href="../../../io/micronaut/graphql/GraphQLRequestBody.html" title="class in io.micronaut.graphql">GraphQLRequestBody</a>&nbsp;body)</pre>
 </li>
 </ul>
 </li>
