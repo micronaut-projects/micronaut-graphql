@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>1 Introduction 1.0.0.BUILD-SNAPSHOT</title>
+    <title>2.3 GraphQL Client 1.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -25,14 +25,14 @@ function addJsClass() {
         <ul>
             <li>
                 <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
-                    <a href="../guide/index.html" class="button">Table of contents</a>
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
 
                     <div id="nav-summary-childs" style="display:none;">
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/configuration.html"><strong>2</strong><span>Configuration</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>2</strong><span>Configuration</span></a>
                         </div>
                         
                     </div>
@@ -53,16 +53,16 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../guide/configuration.html"><strong>2</strong><span>Configuration</span> >></a></div>
-                
 
 
                 <div class="project">
-                    <h1>1 Introduction</h1>
+                    <h1>2.3 GraphQL Client</h1>
 
                     <p><strong>Version:</strong> 1.0.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -71,23 +71,53 @@ function addJsClass() {
 
                 
 
-<h1 id="introduction">1 Introduction</h1>
+<h2 id="graphql-client">2.3 GraphQL Client</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/introduction.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphql-client.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>Micronaut supports <a href="https://graphql.org">GraphQL</a> via the <code>micronaut-graphql</code> module.</p>
+<p>The <code>micronaut-graphql</code> modules also provides an easy way to create a Micronaut HTTP client to consume a GraphQL endpoint.
+This is very useful in integrations tests but could also be used to consume an external GraphQL endpoint.</p>
+</div>
+<div class="paragraph">
+<p>Simply configure a Micronaut <a href="https://docs.micronaut.io/latest/api/io/micronaut/http/client/annotation/Client.html">Client</a> like:</p>
+</div>
+<div class="listingblock">
+<div class="title">GraphQLClient.java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">import io.micronaut.graphql.GraphQLOperations;
+import io.micronaut.http.client.annotation.Client;
+
+@Client("/graphql")
+public interface GraphQLClient extends GraphQLOperations {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This client can then be used to consume the GraphQL endpoint:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">GraphQLRequestBody body = new GraphQLRequestBody();
+body.setQuery("{ foo }");
+
+GraphQLResponseBody response = graphQLClient.post(body).blockingFirst();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If special request headers need to be passed, e.g. to provide a client id and/or security token, see
+<a href="https://docs.micronaut.io/latest/guide/index.html#clientHeaders">customizing request headers</a>.</p>
 </div>
 
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item next-right"><a href="../guide/configuration.html"><strong>2</strong><span>Configuration</span> >></a></div>
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
                 
                 <div style="clear:both"></div>
             </div>
@@ -95,7 +125,7 @@ function addJsClass() {
         <td id="col2">
             <div class="local clearfix">
                 <div class="local-title">
-                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
                     <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
                 </div>
                 <div class="menu">
