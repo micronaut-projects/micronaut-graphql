@@ -1,0 +1,34 @@
+The `micronaut-graphql` module comes bundled with Graph__i__QL, an in-browser IDE for exploring GraphQL.
+
+image::https://github.com/graphql/graphiql/raw/master/resources/graphiql.png[GraphiQL]
+
+Graph__i__QL must be explicitly enabled via the `graphiql.enabled` application property.
+
+The following configuration properties can be set:
+
+.src/main/resources/application.yml
+[source,yaml]
+----
+graphiql:
+  enabled: false // <1>
+  path: /graphiql // <2>
+  template-path: classpath:graphiql/index.html // <3>
+  template-parameters: // <4>
+  page-title: GraphiQL // <5>
+----
+<1> Enables/disables GraphiQL. Default `false`.
+<2> Configures the GraphiQL endpoint path. Default `/graphiql`.
+<3> Configures the GraphiQL template path. Default `classpath:graphiql/index.html`.
+<4> Configures the GraphiQL template parameters. Default none.
+<5> Configures the GraphiQL page title. Default `GraphiQL`.
+
+The out of the box rendered Graph__i__QL page does not provide many customisations except the Graph__i__QL path and page title.
+It also takes into account the `graphql.path` application property,
+to provide a seamless integration with the configured GraphQL endpoint path.
+
+If further customisations are required, a custom Graph__i__QL
+https://github.com/micronaut-projects/micronaut-graphql/blob/serving-over-http/graphql/src/main/resources/graphiql/index.html[template]
+can be provided. Either by providing the custom template at `src/main/resources/graphiq/index.html` or via the `graphiql.template-path`
+application property pointing to a different template location.
+In that case it could also be useful to dynamically replace additional parameters in the template via the `graphiql.template-parameters`
+application property.

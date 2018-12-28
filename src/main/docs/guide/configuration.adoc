@@ -1,4 +1,32 @@
-The following configuration properties can be set:
+Micronaut 1.0.3 or above is required and you must have the `micronaut-graphql` dependency on your classpath:
+
+.build.gradle
+[source,groovy,subs="attributes"]
+----
+compile "io.micronaut.graphql:micronaut-graphql:{version}"
+----
+
+.pom.xml
+[source,xml]
+----
+<dependency>
+    <groupId>io.micronaut.graphql</groupId>
+    <artifactId>micronaut-graphql</artifactId>
+    <version>{version}</version>
+</dependency>
+----
+
+The `micronaut-graphql` module transitively includes the `com.graphql-java:graphql-java` dependency and provides a Micronaut
+`GraphQLController` which enables query execution via HTTP.
+
+As outlined in https://graphql.org/learn/serving-over-http the following HTTP requests are supported:
+
+* `GET` request with `query`, `operationName` and `variables` query parameters. The `variables` query parameter must be json encoded.
+* `POST` request with `application/json` body and keys `query` (String), `operationName` (String) and `variables` (Map).
+
+Both produce a `application/json` response.
+
+By default the GraphQL endpoint is exposed on `/graphql` but this can be changed via the `graphql.path` application property.
 
 .src/main/resources/application.yml
 [source,yaml]
@@ -6,17 +34,8 @@ The following configuration properties can be set:
 graphql:
   enabled: true // <1>
   path: /graphql // <2>
-graphiql:
-  enabled: false // <3>
-  path: /graphiql // <4>
-  template-path: classpath:graphiql/index.html // <5>
-  template-parameters: // <6>
-  page-title: GraphiQL // <7>
 ----
 <1> Enables/disables the GraphQL integration. Default `true`.
 <2> Configures the GraphQL endpoint path. Default `/graphql`.
-<3> Enables/disables the GraphiQL IDE. Default `false`.
-<4> Configures the GraphiQL endpoint path. Default `/graphiql`.
-<5> Configures the GraphiQL template path. Default `classpath:graphiql/index.html`.
-<6> Configures the GraphiQL template parameters. Default: none.
-<7> Configures the GraphiQL page title. Default `GraphiQL`.
+
+You only must configure a bean of type `graphql.GraphQL` containing the GraphQL schema and runtime wiring.

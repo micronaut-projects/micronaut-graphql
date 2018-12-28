@@ -1,3 +1,6 @@
-introduction:
-  title: Introduction
-configuration: Configuration
+introduction: Introduction
+configuration:
+  title: Configuration
+  graphql-bean: Configuring the GraphQL Bean
+  graphiql: GraphiQL
+  graphql-client: GraphQL Client
