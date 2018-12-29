@@ -30,7 +30,7 @@ public interface GraphQLRootBuilder {
      * Builds the GraphQL root object to start the query execution on.
      *
      * @param httpRequest the HTTP request
-     * @return the root object
+     * @return the GraphQL root object
      */
     Object build(HttpRequest httpRequest);
 }

@@ -41,6 +41,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      *
      * @param graphQL               the {@link GraphQL} instance
      * @param graphQLContextBuilder the {@link GraphQLContextBuilder} instance
+     * @param graphQLRootBuilder    the {@link GraphQLRootBuilder} instance
      */
     public DefaultGraphQLInvocation(GraphQL graphQL, GraphQLContextBuilder graphQLContextBuilder, GraphQLRootBuilder graphQLRootBuilder) {
         this.graphQL = graphQL;

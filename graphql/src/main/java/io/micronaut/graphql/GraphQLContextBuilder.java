@@ -30,7 +30,7 @@ public interface GraphQLContextBuilder {
      * Builds the GraphQL context object to pass to all data fetchers.
      *
      * @param httpRequest the HTTP request
-     * @return the context object
+     * @return the GraphQL context object
      */
     Object build(HttpRequest httpRequest);
 }

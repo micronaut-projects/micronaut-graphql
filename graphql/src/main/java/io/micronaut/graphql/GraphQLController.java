@@ -59,25 +59,11 @@ public class GraphQLController implements GraphQLOperations {
         this.objectMapper = objectMapper;
     }
 
-    /**
-     * Handles the incoming GraphQL {@code GET} requests.
-     *
-     * @param query         the GraphQL query
-     * @param operationName the GraphQL operation name
-     * @param variables     the GraphQL variables
-     * @return the GraphQL response
-     */
     @Override
     public Publisher<GraphQLResponseBody> get(String query, String operationName, String variables) {
         return executeRequest(query, operationName, convertVariablesJson(variables));
     }
 
-    /**
-     * Handles the incoming GraphQL {@code POST} requests.
-     *
-     * @param body the GraphQL request body
-     * @return the GraphQL response
-     */
     @Override
     public Publisher<GraphQLResponseBody> post(GraphQLRequestBody body) {
         String query = body.getQuery();

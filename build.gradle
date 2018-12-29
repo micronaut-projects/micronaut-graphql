@@ -47,6 +47,7 @@ configure(subprojects.findAll { !it.name.contains("example") }) { Project subpro
 
     apply plugin: "java"
     apply plugin: "groovy"
+    apply plugin: "checkstyle"
 
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"
@@ -112,6 +113,14 @@ configure(subprojects.findAll { !it.name.contains("example") }) { Project subpro
     }
 
     task allDeps(type: DependencyReportTask) {}
+
+    checkstyle {
+        toolVersion = project.checkstyleToolVersion
+        configFile = rootProject.file("config/checkstyle/checkstyle.xml")
+        showViolations = true
+    }
+
+    checkstyleTest.enabled = false
 }
 
 apply from: "https://raw.githubusercontent.com/micronaut-projects/micronaut-core/ae8c52a65b4315d0f36edf362295d645559f496e/gradle/docs.gradle"

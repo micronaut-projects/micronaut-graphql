@@ -24,7 +24,7 @@ import javax.annotation.concurrent.Immutable;
 import java.util.Map;
 
 /**
- * The GraphQL response.
+ * The GraphQL response body.
  *
  * @author Marcel Overdijk
  * @since 1.0
@@ -37,13 +37,18 @@ public class GraphQLResponseBody {
     /**
      * Default constructor.
      *
-     * @param specification the response body data
+     * @param specification the GraphQL response body data
      */
     @JsonCreator
     public GraphQLResponseBody(Map<String, Object> specification) {
         this.specification = specification;
     }
 
+    /**
+     * Returns the GraphQL response body data.
+     *
+     * @return the GraphQL response body data
+     */
     @JsonAnyGetter
     @JsonInclude
     public Map<String, Object> getSpecification() {

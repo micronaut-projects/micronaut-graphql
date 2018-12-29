@@ -31,9 +31,9 @@ public interface GraphQLInvocation {
     /**
      * Invokes the GraphQL request.
      *
-     * @param invocationData the invocation data
+     * @param invocationData the GraphQL invocation data
      * @param httpRequest    the HTTP request
-     * @return the execution result
+     * @return the GraphQL execution result
      */
     Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest);
 }

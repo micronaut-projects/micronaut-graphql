@@ -38,6 +38,8 @@ public class GraphQLFactory {
 
     /**
      * Creates the {@link GraphQLExecutionResultHandler} bean.
+     *
+     * @return the GraphQL execution result handler bean
      */
     @Bean
     @Singleton
@@ -47,6 +49,11 @@ public class GraphQLFactory {
 
     /**
      * Creates the {@link GraphQLInvocation} bean.
+     *
+     * @param graphQL               the {@link GraphQL} instance
+     * @param graphQLContextBuilder the {@link GraphQLContextBuilder} instance
+     * @param graphQLRootBuilder    the {@link GraphQLRootBuilder} instance
+     * @return the GraphQL invocation bean
      */
     @Bean
     @Singleton
