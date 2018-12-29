@@ -18,10 +18,10 @@ This client can then be used to consume the GraphQL endpoint:
 
 [source,java]
 ----
-GraphQLRequestBody body = new GraphQLRequestBody();
-body.setQuery("{ foo }");
+GraphQLRequestBody request = new GraphQLRequestBody();
+request.setQuery("{ foo }");
 
-Publisher<GraphQLResponseBody> response = graphQLClient.post(body);
+Publisher<GraphQLResponseBody> response = graphQLClient.post(request);
 ----
 
 If special request headers need to be passed, e.g. to provide a client id and/or security token, see
