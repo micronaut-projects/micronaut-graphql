@@ -342,10 +342,10 @@ public interface GraphQLClient extends GraphQLOperations {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java" data-lang="java">GraphQLRequestBody body = new GraphQLRequestBody();
-body.setQuery("{ foo }");
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">GraphQLRequestBody request = new GraphQLRequestBody();
+request.setQuery("{ foo }");
 
-Publisher&lt;GraphQLResponseBody&gt; response = graphQLClient.post(body);</code></pre>
+Publisher&lt;GraphQLResponseBody&gt; response = graphQLClient.post(request);</code></pre>
 </div>
 </div>
 <div class="paragraph">
