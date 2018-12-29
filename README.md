@@ -4,6 +4,8 @@
 
 This project integrates [GraphQL Java](https://github.com/graphql-java/graphql-java) into Micronaut applications.
 
+**This project is not yet released.**
+
 The Micronaut GraphQL integration can be used together with other GraphQL integration libraries like
 [GraphQL Java Tools](https://github.com/graphql-java-kickstart/graphql-java-tools) and [GraphQL SPQR](https://github.com/leangen/graphql-spqr).
 
