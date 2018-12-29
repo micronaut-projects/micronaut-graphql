@@ -345,7 +345,7 @@ public interface GraphQLClient extends GraphQLOperations {
 <pre class="highlightjs highlight"><code class="language-java" data-lang="java">GraphQLRequestBody body = new GraphQLRequestBody();
 body.setQuery("{ foo }");
 
-GraphQLResponseBody response = graphQLClient.post(body).blockingFirst();</code></pre>
+Publisher&lt;GraphQLResponseBody&gt; response = graphQLClient.post(body);</code></pre>
 </div>
 </div>
 <div class="paragraph">
