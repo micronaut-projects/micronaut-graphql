@@ -25,13 +25,20 @@ import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
+import io.micronaut.http.annotation.Body
+import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
+import javax.annotation.Nullable
 import javax.inject.Singleton
 import java.util.concurrent.CompletableFuture
+
+import static io.micronaut.http.MediaType.APPLICATION_JSON
 
 /**
  * @author Marcel Overdijk
@@ -72,7 +79,7 @@ class GraphQLControllerSpec extends Specification {
         String query = "{ foo }"
 
         when:
-        GraphQLResponseBody response = client.get(query, null, null).blockingFirst()
+        GraphQLResponseBody response = client.get(query)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -89,7 +96,7 @@ class GraphQLControllerSpec extends Specification {
         String operationName = "myQuery"
 
         when:
-        GraphQLResponseBody response = client.get(query, operationName, null).blockingFirst()
+        GraphQLResponseBody response = client.get(query, operationName, null)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -107,7 +114,7 @@ class GraphQLControllerSpec extends Specification {
         String variables = '{"variable": "variableValue"}'
 
         when:
-        GraphQLResponseBody response = client.get(query, operationName, variables).blockingFirst()
+        GraphQLResponseBody response = client.get(query, operationName, variables)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -124,7 +131,7 @@ class GraphQLControllerSpec extends Specification {
         body.query = "{ foo }"
 
         when:
-        GraphQLResponseBody response = client.post(body).blockingFirst()
+        GraphQLResponseBody response = client.post(body)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -142,7 +149,7 @@ class GraphQLControllerSpec extends Specification {
         body.operationName = "myQuery"
 
         when:
-        GraphQLResponseBody response = client.post(body).blockingFirst()
+        GraphQLResponseBody response = client.post(body)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -161,7 +168,7 @@ class GraphQLControllerSpec extends Specification {
         body.variables = ["variable": "variableValue"]
 
         when:
-        GraphQLResponseBody response = client.post(body).blockingFirst()
+        GraphQLResponseBody response = client.post(body)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -173,7 +180,16 @@ class GraphQLControllerSpec extends Specification {
     }
 
     @Client("/graphql")
-    static interface GraphQLClient extends GraphQLOperations {
+    static interface GraphQLClient {
+
+        @Get("{?query}")
+        GraphQLResponseBody get(@QueryValue String query)
+
+        @Get("{?query,operationName,variables}")
+        GraphQLResponseBody get(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
+
+        @Post(consumes = APPLICATION_JSON)
+        GraphQLResponseBody post(@Body GraphQLRequestBody body)
     }
 
     @Factory

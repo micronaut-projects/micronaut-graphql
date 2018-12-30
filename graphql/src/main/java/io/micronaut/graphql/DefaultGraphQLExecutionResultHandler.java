@@ -28,6 +28,9 @@ import org.reactivestreams.Publisher;
  */
 public class DefaultGraphQLExecutionResultHandler implements GraphQLExecutionResultHandler {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Publisher<GraphQLResponseBody> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher) {
         return Publishers.map(executionResultPublisher, executionResult -> new GraphQLResponseBody(executionResult.toSpecification()));

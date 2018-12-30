@@ -20,15 +20,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.async.annotation.SingleResult;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.context.ServerRequestContext;
 import org.reactivestreams.Publisher;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+
+import static io.micronaut.http.MediaType.APPLICATION_JSON;
 
 /**
  * The GraphQL controller.
@@ -39,7 +47,9 @@ import java.util.Map;
 @Controller("${" + GraphQLConfiguration.PATH + ":" + GraphQLConfiguration.DEFAULT_PATH + "}")
 @Requires(property = GraphQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Requires(beans = GraphQL.class)
-public class GraphQLController implements GraphQLOperations {
+public class GraphQLController {
+
+    private static final String APPLICATION_JSON_UTF8 = APPLICATION_JSON + ";charset=UTF-8";
 
     private final GraphQLInvocation graphQLInvocation;
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
@@ -59,13 +69,32 @@ public class GraphQLController implements GraphQLOperations {
         this.objectMapper = objectMapper;
     }
 
-    @Override
-    public Publisher<GraphQLResponseBody> get(String query, String operationName, String variables) {
+    /**
+     * Handles GraphQL {@code GET} requests.
+     *
+     * @param query         the GraphQL query
+     * @param operationName the GraphQL operation name
+     * @param variables     the GraphQL variables
+     * @return the GraphQL response
+     */
+    @Get(produces = APPLICATION_JSON_UTF8, single = true)
+    @SingleResult
+    public Publisher<GraphQLResponseBody> get(
+            @QueryValue("query") String query,
+            @Nullable @QueryValue("operationName") String operationName,
+            @Nullable @QueryValue("variables") String variables) {
         return executeRequest(query, operationName, convertVariablesJson(variables));
     }
 
-    @Override
-    public Publisher<GraphQLResponseBody> post(GraphQLRequestBody body) {
+    /**
+     * Handles GraphQL {@code POST} requests.
+     *
+     * @param body the GraphQL request body
+     * @return the GraphQL response
+     */
+    @Post(consumes = APPLICATION_JSON, produces = APPLICATION_JSON_UTF8, single = true)
+    @SingleResult
+    public Publisher<GraphQLResponseBody> post(@Body GraphQLRequestBody body) {
         String query = body.getQuery();
         if (query == null) {
             query = "";

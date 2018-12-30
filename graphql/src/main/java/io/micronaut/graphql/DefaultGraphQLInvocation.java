@@ -49,6 +49,9 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
         this.graphQLRootBuilder = graphQLRootBuilder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest) {
         return Publishers.fromCompletableFuture(() -> {
