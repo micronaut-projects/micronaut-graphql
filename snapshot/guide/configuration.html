@@ -74,10 +74,7 @@ function addJsClass() {
                     <div class="toc-item" style="margin-left:0px"><a href="#graphql-bean"><strong>2.1</strong><span>Configuring the GraphQL Bean</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#graphiql"><strong>2.2</strong><span>GraphiQL</span></a>
-                    </div>
-                    
-                    <div class="toc-item" style="margin-left:0px"><a href="#graphql-client"><strong>2.3</strong><span>GraphQL Client</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#graphiql"><strong>2.2</strong><span>Configuring GraphiQL</span></a>
                     </div>
                     
                 </div>
@@ -237,7 +234,7 @@ provided in the repository.</p>
 </div>
 
 
-<h2 id="graphiql">2.2 GraphiQL</h2>
+<h2 id="graphiql">2.2 Configuring GraphiQL</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphiql.adoc"'>
@@ -307,50 +304,6 @@ can be provided. Either by providing the custom template at <code>src/main/resou
 application property pointing to a different template location.
 In that case it could also be useful to dynamically replace additional parameters in the template via the <code>graphiql.template-parameters</code>
 application property.</p>
-</div>
-
-
-<h2 id="graphql-client">2.3 GraphQL Client</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphql-client.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>The <code>micronaut-graphql</code> modules also provides an easy way to create a Micronaut HTTP client to consume a GraphQL endpoint.
-This is very useful in integrations tests but could also be used to consume an external GraphQL endpoint.</p>
-</div>
-<div class="paragraph">
-<p>Simply configure a Micronaut <a href="https://docs.micronaut.io/latest/api/io/micronaut/http/client/annotation/Client.html">Client</a> like:</p>
-</div>
-<div class="listingblock">
-<div class="title">GraphQLClient.java</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java" data-lang="java">import io.micronaut.graphql.GraphQLOperations;
-import io.micronaut.http.client.annotation.Client;
-
-@Client("/graphql")
-public interface GraphQLClient extends GraphQLOperations {
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This client can then be used to consume the GraphQL endpoint:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java" data-lang="java">GraphQLRequestBody request = new GraphQLRequestBody();
-request.setQuery("{ foo }");
-
-Publisher&lt;GraphQLResponseBody&gt; response = graphQLClient.post(request);</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If special request headers need to be passed, e.g. to provide a client id and/or security token, see
-<a href="https://docs.micronaut.io/latest/guide/index.html#clientHeaders">customizing request headers</a>.</p>
 </div>
 
 
