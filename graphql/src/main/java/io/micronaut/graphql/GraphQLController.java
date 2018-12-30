@@ -75,6 +75,7 @@ public class GraphQLController {
      * @param query         the GraphQL query
      * @param operationName the GraphQL operation name
      * @param variables     the GraphQL variables
+     * @param httpRequest   the HTTP request
      * @return the GraphQL response
      */
     @Get(produces = APPLICATION_JSON_UTF8, single = true)
@@ -82,25 +83,26 @@ public class GraphQLController {
     public Publisher<GraphQLResponseBody> get(
             @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
-            @Nullable @QueryValue("variables") String variables) {
-        return executeRequest(query, operationName, convertVariablesJson(variables));
+            @Nullable @QueryValue("variables") String variables,
+            HttpRequest httpRequest) {
+        return executeRequest(query, operationName, convertVariablesJson(variables), httpRequest);
     }
 
     /**
      * Handles GraphQL {@code POST} requests.
      *
-     * @param body the GraphQL request body
+     * @param body        the GraphQL request body
+     * @param httpRequest the HTTP request
      * @return the GraphQL response
      */
     @Post(consumes = APPLICATION_JSON, produces = APPLICATION_JSON_UTF8, single = true)
     @SingleResult
-    public Publisher<GraphQLResponseBody> post(@Body GraphQLRequestBody body) {
+    public Publisher<GraphQLResponseBody> post(@Body GraphQLRequestBody body, HttpRequest httpRequest) {
         String query = body.getQuery();
         if (query == null) {
             query = "";
         }
-        return executeRequest(query, body.getOperationName(), body.getVariables()
-        );
+        return executeRequest(query, body.getOperationName(), body.getVariables(), httpRequest);
     }
 
     private Map<String, Object> convertVariablesJson(String jsonMap) {
@@ -114,8 +116,11 @@ public class GraphQLController {
         }
     }
 
-    private Publisher<GraphQLResponseBody> executeRequest(String query, String operationName, Map<String, Object> variables) {
-        HttpRequest httpRequest = ServerRequestContext.currentRequest().orElse(null);
+    private Publisher<GraphQLResponseBody> executeRequest(
+            String query,
+            String operationName,
+            Map<String, Object> variables,
+            HttpRequest httpRequest) {
         GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
         Publisher<ExecutionResult> executionResult = graphQLInvocation.invoke(invocationData, httpRequest);
         return graphQLExecutionResultHandler.handleExecutionResult(executionResult);
