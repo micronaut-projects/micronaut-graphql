@@ -28,7 +28,6 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
-import io.micronaut.http.context.ServerRequestContext;
 import org.reactivestreams.Publisher;
 
 import javax.annotation.Nullable;
