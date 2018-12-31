@@ -232,7 +232,6 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == body.variables
     }
 
-    // @Ignore // TODO.
     void "test post with application/graphql body"() {
         given:
         String body = "{ foo }"
