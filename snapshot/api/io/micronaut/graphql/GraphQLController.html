@@ -167,7 +167,11 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>org.reactivestreams.Publisher&lt;<a href="../../../io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql">GraphQLResponseBody</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLController.html#post-io.micronaut.graphql.GraphQLRequestBody-io.micronaut.http.HttpRequest-">post</a></span>(<a href="../../../io/micronaut/graphql/GraphQLRequestBody.html" title="class in io.micronaut.graphql">GraphQLRequestBody</a>&nbsp;body,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLController.html#post-java.lang.String-java.lang.String-java.lang.String-java.lang.String-java.lang.String-io.micronaut.http.HttpRequest-">post</a></span>(java.lang.String&nbsp;contentType,
+    java.lang.String&nbsp;query,
+    java.lang.String&nbsp;operationName,
+    java.lang.String&nbsp;variables,
+    java.lang.String&nbsp;body,
     io.micronaut.http.HttpRequest&nbsp;httpRequest)</code>
 <div class="block">Handles GraphQL <code>POST</code> requests.</div>
 </td>
@@ -248,26 +252,41 @@ public&nbsp;org.reactivestreams.Publisher&lt;<a href="../../../io/micronaut/grap
 </dl>
 </li>
 </ul>
-<a name="post-io.micronaut.graphql.GraphQLRequestBody-io.micronaut.http.HttpRequest-">
+<a name="post-java.lang.String-java.lang.String-java.lang.String-java.lang.String-java.lang.String-io.micronaut.http.HttpRequest-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>post</h4>
-<pre>@Post(consumes="application/json",
+<pre>@Post(consumes="*/*",
       produces="application/json;charset=UTF-8",
       single=true)
  @SingleResult
-public&nbsp;org.reactivestreams.Publisher&lt;<a href="../../../io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql">GraphQLResponseBody</a>&gt;&nbsp;post(@Body
-                                                                                                                                                                                     <a href="../../../io/micronaut/graphql/GraphQLRequestBody.html" title="class in io.micronaut.graphql">GraphQLRequestBody</a>&nbsp;body,
-                                                                                                                                                                                     io.micronaut.http.HttpRequest&nbsp;httpRequest)</pre>
+public&nbsp;org.reactivestreams.Publisher&lt;<a href="../../../io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql">GraphQLResponseBody</a>&gt;&nbsp;post(@Nullable @Header(value="Content-Type")
+                                                                                                                                                                        java.lang.String&nbsp;contentType,
+                                                                                                                                                                        @Nullable @QueryValue(value="query")
+                                                                                                                                                                        java.lang.String&nbsp;query,
+                                                                                                                                                                        @Nullable @QueryValue(value="operationName")
+                                                                                                                                                                        java.lang.String&nbsp;operationName,
+                                                                                                                                                                        @Nullable @QueryValue(value="variables")
+                                                                                                                                                                        java.lang.String&nbsp;variables,
+                                                                                                                                                                        @Nullable @Body
+                                                                                                                                                                        java.lang.String&nbsp;body,
+                                                                                                                                                                        io.micronaut.http.HttpRequest&nbsp;httpRequest)
+                                                                                                                                                                 throws java.io.IOException</pre>
 <div class="block">Handles GraphQL <code>POST</code> requests.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>contentType</code> - the content type</dd>
+<dd><code>query</code> - the GraphQL query</dd>
+<dd><code>operationName</code> - the GraphQL operation name</dd>
+<dd><code>variables</code> - the GraphQL variables</dd>
 <dd><code>body</code> - the GraphQL request body</dd>
 <dd><code>httpRequest</code> - the HTTP request</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the GraphQL response</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.io.IOException</code> - if there is an error</dd>
 </dl>
 </li>
 </ul>
