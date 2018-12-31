@@ -27,18 +27,19 @@ import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Header
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
-import spock.lang.Ignore
 import spock.lang.Specification
 
 import javax.annotation.Nullable
 import javax.inject.Singleton
 import java.util.concurrent.CompletableFuture
 
+import static io.micronaut.http.HttpHeaders.CONTENT_TYPE
 import static io.micronaut.http.MediaType.APPLICATION_JSON
 
 /**
@@ -231,8 +232,8 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == body.variables
     }
 
-    @Ignore // TODO.
-    void "test post with application/graphql body with query string"() {
+    // @Ignore // TODO.
+    void "test post with application/graphql body"() {
         given:
         String body = "{ foo }"
 
@@ -257,10 +258,12 @@ class GraphQLControllerSpec extends Specification {
         @Post(value = "{?query,operationName,variables}")
         GraphQLResponseBody post(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
 
-        @Post(consumes = APPLICATION_JSON)
+        @Post
+        @Header(name = CONTENT_TYPE, value = APPLICATION_JSON)
         GraphQLResponseBody post(@Body GraphQLRequestBody body)
 
-        @Post(consumes = "application/graphql")
+        @Post
+        @Header(name = CONTENT_TYPE, value = "application/graphql") // Replace when Micronaut 1.0.3 is released.
         GraphQLResponseBody post(@Body String body)
     }
 
