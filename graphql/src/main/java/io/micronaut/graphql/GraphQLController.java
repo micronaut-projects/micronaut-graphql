@@ -26,6 +26,7 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
 import org.reactivestreams.Publisher;
@@ -35,6 +36,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
+import static io.micronaut.http.HttpHeaders.CONTENT_TYPE;
+import static io.micronaut.http.MediaType.ALL;
 import static io.micronaut.http.MediaType.APPLICATION_JSON;
 
 /**
@@ -48,6 +51,7 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON;
 @Requires(beans = GraphQL.class)
 public class GraphQLController {
 
+    private static final String APPLICATION_GRAPHQL = "application/graphql"; // Replace when Micronaut 1.0.3 is released.
     private static final String APPLICATION_JSON_UTF8 = APPLICATION_JSON + ";charset=UTF-8";
 
     private final GraphQLInvocation graphQLInvocation;
@@ -84,24 +88,93 @@ public class GraphQLController {
             @Nullable @QueryValue("operationName") String operationName,
             @Nullable @QueryValue("variables") String variables,
             HttpRequest httpRequest) {
+
+        // https://graphql.org/learn/serving-over-http/#get-request
+        //
+        // When receiving an HTTP GET request, the GraphQL query should be specified in the "query" query string.
+        // For example, if we wanted to execute the following GraphQL query:
+        //
+        // {
+        //   me {
+        //     name
+        //   }
+        // }
+        //
+        // This request could be sent via an HTTP GET like so:
+        //
+        // http://myapi/graphql?query={me{name}}
+        //
+        // Query variables can be sent as a JSON-encoded string in an additional query parameter called "variables".
+        // If the query contains several named operations,
+        // an "operationName" query parameter can be used to control which one should be executed.
+
         return executeRequest(query, operationName, convertVariablesJson(variables), httpRequest);
     }
 
     /**
      * Handles GraphQL {@code POST} requests.
      *
-     * @param body        the GraphQL request body
-     * @param httpRequest the HTTP request
+     * @param contentType   the content type
+     * @param query         the GraphQL query
+     * @param operationName the GraphQL operation name
+     * @param variables     the GraphQL variables
+     * @param body          the GraphQL request body
+     * @param httpRequest   the HTTP request
      * @return the GraphQL response
+     * @throws IOException if there is an error
      */
-    @Post(consumes = APPLICATION_JSON, produces = APPLICATION_JSON_UTF8, single = true)
+    @Post(consumes = ALL, produces = APPLICATION_JSON_UTF8, single = true)
     @SingleResult
-    public Publisher<GraphQLResponseBody> post(@Body GraphQLRequestBody body, HttpRequest httpRequest) {
-        String query = body.getQuery();
-        if (query == null) {
-            query = "";
+    public Publisher<GraphQLResponseBody> post(
+            @Nullable @Header(CONTENT_TYPE) String contentType,
+            @Nullable @QueryValue("query") String query,
+            @Nullable @QueryValue("operationName") String operationName,
+            @Nullable @QueryValue("variables") String variables,
+            @Nullable @Body String body,
+            HttpRequest httpRequest) throws IOException {
+
+        if (body == null) {
+            body = "";
         }
-        return executeRequest(query, body.getOperationName(), body.getVariables(), httpRequest);
+
+        // https://graphql.org/learn/serving-over-http/#post-request
+        //
+        // A standard GraphQL POST request should use the application/json content type,
+        // and include a JSON-encoded body of the following form:
+        //
+        // {
+        //   "query": "...",
+        //   "operationName": "...",
+        //   "variables": { "myVariable": "someValue", ... }
+        // }
+
+        if (APPLICATION_JSON.equals(contentType)) {
+            GraphQLRequestBody request = objectMapper.readValue(body, GraphQLRequestBody.class);
+            if (request.getQuery() == null) {
+                request.setQuery("");
+            }
+            return executeRequest(request.getQuery(), request.getOperationName(), request.getVariables(), httpRequest);
+        }
+
+        // In addition to the above, we recommend supporting two additional cases:
+        //
+        // * If the "query" query string parameter is present (as in the GET example above),
+        //   it should be parsed and handled in the same way as the HTTP GET case.
+
+        if (query != null) {
+            return executeRequest(query, operationName, convertVariablesJson(variables), httpRequest);
+        }
+
+        // * If the "application/graphql" Content-Type header is present,
+        //   treat the HTTP POST body contents as the GraphQL query string.
+
+        if (APPLICATION_GRAPHQL.equals(contentType)) {
+            return executeRequest(body, null, null, httpRequest);
+        }
+
+        // 404
+
+        return null;
     }
 
     private Map<String, Object> convertVariablesJson(String jsonMap) {

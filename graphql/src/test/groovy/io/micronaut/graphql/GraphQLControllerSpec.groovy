@@ -32,6 +32,7 @@ import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
+import spock.lang.Ignore
 import spock.lang.Specification
 
 import javax.annotation.Nullable
@@ -50,7 +51,7 @@ class GraphQLControllerSpec extends Specification {
     EmbeddedServer embeddedServer
 
     GraphQL graphQL
-    GraphQLClient client
+    GraphQLClient graphQLClient
 
     ExecutionInput executionInput
 
@@ -66,7 +67,7 @@ class GraphQLControllerSpec extends Specification {
                 ["spec.name": GraphQLControllerSpec.simpleName],
                 Environment.TEST)
         embeddedServer.applicationContext.registerSingleton(graphQL)
-        client = embeddedServer.applicationContext.getBean(GraphQLClient)
+        graphQLClient = embeddedServer.applicationContext.getBean(GraphQLClient)
         executionInput = null
         1 * graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
             this.executionInput = executionInput
@@ -74,12 +75,12 @@ class GraphQLControllerSpec extends Specification {
         }
     }
 
-    void "test simple get"() {
+    void "test get with query parameter"() {
         given:
         String query = "{ foo }"
 
         when:
-        GraphQLResponseBody response = client.get(query)
+        GraphQLResponseBody response = graphQLClient.get(query, null, null)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -90,13 +91,13 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == [:]
     }
 
-    void "test get with operation name"() {
+    void "test get with query and operation name parameters"() {
         given:
         String query = "query myQuery { foo }"
         String operationName = "myQuery"
 
         when:
-        GraphQLResponseBody response = client.get(query, operationName, null)
+        GraphQLResponseBody response = graphQLClient.get(query, operationName, null)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -107,14 +108,14 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == [:]
     }
 
-    void "test get with operation name and variables"() {
+    void "test get with query, operation name and variables parameters"() {
         given:
         String query = "query myQuery { foo }"
         String operationName = "myQuery"
         String variables = '{"variable": "variableValue"}'
 
         when:
-        GraphQLResponseBody response = client.get(query, operationName, variables)
+        GraphQLResponseBody response = graphQLClient.get(query, operationName, variables)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -125,13 +126,64 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == ["variable": "variableValue"]
     }
 
-    void "test simple post"() {
+    void "test post with query parameter"() {
+        given:
+        String query = "{ foo }"
+
+        when:
+        GraphQLResponseBody response = graphQLClient.post(query, null, null)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == query
+        executionInput.operationName == null
+        executionInput.variables == [:]
+    }
+
+    void "test post with query and operation name parameters"() {
+        given:
+        String query = "query myQuery { foo }"
+        String operationName = "myQuery"
+
+        when:
+        GraphQLResponseBody response = graphQLClient.post(query, operationName, null)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == query
+        executionInput.operationName == operationName
+        executionInput.variables == [:]
+    }
+
+    void "test post with query, operation name and variables parameters"() {
+        given:
+        String query = "query myQuery { foo }"
+        String operationName = "myQuery"
+        String variables = '{"variable": "variableValue"}'
+
+        when:
+        GraphQLResponseBody response = graphQLClient.post(query, operationName, variables)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == query
+        executionInput.operationName == operationName
+        executionInput.variables == ["variable": "variableValue"]
+    }
+
+    void "test post with application/json body with query json field"() {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody()
         body.query = "{ foo }"
 
         when:
-        GraphQLResponseBody response = client.post(body)
+        GraphQLResponseBody response = graphQLClient.post(body)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -142,14 +194,14 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == [:]
     }
 
-    void "test post with operation name"() {
+    void "test post with application/json body with query and operation name json fields"() {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody()
         body.query = "query myQuery { foo }"
         body.operationName = "myQuery"
 
         when:
-        GraphQLResponseBody response = client.post(body)
+        GraphQLResponseBody response = graphQLClient.post(body)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -160,7 +212,7 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == [:]
     }
 
-    void "test post with operation name and variables"() {
+    void "test post with application/json body with query, operation name and variables json fields"() {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody()
         body.query = "query myQuery { foo }"
@@ -168,7 +220,7 @@ class GraphQLControllerSpec extends Specification {
         body.variables = ["variable": "variableValue"]
 
         when:
-        GraphQLResponseBody response = client.post(body)
+        GraphQLResponseBody response = graphQLClient.post(body)
 
         then:
         response.getSpecification()["data"] == "bar"
@@ -179,17 +231,37 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == body.variables
     }
 
+    @Ignore // TODO.
+    void "test post with application/graphql body with query string"() {
+        given:
+        String body = "{ foo }"
+
+        when:
+        GraphQLResponseBody response = graphQLClient.post(body)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == body
+        executionInput.operationName == null
+        executionInput.variables == [:]
+    }
+
     @Client("/graphql")
     static interface GraphQLClient {
-
-        @Get("{?query}")
-        GraphQLResponseBody get(@QueryValue String query)
 
         @Get("{?query,operationName,variables}")
         GraphQLResponseBody get(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
 
+        @Post(value = "{?query,operationName,variables}")
+        GraphQLResponseBody post(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
+
         @Post(consumes = APPLICATION_JSON)
         GraphQLResponseBody post(@Body GraphQLRequestBody body)
+
+        @Post(consumes = "application/graphql")
+        GraphQLResponseBody post(@Body String body)
     }
 
     @Factory
