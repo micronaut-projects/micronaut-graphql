@@ -27,7 +27,7 @@ import org.reactivestreams.Publisher;
  * The default GraphQL invocation.
  *
  * @author Marcel Overdijk
- * @author graemerocher
+ * @author Graeme Rocher
  * @since 1.0
  */
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
