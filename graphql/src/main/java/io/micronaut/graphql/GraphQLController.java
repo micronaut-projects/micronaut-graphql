@@ -29,6 +29,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.http.exceptions.HttpStatusException;
 import org.reactivestreams.Publisher;
 
 import javax.annotation.Nullable;
@@ -37,6 +38,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import static io.micronaut.http.HttpHeaders.CONTENT_TYPE;
+import static io.micronaut.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static io.micronaut.http.MediaType.ALL;
 import static io.micronaut.http.MediaType.APPLICATION_JSON;
 
@@ -172,9 +174,7 @@ public class GraphQLController {
             return executeRequest(body, null, null, httpRequest);
         }
 
-        // 404
-
-        return null;
+        throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Could not process GraphQL request");
     }
 
     private Map<String, Object> convertVariablesJson(String jsonMap) {
