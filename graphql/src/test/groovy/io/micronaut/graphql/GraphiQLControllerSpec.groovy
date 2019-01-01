@@ -25,6 +25,9 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.Specification
 
+import static io.micronaut.http.HttpRequest.GET
+import static io.micronaut.http.MediaType.TEXT_HTML
+
 /**
  * @author Marcel Overdijk
  * @since 1.0
@@ -41,11 +44,11 @@ class GraphiQLControllerSpec extends Specification {
         HttpClient client = embeddedServer.applicationContext.createBean(HttpClient, embeddedServer.getURL())
 
         when:
-        HttpResponse response = client.toBlocking().exchange(HttpRequest.GET("/graphiql"), String)
+        HttpResponse response = client.toBlocking().exchange(GET("/graphiql"), String)
 
         then:
         response.status() == HttpStatus.OK
-        response.contentType.get().toString() == GraphiQLController.TEXT_HTML_UTF8
+        response.contentType.get().toString() == TEXT_HTML + ";charset=UTF-8"
 
         cleanup:
         embeddedServer.close()

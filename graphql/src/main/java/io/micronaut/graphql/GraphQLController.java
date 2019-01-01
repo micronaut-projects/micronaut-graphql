@@ -54,7 +54,6 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON;
 public class GraphQLController {
 
     private static final String APPLICATION_GRAPHQL = "application/graphql"; // Replace when Micronaut 1.0.3 is released.
-    private static final String APPLICATION_JSON_UTF8 = APPLICATION_JSON + ";charset=UTF-8";
 
     private final GraphQLInvocation graphQLInvocation;
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
@@ -83,7 +82,7 @@ public class GraphQLController {
      * @param httpRequest   the HTTP request
      * @return the GraphQL response
      */
-    @Get(produces = APPLICATION_JSON_UTF8, single = true)
+    @Get(produces = APPLICATION_JSON, single = true)
     @SingleResult
     public Publisher<GraphQLResponseBody> get(
             @QueryValue("query") String query,
@@ -125,7 +124,7 @@ public class GraphQLController {
      * @return the GraphQL response
      * @throws IOException if there is an error
      */
-    @Post(consumes = ALL, produces = APPLICATION_JSON_UTF8, single = true)
+    @Post(consumes = ALL, produces = APPLICATION_JSON, single = true)
     @SingleResult
     public Publisher<GraphQLResponseBody> post(
             @Nullable @Header(CONTENT_TYPE) String contentType,

@@ -50,8 +50,6 @@ import static io.micronaut.http.MediaType.TEXT_HTML;
 @Requires(property = GraphiQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphiQLController {
 
-    protected static final String TEXT_HTML_UTF8 = TEXT_HTML + ";charset=UTF-8";
-
     private final GraphiQLConfiguration graphiQLConfiguration;
     private final GraphQLConfiguration graphQLConfiguration;
     private final ResourceResolver resourceResolver;
@@ -77,7 +75,7 @@ public class GraphiQLController {
      *
      * @return the GraphiQL page
      */
-    @Get(produces = TEXT_HTML_UTF8)
+    @Get(produces = TEXT_HTML + ";charset=UTF-8")
     public String get() {
         if (cachedTemplate == null) {
             synchronized (this) {
