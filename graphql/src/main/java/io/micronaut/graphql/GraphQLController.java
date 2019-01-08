@@ -40,6 +40,7 @@ import java.util.Map;
 import static io.micronaut.http.HttpHeaders.CONTENT_TYPE;
 import static io.micronaut.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static io.micronaut.http.MediaType.ALL;
+import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL;
 import static io.micronaut.http.MediaType.APPLICATION_JSON;
 
 /**
@@ -52,8 +53,6 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON;
 @Requires(property = GraphQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Requires(beans = GraphQL.class)
 public class GraphQLController {
-
-    private static final String APPLICATION_GRAPHQL = "application/graphql"; // Replace when Micronaut 1.0.3 is released.
 
     private final GraphQLInvocation graphQLInvocation;
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;

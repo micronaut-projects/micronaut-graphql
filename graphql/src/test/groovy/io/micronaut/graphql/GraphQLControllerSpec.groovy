@@ -40,6 +40,7 @@ import javax.inject.Singleton
 import java.util.concurrent.CompletableFuture
 
 import static io.micronaut.http.HttpHeaders.CONTENT_TYPE
+import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL
 import static io.micronaut.http.MediaType.APPLICATION_JSON
 
 /**
@@ -262,7 +263,7 @@ class GraphQLControllerSpec extends Specification {
         GraphQLResponseBody post(@Body GraphQLRequestBody body)
 
         @Post
-        @Header(name = CONTENT_TYPE, value = "application/graphql") // Replace when Micronaut 1.0.3 is released.
+        @Header(name = CONTENT_TYPE, value = APPLICATION_GRAPHQL)
         GraphQLResponseBody post(@Body String body)
     }
 
