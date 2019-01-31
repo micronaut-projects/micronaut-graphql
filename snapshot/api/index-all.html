@@ -229,7 +229,7 @@
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.graphql"><span class="typeNameLink">GraphQLContextBuilder</span></a> - Interface in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphQL context builder.</div>
+<div class="block">The GraphQL context builder that will be used to set the context object of the <code>ExecutionInput</code>.</div>
 </dd>
 <dt><a href="io/micronaut/graphql/GraphQLController.html" title="class in io.micronaut.graphql"><span class="typeNameLink">GraphQLController</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
@@ -285,7 +285,7 @@
 </dd>
 <dt><a href="io/micronaut/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.graphql"><span class="typeNameLink">GraphQLRootBuilder</span></a> - Interface in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphQL root builder.</div>
+<div class="block">The GraphQL root builder that will be used to set the root object of the <code>ExecutionInput</code>.</div>
 </dd>
 </dl>
 <a name="I:H">
@@ -295,11 +295,13 @@
 <dl>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultGraphQLExecutionResultHandler.html#handleExecutionResult-org.reactivestreams.Publisher-">handleExecutionResult(Publisher&lt;ExecutionResult&gt;)</a></span> - Method in class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultGraphQLExecutionResultHandler.html" title="class in io.micronaut.graphql">DefaultGraphQLExecutionResultHandler</a></dt>
 <dd>
-<div class="block">Handles the execution result.</div>
+<div class="block">Handles the execution result by converting the provided execution result publisher to a publisher that emits
+ <a href="io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql"><code>GraphQLResponseBody</code></a> objects.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLExecutionResultHandler.html#handleExecutionResult-org.reactivestreams.Publisher-">handleExecutionResult(Publisher&lt;ExecutionResult&gt;)</a></span> - Method in interface io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLExecutionResultHandler.html" title="interface in io.micronaut.graphql">GraphQLExecutionResultHandler</a></dt>
 <dd>
-<div class="block">Handles the execution result.</div>
+<div class="block">Handles the execution result by converting the provided execution result publisher to a publisher that emits
+ <a href="io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql"><code>GraphQLResponseBody</code></a> objects.</div>
 </dd>
 </dl>
 <a name="I:I">
@@ -309,11 +311,11 @@
 <dl>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultGraphQLInvocation.html#invoke-io.micronaut.graphql.GraphQLInvocationData-io.micronaut.http.HttpRequest-">invoke(GraphQLInvocationData, HttpRequest)</a></span> - Method in class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultGraphQLInvocation.html" title="class in io.micronaut.graphql">DefaultGraphQLInvocation</a></dt>
 <dd>
-<div class="block">Invokes the GraphQL request.</div>
+<div class="block">Invokes the GraphQL request and returns a publisher that emits <code>ExecutionResult</code> objects.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLInvocation.html#invoke-io.micronaut.graphql.GraphQLInvocationData-io.micronaut.http.HttpRequest-">invoke(GraphQLInvocationData, HttpRequest)</a></span> - Method in interface io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLInvocation.html" title="interface in io.micronaut.graphql">GraphQLInvocation</a></dt>
 <dd>
-<div class="block">Invokes the GraphQL request.</div>
+<div class="block">Invokes the GraphQL request and returns a publisher that emits <code>ExecutionResult</code> objects.</div>
 </dd>
 <dt><a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a> - package io.micronaut.graphql</dt>
 <dd>
