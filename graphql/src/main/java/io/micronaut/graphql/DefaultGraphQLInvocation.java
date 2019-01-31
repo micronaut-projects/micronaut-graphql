@@ -24,7 +24,7 @@ import io.micronaut.http.HttpRequest;
 import org.reactivestreams.Publisher;
 
 /**
- * The default GraphQL invocation.
+ * The default implementation for invoking GraphQL requests.
  *
  * @author Marcel Overdijk
  * @author Graeme Rocher

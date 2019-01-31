@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import javax.inject.Singleton;
 
 /**
- * The GraphQL factory.
+ * Factory for creating the GraphQL-related beans.
  *
  * @author Marcel Overdijk
  * @since 1.0

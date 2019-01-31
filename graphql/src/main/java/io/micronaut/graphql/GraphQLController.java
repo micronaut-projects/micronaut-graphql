@@ -44,7 +44,7 @@ import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL;
 import static io.micronaut.http.MediaType.APPLICATION_JSON;
 
 /**
- * The GraphQL controller.
+ * The GraphQL controller handling GraphQL requests.
  *
  * @author Marcel Overdijk
  * @since 1.0

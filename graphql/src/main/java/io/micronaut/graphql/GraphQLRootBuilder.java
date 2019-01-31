@@ -20,6 +20,7 @@ import io.micronaut.http.HttpRequest;
 
 /**
  * The GraphQL root builder.
+ * Responsible for building the GraphQL root object to start the query execution on.
  *
  * @author Marcel Overdijk
  * @since 1.0

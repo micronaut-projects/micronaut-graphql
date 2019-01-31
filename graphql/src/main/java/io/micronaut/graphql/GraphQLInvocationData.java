@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * The GraphQL invocation data.
+ * Represents the data to execute a GraphQL query.
  *
  * @author Marcel Overdijk
  * @since 1.0

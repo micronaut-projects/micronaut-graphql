@@ -41,7 +41,7 @@ import java.util.Optional;
 import static io.micronaut.http.MediaType.TEXT_HTML;
 
 /**
- * The GraphiQL controller.
+ * The GraphiQL controller serving the GraphiQL HTML page.
  *
  * @author Marcel Overdijk
  * @since 1.0

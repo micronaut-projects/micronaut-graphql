@@ -20,7 +20,7 @@ import graphql.ExecutionResult;
 import org.reactivestreams.Publisher;
 
 /**
- * The GraphQL execution result handler.
+ * An interface for handling GraphQL {@code ExecutionResult}s.
  *
  * @author Marcel Overdijk
  * @since 1.0

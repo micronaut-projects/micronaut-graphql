@@ -19,7 +19,7 @@ package io.micronaut.graphql;
 import java.util.Map;
 
 /**
- * The GraphQL request body.
+ * Represents the request body input data to execute a GraphQL query.
  *
  * @author Marcel Overdijk
  * @since 1.0

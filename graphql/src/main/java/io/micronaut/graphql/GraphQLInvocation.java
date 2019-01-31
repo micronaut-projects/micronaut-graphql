@@ -21,7 +21,7 @@ import io.micronaut.http.HttpRequest;
 import org.reactivestreams.Publisher;
 
 /**
- * The GraphQL invocation.
+ * An interface for invoking GraphQL request.
  *
  * @author Marcel Overdijk
  * @since 1.0

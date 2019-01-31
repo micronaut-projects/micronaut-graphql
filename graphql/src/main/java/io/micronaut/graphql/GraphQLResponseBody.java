@@ -24,7 +24,7 @@ import javax.annotation.concurrent.Immutable;
 import java.util.Map;
 
 /**
- * The GraphQL response body.
+ * Represents the response body output data of an executed GraphQL query.
  *
  * @author Marcel Overdijk
  * @since 1.0

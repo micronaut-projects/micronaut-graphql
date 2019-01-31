@@ -20,6 +20,7 @@ import io.micronaut.http.HttpRequest;
 
 /**
  * The GraphQL context builder.
+ * Responsible for building the GraphQL context object to pass to all data fetchers.
  *
  * @author Marcel Overdijk
  * @since 1.0
