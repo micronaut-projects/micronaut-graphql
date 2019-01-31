@@ -115,13 +115,13 @@
 </dd>
 <dt><a href="io/micronaut/graphql/DefaultGraphQLExecutionResultHandler.html" title="class in io.micronaut.graphql"><span class="typeNameLink">DefaultGraphQLExecutionResultHandler</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The default GraphQL execution result handler.</div>
+<div class="block">The default implementation for handling GraphQL <code>ExecutionResult</code>s.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultGraphQLExecutionResultHandler.html#DefaultGraphQLExecutionResultHandler--">DefaultGraphQLExecutionResultHandler()</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultGraphQLExecutionResultHandler.html" title="class in io.micronaut.graphql">DefaultGraphQLExecutionResultHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/graphql/DefaultGraphQLInvocation.html" title="class in io.micronaut.graphql"><span class="typeNameLink">DefaultGraphQLInvocation</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The default GraphQL invocation.</div>
+<div class="block">The default implementation for invoking GraphQL requests.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/DefaultGraphQLInvocation.html#DefaultGraphQLInvocation-graphql.GraphQL-io.micronaut.graphql.GraphQLContextBuilder-io.micronaut.graphql.GraphQLRootBuilder-">DefaultGraphQLInvocation(GraphQL, GraphQLContextBuilder, GraphQLRootBuilder)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/DefaultGraphQLInvocation.html" title="class in io.micronaut.graphql">DefaultGraphQLInvocation</a></dt>
 <dd>
@@ -215,7 +215,7 @@
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/graphql/GraphiQLController.html" title="class in io.micronaut.graphql"><span class="typeNameLink">GraphiQLController</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphiQL controller.</div>
+<div class="block">The GraphiQL controller serving the GraphiQL HTML page.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphiQLController.html#GraphiQLController-io.micronaut.graphql.GraphiQLConfiguration-io.micronaut.graphql.GraphQLConfiguration-io.micronaut.core.io.ResourceResolver-">GraphiQLController(GraphiQLConfiguration, GraphQLConfiguration, ResourceResolver)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphiQLController.html" title="class in io.micronaut.graphql">GraphiQLController</a></dt>
 <dd>
@@ -233,7 +233,7 @@
 </dd>
 <dt><a href="io/micronaut/graphql/GraphQLController.html" title="class in io.micronaut.graphql"><span class="typeNameLink">GraphQLController</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphQL controller.</div>
+<div class="block">The GraphQL controller handling GraphQL requests.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLController.html#GraphQLController-io.micronaut.graphql.GraphQLInvocation-io.micronaut.graphql.GraphQLExecutionResultHandler-com.fasterxml.jackson.databind.ObjectMapper-">GraphQLController(GraphQLInvocation, GraphQLExecutionResultHandler, ObjectMapper)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLController.html" title="class in io.micronaut.graphql">GraphQLController</a></dt>
 <dd>
@@ -241,7 +241,7 @@
 </dd>
 <dt><a href="io/micronaut/graphql/GraphQLExecutionResultHandler.html" title="interface in io.micronaut.graphql"><span class="typeNameLink">GraphQLExecutionResultHandler</span></a> - Interface in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphQL execution result handler.</div>
+<div class="block">An interface for handling GraphQL <code>ExecutionResult</code>s.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLFactory.html#graphQLExecutionResultHandler--">graphQLExecutionResultHandler()</a></span> - Method in class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLFactory.html" title="class in io.micronaut.graphql">GraphQLFactory</a></dt>
 <dd>
@@ -249,7 +249,7 @@
 </dd>
 <dt><a href="io/micronaut/graphql/GraphQLFactory.html" title="class in io.micronaut.graphql"><span class="typeNameLink">GraphQLFactory</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphQL factory.</div>
+<div class="block">Factory for creating the GraphQL-related beans.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLFactory.html#GraphQLFactory--">GraphQLFactory()</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLFactory.html" title="class in io.micronaut.graphql">GraphQLFactory</a></dt>
 <dd>&nbsp;</dd>
@@ -259,11 +259,11 @@
 </dd>
 <dt><a href="io/micronaut/graphql/GraphQLInvocation.html" title="interface in io.micronaut.graphql"><span class="typeNameLink">GraphQLInvocation</span></a> - Interface in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphQL invocation.</div>
+<div class="block">An interface for invoking GraphQL request.</div>
 </dd>
 <dt><a href="io/micronaut/graphql/GraphQLInvocationData.html" title="class in io.micronaut.graphql"><span class="typeNameLink">GraphQLInvocationData</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphQL invocation data.</div>
+<div class="block">Represents the data to execute a GraphQL query.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLInvocationData.html#GraphQLInvocationData-java.lang.String-java.lang.String-java.util.Map-">GraphQLInvocationData(String, String, Map&lt;String, Object&gt;)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLInvocationData.html" title="class in io.micronaut.graphql">GraphQLInvocationData</a></dt>
 <dd>
@@ -271,13 +271,13 @@
 </dd>
 <dt><a href="io/micronaut/graphql/GraphQLRequestBody.html" title="class in io.micronaut.graphql"><span class="typeNameLink">GraphQLRequestBody</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphQL request body.</div>
+<div class="block">Represents the request body input data to execute a GraphQL query.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLRequestBody.html#GraphQLRequestBody--">GraphQLRequestBody()</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLRequestBody.html" title="class in io.micronaut.graphql">GraphQLRequestBody</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql"><span class="typeNameLink">GraphQLResponseBody</span></a> - Class in <a href="io/micronaut/graphql/package-summary.html">io.micronaut.graphql</a></dt>
 <dd>
-<div class="block">The GraphQL response body.</div>
+<div class="block">Represents the response body output data of an executed GraphQL query.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/graphql/GraphQLResponseBody.html#GraphQLResponseBody-java.util.Map-">GraphQLResponseBody(Map&lt;String, Object&gt;)</a></span> - Constructor for class io.micronaut.graphql.<a href="io/micronaut/graphql/GraphQLResponseBody.html" title="class in io.micronaut.graphql">GraphQLResponseBody</a></dt>
 <dd>
