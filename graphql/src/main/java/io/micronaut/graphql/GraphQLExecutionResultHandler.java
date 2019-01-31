@@ -20,7 +20,7 @@ import graphql.ExecutionResult;
 import org.reactivestreams.Publisher;
 
 /**
- * An interface for handling GraphQL {@code ExecutionResult}s.
+ * An interface for handling GraphQL {@link ExecutionResult}s.
  *
  * @author Marcel Overdijk
  * @since 1.0
@@ -28,7 +28,8 @@ import org.reactivestreams.Publisher;
 public interface GraphQLExecutionResultHandler {
 
     /**
-     * Handles the execution result.
+     * Handles the execution result by converting the provided execution result publisher to a publisher that emits
+     * {@link GraphQLResponseBody} objects.
      *
      * @param executionResultPublisher the execution result
      * @return the response body

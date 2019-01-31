@@ -19,11 +19,11 @@ package io.micronaut.graphql;
 import io.micronaut.http.HttpRequest;
 
 /**
- * The GraphQL root builder.
- * Responsible for building the GraphQL root object to start the query execution on.
+ * The GraphQL root builder that will be used to set the root object of the {@link graphql.ExecutionInput}.
  *
  * @author Marcel Overdijk
  * @since 1.0
+ * @see graphql.ExecutionInput.Builder#root(Object)
  */
 public interface GraphQLRootBuilder {
 

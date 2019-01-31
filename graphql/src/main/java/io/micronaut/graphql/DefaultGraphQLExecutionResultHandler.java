@@ -21,7 +21,7 @@ import io.micronaut.core.async.publisher.Publishers;
 import org.reactivestreams.Publisher;
 
 /**
- * The default implementation for handling GraphQL {@code ExecutionResult}s.
+ * The default implementation for handling GraphQL {@link ExecutionResult}s.
  *
  * @author Marcel Overdijk
  * @since 1.0
