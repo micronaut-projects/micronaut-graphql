@@ -45,7 +45,7 @@ class GraphiQLConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphiql.enabled": true]
+                ["graphql.graphiql.enabled": true]
         ))
         context.start()
 
@@ -60,8 +60,8 @@ class GraphiQLConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphiql.enabled": true,
-                 "graphiql.path"   : "/custom-graphiql"]
+                ["graphql.graphiql.enabled": true,
+                 "graphql.graphiql.path"   : "/custom-graphiql"]
         ))
         context.start()
 
@@ -77,7 +77,7 @@ class GraphiQLConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphiql.enabled": false]
+                ["graphql.graphiql.enabled": false]
         ))
         context.start()
 

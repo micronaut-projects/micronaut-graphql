@@ -46,12 +46,14 @@ import static io.micronaut.http.MediaType.TEXT_HTML;
  * @author Marcel Overdijk
  * @since 1.0
  */
-@Controller("${" + GraphiQLConfiguration.PATH + ":" + GraphiQLConfiguration.DEFAULT_PATH + "}")
-@Requires(property = GraphiQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
+@Controller("${" + GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphiQLConfiguration.PATH + ":"
+        + GraphQLConfiguration.GraphiQLConfiguration.DEFAULT_PATH + "}")
+@Requires(property = GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphiQLConfiguration.ENABLED,
+        value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphiQLController {
 
-    private final GraphiQLConfiguration graphiQLConfiguration;
     private final GraphQLConfiguration graphQLConfiguration;
+    private final GraphQLConfiguration.GraphiQLConfiguration graphiQLConfiguration;
     private final ResourceResolver resourceResolver;
 
     private String cachedTemplate;
@@ -59,14 +61,12 @@ public class GraphiQLController {
     /**
      * Default constructor.
      *
-     * @param graphiQLConfiguration the {@link GraphiQLConfiguration} instance
-     * @param graphQLConfiguration  the {@link GraphQLConfiguration} instance
-     * @param resourceResolver      the {@link ResourceResolver} instance
+     * @param graphQLConfiguration the {@link GraphQLConfiguration} instance
+     * @param resourceResolver     the {@link ResourceResolver} instance
      */
-    public GraphiQLController(GraphiQLConfiguration graphiQLConfiguration, GraphQLConfiguration graphQLConfiguration,
-            ResourceResolver resourceResolver) {
-        this.graphiQLConfiguration = graphiQLConfiguration;
+    public GraphiQLController(GraphQLConfiguration graphQLConfiguration, ResourceResolver resourceResolver) {
         this.graphQLConfiguration = graphQLConfiguration;
+        this.graphiQLConfiguration = graphQLConfiguration.getGraphiQLConfiguration();
         this.resourceResolver = resourceResolver;
     }
 
@@ -80,6 +80,7 @@ public class GraphiQLController {
         if (cachedTemplate == null) {
             synchronized (this) {
                 if (cachedTemplate == null) {
+
                     String rawTemplate = loadTemplate(graphiQLConfiguration.getTemplatePath());
                     Map<String, String> parameters = new HashMap<>();
                     parameters.put("graphqlPath", graphQLConfiguration.getPath());

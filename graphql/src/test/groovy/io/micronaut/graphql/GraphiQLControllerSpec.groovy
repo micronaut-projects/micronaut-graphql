@@ -39,7 +39,7 @@ class GraphiQLControllerSpec extends Specification {
         EmbeddedServer embeddedServer = ApplicationContext.run(
                 EmbeddedServer,
                 ["spec.name"       : GraphiQLControllerSpec.simpleName,
-                 "graphiql.enabled": true],
+                 "graphql.graphiql.enabled": true],
                 Environment.TEST)
         HttpClient client = embeddedServer.applicationContext.createBean(HttpClient, embeddedServer.getURL())
 

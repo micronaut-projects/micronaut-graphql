@@ -1,1 +1,2 @@
-graphiql.enabled: true
+graphql:
+  graphiql.enabled: true
