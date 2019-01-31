@@ -272,7 +272,7 @@ provided in the repository.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Graph<em>i</em>QL must be explicitly enabled via the <code>graphiql.enabled</code> application property.</p>
+<p>Graph<em>i</em>QL must be explicitly enabled via the <code>graphql.graphiql.enabled</code> application property.</p>
 </div>
 <div class="paragraph">
 <p>The following configuration properties can be set:</p>
@@ -280,12 +280,13 @@ provided in the repository.</p>
 <div class="listingblock">
 <div class="title">src/main/resources/application.yml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml" data-lang="yaml">graphiql:
-  enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
-  path: /graphiql <i class="conum" data-value="2"></i><b>(2)</b>
-  template-path: classpath:graphiql/index.html <i class="conum" data-value="3"></i><b>(3)</b>
-  template-parameters: <i class="conum" data-value="4"></i><b>(4)</b>
-  page-title: GraphiQL <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml" data-lang="yaml">graphql:
+  graphiql:
+    enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
+    path: /graphiql <i class="conum" data-value="2"></i><b>(2)</b>
+    template-path: classpath:graphiql/index.html <i class="conum" data-value="3"></i><b>(3)</b>
+    template-parameters: <i class="conum" data-value="4"></i><b>(4)</b>
+    page-title: GraphiQL <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -322,7 +323,7 @@ to provide a seamless integration with the configured GraphQL endpoint path.</p>
 <a href="https://github.com/micronaut-projects/micronaut-graphql/blob/serving-over-http/graphql/src/main/resources/graphiql/index.html">template</a>
 can be provided. Either by providing the custom template at <code>src/main/resources/graphiq/index.html</code> or via the <code>graphiql.template-path</code>
 application property pointing to a different template location.
-In that case it could also be useful to dynamically replace additional parameters in the template via the <code>graphiql.template-parameters</code>
+In that case it could also be useful to dynamically replace additional parameters in the template via the <code>graphql.graphiql.template-parameters</code>
 application property.</p>
 </div>
 

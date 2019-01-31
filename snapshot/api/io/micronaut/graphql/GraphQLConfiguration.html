@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10};
+var methods = {"i0":10,"i1":10,"i2":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -47,7 +47,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../io/micronaut/graphql/GraphiQLController.html" title="class in io.micronaut.graphql"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../io/micronaut/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.graphql"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../io/micronaut/graphql/GraphQLConfiguration.GraphiQLConfiguration.html" title="class in io.micronaut.graphql"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?io/micronaut/graphql/GraphQLConfiguration.html" target="_top">Frames</a></li>
@@ -71,7 +71,7 @@ var activeTableTab = "activeTableTab";
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
@@ -110,7 +110,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <hr>
 <br>
-<pre>@ConfigurationProperties(value="graphiql")
+<pre>@ConfigurationProperties(value="graphql")
 public class <span class="typeNameLabel">GraphQLConfiguration</span>
 extends java.lang.Object
 implements io.micronaut.core.util.Toggleable</pre>
@@ -127,6 +127,27 @@ implements io.micronaut.core.util.Toggleable</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="nested.class.summary">
+<!--   -->
+</a>
+<h3>Nested Class Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Nested Class Summary table, listing nested classes, and an explanation">
+<caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static class&nbsp;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLConfiguration.GraphiQLConfiguration.html" title="class in io.micronaut.graphql">GraphQLConfiguration.GraphiQLConfiguration</a></span></code>
+<div class="block">Configuration properties for GraphiQL.</div>
+</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- =========== FIELD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="field.summary">
@@ -162,16 +183,20 @@ implements io.micronaut.core.util.Toggleable</pre>
 </td>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>protected <a href="../../../io/micronaut/graphql/GraphQLConfiguration.GraphiQLConfiguration.html" title="class in io.micronaut.graphql">GraphQLConfiguration.GraphiQLConfiguration</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLConfiguration.html#graphiQLConfiguration">graphiQLConfiguration</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>protected java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLConfiguration.html#path">path</a></span></code>&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>static java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLConfiguration.html#PATH">PATH</a></span></code>
 <div class="block">The configuration name of the GraphQL path.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>static java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLConfiguration.html#PREFIX">PREFIX</a></span></code>
 <div class="block">The prefix to use for all GraphQL configuration properties.</div>
@@ -210,12 +235,18 @@ implements io.micronaut.core.util.Toggleable</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code><a href="../../../io/micronaut/graphql/GraphQLConfiguration.GraphiQLConfiguration.html" title="class in io.micronaut.graphql">GraphQLConfiguration.GraphiQLConfiguration</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLConfiguration.html#getGraphiQLConfiguration--">getGraphiQLConfiguration</a></span>()</code>
+<div class="block">Returns the GraphiQL configuration.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLConfiguration.html#getPath--">getPath</a></span>()</code>
 <div class="block">Returns the GraphQL path.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../io/micronaut/graphql/GraphQLConfiguration.html#isEnabled--">isEnabled</a></span>()</code>
 <div class="block">Returns whether GraphQL is enabled.</div>
@@ -325,10 +356,19 @@ implements io.micronaut.core.util.Toggleable</pre>
 <a name="path">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>path</h4>
 <pre>protected&nbsp;java.lang.String path</pre>
+</li>
+</ul>
+<a name="graphiQLConfiguration">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>graphiQLConfiguration</h4>
+<pre>protected&nbsp;<a href="../../../io/micronaut/graphql/GraphQLConfiguration.GraphiQLConfiguration.html" title="class in io.micronaut.graphql">GraphQLConfiguration.GraphiQLConfiguration</a> graphiQLConfiguration</pre>
 </li>
 </ul>
 </li>
@@ -375,7 +415,7 @@ implements io.micronaut.core.util.Toggleable</pre>
 <a name="getPath--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getPath</h4>
 <pre>public&nbsp;java.lang.String&nbsp;getPath()</pre>
@@ -383,6 +423,20 @@ implements io.micronaut.core.util.Toggleable</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the GraphQL path</dd>
+</dl>
+</li>
+</ul>
+<a name="getGraphiQLConfiguration--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getGraphiQLConfiguration</h4>
+<pre>public&nbsp;<a href="../../../io/micronaut/graphql/GraphQLConfiguration.GraphiQLConfiguration.html" title="class in io.micronaut.graphql">GraphQLConfiguration.GraphiQLConfiguration</a>&nbsp;getGraphiQLConfiguration()</pre>
+<div class="block">Returns the GraphiQL configuration.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the GraphiQL configuration</dd>
 </dl>
 </li>
 </ul>
@@ -413,7 +467,7 @@ implements io.micronaut.core.util.Toggleable</pre>
 <div class="subNav">
 <ul class="navList">
 <li><a href="../../../io/micronaut/graphql/GraphiQLController.html" title="class in io.micronaut.graphql"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../io/micronaut/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.graphql"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../io/micronaut/graphql/GraphQLConfiguration.GraphiQLConfiguration.html" title="class in io.micronaut.graphql"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../index.html?io/micronaut/graphql/GraphQLConfiguration.html" target="_top">Frames</a></li>
@@ -437,7 +491,7 @@ implements io.micronaut.core.util.Toggleable</pre>
 <div>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested.class.summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
