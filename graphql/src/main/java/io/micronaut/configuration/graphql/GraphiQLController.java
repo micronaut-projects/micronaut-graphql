@@ -20,6 +20,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.DefaultPropertyPlaceholderResolver;
 import io.micronaut.context.env.PropertyPlaceholderResolver;
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.core.async.SupplierUtil;
 import io.micronaut.core.io.IOUtils;
 import io.micronaut.core.io.ResourceResolver;
 import io.micronaut.core.naming.NameUtils;
@@ -37,6 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static io.micronaut.http.MediaType.TEXT_HTML;
 
@@ -56,7 +58,8 @@ public class GraphiQLController {
     private final GraphQLConfiguration.GraphiQLConfiguration graphiQLConfiguration;
     private final ResourceResolver resourceResolver;
 
-    private String cachedTemplate;
+    private final String rawTemplate;
+    private final Supplier<String> resolvedTemplate;
 
     /**
      * Default constructor.
@@ -68,6 +71,10 @@ public class GraphiQLController {
         this.graphQLConfiguration = graphQLConfiguration;
         this.graphiQLConfiguration = graphQLConfiguration.getGraphiQLConfiguration();
         this.resourceResolver = resourceResolver;
+        // Load the raw template (variables are not yet resolved).
+        // This means we fail fast if the template cannot be loaded resulting in a ConfigurationException at startup.
+        this.rawTemplate = loadTemplate(graphiQLConfiguration.getTemplatePath());
+        this.resolvedTemplate = SupplierUtil.memoized(this::resolvedTemplate);
     }
 
     /**
@@ -77,26 +84,7 @@ public class GraphiQLController {
      */
     @Get(produces = TEXT_HTML + ";charset=UTF-8")
     public String get() {
-        if (cachedTemplate == null) {
-            synchronized (this) {
-                if (cachedTemplate == null) {
-
-                    String rawTemplate = loadTemplate(graphiQLConfiguration.getTemplatePath());
-                    Map<String, String> parameters = new HashMap<>();
-                    parameters.put("graphqlPath", graphQLConfiguration.getPath());
-                    parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
-                    if (graphiQLConfiguration.getTemplateParameters() != null) {
-                        graphiQLConfiguration.getTemplateParameters().forEach((name, value) ->
-                                // De-capitalize and de-hyphenate the parameter names.
-                                // Otherwise `graphiql.template-parameters.magicWord` would be put as `magic-word` in the parameters map
-                                // as Micronaut normalises properties and stores them lowercase hyphen separated.
-                                parameters.put(NameUtils.decapitalize(NameUtils.dehyphenate(name)), value));
-                    }
-                    cachedTemplate = replaceParameters(rawTemplate, parameters);
-                }
-            }
-        }
-        return cachedTemplate;
+        return resolvedTemplate.get();
     }
 
     private String loadTemplate(final String templateFile) {
@@ -110,6 +98,20 @@ public class GraphiQLController {
         } else {
             throw new ConfigurationException("Cannot find GraphiQL template: " + templateFile);
         }
+    }
+
+    private String resolvedTemplate() {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("graphqlPath", graphQLConfiguration.getPath());
+        parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
+        if (graphiQLConfiguration.getTemplateParameters() != null) {
+            graphiQLConfiguration.getTemplateParameters().forEach((name, value) ->
+                    // De-capitalize and de-hyphenate the parameter names.
+                    // Otherwise `graphiql.template-parameters.magicWord` would be put as `magic-word` in the parameters map
+                    // as Micronaut normalises properties and stores them lowercase hyphen separated.
+                    parameters.put(NameUtils.decapitalize(NameUtils.dehyphenate(name)), value));
+        }
+        return replaceParameters(this.rawTemplate, parameters);
     }
 
     private String replaceParameters(final String str, final Map<String, String> parameters) {
