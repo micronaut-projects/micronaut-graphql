@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.micronaut.graphql;
+package io.micronaut.configuration.graphql;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;

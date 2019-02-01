@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package io.micronaut.graphql
+package io.micronaut.configuration.graphql
 
-import graphql.GraphQL
+import io.micronaut.configuration.graphql.GraphiQLController
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.Environment
@@ -28,70 +28,62 @@ import spock.lang.Specification
  * @author Marcel Overdijk
  * @since 1.0
  */
-class GraphQLConfigurationSpec extends Specification {
+class GraphiQLConfigurationSpec extends Specification {
 
-    void "test no graphql bean provided"() {
+    void "test graphiql disabled by default"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.start()
 
         expect:
-        !context.containsBean(GraphQLExecutionResultHandler)
-        !context.containsBean(GraphQLInvocation)
-        !context.containsBean(GraphQLController)
+        !context.containsBean(GraphiQLController)
 
         cleanup:
         context.close()
     }
 
-    void "test graphql bean provided"() {
-        given:
-        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
-        context.registerSingleton(Mock(GraphQL))
-        context.start()
-
-        expect:
-        context.containsBean(GraphQLExecutionResultHandler)
-        context.containsBean(GraphQLInvocation)
-        context.containsBean(GraphQLController)
-        context.getBeanDefinition(GraphQLController).getAnnotation(Controller).getRequiredValue(String) == "/graphql"
-
-        cleanup:
-        context.close()
-    }
-
-    void "test custom graphql path"() {
+    void "test graphiql enabled"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.path": "/custom-graphql"]
+                ["graphql.graphiql.enabled": true]
         ))
-        context.registerSingleton(Mock(GraphQL))
         context.start()
 
         expect:
-        context.containsBean(GraphQLExecutionResultHandler)
-        context.containsBean(GraphQLInvocation)
-        context.containsBean(GraphQLController)
-        context.getBeanDefinition(GraphQLController).getAnnotation(Controller).getRequiredValue(String) == "/custom-graphql"
+        context.containsBean(GraphiQLController)
 
         cleanup:
         context.close()
     }
 
-    void "test graphql disabled"() {
+    void "test custom graphiql path"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.enabled": false]
+                ["graphql.graphiql.enabled": true,
+                 "graphql.graphiql.path"   : "/custom-graphiql"]
         ))
-        context.registerSingleton(Mock(GraphQL))
         context.start()
 
         expect:
-        !context.containsBean(GraphQLExecutionResultHandler)
-        !context.containsBean(GraphQLInvocation)
-        !context.containsBean(GraphQLController)
+        context.containsBean(GraphiQLController)
+        context.getBeanDefinition(GraphiQLController).getAnnotation(Controller).getRequiredValue(String) == "/custom-graphiql"
+
+        cleanup:
+        context.close()
+    }
+
+    void "test graphiql disabled"() {
+        given:
+        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
+        context.environment.addPropertySource(PropertySource.of(
+                ["graphql.graphiql.enabled": false]
+        ))
+        context.start()
+
+        expect:
+        !context.containsBean(GraphiQLController)
 
         cleanup:
         context.close()

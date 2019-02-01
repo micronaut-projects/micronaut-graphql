@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.micronaut.graphql;
+package io.micronaut.configuration.graphql;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.core.util.Toggleable;
@@ -22,7 +22,7 @@ import io.micronaut.core.util.Toggleable;
 import java.util.Collections;
 import java.util.Map;
 
-import static io.micronaut.graphql.GraphQLConfiguration.PREFIX;
+import static io.micronaut.configuration.graphql.GraphQLConfiguration.PREFIX;
 
 /**
  * Configuration properties for GraphQL.

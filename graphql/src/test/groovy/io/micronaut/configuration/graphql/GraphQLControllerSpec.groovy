@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.micronaut.graphql
+package io.micronaut.configuration.graphql
 
 import graphql.ExecutionInput
 import graphql.ExecutionResult

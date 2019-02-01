@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package io.micronaut.graphql;
+package io.micronaut.configuration.graphql;
 
-import io.micronaut.http.HttpRequest;
+import graphql.ExecutionResult;
+import io.micronaut.core.async.publisher.Publishers;
+import org.reactivestreams.Publisher;
 
 /**
- * The GraphQL context builder that will be used to set the context object of the {@link graphql.ExecutionInput}.
+ * The default implementation for handling GraphQL {@link ExecutionResult}s.
  *
  * @author Marcel Overdijk
  * @since 1.0
- * @see graphql.ExecutionInput.Builder#context(Object)
  */
-public interface GraphQLContextBuilder {
+public class DefaultGraphQLExecutionResultHandler implements GraphQLExecutionResultHandler {
 
     /**
-     * Builds the GraphQL context object to pass to all data fetchers.
-     *
-     * @param httpRequest the HTTP request
-     * @return the GraphQL context object
+     * {@inheritDoc}
      */
-    Object build(HttpRequest httpRequest);
+    @Override
+    public Publisher<GraphQLResponseBody> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher) {
+        return Publishers.map(executionResultPublisher, executionResult -> new GraphQLResponseBody(executionResult.toSpecification()));
+    }
 }

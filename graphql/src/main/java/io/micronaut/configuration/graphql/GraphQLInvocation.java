@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package io.micronaut.graphql;
+package io.micronaut.configuration.graphql;
 
 import graphql.ExecutionResult;
+import io.micronaut.http.HttpRequest;
 import org.reactivestreams.Publisher;
 
 /**
- * An interface for handling GraphQL {@link ExecutionResult}s.
+ * An interface for invoking GraphQL request.
  *
  * @author Marcel Overdijk
  * @since 1.0
  */
-public interface GraphQLExecutionResultHandler {
+public interface GraphQLInvocation {
 
     /**
-     * Handles the execution result by converting the provided execution result publisher to a publisher that emits
-     * {@link GraphQLResponseBody} objects.
+     * Invokes the GraphQL request and returns a publisher that emits {@link ExecutionResult} objects.
      *
-     * @param executionResultPublisher the execution result
-     * @return the response body
+     * @param invocationData the GraphQL invocation data
+     * @param httpRequest    the HTTP request
+     * @return the GraphQL execution result
      */
-    Publisher<GraphQLResponseBody> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher);
+    Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest);
 }

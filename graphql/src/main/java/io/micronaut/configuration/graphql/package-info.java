@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-package io.micronaut.graphql;
-
-import io.micronaut.http.HttpRequest;
-
 /**
- * The GraphQL root builder that will be used to set the root object of the {@link graphql.ExecutionInput}.
+ * Micronaut GraphQL integration.
  *
  * @author Marcel Overdijk
  * @since 1.0
- * @see graphql.ExecutionInput.Builder#root(Object)
  */
-public interface GraphQLRootBuilder {
-
-    /**
-     * Builds the GraphQL root object to start the query execution on.
-     *
-     * @param httpRequest the HTTP request
-     * @return the GraphQL root object
-     */
-    Object build(HttpRequest httpRequest);
-}
+package io.micronaut.configuration.graphql;

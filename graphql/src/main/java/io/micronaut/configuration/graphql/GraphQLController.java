@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.micronaut.graphql;
+package io.micronaut.configuration.graphql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.ExecutionResult;
