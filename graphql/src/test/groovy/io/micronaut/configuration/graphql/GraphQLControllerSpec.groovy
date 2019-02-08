@@ -25,11 +25,7 @@ import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
-import io.micronaut.http.annotation.Body
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Header
-import io.micronaut.http.annotation.Post
-import io.micronaut.http.annotation.QueryValue
+import io.micronaut.http.annotation.*
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
