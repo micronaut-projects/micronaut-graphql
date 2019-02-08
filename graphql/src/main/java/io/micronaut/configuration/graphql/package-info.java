@@ -20,4 +20,8 @@
  * @author Marcel Overdijk
  * @since 1.0
  */
+@Configuration
+@RequiresGraphQL
 package io.micronaut.configuration.graphql;
+
+import io.micronaut.context.annotation.Configuration;

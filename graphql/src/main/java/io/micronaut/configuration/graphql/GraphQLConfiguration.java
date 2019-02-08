@@ -104,7 +104,7 @@ public class GraphQLConfiguration implements Toggleable {
         /**
          * The configuration name whether GraphiQL is enabled.
          */
-        public static final String ENABLED = PREFIX + ".enabled";
+        public static final String ENABLED = GraphQLConfiguration.PREFIX + "." + PREFIX + ".enabled";
 
         /**
          * The default enabled value.
