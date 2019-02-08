@@ -50,8 +50,6 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON;
  * @since 1.0
  */
 @Controller("${" + GraphQLConfiguration.PATH + ":" + GraphQLConfiguration.DEFAULT_PATH + "}")
-@Requires(property = GraphQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
-@Requires(beans = GraphQL.class)
 public class GraphQLController {
 
     private final GraphQLInvocation graphQLInvocation;

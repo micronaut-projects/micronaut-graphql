@@ -23,6 +23,9 @@ import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import org.reactivestreams.Publisher;
 
+import javax.annotation.Nullable;
+import javax.inject.Singleton;
+
 /**
  * The default implementation for invoking GraphQL requests.
  *
@@ -31,6 +34,7 @@ import org.reactivestreams.Publisher;
  * @since 1.0
  * @see GraphQL#executeAsync(ExecutionInput.Builder)
  */
+@Singleton
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
     private final GraphQL graphQL;
@@ -44,7 +48,9 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      * @param graphQLContextBuilder the {@link GraphQLContextBuilder} instance
      * @param graphQLRootBuilder    the {@link GraphQLRootBuilder} instance
      */
-    public DefaultGraphQLInvocation(GraphQL graphQL, GraphQLContextBuilder graphQLContextBuilder, GraphQLRootBuilder graphQLRootBuilder) {
+    public DefaultGraphQLInvocation(GraphQL graphQL,
+                                    @Nullable GraphQLContextBuilder graphQLContextBuilder,
+                                    @Nullable GraphQLRootBuilder graphQLRootBuilder) {
         this.graphQL = graphQL;
         this.graphQLContextBuilder = graphQLContextBuilder;
         this.graphQLRootBuilder = graphQLRootBuilder;

@@ -16,26 +16,26 @@
 
 package io.micronaut.configuration.graphql;
 
-import graphql.ExecutionResult;
-import io.micronaut.core.async.publisher.Publishers;
-import org.reactivestreams.Publisher;
+import graphql.GraphQL;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.util.StringUtils;
 
-import javax.inject.Singleton;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * The default implementation for handling GraphQL {@link ExecutionResult}s.
+ * Meta annotation for GraphQL requirements.
  *
- * @author Marcel Overdijk
+ * @author James Kleeh
  * @since 1.0
  */
-@Singleton
-public class DefaultGraphQLExecutionResultHandler implements GraphQLExecutionResultHandler {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Publisher<GraphQLResponseBody> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher) {
-        return Publishers.map(executionResultPublisher, executionResult -> new GraphQLResponseBody(executionResult.toSpecification()));
-    }
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.PACKAGE, ElementType.TYPE})
+@Requires(property = GraphQLConfiguration.ENABLED, notEquals = StringUtils.FALSE)
+@Requires(beans = GraphQL.class)
+public @interface RequiresGraphQL {
 }

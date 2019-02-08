@@ -36,6 +36,9 @@ class GraphQLConfigurationSpec extends Specification {
     void "test no graphql bean provided"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
+        context.environment.addPropertySource(PropertySource.of(
+                ["graphql.factory": false]
+        ))
         context.start()
 
         expect:
@@ -69,7 +72,6 @@ class GraphQLConfigurationSpec extends Specification {
         context.environment.addPropertySource(PropertySource.of(
                 ["graphql.path": "/custom-graphql"]
         ))
-        context.registerSingleton(Mock(GraphQL))
         context.start()
 
         expect:
@@ -88,7 +90,6 @@ class GraphQLConfigurationSpec extends Specification {
         context.environment.addPropertySource(PropertySource.of(
                 ["graphql.enabled": false]
         ))
-        context.registerSingleton(Mock(GraphQL))
         context.start()
 
         expect:
