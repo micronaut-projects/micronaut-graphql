@@ -46,6 +46,7 @@ import static io.micronaut.http.MediaType.TEXT_HTML;
  * The GraphiQL controller serving the GraphiQL HTML page.
  *
  * @author Marcel Overdijk
+ * @author James Kleeh
  * @since 1.0
  */
 @Controller("${" + GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphiQLConfiguration.PATH + ":"

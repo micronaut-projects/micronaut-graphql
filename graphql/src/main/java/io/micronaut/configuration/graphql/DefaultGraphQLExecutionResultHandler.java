@@ -26,6 +26,7 @@ import javax.inject.Singleton;
  * The default implementation for handling GraphQL {@link ExecutionResult}s.
  *
  * @author Marcel Overdijk
+ * @author James Kleeh
  * @since 1.0
  */
 @Singleton

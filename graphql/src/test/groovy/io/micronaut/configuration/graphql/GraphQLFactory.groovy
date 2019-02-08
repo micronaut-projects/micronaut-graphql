@@ -9,6 +9,10 @@ import io.micronaut.core.util.StringUtils
 
 import javax.inject.Singleton
 
+/**
+ * @author James Kleeh
+ * @since 1.0
+ */
 @Factory
 class GraphQLFactory {
 

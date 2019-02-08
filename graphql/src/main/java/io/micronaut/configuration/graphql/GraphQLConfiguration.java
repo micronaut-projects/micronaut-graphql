@@ -28,6 +28,7 @@ import static io.micronaut.configuration.graphql.GraphQLConfiguration.PREFIX;
  * Configuration properties for GraphQL.
  *
  * @author Marcel Overdijk
+ * @author James Kleeh
  * @since 1.0
  */
 @ConfigurationProperties(PREFIX)

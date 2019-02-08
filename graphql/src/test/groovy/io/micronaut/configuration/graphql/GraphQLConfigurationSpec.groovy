@@ -29,6 +29,7 @@ import spock.lang.Specification
 
 /**
  * @author Marcel Overdijk
+ * @author James Kleeh
  * @since 1.0
  */
 class GraphQLConfigurationSpec extends Specification {

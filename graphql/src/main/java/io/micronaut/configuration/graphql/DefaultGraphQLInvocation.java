@@ -31,6 +31,7 @@ import javax.inject.Singleton;
  *
  * @author Marcel Overdijk
  * @author Graeme Rocher
+ * @author James Kleeh
  * @since 1.0
  * @see GraphQL#executeAsync(ExecutionInput.Builder)
  */

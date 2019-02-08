@@ -18,10 +18,7 @@ package io.micronaut.configuration.graphql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.ExecutionResult;
-import graphql.GraphQL;
-import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.annotation.SingleResult;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -47,6 +44,7 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON;
  * The GraphQL controller handling GraphQL requests.
  *
  * @author Marcel Overdijk
+ * @author James Kleeh
  * @since 1.0
  */
 @Controller("${" + GraphQLConfiguration.PATH + ":" + GraphQLConfiguration.DEFAULT_PATH + "}")
