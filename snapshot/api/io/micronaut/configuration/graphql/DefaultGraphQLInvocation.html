@@ -110,7 +110,8 @@ var activeTableTab = "activeTableTab";
 </dl>
 <hr>
 <br>
-<pre>public class <span class="typeNameLabel">DefaultGraphQLInvocation</span>
+<pre>@Singleton
+public class <span class="typeNameLabel">DefaultGraphQLInvocation</span>
 extends java.lang.Object
 implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvocation.html" title="interface in io.micronaut.configuration.graphql">GraphQLInvocation</a></pre>
 <div class="block">The default implementation for invoking GraphQL requests.</div>
@@ -118,7 +119,7 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvoca
 <dt><span class="simpleTagLabel">Since:</span></dt>
 <dd>1.0</dd>
 <dt><span class="simpleTagLabel">Author:</span></dt>
-<dd>Marcel Overdijk, Graeme Rocher</dd>
+<dd>Marcel Overdijk, Graeme Rocher, James Kleeh</dd>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><code>GraphQL.executeAsync(ExecutionInput.Builder)</code></dd>
 </dl>
@@ -197,7 +198,9 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvoca
 <li class="blockList">
 <h4>DefaultGraphQLInvocation</h4>
 <pre>public&nbsp;DefaultGraphQLInvocation(graphql.GraphQL&nbsp;graphQL,
+                                @Nullable
                                 <a href="../../../../io/micronaut/configuration/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.configuration.graphql">GraphQLContextBuilder</a>&nbsp;graphQLContextBuilder,
+                                @Nullable
                                 <a href="../../../../io/micronaut/configuration/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.configuration.graphql">GraphQLRootBuilder</a>&nbsp;graphQLRootBuilder)</pre>
 <div class="block">Default constructor.</div>
 <dl>
