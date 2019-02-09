@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>Micronaut GraphQL Integration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8" />
+    <link rel="stylesheet" href="../css/custom.css" type="text/css" media="screen, print" title="Style" charset="utf-8" />
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8" />
+    <link rel="stylesheet" href="../css/highlight/agate.css">
+    <script src="../js/highlight.pack.js"></script>
+    <script src="../js/guide.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="../js/docs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.13/clipboard.min.js"></script>
+    <script type="text/javascript">
+        function addJsClass(el) {
+            var classes = document.body.className.split(" ");
+            classes.push("js");
+            document.body.className = classes.join(" ");
+        }
+    </script>
+
+</head>
+
+<body class="body" id="docs" onload="addJsClass();" onhashchange="highlightMenu()">
+
+<div id="table-of-content-nav-link" class="desktop">
+    <a title="Collapse/Open Table of contents" title="Hide Table of Contents" href="javascript:hideTableOfContents();" class="button">[ + ]</a>
+</div>
+
+<div id="main">
+    <div id="navigation" class="no-print">
+        <div class="navTitle">
+            <span id="logo"><a href="http://micronaut.io" title="Go to Micronaut Website"><img src="../img/micronaut-logo-white.svg" alt="Micronaut"/></a></span>
+        </div>
+        <div class="navLinks">
+            <ul>
+                    <li>
+                        <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)" class="desktop">
+                            <a href="../guide/index.html" class="button">Table of contents</a>
+                            <div id="nav-summary-childs" style="display:none;">
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="#introduction"><strong>1</strong><span>Introduction</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="#configuration"><strong>2</strong><span>Configuration</span></a></div>
+                                
+                            </div>
+                        </div>
+                    </li>
+
+                <li id="table-of-content-nav-link-mobile" class="mobile">
+                    <a title="Scroll to Table of contents" href="javascript:scrollToTop();" class="button">Toc</a>
+                </li>
+                <li class="desktop">
+                    <a title="Go to API documentation" href="../api/index.html" class="button">API Reference</a>
+                </li>
+                <li class="mobile">
+                    <a title="Go to API documentation" href="../api/index.html" class="button">API</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    
+    <div id="table-of-content">
+        <div class="toc-content">
+
+        <h2>Table of Contents</h2>
+        
+        <div class="toc-item" style="margin-left:0px" id="toc-item-introduction"><a href="#introduction"><strong>1</strong><span>Introduction</span></a></div>
+        
+        <div class="toc-item" style="margin-left:0px" id="toc-item-configuration"><a href="#configuration"><strong>2</strong><span>Configuration</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-graphql-bean"><a href="#graphql-bean"><strong>2.1</strong><span>Configuring the GraphQL Bean</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-graphiql"><a href="#graphiql"><strong>2.2</strong><span>Configuring GraphiQL</span></a></div>
+        
+        </div>
+    </div>
+    
+    <div class="docs-content">
+    <div class="project">
+        <h1>Micronaut GraphQL Integration</h1>
+        <p></p>
+        <p>Extensions to integrate Micronaut and GraphQL</p>
+        <p><strong>Version:</strong> 1.0.0.RC1</p>
+    </div>
+    
+
+<h1 id="introduction">1 Introduction</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/introduction.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut supports <a href="https://graphql.org">GraphQL</a> via the <code>micronaut-graphql</code> module.</p>
+</div>
+
+
+<h1 id="configuration">2 Configuration</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut 1.0.3 or above is required and you must have the <code>micronaut-graphql</code> dependency on your classpath:</p>
+</div>
+<div class="listingblock">
+<div class="title">build.gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy" data-lang="groovy">compile "io.micronaut.graphql:micronaut-graphql:1.0.0.RC1"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.graphql&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-graphql&lt;/artifactId&gt;
+    &lt;version&gt;{version}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>micronaut-graphql</code> module transitively includes the <code>com.graphql-java:graphql-java</code> dependency and provides a Micronaut
+<code>GraphQLController</code> which enables query execution via HTTP.</p>
+</div>
+<div class="paragraph">
+<p>As outlined in <a href="https://graphql.org/learn/serving-over-http" class="bare">https://graphql.org/learn/serving-over-http</a> the following HTTP requests are supported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>GET</code> request with <code>query</code>, <code>operationName</code> and <code>variables</code> query parameters. The <code>variables</code> query parameter must be json encoded.</p>
+</li>
+<li>
+<p><code>POST</code> request with <code>application/json</code> body and keys <code>query</code> (String), <code>operationName</code> (String) and <code>variables</code> (Map).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Both produce a <code>application/json</code> response.</p>
+</div>
+<div class="paragraph">
+<p>By default the GraphQL endpoint is exposed on <code>/graphql</code> but this can be changed via the <code>graphql.path</code> application property.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml" data-lang="yaml">graphql:
+  enabled: true <i class="conum" data-value="1"></i><b>(1)</b>
+  path: /graphql <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables/disables the GraphQL integration. Default <code>true</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configures the GraphQL endpoint path. Default <code>/graphql</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You only must configure a bean of type <code>graphql.GraphQL</code> containing the GraphQL schema and runtime wiring.</p>
+</div>
+
+
+<h2 id="graphql-bean">2.1 Configuring the GraphQL Bean</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphql-bean.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>The <code>graphql.GraphQL</code> bean can be defined by solely using the <a href="https://github.com/graphql-java/graphql-java">GraphQL Java</a> implementation,
+or in combination with other integration libraries like <a href="https://github.com/graphql-java-kickstart/graphql-java-tools">GraphQL Java Tools</a>
+or <a href="https://github.com/leangen/graphql-spqr">GraphQL SPQR</a>. As mentioned before the first one is added as transitive dependency, other
+integration libraries must be added to the classpath manually.</p>
+</div>
+<div class="paragraph">
+<p>Below is a typical example of a Micronaut <a href="https://docs.micronaut.io/latest/api/io/micronaut/context/annotation/Factory.html">Factory</a> class
+configuring a <code>graphql.GraphQL</code> <a href="https://docs.micronaut.io/latest/api/io/micronaut/context/annotation/Bean.html">Bean</a> using the
+<a href="https://github.com/graphql-java/graphql-java">GraphQL Java</a> library.</p>
+</div>
+<div class="listingblock">
+<div class="title">GraphQLFactory.java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">import graphql.GraphQL;
+import graphql.schema.GraphQLSchema;
+import graphql.schema.idl.RuntimeWiring;
+import graphql.schema.idl.SchemaGenerator;
+import graphql.schema.idl.SchemaParser;
+import graphql.schema.idl.TypeDefinitionRegistry;
+import io.micronaut.context.annotation.Bean;
+import io.micronaut.context.annotation.Factory;
+import io.micronaut.core.io.ResourceResolver;
+
+import javax.inject.Singleton;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+@Factory
+public class GraphQLFactory {
+
+    @Bean
+    @Singleton
+    public GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) {
+
+        SchemaParser schemaParser = new SchemaParser();
+        SchemaGenerator schemaGenerator = new SchemaGenerator();
+
+        // Parse the schema.
+        TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
+
+        typeRegistry.merge(schemaParser.parse(new BufferedReader(new InputStreamReader(
+                resourceResolver.getResourceAsStream("classpath:schema.graphqls").get()))));
+
+        // Create the runtime wiring.
+        RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
+                .scalar(...)
+                .type("Query", typeWiring -&gt; typeWiring
+                        .dataFetcher(...))
+                ...
+                .build();
+
+        // Create the executable schema.
+        GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
+
+        // Return the GraphQL bean.
+        return GraphQL.newGraphQL(graphQLSchema).build();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are various <a href="https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples">examples</a> using different technologies
+provided in the repository.</p>
+</div>
+
+
+<h2 id="graphiql">2.2 Configuring GraphiQL</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphiql.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>The <code>micronaut-graphql</code> module comes bundled with Graph<em>i</em>QL, an in-browser IDE for exploring GraphQL.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://github.com/graphql/graphiql/raw/master/resources/graphiql.png" alt="GraphiQL">
+</div>
+</div>
+<div class="paragraph">
+<p>Graph<em>i</em>QL must be explicitly enabled via the <code>graphql.graphiql.enabled</code> application property.</p>
+</div>
+<div class="paragraph">
+<p>The following configuration properties can be set:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml" data-lang="yaml">graphql:
+  graphiql:
+    enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
+    path: /graphiql <i class="conum" data-value="2"></i><b>(2)</b>
+    template-path: classpath:graphiql/index.html <i class="conum" data-value="3"></i><b>(3)</b>
+    template-parameters: <i class="conum" data-value="4"></i><b>(4)</b>
+    page-title: GraphiQL <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables/disables GraphiQL. Default <code>false</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configures the GraphiQL endpoint path. Default <code>/graphiql</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Configures the GraphiQL template path. Default <code>classpath:graphiql/index.html</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Configures the GraphiQL template parameters. Default none.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Configures the GraphiQL page title. Default <code>GraphiQL</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The out of the box rendered Graph<em>i</em>QL page does not provide many customisations except the Graph<em>i</em>QL path and page title.
+It also takes into account the <code>graphql.path</code> application property,
+to provide a seamless integration with the configured GraphQL endpoint path.</p>
+</div>
+<div class="paragraph">
+<p>If further customisations are required, a custom Graph<em>i</em>QL
+<a href="https://github.com/micronaut-projects/micronaut-graphql/blob/serving-over-http/graphql/src/main/resources/graphiql/index.html">template</a>
+can be provided. Either by providing the custom template at <code>src/main/resources/graphiq/index.html</code> or via the <code>graphiql.template-path</code>
+application property pointing to a different template location.
+In that case it could also be useful to dynamically replace additional parameters in the template via the <code>graphql.graphiql.template-parameters</code>
+application property.</p>
+</div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
