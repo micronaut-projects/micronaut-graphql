@@ -16,6 +16,9 @@
 
 package io.micronaut.configuration.graphql;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import graphql.ExecutionResult;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.websocket.WebSocketSession;
@@ -24,9 +27,15 @@ import io.micronaut.websocket.annotation.OnError;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
+import io.reactivex.Single;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
+import java.io.IOException;
 
 /**
- * The GraphQL subscriptions server web socket handling GraphQL subscriptions.
+ * The GraphQL subscriptions web socket handling GraphQL subscriptions.
  *
  * @author Marcel Overdijk
  * @since 1.0
@@ -35,7 +44,7 @@ import io.micronaut.websocket.annotation.ServerWebSocket;
         + GraphQLConfiguration.GraphQLSubscriptionsConfiguration.DEFAULT_PATH + "}")
 @Requires(property = GraphQLConfiguration.GraphQLSubscriptionsConfiguration.ENABLED,
         value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
-public class GraphQLSubscriptionsServerWebSocket {
+public class GraphQLSubscriptionsWebSocket {
 
     /**
      * TODO.
@@ -44,18 +53,20 @@ public class GraphQLSubscriptionsServerWebSocket {
      */
     @OnOpen
     public void onOpen(WebSocketSession session) {
-
+        System.out.println("onOpen...");
         // TODO.
     }
 
     /**
      * TODO.
      *
+     * @param body    the message body
      * @param session the web socket session
      */
     @OnMessage
-    public void onMessage(WebSocketSession session) {
-
+    public void onMessage(String body, WebSocketSession session) throws IOException {
+        System.out.println("onMessage...");
+        System.out.println("body:\n" + body);
         // TODO.
     }
 
@@ -66,7 +77,7 @@ public class GraphQLSubscriptionsServerWebSocket {
      */
     @OnError
     public void onError(WebSocketSession session) {
-
+        System.out.println("onError...");
         // TODO.
     }
 
@@ -77,7 +88,7 @@ public class GraphQLSubscriptionsServerWebSocket {
      */
     @OnClose
     public void onClose(WebSocketSession session) {
-
+        System.out.println("onClose...");
         // TODO.
     }
 }

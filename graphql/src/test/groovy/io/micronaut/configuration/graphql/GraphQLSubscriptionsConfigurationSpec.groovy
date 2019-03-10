@@ -35,7 +35,7 @@ class GraphQLSubscriptionsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        !context.containsBean(GraphQLSubscriptionsServerWebSocket)
+        !context.containsBean(GraphQLSubscriptionsWebSocket)
 
         cleanup:
         context.close()
@@ -50,7 +50,8 @@ class GraphQLSubscriptionsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        context.containsBean(GraphQLSubscriptionsServerWebSocket)
+        context.containsBean(GraphQLSubscriptionsWebSocket)
+        context.getBeanDefinition(GraphQLSubscriptionsWebSocket).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/graphql"
 
         cleanup:
         context.close()
@@ -66,8 +67,8 @@ class GraphQLSubscriptionsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        context.containsBean(GraphQLSubscriptionsServerWebSocket)
-        context.getBeanDefinition(GraphQLSubscriptionsServerWebSocket).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/custom-subscriptions"
+        context.containsBean(GraphQLSubscriptionsWebSocket)
+        context.getBeanDefinition(GraphQLSubscriptionsWebSocket).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/custom-subscriptions"
 
         cleanup:
         context.close()
@@ -82,7 +83,7 @@ class GraphQLSubscriptionsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        !context.containsBean(GraphQLSubscriptionsServerWebSocket)
+        !context.containsBean(GraphQLSubscriptionsWebSocket)
 
         cleanup:
         context.close()

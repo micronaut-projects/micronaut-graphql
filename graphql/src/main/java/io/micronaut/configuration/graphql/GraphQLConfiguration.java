@@ -130,7 +130,7 @@ public class GraphQLConfiguration implements Toggleable {
         /**
          * The default GraphQL subscriptions path.
          */
-        public static final String DEFAULT_PATH = "/subscriptions";
+        public static final String DEFAULT_PATH = GraphQLConfiguration.DEFAULT_PATH;
 
         protected boolean enabled = DEFAULT_ENABLED;
         protected String path = DEFAULT_PATH;
