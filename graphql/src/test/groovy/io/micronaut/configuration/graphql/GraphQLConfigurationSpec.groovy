@@ -17,9 +17,6 @@
 package io.micronaut.configuration.graphql
 
 import graphql.GraphQL
-import io.micronaut.configuration.graphql.GraphQLController
-import io.micronaut.configuration.graphql.GraphQLExecutionResultHandler
-import io.micronaut.configuration.graphql.GraphQLInvocation
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.Environment
