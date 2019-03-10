@@ -51,6 +51,7 @@ class GraphiQLConfigurationSpec extends Specification {
 
         expect:
         context.containsBean(GraphiQLController)
+        context.getBeanDefinition(GraphiQLController).getAnnotation(Controller).getRequiredValue(String) == "/graphiql"
 
         cleanup:
         context.close()
