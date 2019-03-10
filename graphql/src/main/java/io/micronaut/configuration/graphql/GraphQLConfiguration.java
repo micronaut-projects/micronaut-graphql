@@ -61,6 +61,7 @@ public class GraphQLConfiguration implements Toggleable {
 
     protected boolean enabled = DEFAULT_ENABLED;
     protected String path = DEFAULT_PATH;
+    protected GraphQLSubscriptionsConfiguration graphQLSubscriptionsConfiguration = new GraphQLSubscriptionsConfiguration();
     protected GraphiQLConfiguration graphiQLConfiguration = new GraphiQLConfiguration();
 
     /**
@@ -83,12 +84,75 @@ public class GraphQLConfiguration implements Toggleable {
     }
 
     /**
+     * Returns the GraphQL subscriptions configuration.
+     *
+     * @return the GraphQL subscriptions configuration
+     */
+    public GraphQLSubscriptionsConfiguration getGraphQLSubscriptionsConfiguration() {
+        return graphQLSubscriptionsConfiguration;
+    }
+
+    /**
      * Returns the GraphiQL configuration.
      *
      * @return the GraphiQL configuration
      */
     public GraphiQLConfiguration getGraphiQLConfiguration() {
         return graphiQLConfiguration;
+    }
+
+    /**
+     * Configuration properties for GraphQL subscriptions.
+     */
+    @ConfigurationProperties(GraphQLSubscriptionsConfiguration.PREFIX)
+    public static class GraphQLSubscriptionsConfiguration implements Toggleable {
+
+        /**
+         * The prefix to use for all GraphQL subscriptions configuration properties.
+         */
+        public static final String PREFIX = "subscriptions";
+
+        /**
+         * The configuration name whether GraphQL subscriptions is enabled.
+         */
+        public static final String ENABLED = GraphQLConfiguration.PREFIX + "." + PREFIX + ".enabled";
+
+        /**
+         * The default enabled value.
+         */
+        public static final boolean DEFAULT_ENABLED = false;
+
+        /**
+         * The configuration name of the GraphQL subscriptions path.
+         */
+        public static final String PATH = PREFIX + ".path";
+
+        /**
+         * The default GraphQL subscriptions path.
+         */
+        public static final String DEFAULT_PATH = "/subscriptions";
+
+        protected boolean enabled = DEFAULT_ENABLED;
+        protected String path = DEFAULT_PATH;
+
+        /**
+         * Returns whether GraphQL subscriptions is enabled.
+         *
+         * @return whether GraphQL subscriptions is enabled
+         */
+        @Override
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        /**
+         * Returns the GraphQL subscriptions path.
+         *
+         * @return the GraphQL subscriptions path
+         */
+        public String getPath() {
+            return path;
+        }
     }
 
     /**
