@@ -37,24 +37,44 @@ import io.micronaut.websocket.annotation.ServerWebSocket;
         value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphQLSubscriptionsServerWebSocket {
 
+    /**
+     * TODO.
+     *
+     * @param session the web socket session
+     */
     @OnOpen
     public void onOpen(WebSocketSession session) {
 
         // TODO.
     }
 
+    /**
+     * TODO.
+     *
+     * @param session the web socket session
+     */
     @OnMessage
     public void onMessage(WebSocketSession session) {
 
         // TODO.
     }
 
+    /**
+     * TODO.
+     *
+     * @param session the web socket session
+     */
     @OnError
     public void onError(WebSocketSession session) {
 
         // TODO.
     }
 
+    /**
+     * TODO.
+     *
+     * @param session the web socket session
+     */
     @OnClose
     public void onClose(WebSocketSession session) {
 
