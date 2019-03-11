@@ -25,8 +25,6 @@ import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 
-import java.io.IOException;
-
 /**
  * The GraphQL subscriptions web socket handling GraphQL subscriptions.
  *
@@ -57,7 +55,7 @@ public class GraphQLSubscriptionsWebSocket {
      * @param session the web socket session
      */
     @OnMessage
-    public void onMessage(String body, WebSocketSession session) throws IOException {
+    public void onMessage(String body, WebSocketSession session) {
         System.out.println("onMessage...");
         System.out.println("body:\n" + body);
         // TODO.
