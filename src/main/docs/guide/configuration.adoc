@@ -1,20 +1,6 @@
 Micronaut 1.0.3 or above is required and you must have the `micronaut-graphql` dependency on your classpath:
 
-.build.gradle
-[source,groovy,subs="attributes"]
-----
-compile "io.micronaut.graphql:micronaut-graphql:{version}"
-----
-
-.pom.xml
-[source,xml]
-----
-<dependency>
-    <groupId>io.micronaut.graphql</groupId>
-    <artifactId>micronaut-graphql</artifactId>
-    <version>{version}</version>
-</dependency>
-----
+dependency:micronaut-graphql[version="{version}", groupId="io.micronaut.graphql"]
 
 The `micronaut-graphql` module transitively includes the `com.graphql-java:graphql-java` dependency and provides a Micronaut
 `GraphQLController` which enables query execution via HTTP.
