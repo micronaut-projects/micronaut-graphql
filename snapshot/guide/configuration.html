@@ -94,21 +94,22 @@ function addJsClass() {
 <div class="paragraph">
 <p>Micronaut 1.0.3 or above is required and you must have the <code>micronaut-graphql</code> dependency on your classpath:</p>
 </div>
-<div class="listingblock">
-<div class="title">build.gradle</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy" data-lang="groovy">compile "io.micronaut.graphql:micronaut-graphql:1.0.0.BUILD-SNAPSHOT"</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.graphql:micronaut-graphql:1.0.0.BUILD-SNAPSHOT'</span></code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="title">pom.xml</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut.graphql&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-graphql&lt;/artifactId&gt;
-    &lt;version&gt;{version}&lt;/version&gt;
+    &lt;version&gt;1.0.0.BUILD-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
+</div>
+</p>
 </div>
 <div class="paragraph">
 <p>The <code>micronaut-graphql</code> module transitively includes the <code>com.graphql-java:graphql-java</code> dependency and provides a Micronaut
@@ -136,7 +137,7 @@ function addJsClass() {
 <div class="listingblock">
 <div class="title">src/main/resources/application.yml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml" data-lang="yaml">graphql:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
   enabled: true <i class="conum" data-value="1"></i><b>(1)</b>
   path: /graphql <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
@@ -181,7 +182,7 @@ configuring a <code>graphql.GraphQL</code> <a href="https://docs.micronaut.io/la
 <div class="listingblock">
 <div class="title">GraphQLFactory.java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java" data-lang="java">import graphql.GraphQL;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
@@ -260,7 +261,7 @@ provided in the repository.</p>
 <div class="listingblock">
 <div class="title">src/main/resources/application.yml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml" data-lang="yaml">graphql:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
   graphiql:
     enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
     path: /graphiql <i class="conum" data-value="2"></i><b>(2)</b>
