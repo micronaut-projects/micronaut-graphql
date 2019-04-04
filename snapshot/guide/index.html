@@ -208,10 +208,9 @@ integration libraries must be added to the classpath manually.</p>
 configuring a <code>graphql.GraphQL</code> <a href="https://docs.micronaut.io/latest/api/io/micronaut/context/annotation/Bean.html">Bean</a> using the
 <a href="https://github.com/graphql-java/graphql-java">GraphQL Java</a> library.</p>
 </div>
-<div class="listingblock">
-<div class="title">GraphQLFactory.java</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import graphql.GraphQL;
+<pre class="highlight"><code class="language-java" data-lang="java">import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
@@ -225,28 +224,25 @@ import javax.inject.Singleton;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-@Factory
+@Factory <b class="conum">(1)</b>
 public class GraphQLFactory {
 
     @Bean
     @Singleton
-    public GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) {
+    public GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) { <b class="conum">(2)</b>
 
         SchemaParser schemaParser = new SchemaParser();
         SchemaGenerator schemaGenerator = new SchemaGenerator();
 
         // Parse the schema.
         TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
-
         typeRegistry.merge(schemaParser.parse(new BufferedReader(new InputStreamReader(
                 resourceResolver.getResourceAsStream("classpath:schema.graphqls").get()))));
 
         // Create the runtime wiring.
         RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
-                .scalar(...)
                 .type("Query", typeWiring -&gt; typeWiring
-                        .dataFetcher(...))
-                ...
+                        .dataFetcher("hello", helloDataFetcher))
                 .build();
 
         // Create the executable schema.
@@ -257,6 +253,106 @@ public class GraphQLFactory {
     }
 }</code></pre>
 </div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">import graphql.GraphQL
+import graphql.schema.idl.RuntimeWiring
+import graphql.schema.idl.SchemaGenerator
+import graphql.schema.idl.SchemaParser
+import graphql.schema.idl.TypeDefinitionRegistry
+import groovy.transform.CompileStatic
+import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Factory
+import io.micronaut.core.io.ResourceResolver
+import javax.inject.Singleton
+
+@Factory <b class="conum">(1)</b>
+@CompileStatic
+class GraphQLFactory {
+
+    @Bean
+    @Singleton
+    GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) { <b class="conum">(2)</b>
+
+        def schemaParser = new SchemaParser()
+        def schemaGenerator = new SchemaGenerator()
+
+        // Parse the schema.
+        def typeRegistry = new TypeDefinitionRegistry()
+        typeRegistry.merge(schemaParser.parse(new BufferedReader(new InputStreamReader(
+                resourceResolver.getResourceAsStream("classpath:schema.graphqls").get()))))
+
+        // Create the runtime wiring.
+        def runtimeWiring = RuntimeWiring.newRuntimeWiring()
+                .type("Query", { typeWiring -&gt; typeWiring
+                        .dataFetcher("hello", helloDataFetcher) })
+                .build()
+
+        // Create the executable schema.
+        def graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring)
+
+        // Return the GraphQL bean.
+        return GraphQL.newGraphQL(graphQLSchema).build()
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">import graphql.GraphQL
+import graphql.schema.idl.RuntimeWiring
+import graphql.schema.idl.SchemaGenerator
+import graphql.schema.idl.SchemaParser
+import graphql.schema.idl.TypeDefinitionRegistry
+import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Factory
+import io.micronaut.core.io.ResourceResolver
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import javax.inject.Singleton
+
+@Factory <b class="conum">(1)</b>
+class GraphQLFactory {
+
+    @Bean
+    @Singleton
+    fun graphQL(resourceResolver: ResourceResolver, helloDataFetcher: HelloDataFetcher): GraphQL { <b class="conum">(2)</b>
+
+        val schemaParser = SchemaParser()
+        val schemaGenerator = SchemaGenerator()
+
+        // Parse the schema.
+        val typeRegistry = TypeDefinitionRegistry();
+        typeRegistry.merge(schemaParser.parse(BufferedReader(InputStreamReader(
+                resourceResolver.getResourceAsStream("classpath:schema.graphqls").get()))))
+
+        // Create the runtime wiring.
+        val runtimeWiring = RuntimeWiring.newRuntimeWiring()
+                .type("Query") { typeWiring -&gt; typeWiring
+                        .dataFetcher("hello", helloDataFetcher) }
+                .build()
+
+        // Create the executable schema.
+        val graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring)
+
+        // Return the GraphQL bean.
+        return GraphQL.newGraphQL(graphQLSchema).build()
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Define the <code>Factory</code> annotation to create the bean.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Define the <code>GraphQL</code> bean which contains the runtime wiring and the executable schema.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>There are various <a href="https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples">examples</a> using different technologies
