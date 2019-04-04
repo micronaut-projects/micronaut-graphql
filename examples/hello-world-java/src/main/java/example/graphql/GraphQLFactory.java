@@ -16,6 +16,7 @@
 
 package example.graphql;
 
+// tag::imports[]
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -29,24 +30,25 @@ import io.micronaut.core.io.ResourceResolver;
 import javax.inject.Singleton;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+// end::imports[]
 
 /**
  * @author Marcel Overdijk
  */
-@Factory
 @SuppressWarnings("Duplicates")
+// tag::clazz[]
+@Factory // <1>
 public class GraphQLFactory {
 
     @Bean
     @Singleton
-    public GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) {
+    public GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) { // <2>
 
         SchemaParser schemaParser = new SchemaParser();
         SchemaGenerator schemaGenerator = new SchemaGenerator();
 
         // Parse the schema.
         TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
-
         typeRegistry.merge(schemaParser.parse(new BufferedReader(new InputStreamReader(
                 resourceResolver.getResourceAsStream("classpath:schema.graphqls").get()))));
 
@@ -63,3 +65,4 @@ public class GraphQLFactory {
         return GraphQL.newGraphQL(graphQLSchema).build();
     }
 }
+// end::clazz[]

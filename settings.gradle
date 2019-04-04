@@ -3,7 +3,9 @@ rootProject.name = "graphql"
 include "graphql"
 
 String[] examples = [
-        "hello-world",
+        "hello-world-groovy",
+        "hello-world-java",
+        "hello-world-kotlin",
         "todo",
         "todo-java-tools",
         "todo-spqr"
