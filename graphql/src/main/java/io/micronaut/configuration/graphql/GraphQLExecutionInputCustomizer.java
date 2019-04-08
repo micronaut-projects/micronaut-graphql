@@ -20,14 +20,12 @@ import graphql.ExecutionInput;
 import io.micronaut.http.HttpRequest;
 import org.reactivestreams.Publisher;
 
-import java.util.function.Consumer;
-
 /**
  * An interface for customizing the {@link ExecutionInput}. A custom implementation can be provided to e.g. set a context or root object.
  *
  * @author Marcel Overdijk
  * @since 1.0
- * @see graphql.ExecutionInput#transform(Consumer)
+ * @see graphql.ExecutionInput#transform(java.util.function.Consumer)
  */
 public interface GraphQLExecutionInputCustomizer {
 
