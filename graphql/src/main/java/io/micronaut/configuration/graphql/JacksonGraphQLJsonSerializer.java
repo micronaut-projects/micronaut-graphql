@@ -45,9 +45,9 @@ public class JacksonGraphQLJsonSerializer implements GraphQLJsonSerializer {
      * {@inheritDoc}
      */
     @Override
-    public String serialize(Object value) {
+    public String serialize(Object object) {
         try {
-            return objectMapper.writeValueAsString(value);
+            return objectMapper.writeValueAsString(object);
         } catch (IOException e) {
             throw new RuntimeException("Error serializing object to JSON: " + e.getMessage(), e);
         }
@@ -57,9 +57,9 @@ public class JacksonGraphQLJsonSerializer implements GraphQLJsonSerializer {
      * {@inheritDoc}
      */
     @Override
-    public <T> T deserialize(String json, Class<T> type) {
+    public <T> T deserialize(String json, Class<T> requiredType) {
         try {
-            return objectMapper.readValue(json, type);
+            return objectMapper.readValue(json, requiredType);
         } catch (IOException e) {
             throw new RuntimeException("Error deserializing object from JSON: " + e.getMessage(), e);
         }
