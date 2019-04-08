@@ -16,22 +16,29 @@
 
 package io.micronaut.configuration.graphql;
 
+import graphql.ExecutionInput;
+import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
+import org.reactivestreams.Publisher;
+
+import javax.inject.Singleton;
 
 /**
- * The GraphQL root builder that will be used to set the root object of the {@link graphql.ExecutionInput}.
+ * The default implementation for customizing GraphQL execution inputs.
  *
  * @author Marcel Overdijk
  * @since 1.0
- * @see graphql.ExecutionInput.Builder#root(Object)
  */
-public interface GraphQLRootBuilder {
+@Singleton
+public class DefaultGraphQLExecutionInputCustomizer implements GraphQLExecutionInputCustomizer {
 
     /**
-     * Builds the GraphQL root object to start the query execution on.
-     *
-     * @param httpRequest the HTTP request
-     * @return the GraphQL root object
+     * {@inheritDoc}
      */
-    Object build(HttpRequest httpRequest);
+    @Override
+    public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest) {
+        // TODO: first check if tests fail without line below...
+        // return Publishers.just(executionInput);
+        return null;
+    }
 }

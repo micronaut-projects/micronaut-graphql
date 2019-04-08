@@ -16,22 +16,27 @@
 
 package io.micronaut.configuration.graphql;
 
+import graphql.ExecutionInput;
 import io.micronaut.http.HttpRequest;
+import org.reactivestreams.Publisher;
+
+import java.util.function.Consumer;
 
 /**
- * The GraphQL context builder that will be used to set the context object of the {@link graphql.ExecutionInput}.
+ * An interface for customizing the {@link ExecutionInput}. A custom implementation can be provided to e.g. set a context or root object.
  *
  * @author Marcel Overdijk
  * @since 1.0
- * @see graphql.ExecutionInput.Builder#context(Object)
+ * @see graphql.ExecutionInput#transform(Consumer)
  */
-public interface GraphQLContextBuilder {
+public interface GraphQLExecutionInputCustomizer {
 
     /**
-     * Builds the GraphQL context object to pass to all data fetchers.
+     * Customizes the GraphQL execution input.
      *
+     * @param executionInput the execution input
      * @param httpRequest the HTTP request
      * @return the GraphQL context object
      */
-    Object build(HttpRequest httpRequest);
+    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest);
 }

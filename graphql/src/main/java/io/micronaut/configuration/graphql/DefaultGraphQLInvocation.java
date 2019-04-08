@@ -33,28 +33,24 @@ import javax.inject.Singleton;
  * @author Graeme Rocher
  * @author James Kleeh
  * @since 1.0
+ * @see GraphQLExecutionInputCustomizer#customize(ExecutionInput, HttpRequest)
  * @see GraphQL#executeAsync(ExecutionInput.Builder)
  */
 @Singleton
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
     private final GraphQL graphQL;
-    private final GraphQLContextBuilder graphQLContextBuilder;
-    private final GraphQLRootBuilder graphQLRootBuilder;
+    private final GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer;
 
     /**
      * Default constructor.
      *
-     * @param graphQL               the {@link GraphQL} instance
-     * @param graphQLContextBuilder the {@link GraphQLContextBuilder} instance
-     * @param graphQLRootBuilder    the {@link GraphQLRootBuilder} instance
+     * @param graphQL                         the {@link GraphQL} instance
+     * @param graphQLExecutionInputCustomizer the {@link GraphQLExecutionInputCustomizer} instance
      */
-    public DefaultGraphQLInvocation(GraphQL graphQL,
-                                    @Nullable GraphQLContextBuilder graphQLContextBuilder,
-                                    @Nullable GraphQLRootBuilder graphQLRootBuilder) {
+    public DefaultGraphQLInvocation(GraphQL graphQL, @Nullable GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer) {
         this.graphQL = graphQL;
-        this.graphQLContextBuilder = graphQLContextBuilder;
-        this.graphQLRootBuilder = graphQLRootBuilder;
+        this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
     }
 
     /**
@@ -63,15 +59,16 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
     @Override
     public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest) {
         return Publishers.fromCompletableFuture(() -> {
-            Object context = graphQLContextBuilder != null ? graphQLContextBuilder.build(httpRequest) : null;
-            Object root = graphQLRootBuilder != null ? graphQLRootBuilder.build(httpRequest) : null;
             ExecutionInput executionInput = ExecutionInput.newExecutionInput()
                     .query(invocationData.getQuery())
                     .operationName(invocationData.getOperationName())
-                    .context(context)
-                    .root(root)
                     .variables(invocationData.getVariables())
                     .build();
+            Publisher<ExecutionInput> customizedExecutionInputPublisher =
+                    graphQLExecutionInputCustomizer.customize(executionInput, httpRequest);
+
+            // TODO use the customizedExecutionInputPublisher in the executeAsync call below
+
             return graphQL.executeAsync(executionInput);
         });
     }
