@@ -37,8 +37,6 @@ public class DefaultGraphQLExecutionInputCustomizer implements GraphQLExecutionI
      */
     @Override
     public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest) {
-        // TODO: first check if tests fail without line below...
-        // return Publishers.just(executionInput);
-        return null;
+        return Publishers.just(executionInput);
     }
 }

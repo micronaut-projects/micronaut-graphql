@@ -21,6 +21,7 @@ import graphql.ExecutionResult;
 import graphql.GraphQL;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
+import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
 import javax.annotation.Nullable;
@@ -58,18 +59,13 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      */
     @Override
     public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest) {
-        return Publishers.fromCompletableFuture(() -> {
-            ExecutionInput executionInput = ExecutionInput.newExecutionInput()
-                    .query(invocationData.getQuery())
-                    .operationName(invocationData.getOperationName())
-                    .variables(invocationData.getVariables())
-                    .build();
-            Publisher<ExecutionInput> customizedExecutionInputPublisher =
-                    graphQLExecutionInputCustomizer.customize(executionInput, httpRequest);
-
-            // TODO use the customizedExecutionInputPublisher in the executeAsync call below
-
-            return graphQL.executeAsync(executionInput);
-        });
+        ExecutionInput executionInput = ExecutionInput.newExecutionInput()
+                .query(invocationData.getQuery())
+                .operationName(invocationData.getOperationName())
+                .variables(invocationData.getVariables())
+                .build();
+        return Flowable.fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest))
+                .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() ->
+                        graphQL.executeAsync(customizedExecutionInput)));
     }
 }
