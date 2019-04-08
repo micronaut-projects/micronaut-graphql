@@ -161,13 +161,13 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLJsonSe
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>&lt;T&gt;&nbsp;T</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/graphql/JacksonGraphQLJsonSerializer.html#deserialize-java.lang.String-java.lang.Class-">deserialize</a></span>(java.lang.String&nbsp;json,
-           java.lang.Class&lt;T&gt;&nbsp;type)</code>
+           java.lang.Class&lt;T&gt;&nbsp;requiredType)</code>
 <div class="block">Deserializes the given json <code>String</code> to an object of the required type.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/graphql/JacksonGraphQLJsonSerializer.html#serialize-java.lang.Object-">serialize</a></span>(java.lang.Object&nbsp;value)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/graphql/JacksonGraphQLJsonSerializer.html#serialize-java.lang.Object-">serialize</a></span>(java.lang.Object&nbsp;object)</code>
 <div class="block">Serializes the given object to a json <code>String</code>.</div>
 </td>
 </tr>
@@ -221,13 +221,13 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLJsonSe
 <ul class="blockList">
 <li class="blockList">
 <h4>serialize</h4>
-<pre>public&nbsp;java.lang.String&nbsp;serialize(java.lang.Object&nbsp;value)</pre>
+<pre>public&nbsp;java.lang.String&nbsp;serialize(java.lang.Object&nbsp;object)</pre>
 <div class="block">Serializes the given object to a json <code>String</code>.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../io/micronaut/configuration/graphql/GraphQLJsonSerializer.html#serialize-java.lang.Object-">serialize</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../io/micronaut/configuration/graphql/GraphQLJsonSerializer.html" title="interface in io.micronaut.configuration.graphql">GraphQLJsonSerializer</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>value</code> - the object to serialize</dd>
+<dd><code>object</code> - the object to serialize</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the json string</dd>
 </dl>
@@ -240,7 +240,7 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLJsonSe
 <li class="blockList">
 <h4>deserialize</h4>
 <pre>public&nbsp;&lt;T&gt;&nbsp;T&nbsp;deserialize(java.lang.String&nbsp;json,
-                         java.lang.Class&lt;T&gt;&nbsp;type)</pre>
+                         java.lang.Class&lt;T&gt;&nbsp;requiredType)</pre>
 <div class="block">Deserializes the given json <code>String</code> to an object of the required type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -249,7 +249,7 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLJsonSe
 <dd><code>T</code> - the required generic type</dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>json</code> - the json string</dd>
-<dd><code>type</code> - the required type</dd>
+<dd><code>requiredType</code> - the required type</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the object</dd>
 </dl>
