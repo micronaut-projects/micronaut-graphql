@@ -87,9 +87,9 @@
 </tr>
 <tbody>
 <tr class="altColor">
-<td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.configuration.graphql">GraphQLContextBuilder</a></td>
+<td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html" title="interface in io.micronaut.configuration.graphql">GraphQLExecutionInputCustomizer</a></td>
 <td class="colLast">
-<div class="block">The GraphQL context builder that will be used to set the context object of the <code>ExecutionInput</code>.</div>
+<div class="block">An interface for customizing the <code>ExecutionInput</code>.</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -110,12 +110,6 @@
 <div class="block">An interface for serializing and deserializing GraphQL objects.</div>
 </td>
 </tr>
-<tr class="altColor">
-<td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.configuration.graphql">GraphQLRootBuilder</a></td>
-<td class="colLast">
-<div class="block">The GraphQL root builder that will be used to set the root object of the <code>ExecutionInput</code>.</div>
-</td>
-</tr>
 </tbody>
 </table>
 </li>
@@ -128,60 +122,66 @@
 </tr>
 <tbody>
 <tr class="altColor">
+<td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/DefaultGraphQLExecutionInputCustomizer.html" title="class in io.micronaut.configuration.graphql">DefaultGraphQLExecutionInputCustomizer</a></td>
+<td class="colLast">
+<div class="block">The default implementation for customizing GraphQL execution inputs.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/DefaultGraphQLExecutionResultHandler.html" title="class in io.micronaut.configuration.graphql">DefaultGraphQLExecutionResultHandler</a></td>
 <td class="colLast">
 <div class="block">The default implementation for handling GraphQL <code>ExecutionResult</code>s.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/DefaultGraphQLInvocation.html" title="class in io.micronaut.configuration.graphql">DefaultGraphQLInvocation</a></td>
 <td class="colLast">
 <div class="block">The default implementation for invoking GraphQL requests.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/GraphiQLController.html" title="class in io.micronaut.configuration.graphql">GraphiQLController</a></td>
 <td class="colLast">
 <div class="block">The GraphiQL controller serving the GraphiQL HTML page.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/GraphQLConfiguration.html" title="class in io.micronaut.configuration.graphql">GraphQLConfiguration</a></td>
 <td class="colLast">
 <div class="block">Configuration properties for GraphQL.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/GraphQLConfiguration.GraphiQLConfiguration.html" title="class in io.micronaut.configuration.graphql">GraphQLConfiguration.GraphiQLConfiguration</a></td>
 <td class="colLast">
 <div class="block">Configuration properties for GraphiQL.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/GraphQLController.html" title="class in io.micronaut.configuration.graphql">GraphQLController</a></td>
 <td class="colLast">
 <div class="block">The GraphQL controller handling GraphQL requests.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/GraphQLInvocationData.html" title="class in io.micronaut.configuration.graphql">GraphQLInvocationData</a></td>
 <td class="colLast">
 <div class="block">Represents the data to execute a GraphQL query.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/GraphQLRequestBody.html" title="class in io.micronaut.configuration.graphql">GraphQLRequestBody</a></td>
 <td class="colLast">
 <div class="block">Represents the request body input data to execute a GraphQL query.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/GraphQLResponseBody.html" title="class in io.micronaut.configuration.graphql">GraphQLResponseBody</a></td>
 <td class="colLast">
 <div class="block">Represents the response body output data of an executed GraphQL query.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><a href="../../../../io/micronaut/configuration/graphql/JacksonGraphQLJsonSerializer.html" title="class in io.micronaut.configuration.graphql">JacksonGraphQLJsonSerializer</a></td>
 <td class="colLast">
 <div class="block">The Jackson implementation for serializing and deserializing GraphQL objects.</div>

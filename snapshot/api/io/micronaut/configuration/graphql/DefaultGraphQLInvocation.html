@@ -121,7 +121,8 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvoca
 <dt><span class="simpleTagLabel">Author:</span></dt>
 <dd>Marcel Overdijk, Graeme Rocher, James Kleeh</dd>
 <dt><span class="seeLabel">See Also:</span></dt>
-<dd><code>GraphQL.executeAsync(ExecutionInput.Builder)</code></dd>
+<dd><a href="../../../../io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html#customize-graphql.ExecutionInput-io.micronaut.http.HttpRequest-"><code>GraphQLExecutionInputCustomizer.customize(ExecutionInput, HttpRequest)</code></a>, 
+<code>GraphQL.executeAsync(ExecutionInput.Builder)</code></dd>
 </dl>
 </li>
 </ul>
@@ -141,9 +142,8 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvoca
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/graphql/DefaultGraphQLInvocation.html#DefaultGraphQLInvocation-graphql.GraphQL-io.micronaut.configuration.graphql.GraphQLContextBuilder-io.micronaut.configuration.graphql.GraphQLRootBuilder-">DefaultGraphQLInvocation</a></span>(graphql.GraphQL&nbsp;graphQL,
-                        <a href="../../../../io/micronaut/configuration/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.configuration.graphql">GraphQLContextBuilder</a>&nbsp;graphQLContextBuilder,
-                        <a href="../../../../io/micronaut/configuration/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.configuration.graphql">GraphQLRootBuilder</a>&nbsp;graphQLRootBuilder)</code>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/graphql/DefaultGraphQLInvocation.html#DefaultGraphQLInvocation-graphql.GraphQL-io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer-">DefaultGraphQLInvocation</a></span>(graphql.GraphQL&nbsp;graphQL,
+                        <a href="../../../../io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html" title="interface in io.micronaut.configuration.graphql">GraphQLExecutionInputCustomizer</a>&nbsp;graphQLExecutionInputCustomizer)</code>
 <div class="block">Default constructor.</div>
 </td>
 </tr>
@@ -191,7 +191,7 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvoca
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="DefaultGraphQLInvocation-graphql.GraphQL-io.micronaut.configuration.graphql.GraphQLContextBuilder-io.micronaut.configuration.graphql.GraphQLRootBuilder-">
+<a name="DefaultGraphQLInvocation-graphql.GraphQL-io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer-">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -199,15 +199,12 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvoca
 <h4>DefaultGraphQLInvocation</h4>
 <pre>public&nbsp;DefaultGraphQLInvocation(graphql.GraphQL&nbsp;graphQL,
                                 @Nullable
-                                <a href="../../../../io/micronaut/configuration/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.configuration.graphql">GraphQLContextBuilder</a>&nbsp;graphQLContextBuilder,
-                                @Nullable
-                                <a href="../../../../io/micronaut/configuration/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.configuration.graphql">GraphQLRootBuilder</a>&nbsp;graphQLRootBuilder)</pre>
+                                <a href="../../../../io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html" title="interface in io.micronaut.configuration.graphql">GraphQLExecutionInputCustomizer</a>&nbsp;graphQLExecutionInputCustomizer)</pre>
 <div class="block">Default constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>graphQL</code> - the <code>GraphQL</code> instance</dd>
-<dd><code>graphQLContextBuilder</code> - the <a href="../../../../io/micronaut/configuration/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.configuration.graphql"><code>GraphQLContextBuilder</code></a> instance</dd>
-<dd><code>graphQLRootBuilder</code> - the <a href="../../../../io/micronaut/configuration/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.configuration.graphql"><code>GraphQLRootBuilder</code></a> instance</dd>
+<dd><code>graphQLExecutionInputCustomizer</code> - the <a href="../../../../io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html" title="interface in io.micronaut.configuration.graphql"><code>GraphQLExecutionInputCustomizer</code></a> instance</dd>
 </dl>
 </li>
 </ul>

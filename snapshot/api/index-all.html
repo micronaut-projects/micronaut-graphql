@@ -66,18 +66,18 @@
 <!--   -->
 </a></div>
 <!-- ========= END OF TOP NAVBAR ========= -->
-<div class="contentContainer"><a href="#I:B">B</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a name="I:B">
+<div class="contentContainer"><a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a name="I:C">
 <!--   -->
 </a>
-<h2 class="title">B</h2>
+<h2 class="title">C</h2>
 <dl>
-<dt><span class="memberNameLink"><a href="io/micronaut/configuration/graphql/GraphQLContextBuilder.html#build-io.micronaut.http.HttpRequest-">build(HttpRequest)</a></span> - Method in interface io.micronaut.configuration.graphql.<a href="io/micronaut/configuration/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.configuration.graphql">GraphQLContextBuilder</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/graphql/DefaultGraphQLExecutionInputCustomizer.html#customize-graphql.ExecutionInput-io.micronaut.http.HttpRequest-">customize(ExecutionInput, HttpRequest)</a></span> - Method in class io.micronaut.configuration.graphql.<a href="io/micronaut/configuration/graphql/DefaultGraphQLExecutionInputCustomizer.html" title="class in io.micronaut.configuration.graphql">DefaultGraphQLExecutionInputCustomizer</a></dt>
 <dd>
-<div class="block">Builds the GraphQL context object to pass to all data fetchers.</div>
+<div class="block">Customizes the GraphQL execution input.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/configuration/graphql/GraphQLRootBuilder.html#build-io.micronaut.http.HttpRequest-">build(HttpRequest)</a></span> - Method in interface io.micronaut.configuration.graphql.<a href="io/micronaut/configuration/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.configuration.graphql">GraphQLRootBuilder</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html#customize-graphql.ExecutionInput-io.micronaut.http.HttpRequest-">customize(ExecutionInput, HttpRequest)</a></span> - Method in interface io.micronaut.configuration.graphql.<a href="io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html" title="interface in io.micronaut.configuration.graphql">GraphQLExecutionInputCustomizer</a></dt>
 <dd>
-<div class="block">Builds the GraphQL root object to start the query execution on.</div>
+<div class="block">Customizes the GraphQL execution input.</div>
 </dd>
 </dl>
 <a name="I:D">
@@ -113,6 +113,12 @@
 <dd>
 <div class="block">The default GraphiQL template path.</div>
 </dd>
+<dt><a href="io/micronaut/configuration/graphql/DefaultGraphQLExecutionInputCustomizer.html" title="class in io.micronaut.configuration.graphql"><span class="typeNameLink">DefaultGraphQLExecutionInputCustomizer</span></a> - Class in <a href="io/micronaut/configuration/graphql/package-summary.html">io.micronaut.configuration.graphql</a></dt>
+<dd>
+<div class="block">The default implementation for customizing GraphQL execution inputs.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/graphql/DefaultGraphQLExecutionInputCustomizer.html#DefaultGraphQLExecutionInputCustomizer--">DefaultGraphQLExecutionInputCustomizer()</a></span> - Constructor for class io.micronaut.configuration.graphql.<a href="io/micronaut/configuration/graphql/DefaultGraphQLExecutionInputCustomizer.html" title="class in io.micronaut.configuration.graphql">DefaultGraphQLExecutionInputCustomizer</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/graphql/DefaultGraphQLExecutionResultHandler.html" title="class in io.micronaut.configuration.graphql"><span class="typeNameLink">DefaultGraphQLExecutionResultHandler</span></a> - Class in <a href="io/micronaut/configuration/graphql/package-summary.html">io.micronaut.configuration.graphql</a></dt>
 <dd>
 <div class="block">The default implementation for handling GraphQL <code>ExecutionResult</code>s.</div>
@@ -123,7 +129,7 @@
 <dd>
 <div class="block">The default implementation for invoking GraphQL requests.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/configuration/graphql/DefaultGraphQLInvocation.html#DefaultGraphQLInvocation-graphql.GraphQL-io.micronaut.configuration.graphql.GraphQLContextBuilder-io.micronaut.configuration.graphql.GraphQLRootBuilder-">DefaultGraphQLInvocation(GraphQL, GraphQLContextBuilder, GraphQLRootBuilder)</a></span> - Constructor for class io.micronaut.configuration.graphql.<a href="io/micronaut/configuration/graphql/DefaultGraphQLInvocation.html" title="class in io.micronaut.configuration.graphql">DefaultGraphQLInvocation</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/configuration/graphql/DefaultGraphQLInvocation.html#DefaultGraphQLInvocation-graphql.GraphQL-io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer-">DefaultGraphQLInvocation(GraphQL, GraphQLExecutionInputCustomizer)</a></span> - Constructor for class io.micronaut.configuration.graphql.<a href="io/micronaut/configuration/graphql/DefaultGraphQLInvocation.html" title="class in io.micronaut.configuration.graphql">DefaultGraphQLInvocation</a></dt>
 <dd>
 <div class="block">Default constructor.</div>
 </dd>
@@ -241,10 +247,6 @@
 <dd>
 <div class="block">Configuration properties for GraphiQL.</div>
 </dd>
-<dt><a href="io/micronaut/configuration/graphql/GraphQLContextBuilder.html" title="interface in io.micronaut.configuration.graphql"><span class="typeNameLink">GraphQLContextBuilder</span></a> - Interface in <a href="io/micronaut/configuration/graphql/package-summary.html">io.micronaut.configuration.graphql</a></dt>
-<dd>
-<div class="block">The GraphQL context builder that will be used to set the context object of the <code>ExecutionInput</code>.</div>
-</dd>
 <dt><a href="io/micronaut/configuration/graphql/GraphQLController.html" title="class in io.micronaut.configuration.graphql"><span class="typeNameLink">GraphQLController</span></a> - Class in <a href="io/micronaut/configuration/graphql/package-summary.html">io.micronaut.configuration.graphql</a></dt>
 <dd>
 <div class="block">The GraphQL controller handling GraphQL requests.</div>
@@ -252,6 +254,10 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/graphql/GraphQLController.html#GraphQLController-io.micronaut.configuration.graphql.GraphQLInvocation-io.micronaut.configuration.graphql.GraphQLExecutionResultHandler-io.micronaut.configuration.graphql.GraphQLJsonSerializer-">GraphQLController(GraphQLInvocation, GraphQLExecutionResultHandler, GraphQLJsonSerializer)</a></span> - Constructor for class io.micronaut.configuration.graphql.<a href="io/micronaut/configuration/graphql/GraphQLController.html" title="class in io.micronaut.configuration.graphql">GraphQLController</a></dt>
 <dd>
 <div class="block">Default constructor.</div>
+</dd>
+<dt><a href="io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html" title="interface in io.micronaut.configuration.graphql"><span class="typeNameLink">GraphQLExecutionInputCustomizer</span></a> - Interface in <a href="io/micronaut/configuration/graphql/package-summary.html">io.micronaut.configuration.graphql</a></dt>
+<dd>
+<div class="block">An interface for customizing the <code>ExecutionInput</code>.</div>
 </dd>
 <dt><a href="io/micronaut/configuration/graphql/GraphQLExecutionResultHandler.html" title="interface in io.micronaut.configuration.graphql"><span class="typeNameLink">GraphQLExecutionResultHandler</span></a> - Interface in <a href="io/micronaut/configuration/graphql/package-summary.html">io.micronaut.configuration.graphql</a></dt>
 <dd>
@@ -286,10 +292,6 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/graphql/GraphQLResponseBody.html#GraphQLResponseBody-java.util.Map-">GraphQLResponseBody(Map&lt;String, Object&gt;)</a></span> - Constructor for class io.micronaut.configuration.graphql.<a href="io/micronaut/configuration/graphql/GraphQLResponseBody.html" title="class in io.micronaut.configuration.graphql">GraphQLResponseBody</a></dt>
 <dd>
 <div class="block">Default constructor.</div>
-</dd>
-<dt><a href="io/micronaut/configuration/graphql/GraphQLRootBuilder.html" title="interface in io.micronaut.configuration.graphql"><span class="typeNameLink">GraphQLRootBuilder</span></a> - Interface in <a href="io/micronaut/configuration/graphql/package-summary.html">io.micronaut.configuration.graphql</a></dt>
-<dd>
-<div class="block">The GraphQL root builder that will be used to set the root object of the <code>ExecutionInput</code>.</div>
 </dd>
 </dl>
 <a name="I:H">
@@ -438,7 +440,7 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/graphql/GraphQLConfiguration.GraphiQLConfiguration.html#templatePath">templatePath</a></span> - Variable in class io.micronaut.configuration.graphql.<a href="io/micronaut/configuration/graphql/GraphQLConfiguration.GraphiQLConfiguration.html" title="class in io.micronaut.configuration.graphql">GraphQLConfiguration.GraphiQLConfiguration</a></dt>
 <dd>&nbsp;</dd>
 </dl>
-<a href="#I:B">B</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;</div>
+<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;</div>
 <!-- ======= START OF BOTTOM NAVBAR ====== -->
 <div class="bottomNav"><a name="navbar.bottom">
 <!--   -->
