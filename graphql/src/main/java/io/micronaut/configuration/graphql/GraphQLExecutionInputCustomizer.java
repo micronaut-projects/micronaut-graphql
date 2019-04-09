@@ -21,7 +21,8 @@ import io.micronaut.http.HttpRequest;
 import org.reactivestreams.Publisher;
 
 /**
- * An interface for customizing the {@link ExecutionInput}. A custom implementation can be provided to e.g. set a context or root object.
+ * An interface for customizing the {@link ExecutionInput}.
+ * A custom implementation can be provided to transform the execution input to e.g. set a context or root object.
  *
  * @author Marcel Overdijk
  * @since 1.0
