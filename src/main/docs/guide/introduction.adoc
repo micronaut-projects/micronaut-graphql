@@ -2,6 +2,11 @@ Micronaut supports https://graphql.org[GraphQL] via the `micronaut-graphql` modu
 
 === Release History
 
+==== 1.0.0
+
+* Removed the `GraphQLContextBuilder` and `GraphQLRootBuilder` in favour of a more generic `GraphQLExecutionInputCustomizer` capable of
+  transforming the `ExecutionInput` before execution.
+
 ==== 1.0.0.RC2
 
 * Upgrade to GraphQL Java `12.0`
