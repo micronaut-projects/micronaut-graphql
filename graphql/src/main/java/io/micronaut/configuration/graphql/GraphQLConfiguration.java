@@ -61,7 +61,7 @@ public class GraphQLConfiguration implements Toggleable {
 
     protected boolean enabled = DEFAULT_ENABLED;
     protected String path = DEFAULT_PATH;
-    protected GraphiQLConfiguration graphiQLConfiguration = new GraphiQLConfiguration();
+    protected GraphiQLConfiguration graphiql = new GraphiQLConfiguration();
 
     /**
      * Returns whether GraphQL is enabled.
@@ -87,8 +87,8 @@ public class GraphQLConfiguration implements Toggleable {
      *
      * @return the GraphiQL configuration
      */
-    public GraphiQLConfiguration getGraphiQLConfiguration() {
-        return graphiQLConfiguration;
+    public GraphiQLConfiguration getGraphiql() {
+        return graphiql;
     }
 
     /**

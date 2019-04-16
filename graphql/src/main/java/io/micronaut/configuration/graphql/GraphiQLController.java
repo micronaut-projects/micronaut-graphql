@@ -70,7 +70,7 @@ public class GraphiQLController {
      */
     public GraphiQLController(GraphQLConfiguration graphQLConfiguration, ResourceResolver resourceResolver) {
         this.graphQLConfiguration = graphQLConfiguration;
-        this.graphiQLConfiguration = graphQLConfiguration.getGraphiQLConfiguration();
+        this.graphiQLConfiguration = graphQLConfiguration.getGraphiql();
         this.resourceResolver = resourceResolver;
         // Load the raw template (variables are not yet resolved).
         // This means we fail fast if the template cannot be loaded resulting in a ConfigurationException at startup.
