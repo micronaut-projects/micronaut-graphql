@@ -77,6 +77,7 @@ class GraphQLConfigurationSpec extends Specification {
         context.containsBean(GraphQLInvocation)
         context.containsBean(GraphQLController)
         context.getBeanDefinition(GraphQLController).getAnnotation(Controller).getRequiredValue(String) == "/custom-graphql"
+        context.getBean(GraphQLConfiguration).path == "/custom-graphql"
 
         cleanup:
         context.close()

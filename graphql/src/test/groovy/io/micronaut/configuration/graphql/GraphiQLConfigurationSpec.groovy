@@ -69,6 +69,7 @@ class GraphiQLConfigurationSpec extends Specification {
         expect:
         context.containsBean(GraphiQLController)
         context.getBeanDefinition(GraphiQLController).getAnnotation(Controller).getRequiredValue(String) == "/custom-graphiql"
+        context.getBean(GraphQLConfiguration).graphiql.path == "/custom-graphiql"
 
         cleanup:
         context.close()
