@@ -2,6 +2,10 @@ Micronaut supports https://graphql.org[GraphQL] via the `micronaut-graphql` modu
 
 === Release History
 
+=== 1.0.1
+
+* Fixed loading GraphiQL configuration (https://github.com/micronaut-projects/micronaut-graphql/issues/6[#6]).
+
 ==== 1.0.0
 
 * Removed the `GraphQLContextBuilder` and `GraphQLRootBuilder` in favour of a more generic `GraphQLExecutionInputCustomizer` capable of
