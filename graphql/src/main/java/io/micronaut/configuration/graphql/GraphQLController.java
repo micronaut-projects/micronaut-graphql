@@ -19,25 +19,25 @@ package io.micronaut.configuration.graphql;
 import graphql.ExecutionResult;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.exceptions.HttpStatusException;
 import org.reactivestreams.Publisher;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
-import static io.micronaut.http.HttpHeaders.CONTENT_TYPE;
 import static io.micronaut.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static io.micronaut.http.MediaType.ALL;
-import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL;
+import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL_TYPE;
 import static io.micronaut.http.MediaType.APPLICATION_JSON;
+import static io.micronaut.http.MediaType.APPLICATION_JSON_TYPE;
 
 /**
  * The GraphQL controller handling GraphQL requests.
@@ -108,23 +108,23 @@ public class GraphQLController {
     /**
      * Handles GraphQL {@code POST} requests.
      *
-     * @param contentType   the content type
      * @param query         the GraphQL query
      * @param operationName the GraphQL operation name
      * @param variables     the GraphQL variables
      * @param body          the GraphQL request body
      * @param httpRequest   the HTTP request
      * @return the GraphQL response
-     * @throws IOException if there is an error
      */
     @Post(consumes = ALL, produces = APPLICATION_JSON, single = true)
     public Publisher<String> post(
-            @Nullable @Header(CONTENT_TYPE) String contentType,
             @Nullable @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
             @Nullable @QueryValue("variables") String variables,
             @Nullable @Body String body,
-            HttpRequest httpRequest) throws IOException {
+            HttpRequest httpRequest) {
+
+        Optional<MediaType> opt = httpRequest.getContentType();
+        MediaType contentType = opt.orElse(null);
 
         if (body == null) {
             body = "";
@@ -141,7 +141,7 @@ public class GraphQLController {
         //   "variables": { "myVariable": "someValue", ... }
         // }
 
-        if (APPLICATION_JSON.equals(contentType)) {
+        if (APPLICATION_JSON_TYPE.equals(contentType)) {
             GraphQLRequestBody request = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody.class);
             if (request.getQuery() == null) {
                 request.setQuery("");
@@ -161,7 +161,7 @@ public class GraphQLController {
         // * If the "application/graphql" Content-Type header is present,
         //   treat the HTTP POST body contents as the GraphQL query string.
 
-        if (APPLICATION_GRAPHQL.equals(contentType)) {
+        if (APPLICATION_GRAPHQL_TYPE.equals(contentType)) {
             return executeRequest(body, null, null, httpRequest);
         }
 
