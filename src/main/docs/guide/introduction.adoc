@@ -2,6 +2,10 @@ Micronaut supports https://graphql.org[GraphQL] via the `micronaut-graphql` modu
 
 === Release History
 
+=== 1.0.2
+
+* Fixed content type resolution (https://github.com/micronaut-projects/micronaut-graphql/issues/7[#7]).
+
 === 1.0.1
 
 * Fixed loading GraphiQL configuration (https://github.com/micronaut-projects/micronaut-graphql/issues/6[#6]).
