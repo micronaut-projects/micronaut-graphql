@@ -192,6 +192,23 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == [:]
     }
 
+    void "test post with application/json body with query json field with charset in content type header and capitalized content type"() {
+        given:
+        GraphQLRequestBody body = new GraphQLRequestBody()
+        body.query = "{ foo }"
+
+        when:
+        GraphQLResponseBody response = graphQLClient.postWithCapitalizedContentTypeAndCharset(body)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == body.query
+        executionInput.operationName == null
+        executionInput.variables == [:]
+    }
+
     void "test post with application/json body with query and operation name json fields"() {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody()
@@ -245,6 +262,7 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == [:]
     }
 
+
     @Client("/graphql")
     static interface GraphQLClient {
 
@@ -257,6 +275,10 @@ class GraphQLControllerSpec extends Specification {
         @Post
         @Header(name = CONTENT_TYPE, value = APPLICATION_JSON)
         GraphQLResponseBody post(@Body GraphQLRequestBody body)
+
+        @Post
+        @Header(name = CONTENT_TYPE, value = "Application/json; charset=utf-8")
+        GraphQLResponseBody postWithCapitalizedContentTypeAndCharset(@Body GraphQLRequestBody body)
 
         @Post
         @Header(name = CONTENT_TYPE, value = APPLICATION_GRAPHQL)

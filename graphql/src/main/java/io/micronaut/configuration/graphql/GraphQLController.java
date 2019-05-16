@@ -18,6 +18,7 @@ package io.micronaut.configuration.graphql;
 
 import graphql.ExecutionResult;
 import io.micronaut.core.async.publisher.Publishers;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -141,7 +142,7 @@ public class GraphQLController {
         //   "variables": { "myVariable": "someValue", ... }
         // }
 
-        if (APPLICATION_JSON.equals(contentType)) {
+        if (StringUtils.isNotEmpty(contentType) && contentType.toLowerCase().startsWith(APPLICATION_JSON)) {
             GraphQLRequestBody request = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody.class);
             if (request.getQuery() == null) {
                 request.setQuery("");
