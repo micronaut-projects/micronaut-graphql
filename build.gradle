@@ -106,6 +106,7 @@ configure(subprojects.findAll { !it.name.contains("example") }) { Project subpro
         testCompile "org.codehaus.groovy:groovy-test:${groovyVersion}"
         testCompile "org.objenesis:objenesis:${objenesisVersion}"
         testRuntime "ch.qos.logback:logback-classic:${logbackClassicVersion}"
+        testAnnotationProcessor "io.micronaut:micronaut-inject-java:${micronautVersion}"
     }
 
     groovydoc {

@@ -1,0 +1,39 @@
+type Query {
+
+    hello: String!
+
+    favoriteAnimal: Animal!
+
+    dog: Animal!
+
+    cat: Animal!
+
+    weather: String!
+
+    randomNumber: Int!
+
+}
+
+type Mutation {
+
+    createDog(name: String!): Dog!
+
+}
+
+interface Animal {
+    name: String!
+    prefixName(prefix: String!): String!
+    internalClassName: String!
+}
+
+type Dog implements Animal {
+    name: String!
+    prefixName(prefix: String!): String!
+    internalClassName: String!
+}
+
+type Cat implements Animal {
+    name: String!
+    prefixName(prefix: String!): String!
+    internalClassName: String!
+}
