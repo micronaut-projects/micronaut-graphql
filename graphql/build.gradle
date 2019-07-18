@@ -11,7 +11,7 @@ dependencies {
     testCompile("io.micronaut:micronaut-http-server-netty:${micronautVersion}")
     testCompile("io.micronaut:micronaut-inject-groovy:${micronautVersion}")
     testCompile("org.objenesis:objenesis:${objenesisVersion}")
-    testCompile("org.spockframework:spock-core:${micronautVersion}") {
+    testCompile("org.spockframework:spock-core:${spockVersion}") {
         exclude(group: "org.codehaus.groovy", module: "groovy-all")
     }
 }

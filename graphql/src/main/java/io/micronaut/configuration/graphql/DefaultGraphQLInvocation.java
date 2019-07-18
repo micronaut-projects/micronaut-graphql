@@ -22,9 +22,11 @@ import graphql.GraphQL;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.reactivex.Flowable;
+import org.dataloader.DataLoaderRegistry;
 import org.reactivestreams.Publisher;
 
 import javax.annotation.Nullable;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 /**
@@ -42,16 +44,22 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
     private final GraphQL graphQL;
     private final GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer;
+    private final Provider<DataLoaderRegistry> dataLoaderRegistry;
 
     /**
      * Default constructor.
      *
      * @param graphQL                         the {@link GraphQL} instance
      * @param graphQLExecutionInputCustomizer the {@link GraphQLExecutionInputCustomizer} instance
+     * @param dataLoaderRegistry              the {@link DataLoaderRegistry} instance
      */
-    public DefaultGraphQLInvocation(GraphQL graphQL, @Nullable GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer) {
+    public DefaultGraphQLInvocation(
+            GraphQL graphQL,
+            @Nullable GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
+            @Nullable Provider<DataLoaderRegistry> dataLoaderRegistry) {
         this.graphQL = graphQL;
         this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
+        this.dataLoaderRegistry = dataLoaderRegistry;
     }
 
     /**
@@ -59,11 +67,14 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      */
     @Override
     public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest) {
-        ExecutionInput executionInput = ExecutionInput.newExecutionInput()
+        ExecutionInput.Builder executionInputBuilder = ExecutionInput.newExecutionInput()
                 .query(invocationData.getQuery())
                 .operationName(invocationData.getOperationName())
-                .variables(invocationData.getVariables())
-                .build();
+                .variables(invocationData.getVariables());
+        if (dataLoaderRegistry != null) {
+            executionInputBuilder.dataLoaderRegistry(dataLoaderRegistry.get());
+        }
+        ExecutionInput executionInput = executionInputBuilder.build();
         return Flowable.fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest))
                 .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() ->
                         graphQL.executeAsync(customizedExecutionInput)));
