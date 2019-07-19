@@ -57,6 +57,23 @@ class GraphiQLConfigurationSpec extends Specification {
         context.close()
     }
 
+    void "test custom graphiql version"() {
+        given:
+        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
+        context.environment.addPropertySource(PropertySource.of(
+                ["graphql.graphiql.enabled": true,
+                 "graphql.graphiql.version"   : "0.13.1"]
+        ))
+        context.start()
+
+        expect:
+        context.containsBean(GraphiQLController)
+        context.getBean(GraphQLConfiguration).graphiql.version == "0.13.1"
+
+        cleanup:
+        context.close()
+    }
+
     void "test custom graphiql path"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)

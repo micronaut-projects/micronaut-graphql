@@ -113,6 +113,16 @@ public class GraphQLConfiguration implements Toggleable {
         public static final boolean DEFAULT_ENABLED = false;
 
         /**
+         * The configuration name of the GraphiQL version.
+         */
+        public static final String VERSION = PREFIX + ".version";
+
+        /**
+         * The default GraphiQL version.
+         */
+        public static final String DEFAULT_VERSION = "0.13.2";
+
+        /**
          * The configuration name of the GraphiQL path.
          */
         public static final String PATH = PREFIX + ".path";
@@ -153,6 +163,7 @@ public class GraphQLConfiguration implements Toggleable {
         public static final String DEFAULT_PAGE_TITLE = "GraphiQL";
 
         protected boolean enabled = DEFAULT_ENABLED;
+        protected String version = DEFAULT_VERSION;
         protected String path = DEFAULT_PATH;
         protected String templatePath = DEFAULT_TEMPLATE_PATH;
         protected Map<String, String> templateParameters = DEFAULT_TEMPLATE_PARAMETERS;
@@ -166,6 +177,15 @@ public class GraphQLConfiguration implements Toggleable {
         @Override
         public boolean isEnabled() {
             return enabled;
+        }
+
+        /**
+         * Returns the GraphiQL version.
+         *
+         * @return the GraphiQL version
+         */
+        public String getVersion() {
+            return version;
         }
 
         /**

@@ -103,6 +103,7 @@ public class GraphiQLController {
 
     private String resolvedTemplate() {
         Map<String, String> parameters = new HashMap<>();
+        parameters.put("graphiqlVersion", graphiQLConfiguration.getVersion());
         parameters.put("graphqlPath", graphQLConfiguration.getPath());
         parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
         if (graphiQLConfiguration.getTemplateParameters() != null) {
