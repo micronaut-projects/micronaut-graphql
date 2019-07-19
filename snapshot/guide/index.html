@@ -443,7 +443,7 @@ provided in the repository.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="https://github.com/graphql/graphiql/raw/master/resources/graphiql.png" alt="GraphiQL">
+<img src="../img/graphiql.png" alt="GraphiQL">
 </div>
 </div>
 <div class="paragraph">
@@ -458,10 +458,11 @@ provided in the repository.</p>
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
   graphiql:
     enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
-    path: /graphiql <i class="conum" data-value="2"></i><b>(2)</b>
-    template-path: classpath:graphiql/index.html <i class="conum" data-value="3"></i><b>(3)</b>
-    template-parameters: <i class="conum" data-value="4"></i><b>(4)</b>
-    page-title: GraphiQL <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+    version: 0.13.2 <i class="conum" data-value="2"></i><b>(2)</b>
+    path: /graphiql <i class="conum" data-value="3"></i><b>(3)</b>
+    template-path: classpath:graphiql/index.html <i class="conum" data-value="4"></i><b>(4)</b>
+    template-parameters: <i class="conum" data-value="5"></i><b>(5)</b>
+    page-title: GraphiQL <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -472,24 +473,28 @@ provided in the repository.</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configures the GraphiQL endpoint path. Default <code>/graphiql</code>.</td>
+<td>Configures the GraphiQL version. Default <code>0.13.2</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Configures the GraphiQL template path. Default <code>classpath:graphiql/index.html</code>.</td>
+<td>Configures the GraphiQL endpoint path. Default <code>/graphiql</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Configures the GraphiQL template parameters. Default none.</td>
+<td>Configures the GraphiQL template path. Default <code>classpath:graphiql/index.html</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Configures the GraphiQL template parameters. Default none.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
 <td>Configures the GraphiQL page title. Default <code>GraphiQL</code>.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The out of the box rendered Graph<em>i</em>QL page does not provide many customisations except the Graph<em>i</em>QL path and page title.
+<p>The out of the box rendered Graph<em>i</em>QL page does not provide many customisations except the Graph<em>i</em>QL version, path and page title.
 It also takes into account the <code>graphql.path</code> application property,
 to provide a seamless integration with the configured GraphQL endpoint path.</p>
 </div>
