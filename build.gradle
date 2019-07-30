@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-    id "io.spring.dependency-management" version "1.0.6.RELEASE" apply false
+    id "io.spring.dependency-management" version "1.0.8.RELEASE" apply false
     id "com.github.hierynomus.license" version "0.15.0" apply false
     id "com.github.johnrengelman.shadow" version "5.1.0" apply false
     id "net.ltgt.apt-eclipse" version "0.21" apply false
