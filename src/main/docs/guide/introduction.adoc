@@ -2,9 +2,16 @@ Micronaut supports https://graphql.org[GraphQL] via the `micronaut-graphql` modu
 
 === Release History
 
+=== 1.2.0
+
+* Provide user defined `DataLoaderRegistry` bean to `ExecutionInput` in `DefaultGraphQLInvocation`
+  (https://github.com/micronaut-projects/micronaut-graphql/issues/10[#10]).
+  This change requires Micronaut `1.2.0`.
+* Upgrade to GraphiQL `0.13.2` and made GraphiQL version configurable (https://github.com/micronaut-projects/micronaut-graphql/issues/11[#11]).
+
 === 1.1.0
 
-* Upgrade to GraphQL Java `13.0`
+* Upgrade to GraphQL Java `13.0`.
 
 === 1.0.2
 
@@ -21,7 +28,7 @@ Micronaut supports https://graphql.org[GraphQL] via the `micronaut-graphql` modu
 
 ==== 1.0.0.RC2
 
-* Upgrade to GraphQL Java `12.0`
+* Upgrade to GraphQL Java `12.0`.
 * Introduced a `GraphQLJsonSerializer` interface and default `JacksonGraphQLJsonSerializer` implementation capable of providing a customized
   Jackson `ObjectMapper`, or plugging in a completely different JSON serializer/deserializer library.
 
