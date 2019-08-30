@@ -8,6 +8,8 @@ This project includes integration between [Micronaut](http://micronaut.io) and [
 The Micronaut GraphQL integration can be used together with other GraphQL integration libraries like
 [GraphQL Java Tools](https://github.com/graphql-java-kickstart/graphql-java-tools) and [GraphQL SPQR](https://github.com/leangen/graphql-spqr).
 
+> **IMPORTANT NOTE**: Microanut GraphQL `1.2.0` requires Micronaut Core `1.2.0` as minimal dependency.
+
 ## Documentation ##
 
 See the [Documentation](https://micronaut-projects.github.io/micronaut-graphql/latest/guide/index.html) for more information.
