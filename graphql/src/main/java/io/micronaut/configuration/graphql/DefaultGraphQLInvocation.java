@@ -28,6 +28,7 @@ import org.reactivestreams.Publisher;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The default implementation for invoking GraphQL requests.
@@ -76,7 +77,14 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
         }
         ExecutionInput executionInput = executionInputBuilder.build();
         return Flowable.fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest))
-                .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() ->
-                        graphQL.executeAsync(customizedExecutionInput)));
+                .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() -> {
+                    try {
+                        return graphQL.executeAsync(customizedExecutionInput);
+                    } catch (Throwable e) {
+                        CompletableFuture future = new CompletableFuture();
+                        future.completeExceptionally(e);
+                        return future;
+                    }
+                }));
     }
 }
