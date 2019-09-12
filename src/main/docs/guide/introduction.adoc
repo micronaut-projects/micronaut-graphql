@@ -2,6 +2,12 @@ Micronaut supports https://graphql.org[GraphQL] via the `micronaut-graphql` modu
 
 === Release History
 
+=== 1.2.1
+
+* Fixed `DefaultGraphQLInvocation` not handling exceptions thrown by GraphQL's `executeAsync`
+  (https://github.com/micronaut-projects/micronaut-graphql/issues/21[#21]).
+* Added `defaultVariableEditorOpen: true` property to the GraphiQL template.
+
 === 1.2.0
 
 * Provide user defined `DataLoaderRegistry` bean to `ExecutionInput` in `DefaultGraphQLInvocation`
