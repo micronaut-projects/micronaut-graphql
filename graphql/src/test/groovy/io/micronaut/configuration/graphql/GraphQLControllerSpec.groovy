@@ -27,6 +27,7 @@ import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import io.micronaut.http.annotation.*
 import io.micronaut.http.client.annotation.Client
+import io.micronaut.http.client.multipart.MultipartBody
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
 import spock.lang.Specification
@@ -38,6 +39,8 @@ import java.util.concurrent.CompletableFuture
 import static io.micronaut.http.HttpHeaders.CONTENT_TYPE
 import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL
 import static io.micronaut.http.MediaType.APPLICATION_JSON
+import static io.micronaut.http.MediaType.MULTIPART_FORM_DATA
+import static io.micronaut.http.MediaType.TEXT_PLAIN_TYPE
 
 /**
  * @author Marcel Overdijk
@@ -245,6 +248,27 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == [:]
     }
 
+    void "test post with multipart body"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{ "query": "mutation ($file: Upload!) { singleUpload(file: $file) { id } }", "variables": { "file": null } }')
+                .addPart("map", '{ "0": ["variables.file"] }')
+                .addPart("0", "a.txt", TEXT_PLAIN_TYPE, "Alpha file content.".bytes)
+                .build()
+
+        when:
+        GraphQLResponseBody response = graphQLClient.post(body)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        // TODO.
+        and:
+        executionInput.query == body
+        executionInput.operationName == null
+        executionInput.variables == [:]
+    }
+
     @Client("/graphql")
     static interface GraphQLClient {
 
@@ -261,6 +285,10 @@ class GraphQLControllerSpec extends Specification {
         @Post
         @Header(name = CONTENT_TYPE, value = APPLICATION_GRAPHQL)
         GraphQLResponseBody post(@Body String body)
+
+        @Post
+        @Header(name = CONTENT_TYPE, value = MULTIPART_FORM_DATA)
+        GraphQLResponseBody post(@Body MultipartBody body)
     }
 
     @Factory

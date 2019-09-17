@@ -26,6 +26,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.exceptions.HttpStatusException;
+import io.micronaut.http.server.multipart.MultipartBody;
 import org.reactivestreams.Publisher;
 
 import javax.annotation.Nullable;
@@ -33,11 +34,13 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
+import static io.micronaut.http.HttpStatus.NOT_IMPLEMENTED;
 import static io.micronaut.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static io.micronaut.http.MediaType.ALL;
 import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL_TYPE;
 import static io.micronaut.http.MediaType.APPLICATION_JSON;
 import static io.micronaut.http.MediaType.APPLICATION_JSON_TYPE;
+import static io.micronaut.http.MediaType.MULTIPART_FORM_DATA;
 
 /**
  * The GraphQL controller handling GraphQL requests.
@@ -166,6 +169,28 @@ public class GraphQLController {
         }
 
         throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Could not process GraphQL request");
+    }
+
+    /**
+     * Handles multipart GraphQL {@code POST} requests.
+     *
+     * @param body          the multipart request body
+     * @param httpRequest   the HTTP request
+     * @return the GraphQL response
+     */
+    @Post(consumes = MULTIPART_FORM_DATA, produces = APPLICATION_JSON, single = true)
+    public Publisher<String> post(
+            @Body MultipartBody body,
+            HttpRequest httpRequest) {
+
+        // https://github.com/jaydenseric/graphql-multipart-request-spec
+        //
+        // If the "multipart/form-data" Content-Type header is present,
+        // implement the GraphQL multipart request specification for uploading files.
+
+        // TODO.
+
+        throw new HttpStatusException(NOT_IMPLEMENTED, "Could not process GraphQL request");
     }
 
     private Map<String, Object> convertVariablesJson(String jsonMap) {
