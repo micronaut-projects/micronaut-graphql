@@ -278,16 +278,13 @@ class GraphQLControllerSpec extends Specification {
         @Post(value = "{?query,operationName,variables}")
         GraphQLResponseBody post(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
 
-        @Post
-        @Header(name = CONTENT_TYPE, value = APPLICATION_JSON)
+        @Post(produces = APPLICATION_JSON)
         GraphQLResponseBody post(@Body GraphQLRequestBody body)
 
-        @Post
-        @Header(name = CONTENT_TYPE, value = APPLICATION_GRAPHQL)
+        @Post(produces = APPLICATION_GRAPHQL)
         GraphQLResponseBody post(@Body String body)
 
-        @Post
-        @Header(name = CONTENT_TYPE, value = MULTIPART_FORM_DATA)
+        @Post(produces = MULTIPART_FORM_DATA)
         GraphQLResponseBody post(@Body MultipartBody body)
     }
 
