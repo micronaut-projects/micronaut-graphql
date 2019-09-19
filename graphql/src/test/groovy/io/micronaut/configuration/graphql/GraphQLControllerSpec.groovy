@@ -35,7 +35,6 @@ import javax.annotation.Nullable
 import javax.inject.Singleton
 import java.util.concurrent.CompletableFuture
 
-import static io.micronaut.http.HttpHeaders.CONTENT_TYPE
 import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL
 import static io.micronaut.http.MediaType.APPLICATION_JSON
 
@@ -254,12 +253,10 @@ class GraphQLControllerSpec extends Specification {
         @Post(value = "{?query,operationName,variables}")
         GraphQLResponseBody post(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
 
-        @Post
-        @Header(name = CONTENT_TYPE, value = APPLICATION_JSON)
+        @Post(produces = APPLICATION_JSON)
         GraphQLResponseBody post(@Body GraphQLRequestBody body)
 
-        @Post
-        @Header(name = CONTENT_TYPE, value = APPLICATION_GRAPHQL)
+        @Post(produces = APPLICATION_GRAPHQL)
         GraphQLResponseBody post(@Body String body)
     }
 
