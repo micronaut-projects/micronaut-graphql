@@ -62,6 +62,7 @@ public class GraphQLConfiguration implements Toggleable {
     protected boolean enabled = DEFAULT_ENABLED;
     protected String path = DEFAULT_PATH;
     protected GraphiQLConfiguration graphiql = new GraphiQLConfiguration();
+    protected GraphQLWsConfiguration graphqlWs = new GraphQLWsConfiguration();
 
     /**
      * Returns whether GraphQL is enabled.
@@ -83,12 +84,76 @@ public class GraphQLConfiguration implements Toggleable {
     }
 
     /**
+     * Returns the GraphQL websocket configuration.
+     *
+     * @return the GraphQL websocket configuration
+     */
+    public GraphQLWsConfiguration getGraphqlWs() {
+        return graphqlWs;
+    }
+
+    /**
      * Returns the GraphiQL configuration.
      *
      * @return the GraphiQL configuration
      */
     public GraphiQLConfiguration getGraphiql() {
         return graphiql;
+    }
+
+
+    /**
+     * Configuration properties for GraphiQL.
+     */
+    @ConfigurationProperties(GraphQLWsConfiguration.PREFIX)
+    public static class GraphQLWsConfiguration implements Toggleable {
+
+        /**
+         * The prefix to use for all GraphQL websocket configuration properties.
+         */
+        public static final String PREFIX = "graphql-ws";
+
+        /**
+         * The configuration name whether the GraphQL websocket is enabled.
+         */
+        public static final String ENABLED = GraphQLConfiguration.PREFIX + "." + PREFIX + ".enabled";
+
+        /**
+         * The default enabled value.
+         */
+        public static final boolean DEFAULT_ENABLED = false;
+
+        /**
+         * The configuration name of the GraphQL websocket path.
+         */
+        public static final String PATH = PREFIX + ".path";
+
+        /**
+         * The default GraphQL websocket path.
+         */
+        public static final String DEFAULT_PATH = "/graphql-ws";
+
+        protected boolean enabled = DEFAULT_ENABLED;
+        protected String path = DEFAULT_PATH;
+
+        /**
+         * Returns whether GraphQL websocket is enabled.
+         *
+         * @return whether GraphQL websocket is enabled
+         */
+        @Override
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        /**
+         * Returns the GraphQL websocket path.
+         *
+         * @return the GraphQL websocket path
+         */
+        public String getPath() {
+            return path;
+        }
     }
 
     /**
