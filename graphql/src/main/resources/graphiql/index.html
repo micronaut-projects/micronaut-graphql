@@ -28,6 +28,8 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/graphiql/${graphiqlVersion}/graphiql.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/graphiql/${graphiqlVersion}/graphiql.min.js"></script>
+    <script src="//unpkg.com/subscriptions-transport-ws@0.8.2/browser/client.js"></script>
+    <script src="//unpkg.com/graphiql-subscriptions-fetcher@0.0.2/browser/client.js"></script>
 
 </head>
 <body>
@@ -107,6 +109,12 @@
             }
         });
     }
+    let fetcher = graphQLFetcher;
+    if('${graphqlWsPath}' !== ''){
+      let fullWsPath = 'ws://' + window.location.hostname + ':' + window.location.port +'${graphqlWsPath}';
+      let subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(fullWsPath, { reconnect: true });
+      fetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
+    }
 
     // Render <GraphiQL /> into the body.
     // See the README in the top level of this module to learn more about
@@ -114,7 +122,7 @@
     // additional child elements.
     ReactDOM.render(
         React.createElement(GraphiQL, {
-            fetcher: graphQLFetcher,
+            fetcher: fetcher,
             query: parameters.query,
             variables: parameters.variables,
             operationName: parameters.operationName,
