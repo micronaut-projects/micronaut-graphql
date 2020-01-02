@@ -115,7 +115,7 @@ public class GraphQLController {
      * @param httpRequest   the HTTP request
      * @return the GraphQL response
      */
-    @Post(consumes = ALL, produces = APPLICATION_JSON, single = true)
+    @Post(consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_GRAPHQL}, produces = APPLICATION_JSON, single = true)
     public Publisher<String> post(
             @Nullable @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
