@@ -1,0 +1,25 @@
+schema {
+    query: QueryRoot
+    mutation: MutationRoot
+    subscription: SubscriptionRoot
+}
+
+type Values {
+    old: [String!]!
+    current: String!
+}
+
+type QueryRoot {
+    foo: String!
+    error: String!
+}
+
+type MutationRoot {
+    change (
+        newValue: String!
+    ): Values
+}
+
+type SubscriptionRoot {
+    counter: Int!
+}
