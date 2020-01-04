@@ -16,6 +16,7 @@
 
 package io.micronaut.configuration.graphql
 
+import graphql.ExecutionInput
 import graphql.GraphQL
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
@@ -23,7 +24,10 @@ import graphql.schema.idl.*
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Requires
+import io.micronaut.core.async.publisher.Publishers
+import io.micronaut.http.HttpRequest
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.websocket.RxWebSocketClient
 import io.reactivex.Flowable
@@ -148,6 +152,29 @@ class GraphQLWsControllerSpec extends Specification {
         completeResponse.type == "complete"
     }
 
+    void "test customizer using http request in mutation over websocket"() {
+        given:
+        GraphQLRequestBody body = new GraphQLRequestBody();
+        body.query = "mutation{ change( newValue: \"\$[path]\" ){ current old }}"
+        GraphQLWsRequest request = new GraphQLWsRequest()
+        request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
+        request.setId("change_id")
+        request.setPayload(body)
+
+        when:
+        graphQLWsClient.send(request)
+
+        then:
+        GraphQLWsResponse response = graphQLWsClient.nextResponse()
+        response.getPayload().getSpecification().get("data") == [change: [current: "/graphql-ws", old: ["Value_A"]]]
+        GraphQLWsResponse completeResponse = graphQLWsClient.nextResponse()
+
+        and:
+        response.id == "change_id"
+        response.type == "data"
+        completeResponse.type == "complete"
+    }
+
     void "test subscription over websocket, stop after two"() {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody()
@@ -208,6 +235,24 @@ class GraphQLWsControllerSpec extends Specification {
         response3.type == "data"
         response4.id == "counter_id"
         response4.type == "complete"
+    }
+}
+
+@Singleton
+@Primary
+@Requires(property = "spec.name", value = "GraphQLWsControllerSpec")
+class SetValueFromRequestInputCustomizer implements GraphQLExecutionInputCustomizer {
+    private final static String PATH_PLACEHOLDER = "\$[path]"
+
+    @Override
+    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest) {
+        if (executionInput.getQuery().contains(PATH_PLACEHOLDER)) {
+            return Publishers.just(executionInput.transform({
+                builder -> builder.query(executionInput.getQuery().replace(PATH_PLACEHOLDER, httpRequest.getPath()))
+            }))
+        } else {
+            return Publishers.just(executionInput)
+        }
     }
 }
 

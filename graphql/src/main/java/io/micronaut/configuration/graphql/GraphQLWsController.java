@@ -19,6 +19,7 @@ package io.micronaut.configuration.graphql;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.http.HttpRequest;
 import io.micronaut.websocket.CloseReason;
 import io.micronaut.websocket.WebSocketSession;
 import io.micronaut.websocket.annotation.*;
@@ -43,6 +44,7 @@ import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.*;
         StringUtils.FALSE)
 public class GraphQLWsController {
 
+    static final String HTTP_REQUEST_KEY = "httpRequest";
     private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsController.class);
 
     private final GraphQLWsMessageHandler messageHandler;
@@ -64,6 +66,21 @@ public class GraphQLWsController {
         this.graphQLJsonSerializer = graphQLJsonSerializer;
         errorMessage = new GraphQLWsResponse(GQL_CONNECTION_ERROR);
     }
+
+    /**
+     * Called when the connection is opened. We store the original request, since it might be needed for the
+     * GraphQLInvocation.
+     *
+     * @param session WebSocketSession
+     * @param request HttpRequest
+     */
+    @OnOpen
+    @SuppressWarnings("rawtypes")
+    public void onOpen(WebSocketSession session, HttpRequest request) {
+        session.put(HTTP_REQUEST_KEY, request);
+        LOG.info("Opened websocket connection with id {}", session.getId());
+    }
+
 
     /**
      * Called on every message received from the client.
