@@ -133,8 +133,30 @@ public class GraphQLConfiguration implements Toggleable {
          */
         public static final String DEFAULT_PATH = "/graphql-ws";
 
+        /**
+         * The configuration name of the GraphQL keep alive enabled path..
+         */
+        public static final String KEEP_ALIVE_ENABLED = PREFIX + ".keep-alive-enabled";
+
+        /**
+         * The default keep alive enabled value.
+         */
+        public static final boolean DEFAULT_KEEP_ALIVE_ENABLED = true;
+
+        /**
+         * The configuration name of the GraphQL keep alive interval path..
+         */
+        public static final String KEEP_ALIVE_INTERVAL = PREFIX + ".keep-alive-interval";
+
+        /**
+         * The default keep alive interval value.
+         */
+        public static final String DEFAULT_KEEP_ALIVE_INTERVAL = "15s";
+
         protected boolean enabled = DEFAULT_ENABLED;
         protected String path = DEFAULT_PATH;
+        protected boolean keepAliveEnabled = DEFAULT_KEEP_ALIVE_ENABLED;
+        protected String keepAliveInterval = DEFAULT_KEEP_ALIVE_INTERVAL;
 
         /**
          * Returns whether GraphQL websocket is enabled.
@@ -153,6 +175,24 @@ public class GraphQLConfiguration implements Toggleable {
          */
         public String getPath() {
             return path;
+        }
+
+        /**
+         * Returns whether GraphQL websocket keep alive is enabled.
+         *
+         * @return whether GraphQL websocket keep alive is enabled
+         */
+        public boolean isKeepAliveEnabled() {
+            return keepAliveEnabled;
+        }
+
+        /**
+         * Returns the GraphQL keep alive interval in seconds.
+         *
+         * @return the GraphQL keep alive interval in seconds
+         */
+        public String getKeepAliveInterval() {
+            return keepAliveInterval;
         }
     }
 

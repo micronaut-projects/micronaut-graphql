@@ -58,7 +58,7 @@ class GraphQLWsControllerSpec extends Specification {
         graphQLWsClient = wsClient.connect(GraphQLWsClient, "/graphql-ws").blockingFirst();
     }
 
-    void "test init connection"() {
+    void "test init connection, keep alive off"() {
         given:
         GraphQLWsRequest request = new GraphQLWsRequest()
         request.setType(GraphQLWsRequest.ClientType.GQL_CONNECTION_INIT.getType())
@@ -69,6 +69,8 @@ class GraphQLWsControllerSpec extends Specification {
         then:
         GraphQLWsResponse response = graphQLWsClient.nextResponse()
         response.getType() == GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK.getType()
+        GraphQLWsResponse noResponse = graphQLWsClient.nextResponse()
+        noResponse == null
 
         and:
         response.id == null
@@ -253,82 +255,5 @@ class SetValueFromRequestInputCustomizer implements GraphQLExecutionInputCustomi
         } else {
             return Publishers.just(executionInput)
         }
-    }
-}
-
-@Factory
-class GraphQLWsFactory {
-
-    @Bean
-    @Singleton
-    @Requires(property = "spec.name", value = "GraphQLWsControllerSpec")
-    GraphQL graphQL() {
-        SchemaParser schemaParser = new SchemaParser()
-        SchemaGenerator schemaGenerator = new SchemaGenerator()
-
-        TypeDefinitionRegistry typeRegistry = schemaParser.parse(new InputStreamReader(
-                getClass().getResourceAsStream("/websocket.graphql")))
-
-        RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
-                .type(TypeRuntimeWiring.newTypeWiring("QueryRoot").dataFetcher("foo", new Foo()))
-                .type(TypeRuntimeWiring.newTypeWiring("QueryRoot").dataFetcher("error", new Error()))
-                .type(TypeRuntimeWiring.newTypeWiring("MutationRoot").dataFetcher("change", new Change()))
-                .type(TypeRuntimeWiring.newTypeWiring("SubscriptionRoot").dataFetcher("counter", new Counter()))
-                .build()
-
-        return GraphQL
-                .newGraphQL(schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring))
-                .build()
-    }
-}
-
-class Foo implements DataFetcher<String> {
-    @Override
-    String get(DataFetchingEnvironment environment) throws Exception {
-        return "bar"
-    }
-}
-
-class Error implements DataFetcher<String> {
-    @Override
-    String get(DataFetchingEnvironment environment) throws Exception {
-        throw new InstantiationException("No error present")
-    }
-}
-
-class Change implements DataFetcher<Values> {
-    private Values values = new Values()
-
-    @Override
-    Values get(DataFetchingEnvironment environment) throws Exception {
-        String newValue = environment.getArgument("newValue")
-        return values.change(newValue)
-    }
-
-    class Values {
-        private List<String> old = []
-        private String current = "Value_A"
-
-        List<String> getOld() {
-            return old
-        }
-
-        String getCurrent() {
-            return current
-        }
-
-        Values change(String current) {
-            old.add(this.current)
-            this.current = current
-            return this
-        }
-    }
-}
-
-class Counter implements DataFetcher<Publisher<Integer>> {
-    @Override
-    Publisher<Integer> get(DataFetchingEnvironment environment) throws Exception {
-        return Flowable.range(0, 3)
-                .delay(1L, TimeUnit.SECONDS)
     }
 }

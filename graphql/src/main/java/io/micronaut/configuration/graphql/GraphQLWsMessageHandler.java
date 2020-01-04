@@ -12,8 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Singleton;
 
 import static io.micronaut.configuration.graphql.GraphQLWsController.HTTP_REQUEST_KEY;
-import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;
-import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.GQL_ERROR;
+import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.*;
 
 /**
  * Handles the messages send over the websocket.
@@ -26,6 +25,7 @@ public class GraphQLWsMessageHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsMessageHandler.class);
 
+    private final GraphQLConfiguration.GraphQLWsConfiguration graphQLWsConfiguration;
     private final GraphQLWsState state;
     private final GraphQLInvocation graphQLInvocation;
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
@@ -34,15 +34,19 @@ public class GraphQLWsMessageHandler {
     /**
      * Default constructor.
      *
+     * @param graphQLConfiguration          the {@link GraphQLConfiguration} instance
      * @param state                         the {@link GraphQLWsState} instance
      * @param graphQLInvocation             the {@link GraphQLInvocation} instance
      * @param graphQLExecutionResultHandler the {@link GraphQLExecutionResultHandler} instance
      * @param responseSender                the {@link GraphQLWsSender} instance
      */
-    public GraphQLWsMessageHandler(GraphQLWsState state,
+    public GraphQLWsMessageHandler(
+            GraphQLConfiguration graphQLConfiguration,
+            GraphQLWsState state,
             GraphQLInvocation graphQLInvocation,
             GraphQLExecutionResultHandler graphQLExecutionResultHandler,
             GraphQLWsSender responseSender) {
+        this.graphQLWsConfiguration = graphQLConfiguration.getGraphqlWs();
         this.state = state;
         this.graphQLInvocation = graphQLInvocation;
         this.graphQLExecutionResultHandler = graphQLExecutionResultHandler;
@@ -54,13 +58,13 @@ public class GraphQLWsMessageHandler {
      *
      * @param request Message from client
      * @param session WebSocketSession
-     * @return Publisher<String>
+     * @return Publisher<GraphQLWsResponse>
      */
     public Publisher<GraphQLWsResponse> handleMessage(GraphQLWsRequest request,
             WebSocketSession session) {
         switch (request.getType()) {
             case GQL_CONNECTION_INIT:
-                return Flowable.just(new GraphQLWsResponse(GQL_CONNECTION_ACK));
+                return init(session);
             case GQL_START:
                 return startOperation(request, session);
             case GQL_STOP:
@@ -69,6 +73,16 @@ public class GraphQLWsMessageHandler {
                 return state.terminateSession(session);
             default:
                 throw new IllegalStateException("Unexpected value: " + request.getType());
+        }
+    }
+
+    private Publisher<GraphQLWsResponse> init(WebSocketSession session) {
+        if (graphQLWsConfiguration.keepAliveEnabled) {
+            state.activateSession(session);
+            return Flowable.just(new GraphQLWsResponse(GQL_CONNECTION_ACK),
+                                 new GraphQLWsResponse(GQL_CONNECTION_KEEP_ALIVE));
+        } else {
+            return Flowable.just(new GraphQLWsResponse(GQL_CONNECTION_ACK));
         }
     }
 

@@ -1,0 +1,7 @@
+graphql:
+  graphql-ws:
+    enabled: true
+    path: /ka-ws
+    keep-alive-enabled: true
+    keep-alive-interval: 1s
+  factory: false

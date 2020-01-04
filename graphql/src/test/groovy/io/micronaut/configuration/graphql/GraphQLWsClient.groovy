@@ -9,7 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.TimeUnit
 
-@ClientWebSocket(uri = "/graphql-ws", subprotocol = "graphql-ws")
+@ClientWebSocket(uri = "\${graphql.graphql-ws.path:/graphql-ws}", subprotocol = "graphql-ws")
 abstract class GraphQLWsClient implements AutoCloseable {
 
     private BlockingQueue<GraphQLWsResponse> responses = new ArrayBlockingQueue<>(10)
@@ -32,8 +32,7 @@ abstract class GraphQLWsClient implements AutoCloseable {
     abstract void send(String message);
 
     GraphQLWsResponse nextResponse() {
-        GraphQLWsResponse response = responses.poll(10, TimeUnit.SECONDS)
-        assert response != null: "Did not receive next message within 10 seconds"
+        GraphQLWsResponse response = responses.poll(5, TimeUnit.SECONDS)
         return response
     }
 }

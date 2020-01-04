@@ -7,6 +7,7 @@ import org.reactivestreams.Subscription;
 
 import javax.inject.Singleton;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 
 import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.GQL_COMPLETE;
@@ -20,8 +21,28 @@ import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.GQ
 @Singleton
 class GraphQLWsState {
 
+    private ConcurrentSkipListSet<String> activeSessions = new ConcurrentSkipListSet<>();
     private ConcurrentHashMap<String, ConcurrentHashMap<String, Subscription>> activeOperations =
             new ConcurrentHashMap<>();
+
+    /**
+     * Sests the session to active.
+     *
+     * @param session WebSocketSession
+     */
+    void activateSession(WebSocketSession session) {
+        activeSessions.add(session.getId());
+    }
+
+    /**
+     * Whether the session is considered active, which means the client called init but not yet terminate.
+     *
+     * @param session WebSocketSession
+     * @return whether the session is active
+     */
+    boolean isActive(WebSocketSession session) {
+        return activeSessions.contains(session.getId());
+    }
 
     /**
      * Stop and remove all subscriptions for the session.
@@ -30,6 +51,7 @@ class GraphQLWsState {
      * @return Publisher<GraphQLWsOperationMessage>
      */
     Publisher<GraphQLWsResponse> terminateSession(WebSocketSession session) {
+        activeSessions.remove(session.getId());
         if (activeOperations.containsKey(session.getId())) {
             for (Subscription subscription : activeOperations.get(session.getId()).values()) {
                 subscription.cancel();

@@ -52,7 +52,13 @@ class GraphQLWsConfigurationSpec extends Specification {
         expect:
         context.containsBean(GraphQLWsController)
         context.getBeanDefinition(GraphQLWsController).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/graphql-ws"
-        context.getBean(GraphQLConfiguration).graphqlWs.path == "/graphql-ws"
+        GraphQLConfiguration.GraphQLWsConfiguration wsConfiguration = context.getBean(GraphQLConfiguration).graphqlWs
+        wsConfiguration.path == "/graphql-ws"
+
+        and:
+        wsConfiguration.enabled
+        wsConfiguration.keepAliveEnabled
+        wsConfiguration.keepAliveInterval == "15s"
 
         cleanup:
         context.close()
@@ -86,6 +92,36 @@ class GraphQLWsConfigurationSpec extends Specification {
 
         expect:
         !context.containsBean(GraphQLWsController)
+
+        cleanup:
+        context.close()
+    }
+
+    void "test graphql websocket keepalive disabled"() {
+        given:
+        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
+        context.environment.addPropertySource(PropertySource.of(
+                ["graphql.graphql-ws.keep-alive-enabled": false]
+        ))
+        context.start()
+
+        expect:
+        !context.getBean(GraphQLConfiguration).graphqlWs.enabled
+
+        cleanup:
+        context.close()
+    }
+
+    void "test graphql websocket keepalive different interval"() {
+        given:
+        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
+        context.environment.addPropertySource(PropertySource.of(
+                ["graphql.graphql-ws.keep-alive-interval": "1s"]
+        ))
+        context.start()
+
+        expect:
+        context.getBean(GraphQLConfiguration).graphqlWs.keepAliveInterval == "1s"
 
         cleanup:
         context.close()
