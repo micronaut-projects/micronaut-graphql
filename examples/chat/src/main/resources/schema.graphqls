@@ -1,0 +1,29 @@
+schema {
+    query: QueryRoot
+    mutation: MutationRoot
+    subscription: SubscriptionRoot
+}
+
+scalar DateTime
+
+type QueryRoot {
+    messages (
+        after: DateTime
+    ): [ChatMessage!]!
+}
+
+type MutationRoot {
+    chat (
+        text: String!
+    ): ChatMessage!
+}
+
+type SubscriptionRoot {
+    stream: ChatMessage!
+}
+
+type ChatMessage {
+    from: String!
+    text: String!
+    time: DateTime!
+}
