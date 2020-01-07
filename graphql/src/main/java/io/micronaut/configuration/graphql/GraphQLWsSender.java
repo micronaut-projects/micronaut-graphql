@@ -134,8 +134,9 @@ public class GraphQLWsSender {
         @Override
         protected void doOnComplete() {
             LOG.info("Completed results for operation {} in session {}", operationId, session.getId());
-            send(new GraphQLWsResponse(GQL_COMPLETE, operationId));
-            state.removeCompleted(operationId, session);
+            if (state.removeCompleted(operationId, session)) {
+                send(new GraphQLWsResponse(GQL_COMPLETE, operationId));
+            }
         }
 
         private void convertAndSend(ExecutionResult executionResult) {

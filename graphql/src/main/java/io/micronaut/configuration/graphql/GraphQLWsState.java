@@ -86,13 +86,9 @@ class GraphQLWsState {
         if (operationId != null && activeOperations.containsKey(sessionId) &&
                 activeOperations.get(sessionId).containsKey(operationId)) {
             activeOperations.get(sessionId).get(operationId).cancel();
-            activeOperations.get(sessionId).remove(operationId);
-            if (activeOperations.get(sessionId).isEmpty()) {
-                activeOperations.remove(sessionId);
-            }
-            return Flowable.just(new GraphQLWsResponse(GQL_COMPLETE, operationId));
         }
-        return Flowable.empty();
+        return removeCompleted(operationId, session) ?
+                Flowable.just(new GraphQLWsResponse(GQL_COMPLETE, operationId)) : Flowable.empty();
     }
 
     /**
@@ -100,8 +96,9 @@ class GraphQLWsState {
      *
      * @param operationId String
      * @param session     WebSocketSession
+     * @return whether the operation was removed
      */
-    void removeCompleted(String operationId, WebSocketSession session) {
+    synchronized boolean removeCompleted(String operationId, WebSocketSession session) {
         String sessionId = session.getId();
         if (operationId != null && activeOperations.containsKey(sessionId) &&
                 activeOperations.get(sessionId).containsKey(operationId)) {
@@ -109,6 +106,9 @@ class GraphQLWsState {
             if (activeOperations.get(sessionId).isEmpty()) {
                 activeOperations.remove(sessionId);
             }
+            return true;
+        } else {
+            return false;
         }
     }
 
