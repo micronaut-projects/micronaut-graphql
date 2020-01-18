@@ -2,6 +2,10 @@ Micronaut supports https://graphql.org[GraphQL] via the `micronaut-graphql` modu
 
 === Release History
 
+=== 1.2.2
+
+* Upgrade to GraphQL Java `14.0` (https://github.com/micronaut-projects/micronaut-graphql/issues/30[#30]).
+
 === 1.2.1
 
 * Fixed `DefaultGraphQLInvocation` not handling exceptions thrown by GraphQL's `executeAsync`
