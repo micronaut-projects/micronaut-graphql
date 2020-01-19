@@ -6,6 +6,7 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
 import javax.inject.Singleton;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
@@ -22,11 +23,10 @@ import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.GQ
 class GraphQLWsState {
 
     private ConcurrentSkipListSet<String> activeSessions = new ConcurrentSkipListSet<>();
-    private ConcurrentHashMap<String, ConcurrentHashMap<String, Subscription>> activeOperations =
-            new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, GraphQLWsOperations> activeOperations = new ConcurrentHashMap<>();
 
     /**
-     * Sests the session to active.
+     * Sets the session to active.
      *
      * @param session WebSocketSession
      */
@@ -45,6 +45,15 @@ class GraphQLWsState {
     }
 
     /**
+     * Sets the GraphQLWsOperations for the client.
+     *
+     * @param session WebSocketSession
+     */
+    void init(WebSocketSession session) {
+        activeOperations.putIfAbsent(session.getId(), new GraphQLWsOperations());
+    }
+
+    /**
      * Stop and remove all subscriptions for the session.
      *
      * @param session WebSocketSession
@@ -52,12 +61,8 @@ class GraphQLWsState {
      */
     Publisher<GraphQLWsResponse> terminateSession(WebSocketSession session) {
         activeSessions.remove(session.getId());
-        if (activeOperations.containsKey(session.getId())) {
-            for (Subscription subscription : activeOperations.get(session.getId()).values()) {
-                subscription.cancel();
-            }
-            activeOperations.remove(session.getId());
-        }
+        Optional.ofNullable(activeOperations.remove(session.getId()))
+                .ifPresent(GraphQLWsOperations::cancelAll);
         return Flowable.empty();
     }
 
@@ -69,8 +74,10 @@ class GraphQLWsState {
      * @param starter     Function to start the subscription, will only be called if not already present
      */
     void saveOperation(String operationId, WebSocketSession session, Function<String, Subscription> starter) {
-        activeOperations.putIfAbsent(session.getId(), new ConcurrentHashMap<>());
-        activeOperations.get(session.getId()).computeIfAbsent(operationId, starter);
+        Optional.ofNullable(session)
+                .map(WebSocketSession::getId)
+                .map(id -> activeOperations.get(id))
+                .ifPresent(graphQLWsOperations -> graphQLWsOperations.addSubscription(operationId, starter));
     }
 
     /**
@@ -83,12 +90,15 @@ class GraphQLWsState {
     Publisher<GraphQLWsResponse> stopOperation(GraphQLWsRequest request, WebSocketSession session) {
         String sessionId = session.getId();
         String operationId = request.getId();
-        if (operationId != null && activeOperations.containsKey(sessionId) &&
-                activeOperations.get(sessionId).containsKey(operationId)) {
-            activeOperations.get(sessionId).get(operationId).cancel();
+        if (operationId == null || sessionId == null) {
+            return Flowable.empty();
         }
-        return removeCompleted(operationId, session) ?
-                Flowable.just(new GraphQLWsResponse(GQL_COMPLETE, operationId)) : Flowable.empty();
+        boolean removed = Optional.ofNullable(activeOperations.get(sessionId))
+                                  .map(graphQLWsOperations -> {
+                                      graphQLWsOperations.cancelOperation(operationId);
+                                      return graphQLWsOperations.removeCompleted(operationId);
+                                  }).orElse(false);
+        return removed ? Flowable.just(new GraphQLWsResponse(GQL_COMPLETE, operationId)) : Flowable.empty();
     }
 
     /**
@@ -98,18 +108,12 @@ class GraphQLWsState {
      * @param session     WebSocketSession
      * @return whether the operation was removed
      */
-    synchronized boolean removeCompleted(String operationId, WebSocketSession session) {
-        String sessionId = session.getId();
-        if (operationId != null && activeOperations.containsKey(sessionId) &&
-                activeOperations.get(sessionId).containsKey(operationId)) {
-            activeOperations.get(sessionId).remove(operationId);
-            if (activeOperations.get(sessionId).isEmpty()) {
-                activeOperations.remove(sessionId);
-            }
-            return true;
-        } else {
-            return false;
-        }
+    boolean removeCompleted(String operationId, WebSocketSession session) {
+        return Optional.ofNullable(session)
+                       .map(WebSocketSession::getId)
+                       .map(sessionId -> activeOperations.get(sessionId))
+                       .map(graphQLWsOperations -> graphQLWsOperations.removeCompleted(operationId))
+                       .orElse(false);
     }
 
     /**
@@ -120,7 +124,10 @@ class GraphQLWsState {
      * @return true or false
      */
     boolean operationExists(GraphQLWsRequest request, WebSocketSession session) {
-        ConcurrentHashMap<String, Subscription> operations = activeOperations.get(session.getId());
-        return operations != null && operations.containsKey(request.getId());
+        return Optional.ofNullable(session)
+                       .map(WebSocketSession::getId)
+                       .map(sessionId -> activeOperations.get(sessionId))
+                       .map(graphQLWsOperations -> graphQLWsOperations.operationExists(request))
+                       .orElse(false);
     }
 }

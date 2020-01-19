@@ -78,6 +78,7 @@ public class GraphQLWsController {
     @SuppressWarnings("rawtypes")
     public void onOpen(WebSocketSession session, HttpRequest request) {
         session.put(HTTP_REQUEST_KEY, request);
+        state.init(session);
         LOG.info("Opened websocket connection with id {}", session.getId());
     }
 
