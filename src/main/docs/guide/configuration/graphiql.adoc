@@ -11,7 +11,7 @@ The following configuration properties can be set:
 ----
 graphql:
   graphiql:
-    enabled: false // <1>
+    enabled: true // <1>
     version: 0.13.2 // <2>
     path: /graphiql // <3>
     template-path: classpath:graphiql/index.html // <4>
