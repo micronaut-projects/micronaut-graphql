@@ -1,1 +1,5 @@
+example
+example.domain
+example.graphql
+example.repository
 io.micronaut.configuration.graphql

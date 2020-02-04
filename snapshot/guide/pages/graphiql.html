@@ -2,6 +2,15 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script src="/cdn-cgi/apps/head/3cOPSgo5Omz84ycX7CvigfX4cpw.js"></script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-82213539-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-82213539-2');
+    </script>
     <title>2.2 Configuring GraphiQL 1.3.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
@@ -70,8 +79,7 @@ function addJsClass() {
                 
 
                 
-
-<h2 id="graphiql">2.2 Configuring GraphiQL</h2>
+<h2 id="graphiql"><a class="anchor" href="#graphiql"></a>2.2 Configuring GraphiQL</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphiql.adoc"'>
@@ -99,7 +107,7 @@ function addJsClass() {
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
   graphiql:
-    enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
+    enabled: true <i class="conum" data-value="1"></i><b>(1)</b>
     version: 0.13.2 <i class="conum" data-value="2"></i><b>(2)</b>
     path: /graphiql <i class="conum" data-value="3"></i><b>(3)</b>
     template-path: classpath:graphiql/index.html <i class="conum" data-value="4"></i><b>(4)</b>
