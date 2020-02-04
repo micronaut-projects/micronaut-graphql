@@ -39,6 +39,12 @@
         <property name="basedir" value="${basedir}"/>
     -->
 
+    <module name="RegexpHeader">
+        <!-- Requires a licence copyright notice in each file. -->
+        <property name="headerFile"
+                value="${config_loc}/HEADER"/>
+    </module>
+
     <property name="fileExtensions" value="java, properties, xml"/>
 
     <!-- Checks that a package-info.java file exists for each package.     -->
@@ -54,10 +60,6 @@
     <!-- Checks that property files contain the same keys.         -->
     <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
     <module name="Translation"/>
-
-    <!-- Checks for Size Violations.                    -->
-    <!-- See http://checkstyle.sf.net/config_sizes.html -->
-    <module name="FileLength"/>
 
     <!-- Checks for whitespace                               -->
     <!-- See http://checkstyle.sf.net/config_whitespace.html -->
@@ -77,12 +79,15 @@
     <module name="SuppressWarningsFilter"/>
 
     <!-- See http://checkstyle.sourceforge.net/config_filters.html#SuppressionFilter -->
+
     <module name="SuppressionFilter">
         <property name="file" value="${config_loc}/suppressions.xml"/>
         <property name="optional" value="false"/>
     </module>
 
     <module name="TreeWalker">
+
+        <module name="SuppressionCommentFilter"/>
 
         <!-- Needed for SuppressWarningsFilter -->
         <module name="SuppressWarningsHolder"/>
@@ -136,6 +141,7 @@
         <module name="EmptyLineSeparator">
             <property name="allowNoEmptyLineBetweenFields" value="true"/>
             <property name="allowMultipleEmptyLines" value="false"/>
+            <property name="tokens" value="CTOR_DEF, VARIABLE_DEF, METHOD_DEF"/>
         </module>
         <module name="NoLineWrap"/>
 
@@ -161,8 +167,8 @@
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
         <!--<module name="MagicNumber">-->
-            <!--<property name="ignoreFieldDeclaration" value="true"/>-->
-            <!--<property name="ignoreHashCodeMethod" value="true"/>-->
+        <!--<property name="ignoreFieldDeclaration" value="true"/>-->
+        <!--<property name="ignoreHashCodeMethod" value="true"/>-->
         <!--</module>-->
         <module name="MissingSwitchDefault"/>
         <module name="SimplifyBooleanExpression"/>

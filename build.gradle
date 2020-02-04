@@ -6,53 +6,64 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:${grailsVersion}"
         classpath "org.grails:grails-docs:${grailsVersion}"
         classpath "com.bmuschko:gradle-nexus-plugin:2.3.1"
+        classpath "com.github.jengelman.gradle.plugins:shadow:5.1.0"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
         classpath "io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1"
         classpath "io.micronaut.docs:micronaut-docs-asciidoc-extensions:$micronautDocsVersion"
         classpath "io.micronaut.docs:micronaut-docs-gradle-plugins:$micronautDocsVersion"
+        classpath "io.spring.nohttp:nohttp-gradle:0.0.4.RELEASE"
     }
 }
 
 plugins {
-    id "io.spring.dependency-management" version "1.0.9.RELEASE" apply false
     id "com.github.hierynomus.license" version "0.15.0" apply false
-    id "com.github.johnrengelman.shadow" version "4.0.2" apply false
-    id "net.ltgt.apt-eclipse" version "0.21" apply false
-    id "net.ltgt.apt-idea" version "0.21" apply false
 }
 
 repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    mavenCentral()
     maven { url "https://repo.grails.org/grails/core" }
+    maven { url "https://oss.jfrog.org/oss-snapshot-local" }
 }
 
 version project.projectVersion
 
-configure(subprojects.findAll { !it.name.contains("example") }) { Project subproject ->
+ext {
+    distInstallDir = file("$buildDir/dist-tmp")
+    homeBinDir = file("bin")
+    homeLibDir = file("lib")
+    homeSrcDir = file("src")
+}
+
+
+subprojects { Project subproject ->
+
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.grails.org/grails/core" }
+        maven { url "https://oss.jfrog.org/oss-snapshot-local" }
+    }
+
+    apply plugin: "java-library"
+    apply plugin: "groovy"
+    apply plugin: "checkstyle"
+    apply plugin: "io.spring.nohttp"
+
+    if (subproject.name.contains("example") || subproject.name.startsWith("benchmark")) {
+        return
+    }
 
     group "io.micronaut.graphql"
     version project.projectVersion
+
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
 
     ext {
         isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
         isConfiguration = subproject.projectDir.parentFile.name == "configurations"
     }
 
-    repositories {
-        mavenCentral()
-        mavenLocal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://repo.grails.org/grails/core" }
-    }
-
-    apply plugin: "java"
-    apply plugin: "groovy"
-    apply plugin: "checkstyle"
-
-    sourceCompatibility = "1.8"
-    targetCompatibility = "1.8"
-
-    apply from: "https://raw.githubusercontent.com/micronaut-projects/micronaut-core/01e2b1ef1255b584e9e5c1965d334e1190e2ade5/gradle/publishing.gradle"
+    apply from: "https://raw.githubusercontent.com/micronaut-projects/micronaut-build/v${micronautBuildVersion}/publishing.gradle"
 
     jar {
         manifest {
@@ -78,8 +89,8 @@ configure(subprojects.findAll { !it.name.contains("example") }) { Project subpro
             System.out.flush()
         }
 
-        reports.html.enabled = !System.getenv("TRAVIS")
-        reports.junitXml.enabled = !System.getenv("TRAVIS")
+        reports.html.enabled = !System.getenv("GITHUB_ACTIONS")
+        reports.junitXml.enabled = !System.getenv("GITHUB_ACTIONS")
     }
 
     configurations {
@@ -98,14 +109,21 @@ configure(subprojects.findAll { !it.name.contains("example") }) { Project subpro
     }
 
     dependencies {
+        annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+        annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:${micronautDocsVersion}"
         documentation "org.codehaus.groovy:groovy-templates:${groovyVersion}"
         documentation "org.codehaus.groovy:groovy-dateutil:${groovyVersion}"
-        testCompile "cglib:cglib-nodep:${cglibVersion}"
-        testCompile "io.micronaut:micronaut-inject-groovy:${micronautVersion}"
-        testCompile "io.micronaut.test:micronaut-test-spock:${micronautTestVersion}"
-        testCompile "org.codehaus.groovy:groovy-test:${groovyVersion}"
-        testCompile "org.objenesis:objenesis:${objenesisVersion}"
-        testRuntime "ch.qos.logback:logback-classic:${logbackClassicVersion}"
+        implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+        testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+        testImplementation "cglib:cglib-nodep:${cglibVersion}"
+        testImplementation "io.micronaut:micronaut-inject-groovy:${micronautVersion}"
+        testImplementation "io.micronaut.test:micronaut-test-spock:${micronautTestVersion}"
+        testImplementation "org.codehaus.groovy:groovy-test:${groovyVersion}"
+        testImplementation "org.objenesis:objenesis:${objenesisVersion}"
+        testImplementation("org.spockframework:spock-core:${spockVersion}") {
+            exclude module: "groovy-all"
+        }
+        testRuntimeOnly "ch.qos.logback:logback-classic:${logbackClassicVersion}"
     }
 
     groovydoc {
@@ -115,12 +133,49 @@ configure(subprojects.findAll { !it.name.contains("example") }) { Project subpro
     task allDeps(type: DependencyReportTask) {}
 
     checkstyle {
-        toolVersion = 8.10
+        toolVersion = 8.16
         configFile = rootProject.file("config/checkstyle/checkstyle.xml")
         showViolations = true
     }
 
     checkstyleTest.enabled = false
+
+    tasks.withType(GroovyCompile) {
+        groovyOptions.forkOptions.jvmArgs.add("-Dgroovy.parameters=true")
+    }
+
+    tasks.withType(JavaCompile){
+        options.encoding = "UTF-8"
+        options.compilerArgs.add("-parameters")
+    }
 }
 
 apply from: "https://raw.githubusercontent.com/micronaut-projects/micronaut-docs/v${micronautDocsVersion}/gradle/docs.gradle"
+
+allprojects {
+
+    apply plugin: "idea"
+
+    idea {
+        module {
+            outputDir file("build/classes/java/main")
+            testOutputDir file("build/classes/groovy/test")
+        }
+    }
+
+    if (it.name.contains("example") || it.name.startsWith("benchmark")) {
+        return
+    }
+
+    apply from: rootProject.file("gradle/license.gradle")
+}
+
+project.afterEvaluate {
+    allprojects.repositories.each { handler ->
+        handler.each {
+            if (it.url.toString().startsWith("http://")) {
+                throw new GradleException("Build should not define insecure HTTP-based Maven repostories")
+            }
+        }
+    }
+}

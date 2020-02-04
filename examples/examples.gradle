@@ -2,8 +2,6 @@ apply plugin: "application"
 apply plugin: "java"
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "io.spring.dependency-management"
-apply plugin: "net.ltgt.apt-eclipse"
-apply plugin: "net.ltgt.apt-idea"
 
 group "io.micronaut.example"
 version project.projectVersion
