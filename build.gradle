@@ -34,7 +34,6 @@ ext {
     homeSrcDir = file("src")
 }
 
-
 subprojects { Project subproject ->
 
     repositories {
@@ -45,12 +44,13 @@ subprojects { Project subproject ->
 
     apply plugin: "java-library"
     apply plugin: "groovy"
-    apply plugin: "checkstyle"
     apply plugin: "io.spring.nohttp"
 
     if (subproject.name.contains("example") || subproject.name.startsWith("benchmark")) {
         return
     }
+
+    apply plugin: "checkstyle"
 
     group "io.micronaut.graphql"
     version project.projectVersion
@@ -109,11 +109,11 @@ subprojects { Project subproject ->
     }
 
     dependencies {
-        annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+        annotationProcessor platform("io.micronaut:micronaut-bom:${micronautVersion}")
         annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:${micronautDocsVersion}"
         documentation "org.codehaus.groovy:groovy-templates:${groovyVersion}"
         documentation "org.codehaus.groovy:groovy-dateutil:${groovyVersion}"
-        implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+        implementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
         testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
         testImplementation "cglib:cglib-nodep:${cglibVersion}"
         testImplementation "io.micronaut:micronaut-inject-groovy:${micronautVersion}"
