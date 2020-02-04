@@ -44,13 +44,12 @@ subprojects { Project subproject ->
 
     apply plugin: "java-library"
     apply plugin: "groovy"
+    apply plugin: "checkstyle"
     apply plugin: "io.spring.nohttp"
 
     if (subproject.name.contains("example") || subproject.name.startsWith("benchmark")) {
         return
     }
-
-    apply plugin: "checkstyle"
 
     group "io.micronaut.graphql"
     version project.projectVersion
