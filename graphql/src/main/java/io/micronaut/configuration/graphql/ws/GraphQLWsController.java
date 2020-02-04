@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-package io.micronaut.configuration.graphql;
+package io.micronaut.configuration.graphql.ws;
 
+import io.micronaut.configuration.graphql.GraphQLConfiguration;
+import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.websocket.CloseReason;
 import io.micronaut.websocket.WebSocketSession;
-import io.micronaut.websocket.annotation.*;
+import io.micronaut.websocket.annotation.OnClose;
+import io.micronaut.websocket.annotation.OnError;
+import io.micronaut.websocket.annotation.OnMessage;
+import io.micronaut.websocket.annotation.OnOpen;
+import io.micronaut.websocket.annotation.ServerWebSocket;
 import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.*;
+import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ERROR;
 
 /**
  * The GraphQL websocket controller handling GraphQL requests.
@@ -38,9 +44,9 @@ import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.*;
  * @since 1.3
  */
 @ServerWebSocket(value =
-        "${" + GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphQLWsConfiguration.PATH + ":"
-                + GraphQLConfiguration.GraphQLWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-ws")
-@Requires(property = GraphQLConfiguration.GraphQLWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue =
+        "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PATH + ":"
+                + GraphQLWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-ws")
+@Requires(property = GraphQLWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue =
         StringUtils.FALSE)
 public class GraphQLWsController {
 
@@ -111,7 +117,7 @@ public class GraphQLWsController {
     /**
      * Called when the websocket is closed.
      *
-     * @param session WebSocketSession
+     * @param session     WebSocketSession
      * @param closeReason CloseReason
      * @return Publisher<GraphQLWsResponse>
      */
@@ -126,7 +132,7 @@ public class GraphQLWsController {
      * properly closed.
      *
      * @param session WebSocketSession
-     * @param t Throwable, the cause of the error
+     * @param t       Throwable, the cause of the error
      * @return Publisher<GraphQLWsResponse>
      */
     @OnError

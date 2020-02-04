@@ -1,6 +1,11 @@
-package io.micronaut.configuration.graphql;
+package io.micronaut.configuration.graphql.ws;
 
 import graphql.ExecutionResult;
+import io.micronaut.configuration.graphql.GraphQLExecutionResultHandler;
+import io.micronaut.configuration.graphql.GraphQLInvocation;
+import io.micronaut.configuration.graphql.GraphQLInvocationData;
+import io.micronaut.configuration.graphql.GraphQLRequestBody;
+import io.micronaut.configuration.graphql.GraphQLResponseBody;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.websocket.WebSocketSession;
@@ -11,8 +16,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 
-import static io.micronaut.configuration.graphql.GraphQLWsController.HTTP_REQUEST_KEY;
-import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.*;
+import static io.micronaut.configuration.graphql.ws.GraphQLWsController.HTTP_REQUEST_KEY;
+import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;
+import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
+import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_ERROR;
 
 /**
  * Handles the messages send over the websocket.
@@ -25,7 +32,7 @@ public class GraphQLWsMessageHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsMessageHandler.class);
 
-    private final GraphQLConfiguration.GraphQLWsConfiguration graphQLWsConfiguration;
+    private final GraphQLWsConfiguration graphQLWsConfiguration;
     private final GraphQLWsState state;
     private final GraphQLInvocation graphQLInvocation;
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
@@ -34,19 +41,19 @@ public class GraphQLWsMessageHandler {
     /**
      * Default constructor.
      *
-     * @param graphQLConfiguration          the {@link GraphQLConfiguration} instance
+     * @param graphQLWsConfiguration        the {@link GraphQLWsConfiguration} instance
      * @param state                         the {@link GraphQLWsState} instance
      * @param graphQLInvocation             the {@link GraphQLInvocation} instance
      * @param graphQLExecutionResultHandler the {@link GraphQLExecutionResultHandler} instance
      * @param responseSender                the {@link GraphQLWsSender} instance
      */
     public GraphQLWsMessageHandler(
-            GraphQLConfiguration graphQLConfiguration,
+            GraphQLWsConfiguration graphQLWsConfiguration,
             GraphQLWsState state,
             GraphQLInvocation graphQLInvocation,
             GraphQLExecutionResultHandler graphQLExecutionResultHandler,
             GraphQLWsSender responseSender) {
-        this.graphQLWsConfiguration = graphQLConfiguration.getGraphqlWs();
+        this.graphQLWsConfiguration = graphQLWsConfiguration;
         this.state = state;
         this.graphQLInvocation = graphQLInvocation;
         this.graphQLExecutionResultHandler = graphQLExecutionResultHandler;

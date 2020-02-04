@@ -1,4 +1,4 @@
-package io.micronaut.configuration.graphql;
+package io.micronaut.configuration.graphql.ws;
 
 import io.micronaut.websocket.WebSocketSession;
 import io.reactivex.Flowable;
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 
-import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.GQL_COMPLETE;
+import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_COMPLETE;
 
 /**
  * Keeps the state of the web socket subscriptions.

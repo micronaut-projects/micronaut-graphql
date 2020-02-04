@@ -16,6 +16,7 @@
 
 package io.micronaut.configuration.graphql;
 
+import io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.DefaultPropertyPlaceholderResolver;
 import io.micronaut.context.env.PropertyPlaceholderResolver;
@@ -57,7 +58,7 @@ public class GraphiQLController {
 
     private final GraphQLConfiguration graphQLConfiguration;
     private final GraphQLConfiguration.GraphiQLConfiguration graphiQLConfiguration;
-    private final GraphQLConfiguration.GraphQLWsConfiguration graphQLWsConfiguration;
+    private final GraphQLWsConfiguration graphQLWsConfiguration;
     private final ResourceResolver resourceResolver;
 
     private final String rawTemplate;
@@ -69,10 +70,11 @@ public class GraphiQLController {
      * @param graphQLConfiguration the {@link GraphQLConfiguration} instance
      * @param resourceResolver     the {@link ResourceResolver} instance
      */
-    public GraphiQLController(GraphQLConfiguration graphQLConfiguration, ResourceResolver resourceResolver) {
+    public GraphiQLController(GraphQLConfiguration graphQLConfiguration, GraphQLWsConfiguration graphQLWsConfiguration,
+            ResourceResolver resourceResolver) {
         this.graphQLConfiguration = graphQLConfiguration;
         this.graphiQLConfiguration = graphQLConfiguration.getGraphiql();
-        this.graphQLWsConfiguration = graphQLConfiguration.getGraphqlWs();
+        this.graphQLWsConfiguration = graphQLWsConfiguration;
         this.resourceResolver = resourceResolver;
         // Load the raw template (variables are not yet resolved).
         // This means we fail fast if the template cannot be loaded resulting in a ConfigurationException at startup.
@@ -107,7 +109,7 @@ public class GraphiQLController {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("graphiqlVersion", graphiQLConfiguration.getVersion());
         parameters.put("graphqlPath", graphQLConfiguration.getPath());
-        String graphQLWsPath = graphQLWsConfiguration.enabled ? graphQLWsConfiguration.getPath() : "";
+        String graphQLWsPath = graphQLWsConfiguration.isEnabled() ? graphQLWsConfiguration.getPath() : "";
         parameters.put("graphqlWsPath", graphQLWsPath);
         parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
         if (graphiQLConfiguration.getTemplateParameters() != null) {

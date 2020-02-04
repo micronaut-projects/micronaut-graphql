@@ -1,6 +1,8 @@
-package io.micronaut.configuration.graphql;
+package io.micronaut.configuration.graphql.ws;
 
 import graphql.ExecutionResult;
+import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
+import io.micronaut.configuration.graphql.GraphQLResponseBody;
 import io.micronaut.core.async.subscriber.CompletionAwareSubscriber;
 import io.micronaut.websocket.WebSocketSession;
 import io.reactivex.Flowable;
@@ -10,11 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
-
 import java.util.Collection;
 import java.util.function.Function;
 
-import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.*;
+import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_COMPLETE;
+import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_DATA;
+import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_ERROR;
 
 /**
  * Sends the GraphQL response(s) to the client.

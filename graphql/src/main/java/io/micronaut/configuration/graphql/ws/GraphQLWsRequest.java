@@ -1,4 +1,6 @@
-package io.micronaut.configuration.graphql;
+package io.micronaut.configuration.graphql.ws;
+
+import io.micronaut.configuration.graphql.GraphQLRequestBody;
 
 import javax.annotation.Nullable;
 
@@ -84,7 +86,7 @@ public class GraphQLWsRequest {
     /**
      * Types of messages received from the client.
      */
-    enum ClientType {
+    public enum ClientType {
         GQL_CONNECTION_INIT("connection_init"),
         GQL_START("start"),
         GQL_STOP("stop"),

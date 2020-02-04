@@ -1,4 +1,6 @@
-package io.micronaut.configuration.graphql;
+package io.micronaut.configuration.graphql.ws;
+
+import io.micronaut.configuration.graphql.GraphQLResponseBody;
 
 import javax.annotation.Nullable;
 
@@ -79,7 +81,7 @@ public class GraphQLWsResponse {
     /**
      * Types of messages send to the client.
      */
-    enum ServerType {
+    public enum ServerType {
         GQL_CONNECTION_ACK("connection_ack"),
         GQL_CONNECTION_ERROR("connection_error"),
         GQL_DATA("data"),

@@ -1,5 +1,7 @@
-package io.micronaut.configuration.graphql;
+package io.micronaut.configuration.graphql.ws;
 
+import io.micronaut.configuration.graphql.GraphQLConfiguration;
+import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.scheduling.annotation.Scheduled;
@@ -7,14 +9,14 @@ import io.micronaut.websocket.WebSocketBroadcaster;
 
 import javax.inject.Singleton;
 
-import static io.micronaut.configuration.graphql.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
+import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
 
 /**
  * Used to send keep alive messages to the active sessions at a regular interval.
  */
 @Singleton
-@Requires(property = GraphQLConfiguration.GraphQLWsConfiguration.KEEP_ALIVE_ENABLED,
-        value = StringUtils.TRUE, defaultValue = StringUtils.TRUE, beans = { GraphQLWsController.class })
+@Requires(property = GraphQLWsConfiguration.KEEP_ALIVE_ENABLED,
+        value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 public class GraphQLWsKeepAlive {
 
     private final WebSocketBroadcaster broadcaster;
@@ -39,8 +41,8 @@ public class GraphQLWsKeepAlive {
      * Send ka messages to active sessions.
      */
     @Scheduled(fixedDelay =
-            "${" + GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphQLWsConfiguration.KEEP_ALIVE_INTERVAL + ":"
-                    + GraphQLConfiguration.GraphQLWsConfiguration.DEFAULT_KEEP_ALIVE_INTERVAL + "}")
+            "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.KEEP_ALIVE_INTERVAL + ":"
+                    + GraphQLWsConfiguration.DEFAULT_KEEP_ALIVE_INTERVAL + "}")
     public void keepAliveSender() {
         broadcaster.broadcastSync(kaMessage, state::isActive);
     }

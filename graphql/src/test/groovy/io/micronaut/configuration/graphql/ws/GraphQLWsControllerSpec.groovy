@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 
-package io.micronaut.configuration.graphql
+package io.micronaut.configuration.graphql.ws
 
 import graphql.ExecutionInput
-import graphql.GraphQL
-import graphql.schema.DataFetcher
-import graphql.schema.DataFetchingEnvironment
-import graphql.schema.idl.*
+import io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer
+import io.micronaut.configuration.graphql.GraphQLRequestBody
 import io.micronaut.context.ApplicationContext
-import io.micronaut.context.annotation.Bean
-import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Requires
 import io.micronaut.core.async.publisher.Publishers
 import io.micronaut.http.HttpRequest
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.websocket.RxWebSocketClient
-import io.reactivex.Flowable
 import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
 import javax.inject.Singleton
-import java.util.concurrent.TimeUnit
 
 /**
  * @author Gerard Klijs

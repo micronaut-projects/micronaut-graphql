@@ -1,4 +1,4 @@
-package io.micronaut.configuration.graphql;
+package io.micronaut.configuration.graphql.ws;
 
 import org.reactivestreams.Subscription;
 
