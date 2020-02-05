@@ -1,0 +1,5 @@
+graphql:
+  graphql-ws:
+    enabled: true
+    keep-alive-enabled: false
+  factory: false

@@ -16,6 +16,7 @@
 
 package io.micronaut.configuration.graphql;
 
+import io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.DefaultPropertyPlaceholderResolver;
 import io.micronaut.context.env.PropertyPlaceholderResolver;
@@ -57,6 +58,7 @@ public class GraphiQLController {
 
     private final GraphQLConfiguration graphQLConfiguration;
     private final GraphQLConfiguration.GraphiQLConfiguration graphiQLConfiguration;
+    private final GraphQLWsConfiguration graphQLWsConfiguration;
     private final ResourceResolver resourceResolver;
 
     private final String rawTemplate;
@@ -65,12 +67,15 @@ public class GraphiQLController {
     /**
      * Default constructor.
      *
-     * @param graphQLConfiguration the {@link GraphQLConfiguration} instance
-     * @param resourceResolver     the {@link ResourceResolver} instance
+     * @param graphQLConfiguration   the {@link GraphQLConfiguration} instance
+     * @param graphQLWsConfiguration the {@link GraphQLWsConfiguration} instance
+     * @param resourceResolver       the {@link ResourceResolver} instance
      */
-    public GraphiQLController(GraphQLConfiguration graphQLConfiguration, ResourceResolver resourceResolver) {
+    public GraphiQLController(GraphQLConfiguration graphQLConfiguration, GraphQLWsConfiguration graphQLWsConfiguration,
+            ResourceResolver resourceResolver) {
         this.graphQLConfiguration = graphQLConfiguration;
         this.graphiQLConfiguration = graphQLConfiguration.getGraphiql();
+        this.graphQLWsConfiguration = graphQLWsConfiguration;
         this.resourceResolver = resourceResolver;
         // Load the raw template (variables are not yet resolved).
         // This means we fail fast if the template cannot be loaded resulting in a ConfigurationException at startup.
@@ -91,7 +96,8 @@ public class GraphiQLController {
     private String loadTemplate(final String templateFile) {
         Optional<InputStream> template = resourceResolver.getResourceAsStream(templateFile);
         if (template.isPresent()) {
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(template.get(), StandardCharsets.UTF_8))) {
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(template.get(), StandardCharsets.UTF_8))) {
                 return IOUtils.readText(in);
             } catch (IOException e) {
                 throw new ConfigurationException("Cannot read GraphiQL template: " + templateFile, e);
@@ -105,13 +111,20 @@ public class GraphiQLController {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("graphiqlVersion", graphiQLConfiguration.getVersion());
         parameters.put("graphqlPath", graphQLConfiguration.getPath());
+        String graphQLWsPath = graphQLWsConfiguration.isEnabled() ? graphQLWsConfiguration.getPath() : "";
+        parameters.put("graphqlWsPath", graphQLWsPath);
         parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
         if (graphiQLConfiguration.getTemplateParameters() != null) {
             graphiQLConfiguration.getTemplateParameters().forEach((name, value) ->
-                    // De-capitalize and de-hyphenate the parameter names.
-                    // Otherwise `graphiql.template-parameters.magicWord` would be put as `magic-word` in the parameters map
-                    // as Micronaut normalises properties and stores them lowercase hyphen separated.
-                    parameters.put(NameUtils.decapitalize(NameUtils.dehyphenate(name)), value));
+                                                                          // De-capitalize and de-hyphenate the
+                                                                          // parameter names.
+                                                                          // Otherwise `graphiql.template-parameters
+                                                                          // .magicWord` would be put as `magic-word`
+                                                                          // in the parameters map
+                                                                          // as Micronaut normalises properties and
+                                                                          // stores them lowercase hyphen separated.
+                                                                          parameters.put(NameUtils.decapitalize(
+                                                                                  NameUtils.dehyphenate(name)), value));
         }
         return replaceParameters(this.rawTemplate, parameters);
     }
@@ -120,7 +133,8 @@ public class GraphiQLController {
         Map<String, Object> map = new HashMap<>();
         map.putAll(parameters);
         PropertyResolver propertyResolver = new MapPropertyResolver(map);
-        PropertyPlaceholderResolver propertyPlaceholderResolver = new DefaultPropertyPlaceholderResolver(propertyResolver);
+        PropertyPlaceholderResolver propertyPlaceholderResolver = new DefaultPropertyPlaceholderResolver(
+                propertyResolver);
         return propertyPlaceholderResolver.resolvePlaceholders(str).get();
     }
 }

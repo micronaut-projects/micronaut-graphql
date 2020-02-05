@@ -2,4 +2,5 @@ introduction: Introduction
 configuration:
   title: Configuration
   graphql-bean: Configuring the GraphQL Bean
+  graphql-ws: Configuring GraphQL over websockets
   graphiql: Configuring GraphiQL
