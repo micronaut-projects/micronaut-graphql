@@ -1,8 +1,8 @@
 The `micronaut-graphql` module comes bundled with support for GraphQL over web sockets
 (https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md).
 
-GraphQL over web sockets be explicitly enabled via the `graphql.graphql-ws.enabled` application property.
-While the server is capable of handling also the queries and mutations over web sockets it might not be supported in all clients.
+GraphQL over web sockets must be explicitly enabled via the `graphql.graphql-ws.enabled` application property.
+While the server is capable of handling the queries and mutations also over web sockets it might not be supported in all clients.
 Some clients have a way of configuring a different endpoint for subscriptions and/or some filter to only use the websocket for subscriptions.
 
 The following configuration properties can be set:
