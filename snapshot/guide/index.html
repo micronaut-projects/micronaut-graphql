@@ -82,7 +82,9 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-graphql-bean"><a href="#graphql-bean"><strong>2.1</strong><span>Configuring the GraphQL Bean</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-graphiql"><a href="#graphiql"><strong>2.2</strong><span>Configuring GraphiQL</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-graphql-ws"><a href="#graphql-ws"><strong>2.2</strong><span>Configuring GraphQL over websockets</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-graphiql"><a href="#graphiql"><strong>2.3</strong><span>Configuring GraphiQL</span></a></div>
         
         </div>
     </div>
@@ -110,6 +112,16 @@
 <div class="sect2">
 <h3 id="_release_history">Release History</h3>
 
+</div>
+<div class="sect2">
+<h3 id="_1_3_0">1.3.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Add support for GraphQL over websockets, in order to support subscriptions</p>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_1_2_2">1.2.2</h3>
@@ -468,7 +480,65 @@ class GraphQLFactory {
 provided in the repository.</p>
 </div>
 
-<h2 id="graphiql"><a class="anchor" href="#graphiql"></a>2.2 Configuring GraphiQL</h2>
+<h2 id="graphql-ws"><a class="anchor" href="#graphql-ws"></a>2.2 Configuring GraphQL over websockets</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphql-ws.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>The <code>micronaut-graphql</code> module comes bundled with support for GraphQL over web sockets
+(<a href="https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md" class="bare">https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md</a>).</p>
+</div>
+<div class="paragraph">
+<p>GraphQL over web sockets be explicitly enabled via the <code>graphql.graphql-ws.enabled</code> application property.
+While the server is capable of handling also the queries and mutations over web sockets it might not be supported in all clients.
+Some clients have a way of configuring a different endpoint for subscriptions and/or some filter to only use the websocket for subscriptions.</p>
+</div>
+<div class="paragraph">
+<p>The following configuration properties can be set:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
+  graphql-ws:
+    enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
+    path: /graphql-ws <i class="conum" data-value="2"></i><b>(2)</b>
+    keep-alive-enabled: true <i class="conum" data-value="3"></i><b>(3)</b>
+    keep-alive-interval: 15s <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables/disables GraphQL over web sockets. Default <code>false</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configures the GraphQLWs endpoint path. Default <code>/graphql-ws</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Enables/disables keep alive, this might be needed to prevent clients reconnecting. Default <code>true</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Configures the keep alive interval, specific clients might need different values, or it could be set higher to reduce some load <code>15s</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>There is an example present <a href="https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples/chat">chat</a>, that features a very basic chat application.
+For real applications the subscriptions are usually based on some pub/sub solution.
+An example using subscriptions with kafka can be found here, <a href="https://github.com/openweb-nl/kafka-graphql-examples/tree/ge-micronaut/graphql-endpoint">graphql-endpoint using micronaut</a>.</p>
+</div>
+
+<h2 id="graphiql"><a class="anchor" href="#graphiql"></a>2.3 Configuring GraphiQL</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphiql.adoc"'>

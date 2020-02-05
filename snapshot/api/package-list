@@ -3,3 +3,4 @@ example.domain
 example.graphql
 example.repository
 io.micronaut.configuration.graphql
+io.micronaut.configuration.graphql.ws

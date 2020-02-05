@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>2.3 Configuring GraphiQL 1.3.0.BUILD-SNAPSHOT</title>
+    <title>2.2 Configuring GraphQL over websockets 1.3.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -71,7 +71,7 @@ function addJsClass() {
 
 
                 <div class="project">
-                    <h1>2.3 Configuring GraphiQL</h1>
+                    <h1>2.2 Configuring GraphQL over websockets</h1>
 
                     <p><strong>Version:</strong> 1.3.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -79,25 +79,23 @@ function addJsClass() {
                 
 
                 
-<h2 id="graphiql"><a class="anchor" href="#graphiql"></a>2.3 Configuring GraphiQL</h2>
+<h2 id="graphql-ws"><a class="anchor" href="#graphql-ws"></a>2.2 Configuring GraphQL over websockets</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphiql.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphql-ws.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>The <code>micronaut-graphql</code> module comes bundled with Graph<em>i</em>QL, an in-browser IDE for exploring GraphQL.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../img/graphiql.png" alt="GraphiQL">
-</div>
+<p>The <code>micronaut-graphql</code> module comes bundled with support for GraphQL over web sockets
+(<a href="https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md" class="bare">https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md</a>).</p>
 </div>
 <div class="paragraph">
-<p>Graph<em>i</em>QL must be explicitly enabled via the <code>graphql.graphiql.enabled</code> application property.</p>
+<p>GraphQL over web sockets be explicitly enabled via the <code>graphql.graphql-ws.enabled</code> application property.
+While the server is capable of handling also the queries and mutations over web sockets it might not be supported in all clients.
+Some clients have a way of configuring a different endpoint for subscriptions and/or some filter to only use the websocket for subscriptions.</p>
 </div>
 <div class="paragraph">
 <p>The following configuration properties can be set:</p>
@@ -106,55 +104,37 @@ function addJsClass() {
 <div class="title">src/main/resources/application.yml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
-  graphiql:
-    enabled: true <i class="conum" data-value="1"></i><b>(1)</b>
-    version: 0.13.2 <i class="conum" data-value="2"></i><b>(2)</b>
-    path: /graphiql <i class="conum" data-value="3"></i><b>(3)</b>
-    template-path: classpath:graphiql/index.html <i class="conum" data-value="4"></i><b>(4)</b>
-    template-parameters: <i class="conum" data-value="5"></i><b>(5)</b>
-    page-title: GraphiQL <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
+  graphql-ws:
+    enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
+    path: /graphql-ws <i class="conum" data-value="2"></i><b>(2)</b>
+    keep-alive-enabled: true <i class="conum" data-value="3"></i><b>(3)</b>
+    keep-alive-interval: 15s <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Enables/disables GraphiQL. Default <code>false</code>.</td>
+<td>Enables/disables GraphQL over web sockets. Default <code>false</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configures the GraphiQL version. Default <code>0.13.2</code>.</td>
+<td>Configures the GraphQLWs endpoint path. Default <code>/graphql-ws</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Configures the GraphiQL endpoint path. Default <code>/graphiql</code>.</td>
+<td>Enables/disables keep alive, this might be needed to prevent clients reconnecting. Default <code>true</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Configures the GraphiQL template path. Default <code>classpath:graphiql/index.html</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Configures the GraphiQL template parameters. Default none.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Configures the GraphiQL page title. Default <code>GraphiQL</code>.</td>
+<td>Configures the keep alive interval, specific clients might need different values, or it could be set higher to reduce some load <code>15s</code>.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The out of the box rendered Graph<em>i</em>QL page does not provide many customisations except the Graph<em>i</em>QL version, path and page title.
-It also takes into account the <code>graphql.path</code> application property,
-to provide a seamless integration with the configured GraphQL endpoint path.</p>
-</div>
-<div class="paragraph">
-<p>If further customisations are required, a custom Graph<em>i</em>QL
-<a href="https://github.com/micronaut-projects/micronaut-graphql/blob/serving-over-http/graphql/src/main/resources/graphiql/index.html">template</a>
-can be provided. Either by providing the custom template at <code>src/main/resources/graphiq/index.html</code> or via the <code>graphiql.template-path</code>
-application property pointing to a different template location.
-In that case it could also be useful to dynamically replace additional parameters in the template via the <code>graphql.graphiql.template-parameters</code>
-application property.</p>
+<p>There is an example present <a href="https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples/chat">chat</a>, that features a very basic chat application.
+For real applications the subscriptions are usually based on some pub/sub solution.
+An example using subscriptions with kafka can be found here, <a href="https://github.com/openweb-nl/kafka-graphql-examples/tree/ge-micronaut/graphql-endpoint">graphql-endpoint using micronaut</a>.</p>
 </div>
 
 
