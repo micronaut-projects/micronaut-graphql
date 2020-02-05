@@ -10,7 +10,7 @@ The Micronaut GraphQL integration can be used together with other GraphQL integr
 
 > **IMPORTANT NOTE**: 
 > - Micronaut GraphQL `1.2.0` and above requires Micronaut Core `1.2.x` as minimal dependency.
-> - Micronaut GraphQL `1.3.0` and above requires Micronaut Core `1.3.0` as minimal dependency.
+> - Micronaut GraphQL `1.3.0.RC1` and above requires Micronaut Core `1.3.0` as minimal dependency.
 
 
 ## Documentation ##
