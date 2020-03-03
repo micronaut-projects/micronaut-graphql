@@ -85,7 +85,7 @@ public class GraphQLWsController {
     public void onOpen(WebSocketSession session, HttpRequest request) {
         session.put(HTTP_REQUEST_KEY, request);
         state.init(session);
-        LOG.info("Opened websocket connection with id {}", session.getId());
+        LOG.trace("Opened websocket connection with id {}", session.getId());
     }
 
 
@@ -123,7 +123,7 @@ public class GraphQLWsController {
      */
     @OnClose
     public Publisher<GraphQLWsResponse> onClose(WebSocketSession session, CloseReason closeReason) {
-        LOG.info("Closed websocket connection with id {} with reason {}", session.getId(), closeReason);
+        LOG.trace("Closed websocket connection with id {} with reason {}", session.getId(), closeReason);
         return send(state.terminateSession(session), session);
     }
 
@@ -137,7 +137,7 @@ public class GraphQLWsController {
      */
     @OnError
     public Publisher<GraphQLWsResponse> onError(WebSocketSession session, Throwable t) {
-        LOG.info("Error websocket connection with id {} with error {}", session.getId(), t.getMessage());
+        LOG.debug("Error websocket connection with id {} with error {}", session.getId(), t.getMessage());
         return send(state.terminateSession(session), session);
     }
 
