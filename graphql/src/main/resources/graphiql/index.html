@@ -111,7 +111,8 @@
     }
     let fetcher = graphQLFetcher;
     if('${graphqlWsPath}' !== ''){
-      let fullWsPath = 'ws://' + window.location.hostname + ':' + window.location.port +'${graphqlWsPath}';
+      let wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      let fullWsPath = wsProtocol + '//' + window.location.hostname + ':' + window.location.port +'${graphqlWsPath}';
       let subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient(fullWsPath, { reconnect: true });
       fetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
     }
