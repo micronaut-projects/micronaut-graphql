@@ -17,6 +17,12 @@
     catch(err) {
     }
 //-->
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var altColor = "altColor";
+var rowColor = "rowColor";
+var tableTab = "tableTab";
+var activeTableTab = "activeTableTab";
 </script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -68,14 +74,14 @@
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li>Constr&nbsp;|&nbsp;</li>
-<li><a href="#methods.inherited.from.class.java.lang.Object">Method</a></li>
+<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li>Constr&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
 <a name="skip.navbar.top">
@@ -101,13 +107,11 @@
 <li class="blockList">
 <hr>
 <br>
-<pre>public static class <span class="typeNameLabel">ToDo</span>
+<pre>public class <span class="typeNameLabel">ToDo</span>
 extends java.lang.Object</pre>
 <dl>
 <dt><span class="simpleTagLabel">Author:</span></dt>
 <dd>Marcel Overdijk</dd>
-<dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../serialized-form.html#example.domain.ToDo">Serialized Form</a></dd>
 </dl>
 </li>
 </ul>
@@ -115,18 +119,163 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor.summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../example/domain/ToDo.html#ToDo--">ToDo</a></span>()</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../example/domain/ToDo.html#ToDo-java.lang.String-">ToDo</a></span>(java.lang.String&nbsp;title)</code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- ========== METHOD SUMMARY =========== -->
 <ul class="blockList">
 <li class="blockList"><a name="method.summary">
 <!--   -->
 </a>
 <h3>Method Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr id="i0" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../example/domain/ToDo.html#getId--">getId</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../example/domain/ToDo.html#getTitle--">getTitle</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../example/domain/ToDo.html#isCompleted--">isCompleted</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../example/domain/ToDo.html#setCompleted-boolean-">setCompleted</a></span>(boolean&nbsp;completed)</code>&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../example/domain/ToDo.html#setId-java.lang.String-">setId</a></span>(java.lang.String&nbsp;id)</code>&nbsp;</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../example/domain/ToDo.html#setTitle-java.lang.String-">setTitle</a></span>(java.lang.String&nbsp;title)</code>&nbsp;</td>
+</tr>
+</table>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.Object</h3>
 <code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor.detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="ToDo--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>ToDo</h4>
+<pre>public&nbsp;ToDo()</pre>
+</li>
+</ul>
+<a name="ToDo-java.lang.String-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>ToDo</h4>
+<pre>public&nbsp;ToDo(java.lang.String&nbsp;title)</pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method.detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="getId--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getId</h4>
+<pre>public&nbsp;java.lang.String&nbsp;getId()</pre>
+</li>
+</ul>
+<a name="setId-java.lang.String-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setId</h4>
+<pre>public&nbsp;void&nbsp;setId(java.lang.String&nbsp;id)</pre>
+</li>
+</ul>
+<a name="getTitle--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTitle</h4>
+<pre>public&nbsp;java.lang.String&nbsp;getTitle()</pre>
+</li>
+</ul>
+<a name="setTitle-java.lang.String-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setTitle</h4>
+<pre>public&nbsp;void&nbsp;setTitle(java.lang.String&nbsp;title)</pre>
+</li>
+</ul>
+<a name="isCompleted--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isCompleted</h4>
+<pre>public&nbsp;boolean&nbsp;isCompleted()</pre>
+</li>
+</ul>
+<a name="setCompleted-boolean-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>setCompleted</h4>
+<pre>public&nbsp;void&nbsp;setCompleted(boolean&nbsp;completed)</pre>
+</li>
 </ul>
 </li>
 </ul>
@@ -182,14 +331,14 @@ extends java.lang.Object</pre>
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li>Constr&nbsp;|&nbsp;</li>
-<li><a href="#methods.inherited.from.class.java.lang.Object">Method</a></li>
+<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li>Constr&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
 <a name="skip.navbar.bottom">
