@@ -4,3 +4,4 @@ configuration:
   graphql-bean: Configuring the GraphQL Bean
   graphql-ws: Configuring GraphQL over websockets
   graphiql: Configuring GraphiQL
+repository: Repository
