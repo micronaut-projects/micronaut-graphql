@@ -109,7 +109,6 @@ subprojects { Project subproject ->
 
     dependencies {
         annotationProcessor platform("io.micronaut:micronaut-bom:${micronautVersion}")
-        annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:${micronautDocsVersion}"
         documentation "org.codehaus.groovy:groovy-templates:${groovyVersion}"
         documentation "org.codehaus.groovy:groovy-dateutil:${groovyVersion}"
         implementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
