@@ -108,10 +108,12 @@ subprojects { Project subproject ->
     }
 
     dependencies {
+        api platform("io.micronaut:micronaut-bom:${micronautVersion}")
         annotationProcessor platform("io.micronaut:micronaut-bom:${micronautVersion}")
         documentation "org.codehaus.groovy:groovy-templates:${groovyVersion}"
         documentation "org.codehaus.groovy:groovy-dateutil:${groovyVersion}"
         implementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
+        testImplementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
         testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
         testImplementation "cglib:cglib-nodep:${cglibVersion}"
         testImplementation "io.micronaut:micronaut-inject-groovy:${micronautVersion}"

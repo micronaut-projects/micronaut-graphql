@@ -1,7 +1,6 @@
 apply plugin: "application"
 apply plugin: "java"
 apply plugin: "com.github.johnrengelman.shadow"
-apply plugin: "io.spring.dependency-management"
 
 group "io.micronaut.example"
 version project.projectVersion
@@ -11,13 +10,9 @@ repositories {
     mavenCentral()
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("io.micronaut:micronaut-bom:${micronautVersion}")
-    }
-}
-
 dependencies {
+    annotationProcessor platform("io.micronaut:micronaut-bom:${micronautVersion}")
+
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
     compile(project(":graphql"))
