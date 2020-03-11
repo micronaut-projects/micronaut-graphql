@@ -9,7 +9,6 @@ version project.projectVersion
 repositories {
     jcenter()
     mavenCentral()
-    mavenLocal()
 }
 
 dependencyManagement {
