@@ -7,6 +7,8 @@ plugins {
 apply from: "../examples.gradle"
 
 dependencies {
+    kapt platform("io.micronaut:micronaut-bom:${micronautVersion}")
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.21"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.21"
     kapt "io.micronaut:micronaut-inject-java"
