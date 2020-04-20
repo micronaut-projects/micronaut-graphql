@@ -95,7 +95,7 @@ public class GraphQLConfiguration implements Toggleable {
      * Configuration properties for GraphiQL.
      */
     @ConfigurationProperties(GraphiQLConfiguration.PREFIX)
-    public static class GraphiQLConfiguration implements Toggleable {
+    public static class GraphiQLConfiguration implements Toggleable, GraphQlClientConfiguration {
 
         /**
          * The prefix to use for all GraphiQL configuration properties.

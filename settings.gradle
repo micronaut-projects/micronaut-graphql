@@ -18,3 +18,5 @@ examples.each { name ->
     project.name = "graphql-example-${name}"
     project.projectDir = new File(settingsDir, "examples/${name}")
 }
+include 'graphql-altair-configuration'
+
