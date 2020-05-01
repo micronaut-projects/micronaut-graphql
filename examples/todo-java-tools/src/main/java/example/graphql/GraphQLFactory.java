@@ -16,9 +16,9 @@
 
 package example.graphql;
 
-import com.coxautodev.graphql.tools.SchemaParser;
-import com.coxautodev.graphql.tools.SchemaParserBuilder;
 import graphql.GraphQL;
+import graphql.kickstart.tools.SchemaParser;
+import graphql.kickstart.tools.SchemaParserBuilder;
 import graphql.schema.GraphQLSchema;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
