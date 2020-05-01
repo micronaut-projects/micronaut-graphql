@@ -1,5 +1,9 @@
 # Micronaut GraphQL To-Do SPQR example
 
+Demonstrates the usage of [SPQR](https://github.com/leangen/graphql-spqr), a code-first library that automatically generates your GraphQL schema.
+
+## Running
+
 Start the application:
 
     ./gradlew clean :graphql-example-todo-spqr:run
