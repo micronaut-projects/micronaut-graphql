@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>2.2 Configuring GraphQL over websockets 1.3.0.RC1</title>
+    <title>2.2 Configuring GraphQL over websockets 1.3.0</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -44,6 +44,9 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>2</strong><span>Configuration</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/repository.html"><strong>3</strong><span>Repository</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -68,12 +71,14 @@ function addJsClass() {
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
+                    <div class="toc-item next-right"><a href="../../guide/repository.html"><strong>3</strong><span>Repository</span> >></a></div>
+                
 
 
                 <div class="project">
                     <h1>2.2 Configuring GraphQL over websockets</h1>
 
-                    <p><strong>Version:</strong> 1.3.0.RC1</p>
+                    <p><strong>Version:</strong> 1.3.0</p>
                 </div>
 
                 
@@ -93,8 +98,8 @@ function addJsClass() {
 (<a href="https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md" class="bare">https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md</a>).</p>
 </div>
 <div class="paragraph">
-<p>GraphQL over web sockets be explicitly enabled via the <code>graphql.graphql-ws.enabled</code> application property.
-While the server is capable of handling also the queries and mutations over web sockets it might not be supported in all clients.
+<p>GraphQL over web sockets must be explicitly enabled via the <code>graphql.graphql-ws.enabled</code> application property.
+While the server is capable of handling the queries and mutations also over web sockets it might not be supported in all clients.
 Some clients have a way of configuring a different endpoint for subscriptions and/or some filter to only use the websocket for subscriptions.</p>
 </div>
 <div class="paragraph">
@@ -141,6 +146,8 @@ An example using subscriptions with kafka can be found here, <a href="https://gi
                 <div style="clear:both;margin-top:15px;"></div>
                 
                     <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/repository.html"><strong>3</strong><span>Repository</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>
