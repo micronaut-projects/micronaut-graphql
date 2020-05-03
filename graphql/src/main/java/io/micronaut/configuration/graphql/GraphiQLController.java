@@ -22,6 +22,7 @@ import io.micronaut.context.env.DefaultPropertyPlaceholderResolver;
 import io.micronaut.context.env.PropertyPlaceholderResolver;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.async.SupplierUtil;
+import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.io.IOUtils;
 import io.micronaut.core.io.ResourceResolver;
 import io.micronaut.core.naming.NameUtils;
@@ -60,6 +61,7 @@ public class GraphiQLController {
     private final GraphQLConfiguration.GraphiQLConfiguration graphiQLConfiguration;
     private final GraphQLWsConfiguration graphQLWsConfiguration;
     private final ResourceResolver resourceResolver;
+    private final ConversionService conversionService;
 
     private final String rawTemplate;
     private final Supplier<String> resolvedTemplate;
@@ -70,13 +72,15 @@ public class GraphiQLController {
      * @param graphQLConfiguration   the {@link GraphQLConfiguration} instance
      * @param graphQLWsConfiguration the {@link GraphQLWsConfiguration} instance
      * @param resourceResolver       the {@link ResourceResolver} instance
+     * @param conversionService      the {@link ConversionService} instance
      */
     public GraphiQLController(GraphQLConfiguration graphQLConfiguration, GraphQLWsConfiguration graphQLWsConfiguration,
-            ResourceResolver resourceResolver) {
+            ResourceResolver resourceResolver, ConversionService conversionService) {
         this.graphQLConfiguration = graphQLConfiguration;
         this.graphiQLConfiguration = graphQLConfiguration.getGraphiql();
         this.graphQLWsConfiguration = graphQLWsConfiguration;
         this.resourceResolver = resourceResolver;
+        this.conversionService = conversionService;
         // Load the raw template (variables are not yet resolved).
         // This means we fail fast if the template cannot be loaded resulting in a ConfigurationException at startup.
         this.rawTemplate = loadTemplate(graphiQLConfiguration.getTemplatePath());
@@ -129,7 +133,7 @@ public class GraphiQLController {
         map.putAll(parameters);
         PropertyResolver propertyResolver = new MapPropertyResolver(map);
         PropertyPlaceholderResolver propertyPlaceholderResolver =
-                new DefaultPropertyPlaceholderResolver(propertyResolver);
+                new DefaultPropertyPlaceholderResolver(propertyResolver, conversionService);
         return propertyPlaceholderResolver.resolvePlaceholders(str).get();
     }
 }
