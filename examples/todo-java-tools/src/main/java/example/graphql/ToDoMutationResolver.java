@@ -16,7 +16,7 @@
 
 package example.graphql;
 
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import graphql.kickstart.tools.GraphQLMutationResolver;
 import example.domain.ToDo;
 import example.repository.ToDoRepository;
 

@@ -4,7 +4,16 @@ Micronaut supports https://graphql.org[GraphQL] via the `micronaut-graphql` modu
 
 === 1.3.0
 
-* Add support for GraphQL over websockets, in order to support subscriptions (https://github.com/micronaut-projects/micronaut-graphql/issues/3[#3], https://github.com/micronaut-projects/micronaut-graphql/issues/27[#27]).
+* Add support for GraphQL over websockets, in order to support subscriptions
+(https://github.com/micronaut-projects/micronaut-graphql/issues/3[#3], https://github.com/micronaut-projects/micronaut-graphql/issues/27[#27]).
+* Fixed usage of deprecated `DefaultPropertyPlaceholderResolver` constructor
+(https://github.com/micronaut-projects/micronaut-graphql/issues/42[#42]).
+
+
+=== 1.3.0.RC1
+
+* Add support for GraphQL over websockets, in order to support subscriptions
+  (https://github.com/micronaut-projects/micronaut-graphql/issues/3[#3], https://github.com/micronaut-projects/micronaut-graphql/issues/27[#27]).
 
 === 1.2.2
 

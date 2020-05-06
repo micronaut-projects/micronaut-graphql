@@ -12,7 +12,6 @@ repositories {
 
 dependencies {
     annotationProcessor platform("io.micronaut:micronaut-bom:${micronautVersion}")
-
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
     compile(project(":graphql"))

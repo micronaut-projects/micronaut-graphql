@@ -74,7 +74,7 @@ public class GraphiQLController {
      * @param conversionService      the {@link ConversionService} instance
      */
     public GraphiQLController(GraphQLConfiguration graphQLConfiguration, GraphQLWsConfiguration graphQLWsConfiguration,
-                              ResourceResolver resourceResolver, ConversionService conversionService) {
+            ResourceResolver resourceResolver, ConversionService conversionService) {
         this.graphQLConfiguration = graphQLConfiguration;
         this.graphiQLConfiguration = graphQLConfiguration.getGraphiql();
         this.graphQLWsConfiguration = graphQLWsConfiguration;
@@ -119,15 +119,10 @@ public class GraphiQLController {
         parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
         if (graphiQLConfiguration.getTemplateParameters() != null) {
             graphiQLConfiguration.getTemplateParameters().forEach((name, value) ->
-                                                                          // De-capitalize and de-hyphenate the
-                                                                          // parameter names.
-                                                                          // Otherwise `graphiql.template-parameters
-                                                                          // .magicWord` would be put as `magic-word`
-                                                                          // in the parameters map
-                                                                          // as Micronaut normalises properties and
-                                                                          // stores them lowercase hyphen separated.
-                                                                          parameters.put(NameUtils.decapitalize(
-                                                                                  NameUtils.dehyphenate(name)), value));
+                    // De-capitalize and de-hyphenate the parameter names.
+                    // Otherwise `graphiql.template-parameters.magicWord` would be put as `magic-word` in the
+                    // parameters map as Micronaut normalises properties and stores them lowercase hyphen separated.
+                    parameters.put(NameUtils.decapitalize(NameUtils.dehyphenate(name)), value));
         }
         return replaceParameters(this.rawTemplate, parameters);
     }
