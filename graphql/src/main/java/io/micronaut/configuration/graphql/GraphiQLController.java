@@ -68,6 +68,7 @@ public class GraphiQLController {
 
     /**
      * Default constructor.
+     *
      * @param graphQLConfiguration   the {@link GraphQLConfiguration} instance
      * @param graphQLWsConfiguration the {@link GraphQLWsConfiguration} instance
      * @param resourceResolver       the {@link ResourceResolver} instance
