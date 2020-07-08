@@ -1,6 +1,10 @@
-apply from: "../examples.gradle"
+plugins {
+    id "com.github.johnrengelman.shadow" version "6.0.0"
+    id "application"
+    id "groovy"
+}
 
-apply plugin: "groovy"
+apply from: "../examples.gradle"
 
 dependencies {
     implementation "io.micronaut:micronaut-runtime-groovy"
