@@ -1,7 +1,3 @@
-apply plugin: "application"
-apply plugin: "java"
-apply plugin: "com.github.johnrengelman.shadow"
-
 group "io.micronaut.example"
 version project.projectVersion
 
