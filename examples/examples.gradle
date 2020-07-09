@@ -38,3 +38,10 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     options.compilerArgs.add("-parameters")
 }
+
+micronautBuild {
+    resolutionStrategy {
+        force "com.graphql-java:graphql-java-extended-scalars:1.0.1"
+        force "com.graphql-java:graphql-java:$graphqlJavaVersion"
+    }
+}

@@ -13,6 +13,6 @@ dependencies {
 
 micronautBuild {
     resolutionStrategy {
-        force "com.graphql-java:graphql-java-extended-scalars:1.0.1"
+        force "com.graphql-java:graphql-java:$graphqlJavaVersion"
     }
 }
