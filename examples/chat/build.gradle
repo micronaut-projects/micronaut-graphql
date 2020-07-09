@@ -7,5 +7,5 @@ plugins {
 apply from: "../examples.gradle"
 
 dependencies {
-    implementation("com.graphql-java:graphql-java-extended-scalars:1.0.1")
+    implementation("com.graphql-java:graphql-java-extended-scalars:2020-02-19T04-04-26-6f82be9")
 }
