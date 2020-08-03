@@ -16,7 +16,7 @@ dependencies {
     kapt "io.micronaut:micronaut-inject-java"
     kapt "io.micronaut:micronaut-validation"
     kaptTest "io.micronaut:micronaut-inject-java"
-    runtime "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.1"
+    runtime "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2"
 }
 
 allOpen {
