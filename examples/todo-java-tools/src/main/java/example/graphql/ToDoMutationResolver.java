@@ -15,9 +15,11 @@
  */
 package example.graphql;
 
-import graphql.kickstart.tools.GraphQLMutationResolver;
+import example.domain.Author;
 import example.domain.ToDo;
+import example.repository.AuthorRepository;
 import example.repository.ToDoRepository;
+import graphql.kickstart.tools.GraphQLMutationResolver;
 
 import javax.inject.Singleton;
 
@@ -28,14 +30,17 @@ import javax.inject.Singleton;
 @SuppressWarnings("Duplicates")
 public class ToDoMutationResolver implements GraphQLMutationResolver {
 
-    private ToDoRepository toDoRepository;
+    private final ToDoRepository toDoRepository;
+    private final AuthorRepository authorRepository;
 
-    public ToDoMutationResolver(ToDoRepository toDoRepository) {
+    public ToDoMutationResolver(ToDoRepository toDoRepository, AuthorRepository authorRepository) {
         this.toDoRepository = toDoRepository;
+        this.authorRepository = authorRepository;
     }
 
-    public ToDo createToDo(String title) {
-        ToDo toDo = new ToDo(title);
+    public ToDo createToDo(String title, String username) {
+        Author author = authorRepository.findOrCreate(username);
+        ToDo toDo = new ToDo(title, author.getId());
         return toDoRepository.save(toDo);
     }
 

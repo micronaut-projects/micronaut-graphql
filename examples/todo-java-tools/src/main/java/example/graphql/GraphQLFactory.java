@@ -33,12 +33,13 @@ public class GraphQLFactory {
 
     @Bean
     @Singleton
-    public GraphQL graphQL(ToDoQueryResolver toDoQueryResolver, ToDoMutationResolver toDoMutationResolver) {
+    public GraphQL graphQL(ToDoQueryResolver toDoQueryResolver, ToDoMutationResolver toDoMutationResolver,
+                           ToDoResolver toDoResolver) {
 
         // Parse the schema.
         SchemaParserBuilder builder = SchemaParser.newParser()
                 .file("schema.graphqls")
-                .resolvers(toDoQueryResolver, toDoMutationResolver);
+                .resolvers(toDoQueryResolver, toDoMutationResolver, toDoResolver);
 
         // Create the executable schema.
         GraphQLSchema graphQLSchema = builder.build().makeExecutableSchema();
