@@ -39,10 +39,11 @@ public class GraphQLFactory {
     @Bean
     @Singleton
     public GraphQL graphQL(ResourceResolver resourceResolver,
-            ToDosDataFetcher toDosDataFetcher,
-            CreateToDoDataFetcher createToDoDataFetcher,
-            CompleteToDoDataFetcher completeToDoDataFetcher,
-            DeleteToDoDataFetcher deleteToDoDataFetcher) {
+                           ToDosDataFetcher toDosDataFetcher,
+                           CreateToDoDataFetcher createToDoDataFetcher,
+                           CompleteToDoDataFetcher completeToDoDataFetcher,
+                           DeleteToDoDataFetcher deleteToDoDataFetcher,
+                           AuthorDataFetcher authorDataFetcher) {
 
         SchemaParser schemaParser = new SchemaParser();
         SchemaGenerator schemaGenerator = new SchemaGenerator();
@@ -60,6 +61,8 @@ public class GraphQLFactory {
                         .dataFetcher("createToDo", createToDoDataFetcher)
                         .dataFetcher("completeToDo", completeToDoDataFetcher)
                         .dataFetcher("deleteToDo", deleteToDoDataFetcher))
+                .type("ToDo", typeWiring -> typeWiring
+                        .dataFetcher("author", authorDataFetcher))
                 .build();
 
         // Create the executable schema.

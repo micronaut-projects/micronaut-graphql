@@ -29,7 +29,7 @@ import javax.inject.Singleton;
 @SuppressWarnings("Duplicates")
 public class CompleteToDoDataFetcher implements DataFetcher<Boolean> {
 
-    private ToDoRepository toDoRepository;
+    private final ToDoRepository toDoRepository;
 
     public CompleteToDoDataFetcher(ToDoRepository toDoRepository) {
         this.toDoRepository = toDoRepository;

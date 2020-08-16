@@ -29,7 +29,7 @@ import javax.inject.Singleton;
 @SuppressWarnings("Duplicates")
 public class ToDosDataFetcher implements DataFetcher<Iterable<ToDo>> {
 
-    private ToDoRepository toDoRepository;
+    private final ToDoRepository toDoRepository;
 
     public ToDosDataFetcher(ToDoRepository toDoRepository) {
         this.toDoRepository = toDoRepository;
