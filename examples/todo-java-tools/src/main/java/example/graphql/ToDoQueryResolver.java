@@ -28,7 +28,7 @@ import javax.inject.Singleton;
 @SuppressWarnings("Duplicates")
 public class ToDoQueryResolver implements GraphQLQueryResolver {
 
-    private ToDoRepository toDoRepository;
+    private final ToDoRepository toDoRepository;
 
     public ToDoQueryResolver(ToDoRepository toDoRepository) {
         this.toDoRepository = toDoRepository;
