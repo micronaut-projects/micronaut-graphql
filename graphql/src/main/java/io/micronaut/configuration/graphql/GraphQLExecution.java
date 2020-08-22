@@ -24,7 +24,7 @@ import graphql.ExecutionResult;
  * @author Alexey Zhokhov
  * @since 1.4.0
  */
-public class GraphQLExecution {
+public final class GraphQLExecution {
 
     private final ExecutionInput input;
     private final ExecutionResult result;
@@ -34,10 +34,16 @@ public class GraphQLExecution {
         this.result = result;
     }
 
+    /**
+     * @return GraphQL execution input
+     */
     public ExecutionInput getInput() {
         return input;
     }
 
+    /**
+     * @return GraphQL execution result
+     */
     public ExecutionResult getResult() {
         return result;
     }

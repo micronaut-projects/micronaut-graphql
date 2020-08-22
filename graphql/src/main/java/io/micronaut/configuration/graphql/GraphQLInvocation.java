@@ -15,7 +15,6 @@
  */
 package io.micronaut.configuration.graphql;
 
-import graphql.ExecutionResult;
 import io.micronaut.http.HttpRequest;
 import org.reactivestreams.Publisher;
 
@@ -28,7 +27,7 @@ import org.reactivestreams.Publisher;
 public interface GraphQLInvocation {
 
     /**
-     * Invokes the GraphQL request and returns a publisher that emits {@link ExecutionResult} objects.
+     * Invokes the GraphQL request and returns a publisher that emits {@link GraphQLExecution} objects.
      *
      * @param invocationData the GraphQL invocation data
      * @param httpRequest    the HTTP request
