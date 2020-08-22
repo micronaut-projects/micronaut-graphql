@@ -16,6 +16,7 @@
 package io.micronaut.configuration.graphql;
 
 import graphql.ExecutionInput;
+import graphql.GraphQLContext;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import org.reactivestreams.Publisher;
@@ -36,6 +37,10 @@ public class DefaultGraphQLExecutionInputCustomizer implements GraphQLExecutionI
      */
     @Override
     public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest) {
+        if (executionInput.getContext() != null && executionInput.getContext() instanceof GraphQLContext) {
+            GraphQLContext graphQLContext = (GraphQLContext) executionInput.getContext();
+            GraphQLContextHttpUtils.setRequest(graphQLContext, httpRequest);
+        }
         return Publishers.just(executionInput);
     }
 }

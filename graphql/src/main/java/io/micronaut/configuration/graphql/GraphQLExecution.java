@@ -15,24 +15,31 @@
  */
 package io.micronaut.configuration.graphql;
 
+import graphql.ExecutionInput;
 import graphql.ExecutionResult;
-import io.micronaut.http.HttpRequest;
-import org.reactivestreams.Publisher;
 
 /**
- * An interface for invoking GraphQL request.
+ * Holder class for GraphQL execution input of graphql query execution and the result of performing a graphql query.
  *
- * @author Marcel Overdijk
- * @since 1.0
+ * @author Alexey Zhokhov
+ * @since 1.4.0
  */
-public interface GraphQLInvocation {
+public class GraphQLExecution {
 
-    /**
-     * Invokes the GraphQL request and returns a publisher that emits {@link ExecutionResult} objects.
-     *
-     * @param invocationData the GraphQL invocation data
-     * @param httpRequest    the HTTP request
-     * @return the GraphQL execution result
-     */
-    Publisher<GraphQLExecution> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest);
+    private final ExecutionInput input;
+    private final ExecutionResult result;
+
+    public GraphQLExecution(ExecutionInput input, ExecutionResult result) {
+        this.input = input;
+        this.result = result;
+    }
+
+    public ExecutionInput getInput() {
+        return input;
+    }
+
+    public ExecutionResult getResult() {
+        return result;
+    }
+
 }

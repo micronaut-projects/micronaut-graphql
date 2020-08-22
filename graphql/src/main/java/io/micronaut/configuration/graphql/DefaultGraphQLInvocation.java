@@ -35,9 +35,9 @@ import java.util.concurrent.CompletableFuture;
  * @author Marcel Overdijk
  * @author Graeme Rocher
  * @author James Kleeh
- * @since 1.0
  * @see GraphQLExecutionInputCustomizer#customize(ExecutionInput, HttpRequest)
  * @see GraphQL#executeAsync(ExecutionInput.Builder)
+ * @since 1.0
  */
 @Singleton
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
@@ -66,7 +66,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      * {@inheritDoc}
      */
     @Override
-    public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest) {
+    public Publisher<GraphQLExecution> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest) {
         ExecutionInput.Builder executionInputBuilder = ExecutionInput.newExecutionInput()
                 .query(invocationData.getQuery())
                 .operationName(invocationData.getOperationName())
@@ -75,7 +75,12 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
             executionInputBuilder.dataLoaderRegistry(dataLoaderRegistry.get());
         }
         ExecutionInput executionInput = executionInputBuilder.build();
-        return Flowable.fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest))
+
+        Flowable<ExecutionInput> executionInputFlowable = graphQLExecutionInputCustomizer != null
+                ? Flowable.fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest))
+                : Flowable.just(executionInput);
+
+        return executionInputFlowable
                 .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() -> {
                     try {
                         return graphQL.executeAsync(customizedExecutionInput);
@@ -84,6 +89,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
                         future.completeExceptionally(e);
                         return future;
                     }
-                }));
+                }))
+                .map(executionResult -> new GraphQLExecution(executionInput, (ExecutionResult) executionResult));
     }
 }

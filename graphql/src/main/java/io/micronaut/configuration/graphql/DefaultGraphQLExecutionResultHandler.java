@@ -15,14 +15,13 @@
  */
 package io.micronaut.configuration.graphql;
 
-import graphql.ExecutionResult;
 import io.micronaut.core.async.publisher.Publishers;
 import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
 
 /**
- * The default implementation for handling GraphQL {@link ExecutionResult}s.
+ * The default implementation for handling GraphQL {@link GraphQLExecution}s.
  *
  * @author Marcel Overdijk
  * @author James Kleeh
@@ -35,7 +34,8 @@ public class DefaultGraphQLExecutionResultHandler implements GraphQLExecutionRes
      * {@inheritDoc}
      */
     @Override
-    public Publisher<GraphQLResponseBody> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher) {
-        return Publishers.map(executionResultPublisher, executionResult -> new GraphQLResponseBody(executionResult.toSpecification()));
+    public Publisher<GraphQLResponseBody> handleExecutionResult(Publisher<GraphQLExecution> executionResultPublisher) {
+        return Publishers.map(executionResultPublisher, executionResult ->
+                new GraphQLResponseBody(executionResult.getResult().toSpecification()));
     }
 }
