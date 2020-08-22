@@ -1,0 +1,22 @@
+type Query {
+  # return empty if user is not authenticated
+  currentUser: User
+}
+
+type Mutation {
+  login(username: String!, password: String!): LoginPayload!
+}
+
+type User {
+  username: String!
+  firstName: String!
+  lastName: String!
+  roles: [String!]!
+}
+
+type LoginPayload {
+  # user if successfully authenticated
+  user: User
+  # error message
+  error: String
+}
