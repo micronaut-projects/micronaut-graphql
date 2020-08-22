@@ -20,13 +20,18 @@ import graphql.ExecutionInput
 import graphql.ExecutionResult
 import graphql.ExecutionResultImpl
 import graphql.GraphQL
+import graphql.GraphQLContext
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
+import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.annotation.*
 import io.micronaut.http.client.annotation.Client
+import io.micronaut.http.cookie.Cookie
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
 import spock.lang.Specification
@@ -68,6 +73,15 @@ class GraphQLControllerSpec extends Specification {
         executionInput = null
         1 * graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
             this.executionInput = executionInput
+            if (executionInput.query == "{ testHeaders }") {
+                GraphQLContext graphQlContext = executionInput.getContext()
+
+                HttpRequest httpRequest = GraphQLContextHttpUtils.getRequest(graphQlContext)
+                assert httpRequest: "HTTP request can not be null"
+
+                GraphQLContextHttpUtils.setHeader(graphQlContext, "X-Foo", "bar")
+                GraphQLContextHttpUtils.addCookie(graphQlContext, Cookie.of("foo", "bar"))
+            }
             return executionResult
         }
     }
@@ -244,6 +258,20 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == [:]
     }
 
+    void "test additional headers and cookies"() {
+        given:
+        String body = "{ testHeaders }"
+
+        when:
+        HttpResponse httpResponse = graphQLClient.postWithResponse(body)
+
+        then:
+        httpResponse.status() == HttpStatus.OK
+        httpResponse.body().getSpecification()["data"] == "bar"
+        httpResponse.header("X-Foo") == "bar"
+        httpResponse.header("set-cookie") == "foo=bar"
+    }
+
     @Client("/graphql")
     static interface GraphQLClient {
 
@@ -258,6 +286,10 @@ class GraphQLControllerSpec extends Specification {
 
         @Post(produces = APPLICATION_GRAPHQL)
         GraphQLResponseBody post(@Body String body)
+
+        @Post(produces = APPLICATION_GRAPHQL)
+        HttpResponse<GraphQLResponseBody> postWithResponse(@Body String body)
+
     }
 
     @Factory
