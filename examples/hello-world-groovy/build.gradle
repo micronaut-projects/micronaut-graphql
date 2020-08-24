@@ -7,7 +7,7 @@ plugins {
 apply from: "../examples.gradle"
 
 dependencies {
-    implementation "io.micronaut:micronaut-runtime-groovy"
+    implementation "io.micronaut.groovy:micronaut-runtime-groovy"
     compileOnly "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut:micronaut-inject-groovy"
 }
