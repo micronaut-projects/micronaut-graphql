@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package example.graphql;
-
-import graphql.kickstart.tools.GraphQLQueryResolver;
-import example.domain.ToDo;
-import example.repository.ToDoRepository;
-
-import javax.inject.Singleton;
+package example.domain;
 
 /**
- * @author Marcel Overdijk
+ * @author Alexey Zhokhov
  */
-@Singleton
 @SuppressWarnings("Duplicates")
-public class ToDoQueryResolver implements GraphQLQueryResolver {
+public class Author {
 
-    private final ToDoRepository toDoRepository;
+    private final String id;
+    private final String username;
 
-    public ToDoQueryResolver(ToDoRepository toDoRepository) {
-        this.toDoRepository = toDoRepository;
+    public Author(String id, String username) {
+        this.id = id;
+        this.username = username;
     }
 
-    public Iterable<ToDo> toDos() {
-        return toDoRepository.findAll();
+    public String getId() {
+        return id;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
 }
