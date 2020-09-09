@@ -15,10 +15,11 @@
  */
 package io.micronaut.configuration.graphql;
 
+import graphql.ExecutionResult;
 import org.reactivestreams.Publisher;
 
 /**
- * An interface for handling GraphQL {@link GraphQLExecution}s.
+ * An interface for handling GraphQL {@link ExecutionResult}s.
  *
  * @author Marcel Overdijk
  * @since 1.0
@@ -32,5 +33,5 @@ public interface GraphQLExecutionResultHandler {
      * @param executionResultPublisher the execution result
      * @return the response body
      */
-    Publisher<GraphQLResponseBody> handleExecutionResult(Publisher<GraphQLExecution> executionResultPublisher);
+    Publisher<GraphQLResponseBody> handleExecutionResult(Publisher<ExecutionResult> executionResultPublisher);
 }

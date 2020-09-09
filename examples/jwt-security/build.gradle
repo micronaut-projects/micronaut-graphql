@@ -7,6 +7,6 @@ plugins {
 apply from: "../examples.gradle"
 
 dependencies {
-    annotationProcessor("io.micronaut:micronaut-security")
-    compile("io.micronaut:micronaut-security-jwt")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    implementation("io.micronaut.security:micronaut-security-jwt")
 }

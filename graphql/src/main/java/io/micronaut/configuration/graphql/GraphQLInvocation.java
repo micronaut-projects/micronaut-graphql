@@ -15,7 +15,10 @@
  */
 package io.micronaut.configuration.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
+import graphql.ExecutionResult;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MutableHttpResponse;
 import org.reactivestreams.Publisher;
 
 /**
@@ -31,7 +34,9 @@ public interface GraphQLInvocation {
      *
      * @param invocationData the GraphQL invocation data
      * @param httpRequest    the HTTP request
+     * @param httpResponse   the mutable HTTP response, can be {@literal null} when using websocket
      * @return the GraphQL execution result
      */
-    Publisher<GraphQLExecution> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest);
+    Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest,
+                                      @Nullable MutableHttpResponse<String> httpResponse);
 }

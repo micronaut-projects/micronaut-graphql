@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.graphql;
 
-import graphql.GraphQLContext;
+import graphql.ExecutionResult;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -27,14 +27,11 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
-import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.exceptions.HttpStatusException;
-import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -196,34 +193,13 @@ public class GraphQLController {
             Map<String, Object> variables,
             HttpRequest httpRequest) {
         GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
-        Publisher<GraphQLExecution> execution = graphQLInvocation.invoke(invocationData, httpRequest);
-
-        return Flowable.fromPublisher(execution).flatMap(graphQLExecution -> {
-            Publisher<GraphQLResponseBody> graphQLResponseBodyPublisher =
-                    graphQLExecutionResultHandler.handleExecutionResult(Publishers.just(graphQLExecution));
-
-            return Publishers.map(graphQLResponseBodyPublisher, (result) -> {
-                MutableHttpResponse<String> response = HttpResponse.status(HttpStatus.OK);
-
-                if (graphQLExecution.getInput().getContext() instanceof GraphQLContext) {
-                    GraphQLContext graphQLContext = (GraphQLContext) graphQLExecution.getInput().getContext();
-
-                    Map<String, String> headers = GraphQLContextHttpUtils.getHeaders(graphQLContext);
-
-                    for (Map.Entry<String, String> entry : headers.entrySet()) {
-                        response.header(entry.getKey(), entry.getValue());
-                    }
-
-                    List<Cookie> cookies = GraphQLContextHttpUtils.getCookies(graphQLContext);
-
-                    for (Cookie cookie : cookies) {
-                        response.cookie(cookie);
-                    }
-                }
-
-                response.body(graphQLJsonSerializer.serialize(result));
-                return response;
-            });
-        });
+        // create empty response entity first and pass it to GraphQLInvocation
+        MutableHttpResponse<String> httpResponse = HttpResponse.status(HttpStatus.OK);
+        Publisher<ExecutionResult> executionResult = graphQLInvocation
+                .invoke(invocationData, httpRequest, httpResponse);
+        Publisher<GraphQLResponseBody> responseBody = graphQLExecutionResultHandler
+                .handleExecutionResult(executionResult);
+        return Publishers.map(responseBody, graphQLResponseBody ->
+                httpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBody)));
     }
 }

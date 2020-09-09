@@ -15,8 +15,10 @@
  */
 package io.micronaut.configuration.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionInput;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MutableHttpResponse;
 import org.reactivestreams.Publisher;
 
 /**
@@ -24,8 +26,8 @@ import org.reactivestreams.Publisher;
  * A custom implementation can be provided to transform the execution input to e.g. set a context or root object.
  *
  * @author Marcel Overdijk
- * @since 1.0
  * @see graphql.ExecutionInput#transform(java.util.function.Consumer)
+ * @since 1.0
  */
 public interface GraphQLExecutionInputCustomizer {
 
@@ -33,8 +35,10 @@ public interface GraphQLExecutionInputCustomizer {
      * Customizes the GraphQL execution input.
      *
      * @param executionInput the execution input
-     * @param httpRequest the HTTP request
+     * @param httpRequest    the HTTP request
+     * @param httpResponse   the mutable HTTP response, can be {@literal null} when using websocket
      * @return the GraphQL context object
      */
-    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest);
+    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
+                                        @Nullable MutableHttpResponse<String> httpResponse);
 }

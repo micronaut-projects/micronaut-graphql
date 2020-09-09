@@ -15,10 +15,11 @@
  */
 package io.micronaut.configuration.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionInput;
-import graphql.GraphQLContext;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MutableHttpResponse;
 import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
@@ -36,11 +37,8 @@ public class DefaultGraphQLExecutionInputCustomizer implements GraphQLExecutionI
      * {@inheritDoc}
      */
     @Override
-    public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest) {
-        if (executionInput.getContext() != null && executionInput.getContext() instanceof GraphQLContext) {
-            GraphQLContext graphQLContext = (GraphQLContext) executionInput.getContext();
-            GraphQLContextHttpUtils.setRequest(graphQLContext, httpRequest);
-        }
+    public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
+                                               @Nullable MutableHttpResponse<String> httpResponse) {
         return Publishers.just(executionInput);
     }
 }

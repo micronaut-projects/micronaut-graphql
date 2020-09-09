@@ -24,15 +24,19 @@ import graphql.GraphQLContext
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
+import io.micronaut.core.async.publisher.Publishers
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
+import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.*
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.cookie.Cookie
 import io.micronaut.runtime.server.EmbeddedServer
+import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
@@ -76,11 +80,12 @@ class GraphQLControllerSpec extends Specification {
             if (executionInput.query == "{ testHeaders }") {
                 GraphQLContext graphQlContext = executionInput.getContext()
 
-                HttpRequest httpRequest = GraphQLContextHttpUtils.getRequest(graphQlContext)
-                assert httpRequest: "HTTP request can not be null"
+                MutableHttpResponse httpResponse = graphQlContext.get("httpResponse")
 
-                GraphQLContextHttpUtils.setHeader(graphQlContext, "X-Foo", "bar")
-                GraphQLContextHttpUtils.addCookie(graphQlContext, Cookie.of("foo", "bar"))
+                assert httpResponse: "HTTP response can not be null"
+
+                httpResponse.header("X-Foo", "bar")
+                httpResponse.cookie(Cookie.of("foo", "bar"))
             }
             return executionResult
         }
@@ -301,5 +306,20 @@ class GraphQLControllerSpec extends Specification {
         GraphQL graphQL() {
             graphQL
         }
+    }
+}
+
+@Singleton
+@Primary
+@Requires(property = "spec.name", value = "GraphQLControllerSpec")
+class SetRequestResponseInputCustomizer implements GraphQLExecutionInputCustomizer {
+
+    @Override
+    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
+                                        MutableHttpResponse<String> httpResponse) {
+        GraphQLContext graphQLContext = (GraphQLContext) executionInput.getContext();
+        graphQLContext.put("httpRequest", httpRequest);
+        graphQLContext.put("httpResponse", httpResponse);
+        return Publishers.just(executionInput);
     }
 }

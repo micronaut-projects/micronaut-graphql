@@ -20,9 +20,9 @@ import example.repository.UserRepository;
 import graphql.GraphQLContext;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-import io.micronaut.configuration.graphql.GraphQLContextHttpUtils;
 import io.micronaut.context.event.ApplicationEventPublisher;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.Authenticator;
@@ -40,9 +40,6 @@ import javax.inject.Singleton;
 import java.time.temporal.TemporalAmount;
 import java.util.Optional;
 import java.util.Random;
-
-import static io.micronaut.configuration.graphql.GraphQLContextHttpUtils.getRequest;
-import static io.micronaut.configuration.graphql.GraphQLContextHttpUtils.setHeader;
 
 /**
  * @author Alexey Zhokhov
@@ -86,7 +83,8 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
             return LoginPayload.ofError("Rate Limit Exceeded");
         }
 
-        HttpRequest httpRequest = getRequest(graphQLContext);
+        HttpRequest httpRequest = graphQLContext.get("httpRequest");
+        MutableHttpResponse<String> httpResponse = graphQLContext.get("httpResponse");
 
         String username = environment.getArgument("username");
         String password = environment.getArgument("password");
@@ -106,7 +104,7 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
                 eventPublisher.publishEvent(new LoginSuccessfulEvent(userDetails));
 
                 Optional<Cookie> jwtCookie = accessTokenCookie(userDetails, httpRequest);
-                jwtCookie.ifPresent(value -> GraphQLContextHttpUtils.addCookie(graphQLContext, value));
+                jwtCookie.ifPresent(httpResponse::cookie);
 
                 User user = userRepository.findByUsername(userDetails.getUsername()).orElse(null);
 
@@ -136,8 +134,10 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
     }
 
     private void addRateLimitHeaders(GraphQLContext graphQLContext) {
-        setHeader(graphQLContext, "X-Login-RateLimit", String.valueOf(LOGIN_RATE_LIMIT));
-        setHeader(graphQLContext, "X-Login-RateLimit-Remaining", String.valueOf(LOGIN_RATE_LIMIT_REMAINING));
+        MutableHttpResponse<String> httpResponse = graphQLContext.get("httpResponse");
+
+        httpResponse.header("X-Login-RateLimit", String.valueOf(LOGIN_RATE_LIMIT));
+        httpResponse.header("X-Login-RateLimit-Remaining", String.valueOf(LOGIN_RATE_LIMIT_REMAINING));
     }
 
     private void resetRateLimit() {

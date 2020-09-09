@@ -15,9 +15,8 @@
  */
 package example.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import example.domain.User;
-
-import javax.annotation.Nullable;
 
 /**
  * @author Alexey Zhokhov

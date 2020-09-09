@@ -15,16 +15,17 @@
  */
 package io.micronaut.configuration.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MutableHttpResponse;
 import io.reactivex.Flowable;
 import org.dataloader.DataLoaderRegistry;
 import org.reactivestreams.Publisher;
 
-import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.concurrent.CompletableFuture;
@@ -35,7 +36,7 @@ import java.util.concurrent.CompletableFuture;
  * @author Marcel Overdijk
  * @author Graeme Rocher
  * @author James Kleeh
- * @see GraphQLExecutionInputCustomizer#customize(ExecutionInput, HttpRequest)
+ * @see GraphQLExecutionInputCustomizer#customize(ExecutionInput, HttpRequest, MutableHttpResponse)
  * @see GraphQL#executeAsync(ExecutionInput.Builder)
  * @since 1.0
  */
@@ -66,7 +67,8 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      * {@inheritDoc}
      */
     @Override
-    public Publisher<GraphQLExecution> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest) {
+    public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest,
+                                             @Nullable MutableHttpResponse<String> httpResponse) {
         ExecutionInput.Builder executionInputBuilder = ExecutionInput.newExecutionInput()
                 .query(invocationData.getQuery())
                 .operationName(invocationData.getOperationName())
@@ -77,7 +79,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
         ExecutionInput executionInput = executionInputBuilder.build();
 
         Flowable<ExecutionInput> executionInputFlowable = graphQLExecutionInputCustomizer != null
-                ? Flowable.fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest))
+                ? Flowable.fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
                 : Flowable.just(executionInput);
 
         return executionInputFlowable
@@ -89,7 +91,6 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
                         future.completeExceptionally(e);
                         return future;
                     }
-                }))
-                .map(executionResult -> new GraphQLExecution(executionInput, (ExecutionResult) executionResult));
+                }));
     }
 }

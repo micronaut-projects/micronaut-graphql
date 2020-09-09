@@ -15,8 +15,10 @@
  */
 package example.security;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import example.domain.User;
 import example.repository.UserRepository;
+import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.AuthenticationFailed;
 import io.micronaut.security.authentication.AuthenticationFailureReason;
 import io.micronaut.security.authentication.AuthenticationProvider;
@@ -42,7 +44,8 @@ public class AuthenticationProviderUserPassword implements AuthenticationProvide
     }
 
     @Override
-    public Publisher<AuthenticationResponse> authenticate(AuthenticationRequest authenticationRequest) {
+    public Publisher<AuthenticationResponse> authenticate(@Nullable HttpRequest<?> httpRequest,
+                                                          AuthenticationRequest<?, ?> authenticationRequest) {
         Optional<User> user = userRepository.findByUsername((String) authenticationRequest.getIdentity());
 
         if (!user.isPresent()) {

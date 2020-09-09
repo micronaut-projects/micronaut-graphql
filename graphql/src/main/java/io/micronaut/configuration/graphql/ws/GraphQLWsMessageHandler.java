@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.graphql.ws;
 
-import io.micronaut.configuration.graphql.GraphQLExecution;
+import graphql.ExecutionResult;
 import io.micronaut.configuration.graphql.GraphQLExecutionResultHandler;
 import io.micronaut.configuration.graphql.GraphQLInvocation;
 import io.micronaut.configuration.graphql.GraphQLInvocationData;
@@ -67,7 +67,8 @@ public class GraphQLWsMessageHandler {
             GraphQLWsState state,
             GraphQLInvocation graphQLInvocation,
             GraphQLExecutionResultHandler graphQLExecutionResultHandler,
-            GraphQLWsSender responseSender) {
+            GraphQLWsSender responseSender
+    ) {
         this.graphQLWsConfiguration = graphQLWsConfiguration;
         this.state = state;
         this.graphQLInvocation = graphQLInvocation;
@@ -139,10 +140,10 @@ public class GraphQLWsMessageHandler {
         HttpRequest httpRequest = session
                 .get(HTTP_REQUEST_KEY, HttpRequest.class)
                 .orElseThrow(() -> new RuntimeException("HttpRequest could not be retrieved from websocket session"));
-        Publisher<GraphQLExecution> executionResult = graphQLInvocation.invoke(invocationData, httpRequest);
+        Publisher<ExecutionResult> executionResult = graphQLInvocation
+                .invoke(invocationData, httpRequest, null);
         Publisher<GraphQLResponseBody> responseBody = graphQLExecutionResultHandler
                 .handleExecutionResult(executionResult);
-        return Flowable.fromPublisher(responseBody)
-                .flatMap(body -> responseSender.send(operationId, body, session));
+        return Flowable.fromPublisher(responseBody).flatMap(body -> responseSender.send(operationId, body, session));
     }
 }
