@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionResult;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
@@ -30,7 +31,6 @@ import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.exceptions.HttpStatusException;
 import org.reactivestreams.Publisher;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;

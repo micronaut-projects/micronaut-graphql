@@ -16,6 +16,7 @@
 
 package io.micronaut.configuration.graphql
 
+import edu.umd.cs.findbugs.annotations.Nullable
 import graphql.ExecutionInput
 import graphql.ExecutionResult
 import graphql.ExecutionResultImpl
@@ -40,7 +41,6 @@ import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
-import javax.annotation.Nullable
 import javax.inject.Singleton
 import java.util.concurrent.CompletableFuture
 

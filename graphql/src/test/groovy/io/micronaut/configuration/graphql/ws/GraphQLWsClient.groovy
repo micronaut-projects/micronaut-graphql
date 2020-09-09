@@ -1,5 +1,6 @@
 package io.micronaut.configuration.graphql.ws
 
+import edu.umd.cs.findbugs.annotations.Nullable
 import io.micronaut.configuration.graphql.GraphQLJsonSerializer
 import io.micronaut.configuration.graphql.GraphQLRequestBody
 import io.micronaut.configuration.graphql.GraphQLResponseBody
@@ -7,7 +8,6 @@ import io.micronaut.websocket.WebSocketSession
 import io.micronaut.websocket.annotation.ClientWebSocket
 import io.micronaut.websocket.annotation.OnMessage
 
-import javax.annotation.Nullable
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.TimeUnit

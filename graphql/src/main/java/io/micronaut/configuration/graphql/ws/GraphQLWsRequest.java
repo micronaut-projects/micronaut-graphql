@@ -15,9 +15,8 @@
  */
 package io.micronaut.configuration.graphql.ws;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.configuration.graphql.GraphQLRequestBody;
-
-import javax.annotation.Nullable;
 
 /**
  * Class to handle the message to and from the websocket.
@@ -58,6 +57,7 @@ public class GraphQLWsRequest {
      *
      * @return id as string
      */
+    @Nullable
     public String getId() {
         return id;
     }
@@ -67,7 +67,7 @@ public class GraphQLWsRequest {
      *
      * @param id the id
      */
-    public void setId(final String id) {
+    public void setId(@Nullable final String id) {
         this.id = id;
     }
 
@@ -76,6 +76,7 @@ public class GraphQLWsRequest {
      *
      * @return payload as map, likely to contain a graphql query
      */
+    @Nullable
     public GraphQLRequestBody getPayload() {
         return payload;
     }
@@ -85,7 +86,7 @@ public class GraphQLWsRequest {
      *
      * @param payload the payload
      */
-    public void setPayload(final GraphQLRequestBody payload) {
+    public void setPayload(@Nullable final GraphQLRequestBody payload) {
         this.payload = payload;
     }
 

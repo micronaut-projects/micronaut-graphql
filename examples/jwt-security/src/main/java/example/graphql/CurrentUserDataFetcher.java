@@ -15,13 +15,13 @@
  */
 package example.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import example.domain.User;
 import example.repository.UserRepository;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import io.micronaut.security.utils.SecurityService;
 
-import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import java.util.Optional;
 
@@ -47,7 +47,6 @@ public class CurrentUserDataFetcher implements DataFetcher<User> {
         Optional<String> username = securityService.username();
 
         return username.flatMap(userRepository::findByUsername).orElse(null);
-
     }
 
 }

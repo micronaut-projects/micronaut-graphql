@@ -15,9 +15,8 @@
  */
 package io.micronaut.configuration.graphql.ws;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
-
-import javax.annotation.Nullable;
 
 /**
  * Class to handle the message to and from the websocket.
@@ -27,7 +26,7 @@ import javax.annotation.Nullable;
  */
 public class GraphQLWsResponse {
 
-    private String type;
+    private final String type;
     @Nullable
     private String id;
     @Nullable
@@ -48,7 +47,7 @@ public class GraphQLWsResponse {
      * @param serverType serverType as serverType
      * @param id         id as string
      */
-    public GraphQLWsResponse(ServerType serverType, String id) {
+    public GraphQLWsResponse(ServerType serverType, @Nullable String id) {
         type = serverType.getType();
         this.id = id;
     }
@@ -60,7 +59,7 @@ public class GraphQLWsResponse {
      * @param id         id as string
      * @param payload    payload as string
      */
-    public GraphQLWsResponse(ServerType serverType, String id, GraphQLResponseBody payload) {
+    public GraphQLWsResponse(ServerType serverType, @Nullable String id, @Nullable GraphQLResponseBody payload) {
         type = serverType.getType();
         this.id = id;
         this.payload = payload;
@@ -80,6 +79,7 @@ public class GraphQLWsResponse {
      *
      * @return id as string
      */
+    @Nullable
     public String getId() {
         return id;
     }
@@ -89,6 +89,7 @@ public class GraphQLWsResponse {
      *
      * @return result of the query
      */
+    @Nullable
     public GraphQLResponseBody getPayload() {
         return payload;
     }
