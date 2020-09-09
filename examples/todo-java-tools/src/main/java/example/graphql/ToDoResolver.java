@@ -15,26 +15,26 @@
  */
 package example.graphql;
 
-import graphql.kickstart.tools.GraphQLQueryResolver;
+import example.domain.Author;
 import example.domain.ToDo;
-import example.repository.ToDoRepository;
+import graphql.kickstart.tools.GraphQLResolver;
+import graphql.schema.DataFetchingEnvironment;
+import org.dataloader.DataLoader;
 
 import javax.inject.Singleton;
+import java.util.concurrent.CompletableFuture;
 
 /**
- * @author Marcel Overdijk
+ * @author Alexey Zhokhov
  */
 @Singleton
-@SuppressWarnings("Duplicates")
-public class ToDoQueryResolver implements GraphQLQueryResolver {
+public class ToDoResolver implements GraphQLResolver<ToDo> {
 
-    private final ToDoRepository toDoRepository;
+    @SuppressWarnings("unused")
+    public CompletableFuture<Author> author(ToDo todo, DataFetchingEnvironment env) {
+        DataLoader<String, Author> dataLoader = env.getDataLoader("author");
 
-    public ToDoQueryResolver(ToDoRepository toDoRepository) {
-        this.toDoRepository = toDoRepository;
+        return dataLoader.load(todo.getAuthorId());
     }
 
-    public Iterable<ToDo> toDos() {
-        return toDoRepository.findAll();
-    }
 }

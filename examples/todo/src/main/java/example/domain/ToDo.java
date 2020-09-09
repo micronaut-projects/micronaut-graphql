@@ -24,12 +24,11 @@ public class ToDo {
     private String id;
     private String title;
     private boolean completed;
+    private String authorId;
 
-    public ToDo() {
-    }
-
-    public ToDo(String title) {
+    public ToDo(String title, String authorId) {
         this.title = title;
+        this.authorId = authorId;
     }
 
     public String getId() {
@@ -55,4 +54,13 @@ public class ToDo {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+
 }
