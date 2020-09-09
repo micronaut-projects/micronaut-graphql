@@ -16,6 +16,7 @@
 package io.micronaut.configuration.graphql.ws;
 
 import io.micronaut.configuration.graphql.GraphQLConfiguration;
+import io.micronaut.configuration.graphql.GraphQLContextKeys;
 import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
@@ -49,7 +50,6 @@ import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType
         StringUtils.FALSE)
 public class GraphQLWsController {
 
-    static final String HTTP_REQUEST_KEY = "httpRequest";
     private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsController.class);
 
     private final GraphQLWsMessageHandler messageHandler;
@@ -65,7 +65,7 @@ public class GraphQLWsController {
      * @param graphQLJsonSerializer the {@link GraphQLJsonSerializer} instance
      */
     public GraphQLWsController(GraphQLWsMessageHandler messageHandler, GraphQLWsState state,
-            GraphQLJsonSerializer graphQLJsonSerializer) {
+                               GraphQLJsonSerializer graphQLJsonSerializer) {
         this.messageHandler = messageHandler;
         this.state = state;
         this.graphQLJsonSerializer = graphQLJsonSerializer;
@@ -82,7 +82,7 @@ public class GraphQLWsController {
     @OnOpen
     @SuppressWarnings("rawtypes")
     public void onOpen(WebSocketSession session, HttpRequest request) {
-        session.put(HTTP_REQUEST_KEY, request);
+        session.put(GraphQLContextKeys.HTTP_REQUEST_KEY, request);
         state.init(session);
         LOG.trace("Opened websocket connection with id {}", session.getId());
     }

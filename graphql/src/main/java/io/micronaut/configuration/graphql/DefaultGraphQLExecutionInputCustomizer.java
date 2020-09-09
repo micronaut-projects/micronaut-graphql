@@ -17,6 +17,7 @@ package io.micronaut.configuration.graphql;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionInput;
+import graphql.GraphQLContext;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
@@ -39,6 +40,12 @@ public class DefaultGraphQLExecutionInputCustomizer implements GraphQLExecutionI
     @Override
     public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
                                                @Nullable MutableHttpResponse<String> httpResponse) {
+        // we store original request and response, since it might be needed inside data fetchers
+        if (executionInput.getContext() != null && executionInput.getContext() instanceof GraphQLContext) {
+            GraphQLContext graphQLContext = (GraphQLContext) executionInput.getContext();
+            graphQLContext.put(GraphQLContextKeys.HTTP_REQUEST_KEY, httpRequest);
+            graphQLContext.put(GraphQLContextKeys.HTTP_RESPONSE_KEY, httpResponse);
+        }
         return Publishers.just(executionInput);
     }
 }
