@@ -30,7 +30,7 @@ import org.reactivestreams.Publisher;
 public interface GraphQLInvocation {
 
     /**
-     * Invokes the GraphQL request and returns a publisher that emits {@link GraphQLExecution} objects.
+     * Invokes the GraphQL request and returns a publisher that emits {@link ExecutionResult} objects.
      *
      * @param invocationData the GraphQL invocation data
      * @param httpRequest    the HTTP request
