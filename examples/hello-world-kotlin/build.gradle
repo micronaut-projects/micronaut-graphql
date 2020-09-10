@@ -11,8 +11,8 @@ apply from: "../examples.gradle"
 dependencies {
     kapt platform("io.micronaut:micronaut-bom:${micronautVersion}")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.0"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.10"
     kapt "io.micronaut:micronaut-inject-java"
     kapt "io.micronaut:micronaut-validation"
     kaptTest "io.micronaut:micronaut-inject-java"
