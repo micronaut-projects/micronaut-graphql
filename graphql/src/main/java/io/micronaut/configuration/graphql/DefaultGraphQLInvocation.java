@@ -44,7 +44,7 @@ import java.util.concurrent.CompletableFuture;
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
     private final GraphQL graphQL;
-    private final GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer;
+    private final Provider<GraphQLExecutionInputCustomizer> graphQLExecutionInputCustomizer;
     private final Provider<DataLoaderRegistry> dataLoaderRegistry;
 
     /**
@@ -56,8 +56,9 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      */
     public DefaultGraphQLInvocation(
             GraphQL graphQL,
-            @Nullable GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
-            @Nullable Provider<DataLoaderRegistry> dataLoaderRegistry) {
+            Provider<GraphQLExecutionInputCustomizer> graphQLExecutionInputCustomizer,
+            @Nullable Provider<DataLoaderRegistry> dataLoaderRegistry
+    ) {
         this.graphQL = graphQL;
         this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
         this.dataLoaderRegistry = dataLoaderRegistry;
@@ -77,12 +78,10 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
             executionInputBuilder.dataLoaderRegistry(dataLoaderRegistry.get());
         }
         ExecutionInput executionInput = executionInputBuilder.build();
-
-        Flowable<ExecutionInput> executionInputFlowable = graphQLExecutionInputCustomizer != null
-                ? Flowable.fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
-                : Flowable.just(executionInput);
-
-        return executionInputFlowable
+        return Flowable
+                .fromPublisher(
+                        graphQLExecutionInputCustomizer.get().customize(executionInput, httpRequest, httpResponse)
+                )
                 .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() -> {
                     try {
                         return graphQL.executeAsync(customizedExecutionInput);
