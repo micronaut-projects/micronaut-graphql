@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql;
+package example.graphql;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionInput;
+import graphql.GraphQLContext;
+import io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer;
+import io.micronaut.context.annotation.Primary;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
@@ -24,21 +27,17 @@ import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
 
-/**
- * The default implementation for customizing GraphQL execution inputs.
- *
- * @author Marcel Overdijk
- * @since 1.0
- */
 @Singleton
-public class DefaultGraphQLExecutionInputCustomizer implements GraphQLExecutionInputCustomizer {
+@Primary
+public class RequestResponseCustomizer implements GraphQLExecutionInputCustomizer {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
                                                @Nullable MutableHttpResponse<String> httpResponse) {
+        GraphQLContext graphQLContext = (GraphQLContext) executionInput.getContext();
+        graphQLContext.put("httpRequest", httpRequest);
+        graphQLContext.put("httpResponse", httpResponse);
         return Publishers.just(executionInput);
     }
+
 }

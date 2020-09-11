@@ -20,7 +20,6 @@ import example.repository.UserRepository;
 import graphql.GraphQLContext;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-import io.micronaut.configuration.graphql.GraphQLContextKeys;
 import io.micronaut.context.event.ApplicationEventPublisher;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
@@ -84,8 +83,8 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
             return LoginPayload.ofError("Rate Limit Exceeded");
         }
 
-        HttpRequest httpRequest = graphQLContext.get(GraphQLContextKeys.HTTP_REQUEST_KEY);
-        MutableHttpResponse<String> httpResponse = graphQLContext.get(GraphQLContextKeys.HTTP_RESPONSE_KEY);
+        HttpRequest httpRequest = graphQLContext.get("httpRequest");
+        MutableHttpResponse<String> httpResponse = graphQLContext.get("httpResponse");
 
         String username = environment.getArgument("username");
         String password = environment.getArgument("password");

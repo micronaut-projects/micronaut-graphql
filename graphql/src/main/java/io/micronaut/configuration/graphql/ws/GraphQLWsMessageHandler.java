@@ -16,7 +16,6 @@
 package io.micronaut.configuration.graphql.ws;
 
 import graphql.ExecutionResult;
-import io.micronaut.configuration.graphql.GraphQLContextKeys;
 import io.micronaut.configuration.graphql.GraphQLExecutionResultHandler;
 import io.micronaut.configuration.graphql.GraphQLInvocation;
 import io.micronaut.configuration.graphql.GraphQLInvocationData;
@@ -32,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 
+import static io.micronaut.configuration.graphql.ws.GraphQLWsController.HTTP_REQUEST_KEY;
 import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;
 import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
 import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_ERROR;
@@ -138,7 +138,7 @@ public class GraphQLWsMessageHandler {
         GraphQLInvocationData invocationData = new GraphQLInvocationData(
                 payload.getQuery(), payload.getOperationName(), payload.getVariables());
         HttpRequest httpRequest = session
-                .get(GraphQLContextKeys.HTTP_REQUEST_KEY, HttpRequest.class)
+                .get(HTTP_REQUEST_KEY, HttpRequest.class)
                 .orElseThrow(() -> new RuntimeException("HttpRequest could not be retrieved from websocket session"));
         Publisher<ExecutionResult> executionResult = graphQLInvocation
                 .invoke(invocationData, httpRequest, null);
