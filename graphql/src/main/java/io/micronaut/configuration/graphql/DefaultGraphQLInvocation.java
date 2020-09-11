@@ -36,9 +36,9 @@ import java.util.concurrent.CompletableFuture;
  * @author Marcel Overdijk
  * @author Graeme Rocher
  * @author James Kleeh
+ * @since 1.0
  * @see GraphQLExecutionInputCustomizer#customize(ExecutionInput, HttpRequest, MutableHttpResponse)
  * @see GraphQL#executeAsync(ExecutionInput.Builder)
- * @since 1.0
  */
 @Singleton
 public class DefaultGraphQLInvocation implements GraphQLInvocation {

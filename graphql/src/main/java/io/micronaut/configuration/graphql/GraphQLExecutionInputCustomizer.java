@@ -26,8 +26,8 @@ import org.reactivestreams.Publisher;
  * A custom implementation can be provided to transform the execution input to e.g. set a context or root object.
  *
  * @author Marcel Overdijk
- * @see graphql.ExecutionInput#transform(java.util.function.Consumer)
  * @since 1.0
+ * @see graphql.ExecutionInput#transform(java.util.function.Consumer)
  */
 public interface GraphQLExecutionInputCustomizer {
 
