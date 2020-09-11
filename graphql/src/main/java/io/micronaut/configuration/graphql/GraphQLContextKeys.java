@@ -15,13 +15,18 @@
  */
 package io.micronaut.configuration.graphql;
 
+import graphql.GraphQLContext;
+import io.micronaut.websocket.WebSocketSession;
+
 /**
- * Constant definitions for the standard keys used by this plugin in
- * {@link graphql.GraphQLContext} or {@link io.micronaut.websocket.WebSocketSession}.
+ * Constant definitions for the standard keys used by this plugin in {@link GraphQLContext} or {@link WebSocketSession}.
  *
  * @since 2.1.0
  */
 public final class GraphQLContextKeys {
+
+    private GraphQLContextKeys() {
+    }
 
     /**
      * Key for storing current {@link io.micronaut.http.HttpRequest} instance.
@@ -32,8 +37,5 @@ public final class GraphQLContextKeys {
      * Key for storing current {@link io.micronaut.http.HttpResponse} instance.
      */
     public static final String HTTP_RESPONSE_KEY = "httpResponse";
-
-    private GraphQLContextKeys() {
-    }
 
 }
