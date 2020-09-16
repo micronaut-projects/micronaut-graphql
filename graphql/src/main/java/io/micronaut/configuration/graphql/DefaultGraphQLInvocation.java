@@ -44,7 +44,7 @@ import java.util.concurrent.CompletableFuture;
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
     private final GraphQL graphQL;
-    private final Provider<GraphQLExecutionInputCustomizer> graphQLExecutionInputCustomizer;
+    private final GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer;
     private final Provider<DataLoaderRegistry> dataLoaderRegistry;
 
     /**
@@ -56,7 +56,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      */
     public DefaultGraphQLInvocation(
             GraphQL graphQL,
-            Provider<GraphQLExecutionInputCustomizer> graphQLExecutionInputCustomizer,
+            GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
             @Nullable Provider<DataLoaderRegistry> dataLoaderRegistry
     ) {
         this.graphQL = graphQL;
@@ -79,9 +79,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
         }
         ExecutionInput executionInput = executionInputBuilder.build();
         return Flowable
-                .fromPublisher(
-                        graphQLExecutionInputCustomizer.get().customize(executionInput, httpRequest, httpResponse)
-                )
+                .fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
                 .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() -> {
                     try {
                         return graphQL.executeAsync(customizedExecutionInput);
