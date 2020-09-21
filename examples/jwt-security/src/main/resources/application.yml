@@ -1,0 +1,21 @@
+micronaut:
+  security:
+    enabled: true
+    token:
+      jwt:
+        enabled: true
+        bearer:
+          enabled: false
+        cookie:
+          enabled: true
+    intercept-url-map:
+      - pattern: /**
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /**
+        http-method: POST
+        access:
+          - isAnonymous()
+graphql:
+  graphiql.enabled: true

@@ -15,9 +15,12 @@
  */
 package io.micronaut.configuration.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionInput;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MutableHttpResponse;
 import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
@@ -29,13 +32,15 @@ import javax.inject.Singleton;
  * @since 1.0
  */
 @Singleton
+@Requires(missingBeans = {GraphQLExecutionInputCustomizer.class})
 public class DefaultGraphQLExecutionInputCustomizer implements GraphQLExecutionInputCustomizer {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest) {
+    public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
+                                               @Nullable MutableHttpResponse<String> httpResponse) {
         return Publishers.just(executionInput);
     }
 }

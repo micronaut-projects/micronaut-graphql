@@ -15,16 +15,17 @@
  */
 package io.micronaut.configuration.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MutableHttpResponse;
 import io.reactivex.Flowable;
 import org.dataloader.DataLoaderRegistry;
 import org.reactivestreams.Publisher;
 
-import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.concurrent.CompletableFuture;
@@ -36,7 +37,7 @@ import java.util.concurrent.CompletableFuture;
  * @author Graeme Rocher
  * @author James Kleeh
  * @since 1.0
- * @see GraphQLExecutionInputCustomizer#customize(ExecutionInput, HttpRequest)
+ * @see GraphQLExecutionInputCustomizer#customize(ExecutionInput, HttpRequest, MutableHttpResponse)
  * @see GraphQL#executeAsync(ExecutionInput.Builder)
  */
 @Singleton
@@ -55,8 +56,9 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      */
     public DefaultGraphQLInvocation(
             GraphQL graphQL,
-            @Nullable GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
-            @Nullable Provider<DataLoaderRegistry> dataLoaderRegistry) {
+            GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
+            @Nullable Provider<DataLoaderRegistry> dataLoaderRegistry
+    ) {
         this.graphQL = graphQL;
         this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
         this.dataLoaderRegistry = dataLoaderRegistry;
@@ -66,7 +68,8 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      * {@inheritDoc}
      */
     @Override
-    public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest) {
+    public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest,
+                                             @Nullable MutableHttpResponse<String> httpResponse) {
         ExecutionInput.Builder executionInputBuilder = ExecutionInput.newExecutionInput()
                 .query(invocationData.getQuery())
                 .operationName(invocationData.getOperationName())
@@ -75,7 +78,8 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
             executionInputBuilder.dataLoaderRegistry(dataLoaderRegistry.get());
         }
         ExecutionInput executionInput = executionInputBuilder.build();
-        return Flowable.fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest))
+        return Flowable
+                .fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
                 .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() -> {
                     try {
                         return graphQL.executeAsync(customizedExecutionInput);

@@ -24,6 +24,7 @@ import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Requires
 import io.micronaut.core.async.publisher.Publishers
 import io.micronaut.http.HttpRequest
+import io.micronaut.http.MutableHttpResponse
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.websocket.RxWebSocketClient
 import org.reactivestreams.Publisher
@@ -241,7 +242,8 @@ class SetValueFromRequestInputCustomizer implements GraphQLExecutionInputCustomi
     private final static String PATH_PLACEHOLDER = "\$[path]"
 
     @Override
-    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest) {
+    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
+                                        MutableHttpResponse<String> httpResponse) {
         if (executionInput.getQuery().contains(PATH_PLACEHOLDER)) {
             return Publishers.just(executionInput.transform({
                 builder -> builder.query(executionInput.getQuery().replace(PATH_PLACEHOLDER, httpRequest.getPath()))

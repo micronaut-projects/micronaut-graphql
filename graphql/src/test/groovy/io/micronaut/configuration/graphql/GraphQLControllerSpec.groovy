@@ -16,22 +16,31 @@
 
 package io.micronaut.configuration.graphql
 
+import edu.umd.cs.findbugs.annotations.Nullable
 import graphql.ExecutionInput
 import graphql.ExecutionResult
 import graphql.ExecutionResultImpl
 import graphql.GraphQL
+import graphql.GraphQLContext
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
+import io.micronaut.core.async.publisher.Publishers
+import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
+import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.*
 import io.micronaut.http.client.annotation.Client
+import io.micronaut.http.cookie.Cookie
 import io.micronaut.runtime.server.EmbeddedServer
+import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
-import javax.annotation.Nullable
 import javax.inject.Singleton
 import java.util.concurrent.CompletableFuture
 
@@ -68,6 +77,16 @@ class GraphQLControllerSpec extends Specification {
         executionInput = null
         1 * graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
             this.executionInput = executionInput
+            if (executionInput.query == "{ testHeaders }") {
+                GraphQLContext graphQlContext = executionInput.getContext()
+
+                MutableHttpResponse httpResponse = graphQlContext.get("httpResponse")
+
+                assert httpResponse: "HTTP response can not be null"
+
+                httpResponse.header("X-Foo", "bar")
+                httpResponse.cookie(Cookie.of("foo", "bar"))
+            }
             return executionResult
         }
     }
@@ -244,6 +263,20 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == [:]
     }
 
+    void "test additional headers and cookies"() {
+        given:
+        String body = "{ testHeaders }"
+
+        when:
+        HttpResponse httpResponse = graphQLClient.postWithResponse(body)
+
+        then:
+        httpResponse.status() == HttpStatus.OK
+        httpResponse.body().getSpecification()["data"] == "bar"
+        httpResponse.header("X-Foo") == "bar"
+        httpResponse.header("set-cookie") == "foo=bar"
+    }
+
     @Client("/graphql")
     static interface GraphQLClient {
 
@@ -258,6 +291,10 @@ class GraphQLControllerSpec extends Specification {
 
         @Post(produces = APPLICATION_GRAPHQL)
         GraphQLResponseBody post(@Body String body)
+
+        @Post(produces = APPLICATION_GRAPHQL)
+        HttpResponse<GraphQLResponseBody> postWithResponse(@Body String body)
+
     }
 
     @Factory
@@ -269,5 +306,20 @@ class GraphQLControllerSpec extends Specification {
         GraphQL graphQL() {
             graphQL
         }
+    }
+}
+
+@Singleton
+@Primary
+@Requires(property = "spec.name", value = "GraphQLControllerSpec")
+class SetRequestResponseInputCustomizer implements GraphQLExecutionInputCustomizer {
+
+    @Override
+    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
+                                        MutableHttpResponse<String> httpResponse) {
+        GraphQLContext graphQLContext = (GraphQLContext) executionInput.getContext();
+        graphQLContext.put("httpRequest", httpRequest);
+        graphQLContext.put("httpResponse", httpResponse);
+        return Publishers.just(executionInput);
     }
 }

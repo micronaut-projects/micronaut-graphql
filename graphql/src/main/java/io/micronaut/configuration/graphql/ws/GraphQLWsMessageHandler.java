@@ -67,7 +67,8 @@ public class GraphQLWsMessageHandler {
             GraphQLWsState state,
             GraphQLInvocation graphQLInvocation,
             GraphQLExecutionResultHandler graphQLExecutionResultHandler,
-            GraphQLWsSender responseSender) {
+            GraphQLWsSender responseSender
+    ) {
         this.graphQLWsConfiguration = graphQLWsConfiguration;
         this.state = state;
         this.graphQLInvocation = graphQLInvocation;
@@ -83,7 +84,7 @@ public class GraphQLWsMessageHandler {
      * @return Publisher<GraphQLWsResponse>
      */
     public Publisher<GraphQLWsResponse> handleMessage(GraphQLWsRequest request,
-            WebSocketSession session) {
+                                                      WebSocketSession session) {
         switch (request.getType()) {
             case GQL_CONNECTION_INIT:
                 return init(session);
@@ -102,7 +103,7 @@ public class GraphQLWsMessageHandler {
         if (graphQLWsConfiguration.keepAliveEnabled) {
             state.activateSession(session);
             return Flowable.just(new GraphQLWsResponse(GQL_CONNECTION_ACK),
-                                 new GraphQLWsResponse(GQL_CONNECTION_KEEP_ALIVE));
+                    new GraphQLWsResponse(GQL_CONNECTION_KEEP_ALIVE));
         } else {
             return Flowable.just(new GraphQLWsResponse(GQL_CONNECTION_ACK));
         }
@@ -122,7 +123,7 @@ public class GraphQLWsMessageHandler {
         GraphQLRequestBody payload = request.getPayload();
         if (payload == null || StringUtils.isEmpty(payload.getQuery())) {
             LOG.info("Payload was null or query empty for operation {} in session {}", request.getId(),
-                     session.getId());
+                    session.getId());
             return Flowable.just(new GraphQLWsResponse(GQL_ERROR, request.getId()));
         }
 
@@ -139,10 +140,10 @@ public class GraphQLWsMessageHandler {
         HttpRequest httpRequest = session
                 .get(HTTP_REQUEST_KEY, HttpRequest.class)
                 .orElseThrow(() -> new RuntimeException("HttpRequest could not be retrieved from websocket session"));
-        Publisher<ExecutionResult> executionResult = graphQLInvocation.invoke(invocationData, httpRequest);
+        Publisher<ExecutionResult> executionResult = graphQLInvocation
+                .invoke(invocationData, httpRequest, null);
         Publisher<GraphQLResponseBody> responseBody = graphQLExecutionResultHandler
                 .handleExecutionResult(executionResult);
-        return Flowable.fromPublisher(responseBody)
-                       .flatMap(body -> responseSender.send(operationId, body, session));
+        return Flowable.fromPublisher(responseBody).flatMap(body -> responseSender.send(operationId, body, session));
     }
 }

@@ -15,10 +15,14 @@
  */
 package io.micronaut.configuration.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionResult;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
+import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -27,7 +31,6 @@ import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.exceptions.HttpStatusException;
 import org.reactivestreams.Publisher;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -43,6 +46,7 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON_TYPE;
  *
  * @author Marcel Overdijk
  * @author James Kleeh
+ * @author Alexey Zhokhov
  * @since 1.0
  */
 @Controller("${" + GraphQLConfiguration.PATH + ":" + GraphQLConfiguration.DEFAULT_PATH + "}")
@@ -60,7 +64,7 @@ public class GraphQLController {
      * @param graphQLJsonSerializer         the {@link GraphQLJsonSerializer} instance
      */
     public GraphQLController(GraphQLInvocation graphQLInvocation, GraphQLExecutionResultHandler graphQLExecutionResultHandler,
-            GraphQLJsonSerializer graphQLJsonSerializer) {
+                             GraphQLJsonSerializer graphQLJsonSerializer) {
         this.graphQLInvocation = graphQLInvocation;
         this.graphQLExecutionResultHandler = graphQLExecutionResultHandler;
         this.graphQLJsonSerializer = graphQLJsonSerializer;
@@ -76,7 +80,7 @@ public class GraphQLController {
      * @return the GraphQL response
      */
     @Get(produces = APPLICATION_JSON, single = true)
-    public Publisher<String> get(
+    public Publisher<MutableHttpResponse<String>> get(
             @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
             @Nullable @QueryValue("variables") String variables,
@@ -115,7 +119,7 @@ public class GraphQLController {
      * @return the GraphQL response
      */
     @Post(consumes = ALL, produces = APPLICATION_JSON, single = true)
-    public Publisher<String> post(
+    public Publisher<MutableHttpResponse<String>> post(
             @Nullable @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
             @Nullable @QueryValue("variables") String variables,
@@ -183,14 +187,19 @@ public class GraphQLController {
      * @param httpRequest   the HTTP request
      * @return the serialized GraphQL response
      */
-    private Publisher<String> executeRequest(
+    private Publisher<MutableHttpResponse<String>> executeRequest(
             String query,
             String operationName,
             Map<String, Object> variables,
             HttpRequest httpRequest) {
         GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
-        Publisher<ExecutionResult> executionResult = graphQLInvocation.invoke(invocationData, httpRequest);
-        Publisher<GraphQLResponseBody> responseBody = graphQLExecutionResultHandler.handleExecutionResult(executionResult);
-        return Publishers.map(responseBody, graphQLJsonSerializer::serialize);
+        // create empty response entity first and pass it to GraphQLInvocation
+        MutableHttpResponse<String> httpResponse = HttpResponse.status(HttpStatus.OK);
+        Publisher<ExecutionResult> executionResult = graphQLInvocation
+                .invoke(invocationData, httpRequest, httpResponse);
+        Publisher<GraphQLResponseBody> responseBody = graphQLExecutionResultHandler
+                .handleExecutionResult(executionResult);
+        return Publishers.map(responseBody, graphQLResponseBody ->
+                httpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBody)));
     }
 }

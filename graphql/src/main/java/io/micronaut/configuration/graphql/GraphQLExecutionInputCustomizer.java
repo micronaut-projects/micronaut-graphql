@@ -15,8 +15,10 @@
  */
 package io.micronaut.configuration.graphql;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionInput;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MutableHttpResponse;
 import org.reactivestreams.Publisher;
 
 /**
@@ -33,8 +35,10 @@ public interface GraphQLExecutionInputCustomizer {
      * Customizes the GraphQL execution input.
      *
      * @param executionInput the execution input
-     * @param httpRequest the HTTP request
+     * @param httpRequest    the HTTP request
+     * @param httpResponse   the mutable HTTP response, can be {@literal null} when using websocket
      * @return the GraphQL context object
      */
-    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest);
+    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
+                                        @Nullable MutableHttpResponse<String> httpResponse);
 }

@@ -15,7 +15,8 @@
  */
 package io.micronaut.configuration.graphql;
 
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.Nullable;
+
 import javax.annotation.concurrent.Immutable;
 import java.util.Collections;
 import java.util.Map;
