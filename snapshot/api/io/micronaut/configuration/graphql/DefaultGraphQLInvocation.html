@@ -122,7 +122,7 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvoca
 <dt><span class="simpleTagLabel">Author:</span></dt>
 <dd>Marcel Overdijk, Graeme Rocher, James Kleeh</dd>
 <dt><span class="seeLabel">See Also:</span></dt>
-<dd><a href="../../../../io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html#customize-graphql.ExecutionInput-io.micronaut.http.HttpRequest-"><code>GraphQLExecutionInputCustomizer.customize(ExecutionInput, HttpRequest)</code></a>, 
+<dd><a href="../../../../io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html#customize-graphql.ExecutionInput-io.micronaut.http.HttpRequest-io.micronaut.http.MutableHttpResponse-"><code>GraphQLExecutionInputCustomizer.customize(ExecutionInput, HttpRequest, MutableHttpResponse)</code></a>, 
 <code>GraphQL.executeAsync(ExecutionInput.Builder)</code></dd>
 </dl>
 </li>
@@ -166,8 +166,9 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvoca
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>org.reactivestreams.Publisher&lt;graphql.ExecutionResult&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/graphql/DefaultGraphQLInvocation.html#invoke-io.micronaut.configuration.graphql.GraphQLInvocationData-io.micronaut.http.HttpRequest-">invoke</a></span>(<a href="../../../../io/micronaut/configuration/graphql/GraphQLInvocationData.html" title="class in io.micronaut.configuration.graphql">GraphQLInvocationData</a>&nbsp;invocationData,
-      io.micronaut.http.HttpRequest&nbsp;httpRequest)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/configuration/graphql/DefaultGraphQLInvocation.html#invoke-io.micronaut.configuration.graphql.GraphQLInvocationData-io.micronaut.http.HttpRequest-io.micronaut.http.MutableHttpResponse-">invoke</a></span>(<a href="../../../../io/micronaut/configuration/graphql/GraphQLInvocationData.html" title="class in io.micronaut.configuration.graphql">GraphQLInvocationData</a>&nbsp;invocationData,
+      io.micronaut.http.HttpRequest&nbsp;httpRequest,
+      io.micronaut.http.MutableHttpResponse&lt;java.lang.String&gt;&nbsp;httpResponse)</code>
 <div class="block">Invokes the GraphQL request and returns a publisher that emits <code>ExecutionResult</code> objects.</div>
 </td>
 </tr>
@@ -200,7 +201,6 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvoca
 <li class="blockList">
 <h4>DefaultGraphQLInvocation</h4>
 <pre>public&nbsp;DefaultGraphQLInvocation(graphql.GraphQL&nbsp;graphQL,
-                                @Nullable
                                 <a href="../../../../io/micronaut/configuration/graphql/GraphQLExecutionInputCustomizer.html" title="interface in io.micronaut.configuration.graphql">GraphQLExecutionInputCustomizer</a>&nbsp;graphQLExecutionInputCustomizer,
                                 @Nullable
                                 javax.inject.Provider&lt;org.dataloader.DataLoaderRegistry&gt;&nbsp;dataLoaderRegistry)</pre>
@@ -221,21 +221,24 @@ implements <a href="../../../../io/micronaut/configuration/graphql/GraphQLInvoca
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="invoke-io.micronaut.configuration.graphql.GraphQLInvocationData-io.micronaut.http.HttpRequest-">
+<a name="invoke-io.micronaut.configuration.graphql.GraphQLInvocationData-io.micronaut.http.HttpRequest-io.micronaut.http.MutableHttpResponse-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>invoke</h4>
 <pre>public&nbsp;org.reactivestreams.Publisher&lt;graphql.ExecutionResult&gt;&nbsp;invoke(<a href="../../../../io/micronaut/configuration/graphql/GraphQLInvocationData.html" title="class in io.micronaut.configuration.graphql">GraphQLInvocationData</a>&nbsp;invocationData,
-                                                                     io.micronaut.http.HttpRequest&nbsp;httpRequest)</pre>
+                                                                     io.micronaut.http.HttpRequest&nbsp;httpRequest,
+                                                                     @Nullable
+                                                                     io.micronaut.http.MutableHttpResponse&lt;java.lang.String&gt;&nbsp;httpResponse)</pre>
 <div class="block">Invokes the GraphQL request and returns a publisher that emits <code>ExecutionResult</code> objects.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../../io/micronaut/configuration/graphql/GraphQLInvocation.html#invoke-io.micronaut.configuration.graphql.GraphQLInvocationData-io.micronaut.http.HttpRequest-">invoke</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../io/micronaut/configuration/graphql/GraphQLInvocation.html" title="interface in io.micronaut.configuration.graphql">GraphQLInvocation</a></code></dd>
+<dd><code><a href="../../../../io/micronaut/configuration/graphql/GraphQLInvocation.html#invoke-io.micronaut.configuration.graphql.GraphQLInvocationData-io.micronaut.http.HttpRequest-io.micronaut.http.MutableHttpResponse-">invoke</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../io/micronaut/configuration/graphql/GraphQLInvocation.html" title="interface in io.micronaut.configuration.graphql">GraphQLInvocation</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>invocationData</code> - the GraphQL invocation data</dd>
 <dd><code>httpRequest</code> - the HTTP request</dd>
+<dd><code>httpResponse</code> - the mutable HTTP response, can be null when using websocket</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the GraphQL execution result</dd>
 </dl>
