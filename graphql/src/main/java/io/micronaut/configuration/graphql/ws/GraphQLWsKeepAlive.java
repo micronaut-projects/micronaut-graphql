@@ -33,8 +33,7 @@ import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType
  * @since 1.3
  */
 @Singleton
-@Requires(property = GraphQLWsConfiguration.KEEP_ALIVE_ENABLED,
-        value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+@Requires(property = GraphQLWsConfiguration.KEEP_ALIVE_ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 public class GraphQLWsKeepAlive {
 
     private final WebSocketBroadcaster broadcaster;
@@ -48,7 +47,9 @@ public class GraphQLWsKeepAlive {
      * @param state                 the {@link GraphQLWsState} instance
      * @param graphQLJsonSerializer the {@link GraphQLJsonSerializer} instance
      */
-    public GraphQLWsKeepAlive(WebSocketBroadcaster broadcaster, GraphQLWsState state,
+    public GraphQLWsKeepAlive(
+            WebSocketBroadcaster broadcaster,
+            GraphQLWsState state,
             GraphQLJsonSerializer graphQLJsonSerializer) {
         this.broadcaster = broadcaster;
         this.state = state;
@@ -58,9 +59,8 @@ public class GraphQLWsKeepAlive {
     /**
      * Send ka messages to active sessions.
      */
-    @Scheduled(fixedDelay =
-            "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.KEEP_ALIVE_INTERVAL + ":"
-                    + GraphQLWsConfiguration.DEFAULT_KEEP_ALIVE_INTERVAL + "}")
+    @Scheduled(fixedDelay = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.KEEP_ALIVE_INTERVAL + ":"
+            + GraphQLWsConfiguration.DEFAULT_KEEP_ALIVE_INTERVAL + "}")
     public void keepAliveSender() {
         broadcaster.broadcastSync(kaMessage, state::isActive);
     }

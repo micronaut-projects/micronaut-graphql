@@ -21,9 +21,8 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
-import org.reactivestreams.Publisher;
-
 import javax.inject.Singleton;
+import org.reactivestreams.Publisher;
 
 /**
  * The default implementation for customizing GraphQL execution inputs.
@@ -39,8 +38,10 @@ public class DefaultGraphQLExecutionInputCustomizer implements GraphQLExecutionI
      * {@inheritDoc}
      */
     @Override
-    public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
-                                               @Nullable MutableHttpResponse<String> httpResponse) {
+    public Publisher<ExecutionInput> customize(
+            ExecutionInput executionInput,
+            HttpRequest httpRequest,
+            @Nullable MutableHttpResponse<String> httpResponse) {
         return Publishers.just(executionInput);
     }
 }

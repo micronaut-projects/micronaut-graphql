@@ -39,6 +39,8 @@ public interface GraphQLExecutionInputCustomizer {
      * @param httpResponse   the mutable HTTP response, can be {@literal null} when using websocket
      * @return the GraphQL context object
      */
-    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
-                                        @Nullable MutableHttpResponse<String> httpResponse);
+    Publisher<ExecutionInput> customize(
+            ExecutionInput executionInput,
+            HttpRequest httpRequest,
+            @Nullable MutableHttpResponse<String> httpResponse);
 }

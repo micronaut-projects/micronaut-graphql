@@ -52,8 +52,7 @@ import static io.micronaut.http.MediaType.TEXT_HTML;
  */
 @Controller("${" + GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphiQLConfiguration.PATH + ":"
         + GraphQLConfiguration.GraphiQLConfiguration.DEFAULT_PATH + "}")
-@Requires(property = GraphQLConfiguration.GraphiQLConfiguration.ENABLED,
-        value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
+@Requires(property = GraphQLConfiguration.GraphiQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphiQLController {
 
     private final GraphQLConfiguration graphQLConfiguration;
@@ -73,8 +72,11 @@ public class GraphiQLController {
      * @param resourceResolver       the {@link ResourceResolver} instance
      * @param conversionService      the {@link ConversionService} instance
      */
-    public GraphiQLController(GraphQLConfiguration graphQLConfiguration, GraphQLWsConfiguration graphQLWsConfiguration,
-            ResourceResolver resourceResolver, ConversionService conversionService) {
+    public GraphiQLController(
+            GraphQLConfiguration graphQLConfiguration,
+            GraphQLWsConfiguration graphQLWsConfiguration,
+            ResourceResolver resourceResolver,
+            ConversionService conversionService) {
         this.graphQLConfiguration = graphQLConfiguration;
         this.graphiQLConfiguration = graphQLConfiguration.getGraphiql();
         this.graphQLWsConfiguration = graphQLWsConfiguration;
