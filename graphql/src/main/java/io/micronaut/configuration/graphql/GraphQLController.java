@@ -63,8 +63,10 @@ public class GraphQLController {
      * @param graphQLExecutionResultHandler the {@link GraphQLExecutionResultHandler} instance
      * @param graphQLJsonSerializer         the {@link GraphQLJsonSerializer} instance
      */
-    public GraphQLController(GraphQLInvocation graphQLInvocation, GraphQLExecutionResultHandler graphQLExecutionResultHandler,
-                             GraphQLJsonSerializer graphQLJsonSerializer) {
+    public GraphQLController(
+            GraphQLInvocation graphQLInvocation,
+            GraphQLExecutionResultHandler graphQLExecutionResultHandler,
+            GraphQLJsonSerializer graphQLJsonSerializer) {
         this.graphQLInvocation = graphQLInvocation;
         this.graphQLExecutionResultHandler = graphQLExecutionResultHandler;
         this.graphQLJsonSerializer = graphQLJsonSerializer;
@@ -195,11 +197,8 @@ public class GraphQLController {
         GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
         // create empty response entity first and pass it to GraphQLInvocation
         MutableHttpResponse<String> httpResponse = HttpResponse.status(HttpStatus.OK);
-        Publisher<ExecutionResult> executionResult = graphQLInvocation
-                .invoke(invocationData, httpRequest, httpResponse);
-        Publisher<GraphQLResponseBody> responseBody = graphQLExecutionResultHandler
-                .handleExecutionResult(executionResult);
-        return Publishers.map(responseBody, graphQLResponseBody ->
-                httpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBody)));
+        Publisher<ExecutionResult> executionResult = graphQLInvocation.invoke(invocationData, httpRequest, httpResponse);
+        Publisher<GraphQLResponseBody> responseBody = graphQLExecutionResultHandler.handleExecutionResult(executionResult);
+        return Publishers.map(responseBody, graphQLResponseBody -> httpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBody)));
     }
 }

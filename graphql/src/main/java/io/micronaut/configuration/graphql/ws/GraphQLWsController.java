@@ -42,11 +42,9 @@ import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType
  * @author Gerard Klijs
  * @since 1.3
  */
-@ServerWebSocket(value =
-        "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PATH + ":"
-                + GraphQLWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-ws")
-@Requires(property = GraphQLWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue =
-        StringUtils.FALSE)
+@ServerWebSocket(value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PATH + ":"
+        + GraphQLWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-ws")
+@Requires(property = GraphQLWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphQLWsController {
 
     static final String HTTP_REQUEST_KEY = "httpRequest";
@@ -64,7 +62,9 @@ public class GraphQLWsController {
      * @param state                 the {@link GraphQLWsState} instance
      * @param graphQLJsonSerializer the {@link GraphQLJsonSerializer} instance
      */
-    public GraphQLWsController(GraphQLWsMessageHandler messageHandler, GraphQLWsState state,
+    public GraphQLWsController(
+            GraphQLWsMessageHandler messageHandler,
+            GraphQLWsState state,
             GraphQLJsonSerializer graphQLJsonSerializer) {
         this.messageHandler = messageHandler;
         this.state = state;

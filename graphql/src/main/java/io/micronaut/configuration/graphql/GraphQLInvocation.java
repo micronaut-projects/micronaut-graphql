@@ -37,6 +37,8 @@ public interface GraphQLInvocation {
      * @param httpResponse   the mutable HTTP response, can be {@literal null} when using websocket
      * @return the GraphQL execution result
      */
-    Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest,
-                                      @Nullable MutableHttpResponse<String> httpResponse);
+    Publisher<ExecutionResult> invoke(
+            GraphQLInvocationData invocationData,
+            HttpRequest httpRequest,
+            @Nullable MutableHttpResponse<String> httpResponse);
 }

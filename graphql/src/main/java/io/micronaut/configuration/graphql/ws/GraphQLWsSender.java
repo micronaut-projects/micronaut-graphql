@@ -54,8 +54,7 @@ public class GraphQLWsSender {
      * @param state                 the {@link GraphQLWsState} instance
      * @param graphQLJsonSerializer the {@link GraphQLJsonSerializer} instance
      */
-    public GraphQLWsSender(GraphQLWsState state,
-            GraphQLJsonSerializer graphQLJsonSerializer) {
+    public GraphQLWsSender(GraphQLWsState state, GraphQLJsonSerializer graphQLJsonSerializer) {
         this.state = state;
         this.graphQLJsonSerializer = graphQLJsonSerializer;
     }
@@ -69,8 +68,7 @@ public class GraphQLWsSender {
      * @return GraphQLWsOperationMessage
      */
     @SuppressWarnings("unchecked")
-    Flowable<GraphQLWsResponse> send(String operationId, GraphQLResponseBody responseBody,
-            WebSocketSession session) {
+    Flowable<GraphQLWsResponse> send(String operationId, GraphQLResponseBody responseBody, WebSocketSession session) {
         Object dataObject = responseBody.getSpecification().get("data");
         if (dataObject instanceof Publisher) {
             return startSubscription(operationId, (Publisher<ExecutionResult>) dataObject, session);

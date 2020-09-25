@@ -57,8 +57,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
     public DefaultGraphQLInvocation(
             GraphQL graphQL,
             GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
-            @Nullable Provider<DataLoaderRegistry> dataLoaderRegistry
-    ) {
+            @Nullable Provider<DataLoaderRegistry> dataLoaderRegistry) {
         this.graphQL = graphQL;
         this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
         this.dataLoaderRegistry = dataLoaderRegistry;
@@ -68,8 +67,10 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      * {@inheritDoc}
      */
     @Override
-    public Publisher<ExecutionResult> invoke(GraphQLInvocationData invocationData, HttpRequest httpRequest,
-                                             @Nullable MutableHttpResponse<String> httpResponse) {
+    public Publisher<ExecutionResult> invoke(
+            GraphQLInvocationData invocationData,
+            HttpRequest httpRequest,
+            @Nullable MutableHttpResponse<String> httpResponse) {
         ExecutionInput.Builder executionInputBuilder = ExecutionInput.newExecutionInput()
                 .query(invocationData.getQuery())
                 .operationName(invocationData.getOperationName())
