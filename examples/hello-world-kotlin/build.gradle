@@ -1,8 +1,8 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.4.0"
-    id "org.jetbrains.kotlin.kapt" version "1.4.0"
-    id "org.jetbrains.kotlin.plugin.allopen" version "1.4.0"
-    id "com.github.johnrengelman.shadow" version "6.0.0"
+    id "org.jetbrains.kotlin.jvm" version "1.4.10"
+    id "org.jetbrains.kotlin.kapt" version "1.4.10"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.4.10"
+    id "com.github.johnrengelman.shadow" version "6.1.0"
     id "application"
 }
 
@@ -16,7 +16,7 @@ dependencies {
     kapt "io.micronaut:micronaut-inject-java"
     kapt "io.micronaut:micronaut-validation"
     kaptTest "io.micronaut:micronaut-inject-java"
-    runtime "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2"
+    runtime "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.3"
 }
 
 allOpen {
