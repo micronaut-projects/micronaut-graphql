@@ -1,0 +1,156 @@
+[ {
+  "name": "graphql.language.EnumTypeDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.EnumTypeExtensionDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.InputObjectTypeDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.InputObjectTypeExtensionDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.InterfaceTypeDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.InterfaceTypeExtensionDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.ObjectTypeDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.ObjectTypeExtensionDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.ScalarTypeDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.ScalarTypeExtensionDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.UnionTypeDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.language.UnionTypeExtensionDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLArgument",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLCompositeType",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLDirective",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLEnumType",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLEnumValueDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLFieldDefinition",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLInputObjectField",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLInputType",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLInterfaceType",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLList",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLNonNull",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLObjectType",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLScalarType",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLTypeReference",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "graphql.schema.GraphQLUnionType",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "io.micronaut.configuration.graphql.GraphQLRequestBody",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "io.micronaut.configuration.graphql.GraphQLResponseBody",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "io.micronaut.configuration.graphql.ws.GraphQLWsRequest",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+}, {
+  "name": "io.micronaut.configuration.graphql.ws.GraphQLWsResponse",
+  "allDeclaredFields": true,
+  "allPublicMethods": true,
+  "allDeclaredConstructors": true
+} ]
