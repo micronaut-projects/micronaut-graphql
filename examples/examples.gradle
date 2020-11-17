@@ -17,7 +17,7 @@ dependencies {
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut:micronaut-runtime")
     compileOnly("io.micronaut:micronaut-inject-java")
-    runtimeOnly("ch.qos.logback:logback-classic:${logbackClassicVersion}")
+    runtimeOnly("ch.qos.logback:logback-classic")
 }
 
 sourceCompatibility = "1.8"
