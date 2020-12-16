@@ -10,7 +10,6 @@ dependencies {
     annotationProcessor platform("io.micronaut:micronaut-bom:${micronautVersion}")
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
-    implementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
     implementation(project(":graphql"))
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-http-server-netty")
