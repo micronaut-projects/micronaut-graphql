@@ -1,7 +1,7 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.4.21"
-    id "org.jetbrains.kotlin.kapt" version "1.4.21"
-    id "org.jetbrains.kotlin.plugin.allopen" version "1.4.21"
+    id "org.jetbrains.kotlin.jvm" version "1.4.30"
+    id "org.jetbrains.kotlin.kapt" version "1.4.30"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.4.30"
     id "com.github.johnrengelman.shadow" version "6.1.0"
     id "application"
 }
@@ -11,12 +11,12 @@ apply from: "../examples.gradle"
 dependencies {
     kapt platform("io.micronaut:micronaut-bom:${micronautVersion}")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.21"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.21"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.30"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.30"
     kapt "io.micronaut:micronaut-inject-java"
     kapt "io.micronaut:micronaut-validation"
     kaptTest "io.micronaut:micronaut-inject-java"
-    runtime "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.0"
+    runtime "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1"
 }
 
 allOpen {
