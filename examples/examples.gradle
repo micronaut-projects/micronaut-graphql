@@ -10,14 +10,20 @@ dependencies {
     annotationProcessor platform("io.micronaut:micronaut-bom:${micronautVersion}")
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
+
+    implementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
     implementation(project(":graphql"))
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-http-server-netty")
     implementation("io.micronaut:micronaut-inject")
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut:micronaut-runtime")
-    compileOnly("io.micronaut:micronaut-inject-java")
-    runtimeOnly("ch.qos.logback:logback-classic")
+
+    implementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
+    implementation("io.micronaut:micronaut-inject-java")
+
+    implementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
+    implementation("ch.qos.logback:logback-classic")
 }
 
 sourceCompatibility = "1.8"
