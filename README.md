@@ -8,32 +8,27 @@ This project includes integration between [Micronaut](http://micronaut.io) and [
 The Micronaut GraphQL integration can be used together with other GraphQL integration libraries like
 [GraphQL Java Tools](https://github.com/graphql-java-kickstart/graphql-java-tools) and [GraphQL SPQR](https://github.com/leangen/graphql-spqr).
 
-> **IMPORTANT NOTE**: 
-> - Micronaut GraphQL `2.0.0` and above requires Micronaut Core `2.0.0` as minimal dependency.
-> - Micronaut GraphQL `1.3.0` and above requires Micronaut Core `1.3.0` as minimal dependency.
-> - Micronaut GraphQL `1.2.0` and above requires Micronaut Core `1.2.x` as minimal dependency.
+## Documentation
 
-## Documentation ##
+See the [Documentation](https://micronaut-projects.github.io/micronaut-graphql/latest/guide/) for more information.
 
-See the [Documentation](https://micronaut-projects.github.io/micronaut-graphql/latest/guide/index.html) for more information.
+See the [Snapshot Documentation](https://micronaut-projects.github.io/micronaut-graphql/snapshot/guide/) for the current development docs.
 
-## Examples ##
+## Examples
 
-There are various [examples](https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples) provided in this repository.
-
+Examples can be found in the [examples](https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples) directory.
 
 ## Snapshots and Releases
 
-Snaphots are automatically published to [JFrog OSS](https://oss.jfrog.org/artifactory/oss-snapshot-local/) using [Github Actions](https://github.com/micronaut-projects/micronaut-graphql/actions).
+Snaphots are automatically published to [Sonatype Snapshots](https://oss.sonatype.org/content/repositories/snapshots/) using [Github Actions](https://github.com/micronaut-projects/micronaut-graphql/actions).
 
 See the documentation in the [Micronaut Docs](https://docs.micronaut.io/latest/guide/index.html#usingsnapshots) for how to configure your build to use snapshots.
 
-Releases are published to JCenter and Maven Central via [Github Actions](https://github.com/micronaut-projects/micronaut-graphql/actions).
+Releases are published to Maven Central via [Github Actions](https://github.com/micronaut-projects/micronaut-graphql/actions).
 
-A release is performed with the following steps:
+Releases are completely automated. To perform a release use the following steps:
 
-* [Edit the version](https://github.com/micronaut-projects/micronaut-graphql/edit/master/gradle.properties) specified by `projectVersion` in `gradle.properties` to a semantic, unreleased version. Example `1.0.0`
-* [Create a new release](https://github.com/micronaut-projects/micronaut-graphql/releases/new). The Git Tag should start with `v`. For example `v1.0.0`.
+* [Publish the draft release](https://github.com/micronaut-projects/micronaut-graphql/releases). There should be already a draft release created, edit and publish it. The Git Tag should start with `v`. For example `v1.0.0`.
 * [Monitor the Workflow](https://github.com/micronaut-projects/micronaut-graphql/actions?query=workflow%3ARelease) to check it passed successfully.
+* If everything went fine, [publish to Maven Central](https://github.com/micronaut-projects/micronaut-graphql/actions?query=workflow%3A"Maven+Central+Sync").
 * Celebrate!
-
