@@ -15,13 +15,11 @@
  */
 package example
 
-import groovy.transform.CompileStatic
 import io.micronaut.runtime.Micronaut
 
 /**
  * @author Marcel Overdijk
  */
-@CompileStatic
 class Application {
 
     static void main(String[] args) {

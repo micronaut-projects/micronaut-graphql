@@ -298,7 +298,7 @@ class GraphQLControllerSpec extends Specification {
     }
 
     @Factory
-    static class GraphQLFactory {
+    class GraphQLFactory {
 
         @Bean
         @Singleton
