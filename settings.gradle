@@ -1,12 +1,13 @@
 rootProject.name = "graphql"
 
 include "graphql"
+include 'docs-examples:hello-world-java'
+include 'docs-examples:hello-world-groovy'
+include 'docs-examples:hello-world-kotlin'
+
 
 String[] examples = [
         "chat",
-        "hello-world-groovy",
-        "hello-world-java",
-        "hello-world-kotlin",
         "jwt-security",
         "todo",
         "todo-java-tools",

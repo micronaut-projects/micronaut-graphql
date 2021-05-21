@@ -19,6 +19,10 @@ subprojects { Project subproject ->
         apply plugin: "io.micronaut.build.internal.publishing"
     }
 
+    if (subproject.parent.name == "docs-examples" || subproject.name == "docs-examples") {
+        return
+    }
+
     dependencies {
         testImplementation("org.spockframework:spock-core:${spockVersion}") {
             exclude module:'groovy-all'
