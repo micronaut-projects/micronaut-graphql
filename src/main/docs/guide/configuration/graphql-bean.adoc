@@ -7,7 +7,7 @@ Below is a typical example of a Micronaut https://docs.micronaut.io/latest/api/i
 configuring a `graphql.GraphQL` https://docs.micronaut.io/latest/api/io/micronaut/context/annotation/Bean.html[Bean] using the
 https://github.com/graphql-java/graphql-java[GraphQL Java] library.
 
-snippet::example.graphql.GraphQLFactory[tags="imports,clazz", project-base="examples/hello-world", source="main"]
+snippet::io.micronaut.graphql.docs.GraphQLFactory[tags="imports,clazz", project-base="docs-examples/hello-world", source="test"]
 
 <1> Define the `Factory` annotation to create the bean.
 <2> Define the `GraphQL` bean which contains the runtime wiring and the executable schema.

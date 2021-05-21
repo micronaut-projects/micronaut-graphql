@@ -1,0 +1,17 @@
+plugins {
+    id 'io.micronaut.application' version "1.5.0" apply false
+}
+
+subprojects { Project subproject ->
+
+    apply plugin: 'io.micronaut.application'
+
+    micronaut {
+        version project.ext.micronautVersion
+        runtime "netty"
+    }
+
+    dependencies {
+        testImplementation(project(":graphql"))
+    }
+}
