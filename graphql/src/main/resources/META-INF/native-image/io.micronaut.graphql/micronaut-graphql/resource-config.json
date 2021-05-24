@@ -1,0 +1,7 @@
+{
+  "resources":{
+  "includes":[
+    {"pattern":"\\Qgraphiql/index.html\\E"}
+  ]},
+  "bundles":[]
+}
