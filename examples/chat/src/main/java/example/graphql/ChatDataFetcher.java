@@ -19,8 +19,7 @@ import example.domain.ChatMessage;
 import example.repository.ChatRepository;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * @author Gerard Klijs

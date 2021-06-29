@@ -27,11 +27,10 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.websocket.RxWebSocketClient
+import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Specification
-
-import javax.inject.Singleton
 
 /**
  * @author Gerard Klijs

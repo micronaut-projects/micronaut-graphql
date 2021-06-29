@@ -18,8 +18,7 @@ package io.micronaut.graphql.docs
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
-
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 /**
  * @author Marcel Overdijk

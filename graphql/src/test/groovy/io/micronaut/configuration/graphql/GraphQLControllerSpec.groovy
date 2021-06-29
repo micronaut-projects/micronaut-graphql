@@ -40,11 +40,11 @@ import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.cookie.Cookie
 import io.micronaut.runtime.server.EmbeddedServer
+import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
-import javax.inject.Singleton
 import java.util.concurrent.CompletableFuture
 
 import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL

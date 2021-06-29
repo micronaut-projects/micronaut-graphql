@@ -15,9 +15,9 @@
  */
 package io.micronaut.configuration.graphql.ws;
 
+import jakarta.inject.Singleton;
 import org.reactivestreams.Subscription;
 
-import javax.inject.Singleton;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;

@@ -21,12 +21,12 @@ import io.micronaut.configuration.graphql.GraphQLResponseBody;
 import io.micronaut.core.async.subscriber.CompletionAwareSubscriber;
 import io.micronaut.websocket.WebSocketSession;
 import io.reactivex.Flowable;
+import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.function.Function;
 

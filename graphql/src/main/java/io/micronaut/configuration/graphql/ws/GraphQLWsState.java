@@ -17,10 +17,10 @@ package io.micronaut.configuration.graphql.ws;
 
 import io.micronaut.websocket.WebSocketSession;
 import io.reactivex.Flowable;
+import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
-import javax.inject.Singleton;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;

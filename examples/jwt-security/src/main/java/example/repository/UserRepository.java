@@ -16,8 +16,8 @@
 package example.repository;
 
 import example.domain.User;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

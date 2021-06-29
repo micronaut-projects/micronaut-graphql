@@ -22,9 +22,8 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
+import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
-
-import javax.inject.Singleton;
 
 @Singleton
 @Primary

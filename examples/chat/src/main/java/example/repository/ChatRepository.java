@@ -17,9 +17,9 @@ package example.repository;
 
 import example.domain.ChatMessage;
 import io.reactivex.*;
+import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 
-import javax.inject.Singleton;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;

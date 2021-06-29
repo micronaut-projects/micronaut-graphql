@@ -35,8 +35,8 @@ import io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator;
 import io.micronaut.security.token.jwt.generator.JwtGeneratorConfiguration;
 import io.micronaut.security.token.jwt.render.AccessRefreshToken;
 import io.reactivex.Flowable;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import java.time.temporal.TemporalAmount;
 import java.util.Optional;
 import java.util.Random;

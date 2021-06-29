@@ -16,8 +16,8 @@
 package io.micronaut.configuration.graphql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import java.io.IOException;
 
 /**

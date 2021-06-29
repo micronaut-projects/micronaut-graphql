@@ -6,8 +6,7 @@ import graphql.schema.GraphQLSchema
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Requires
 import io.micronaut.core.util.StringUtils
-
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 /**
  * @author James Kleeh

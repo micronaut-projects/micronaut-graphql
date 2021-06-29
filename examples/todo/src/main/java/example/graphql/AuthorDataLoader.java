@@ -18,10 +18,10 @@ package example.graphql;
 import example.domain.Author;
 import example.repository.AuthorRepository;
 import io.micronaut.scheduling.TaskExecutors;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import org.dataloader.MappedBatchLoader;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;

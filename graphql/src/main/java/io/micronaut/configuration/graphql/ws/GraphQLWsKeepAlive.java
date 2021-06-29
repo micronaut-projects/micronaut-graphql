@@ -21,8 +21,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.scheduling.annotation.Scheduled;
 import io.micronaut.websocket.WebSocketBroadcaster;
-
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
 
