@@ -15,8 +15,8 @@
  */
 package io.micronaut.configuration.graphql.ws;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
+import io.micronaut.core.annotation.Nullable;
 
 /**
  * Class to handle the message to and from the websocket.

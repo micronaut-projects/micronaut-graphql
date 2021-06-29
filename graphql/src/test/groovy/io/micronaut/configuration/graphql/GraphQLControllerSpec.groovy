@@ -16,7 +16,6 @@
 
 package io.micronaut.configuration.graphql
 
-import edu.umd.cs.findbugs.annotations.Nullable
 import graphql.ExecutionInput
 import graphql.ExecutionResult
 import graphql.ExecutionResultImpl
@@ -28,12 +27,16 @@ import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
+import io.micronaut.core.annotation.Nullable
 import io.micronaut.core.async.publisher.Publishers
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MutableHttpResponse
-import io.micronaut.http.annotation.*
+import io.micronaut.http.annotation.Body
+import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.cookie.Cookie
 import io.micronaut.runtime.server.EmbeddedServer

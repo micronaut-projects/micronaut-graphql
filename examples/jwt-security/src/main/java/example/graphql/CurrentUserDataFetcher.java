@@ -15,11 +15,11 @@
  */
 package example.graphql;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import example.domain.User;
 import example.repository.UserRepository;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.security.utils.SecurityService;
 
 import javax.inject.Singleton;

@@ -15,11 +15,11 @@
  */
 package example.graphql;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionInput;
 import graphql.GraphQLContext;
 import io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer;
 import io.micronaut.context.annotation.Primary;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;

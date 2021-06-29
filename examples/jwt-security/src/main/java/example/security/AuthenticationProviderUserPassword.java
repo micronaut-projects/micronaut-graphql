@@ -15,9 +15,9 @@
  */
 package example.security;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import example.domain.User;
 import example.repository.UserRepository;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.AuthenticationFailed;
 import io.micronaut.security.authentication.AuthenticationFailureReason;

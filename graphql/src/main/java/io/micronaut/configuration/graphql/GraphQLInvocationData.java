@@ -15,19 +15,19 @@
  */
 package io.micronaut.configuration.graphql;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
+import io.micronaut.core.annotation.Nullable;
 
-import javax.annotation.concurrent.Immutable;
 import java.util.Collections;
 import java.util.Map;
 
 /**
  * Represents the data to execute a GraphQL query.
  *
+ * This class should be treated as Immutable.
+ *
  * @author Marcel Overdijk
  * @since 1.0
  */
-@Immutable
 public class GraphQLInvocationData {
 
     private final String query;
