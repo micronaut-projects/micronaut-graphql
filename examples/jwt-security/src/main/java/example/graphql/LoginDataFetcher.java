@@ -24,15 +24,15 @@ import io.micronaut.context.event.ApplicationEventPublisher;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
+import io.micronaut.http.cookie.CookieConfiguration;
 import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.Authenticator;
 import io.micronaut.security.authentication.UserDetails;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.event.LoginFailedEvent;
 import io.micronaut.security.event.LoginSuccessfulEvent;
-import io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration;
 import io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator;
-import io.micronaut.security.token.jwt.generator.JwtGeneratorConfiguration;
+import io.micronaut.security.token.jwt.generator.AccessTokenConfiguration;
 import io.micronaut.security.token.jwt.render.AccessRefreshToken;
 import jakarta.inject.Singleton;
 import reactor.core.publisher.Flux;
@@ -52,22 +52,22 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
 
     private final Authenticator authenticator;
     private final ApplicationEventPublisher eventPublisher;
-    private final JwtCookieConfiguration jwtCookieConfiguration;
+    private final CookieConfiguration cookieConfiguration;
     private final AccessRefreshTokenGenerator accessRefreshTokenGenerator;
-    private final JwtGeneratorConfiguration jwtGeneratorConfiguration;
+    private final AccessTokenConfiguration accessTokenConfiguration;
 
     private final UserRepository userRepository;
 
     public LoginDataFetcher(Authenticator authenticator,
                             ApplicationEventPublisher eventPublisher,
-                            JwtCookieConfiguration jwtCookieConfiguration,
+                            CookieConfiguration cookieConfiguration,
                             AccessRefreshTokenGenerator accessRefreshTokenGenerator,
-                            JwtGeneratorConfiguration jwtGeneratorConfiguration, UserRepository userRepository) {
+                            AccessTokenConfiguration accessTokenConfiguration, UserRepository userRepository) {
         this.authenticator = authenticator;
         this.eventPublisher = eventPublisher;
-        this.jwtCookieConfiguration = jwtCookieConfiguration;
+        this.cookieConfiguration = cookieConfiguration;
         this.accessRefreshTokenGenerator = accessRefreshTokenGenerator;
-        this.jwtGeneratorConfiguration = jwtGeneratorConfiguration;
+        this.accessTokenConfiguration = accessTokenConfiguration;
         this.userRepository = userRepository;
     }
 
@@ -120,13 +120,13 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
     private Optional<Cookie> accessTokenCookie(UserDetails userDetails, HttpRequest<?> request) {
         Optional<AccessRefreshToken> accessRefreshTokenOptional = accessRefreshTokenGenerator.generate(userDetails);
         if (accessRefreshTokenOptional.isPresent()) {
-            Cookie cookie = Cookie.of(jwtCookieConfiguration.getCookieName(), accessRefreshTokenOptional.get().getAccessToken());
-            cookie.configure(jwtCookieConfiguration, request.isSecure());
-            Optional<TemporalAmount> cookieMaxAge = jwtCookieConfiguration.getCookieMaxAge();
+            Cookie cookie = Cookie.of(cookieConfiguration.getCookieName(), accessRefreshTokenOptional.get().getAccessToken());
+            cookie.configure(cookieConfiguration, request.isSecure());
+            Optional<TemporalAmount> cookieMaxAge = cookieConfiguration.getCookieMaxAge();
             if (cookieMaxAge.isPresent()) {
                 cookie.maxAge(cookieMaxAge.get());
             } else {
-                cookie.maxAge(jwtGeneratorConfiguration.getAccessTokenExpiration());
+                cookie.maxAge(accessTokenConfiguration.getExpiration());
             }
             return Optional.of(cookie);
         }
