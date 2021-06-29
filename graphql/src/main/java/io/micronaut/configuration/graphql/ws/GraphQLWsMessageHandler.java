@@ -24,11 +24,11 @@ import io.micronaut.configuration.graphql.GraphQLResponseBody;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.websocket.WebSocketSession;
-import io.reactivex.Flowable;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 
 import static io.micronaut.configuration.graphql.ws.GraphQLWsController.HTTP_REQUEST_KEY;
 import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;
@@ -99,29 +99,29 @@ public class GraphQLWsMessageHandler {
     private Publisher<GraphQLWsResponse> init(WebSocketSession session) {
         if (graphQLWsConfiguration.keepAliveEnabled) {
             state.activateSession(session);
-            return Flowable.just(new GraphQLWsResponse(GQL_CONNECTION_ACK),
+            return Flux.just(new GraphQLWsResponse(GQL_CONNECTION_ACK),
                     new GraphQLWsResponse(GQL_CONNECTION_KEEP_ALIVE));
         } else {
-            return Flowable.just(new GraphQLWsResponse(GQL_CONNECTION_ACK));
+            return Flux.just(new GraphQLWsResponse(GQL_CONNECTION_ACK));
         }
     }
 
     private Publisher<GraphQLWsResponse> startOperation(GraphQLWsRequest request, WebSocketSession session) {
         if (request.getId() == null) {
             LOG.warn("GraphQL operation id is required with type start");
-            return Flowable.just(new GraphQLWsResponse(GQL_ERROR));
+            return Flux.just(new GraphQLWsResponse(GQL_ERROR));
         }
 
         if (state.operationExists(request, session)) {
             LOG.info("Already subscribed to operation {} in session {}", request.getId(), session.getId());
-            return Flowable.empty();
+            return Flux.empty();
         }
 
         GraphQLRequestBody payload = request.getPayload();
         if (payload == null || StringUtils.isEmpty(payload.getQuery())) {
             LOG.info("Payload was null or query empty for operation {} in session {}", request.getId(),
                     session.getId());
-            return Flowable.just(new GraphQLWsResponse(GQL_ERROR, request.getId()));
+            return Flux.just(new GraphQLWsResponse(GQL_ERROR, request.getId()));
         }
 
         return executeRequest(request.getId(), payload, session);
@@ -139,6 +139,6 @@ public class GraphQLWsMessageHandler {
                 .orElseThrow(() -> new RuntimeException("HttpRequest could not be retrieved from websocket session"));
         Publisher<ExecutionResult> executionResult = graphQLInvocation.invoke(invocationData, httpRequest, null);
         Publisher<GraphQLResponseBody> responseBody = graphQLExecutionResultHandler.handleExecutionResult(executionResult);
-        return Flowable.fromPublisher(responseBody).flatMap(body -> responseSender.send(operationId, body, session));
+        return Flux.from(responseBody).flatMap(body -> responseSender.send(operationId, body, session));
     }
 }

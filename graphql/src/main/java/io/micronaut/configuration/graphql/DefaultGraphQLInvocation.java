@@ -23,10 +23,10 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
-import io.reactivex.Flowable;
 import jakarta.inject.Singleton;
 import org.dataloader.DataLoaderRegistry;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -79,8 +79,8 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
             executionInputBuilder.dataLoaderRegistry(dataLoaderRegistry.get());
         }
         ExecutionInput executionInput = executionInputBuilder.build();
-        return Flowable
-                .fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
+        return Flux
+                .from(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
                 .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() -> {
                     try {
                         return graphQL.executeAsync(customizedExecutionInput);

@@ -25,9 +25,9 @@ import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;
 import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.UserDetails;
-import io.reactivex.Flowable;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 
 import java.util.Optional;
 
@@ -49,14 +49,14 @@ public class AuthenticationProviderUserPassword implements AuthenticationProvide
         Optional<User> user = userRepository.findByUsername((String) authenticationRequest.getIdentity());
 
         if (!user.isPresent()) {
-            return Flowable.just(new AuthenticationFailed(AuthenticationFailureReason.USER_NOT_FOUND));
+            return Flux.just(new AuthenticationFailed(AuthenticationFailureReason.USER_NOT_FOUND));
         }
 
         if (authenticationRequest.getSecret().equals(user.get().getPassword())) {
-            return Flowable.just(new UserDetails(user.get().getUsername(), user.get().getRoles()));
+            return Flux.just(new UserDetails(user.get().getUsername(), user.get().getRoles()));
         }
 
-        return Flowable.just(new AuthenticationFailed(AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH));
+        return Flux.just(new AuthenticationFailed(AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH));
     }
 
 }

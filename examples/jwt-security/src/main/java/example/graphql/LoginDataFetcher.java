@@ -34,8 +34,8 @@ import io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration;
 import io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator;
 import io.micronaut.security.token.jwt.generator.JwtGeneratorConfiguration;
 import io.micronaut.security.token.jwt.render.AccessRefreshToken;
-import io.reactivex.Flowable;
 import jakarta.inject.Singleton;
+import reactor.core.publisher.Flux;
 
 import java.time.temporal.TemporalAmount;
 import java.util.Optional;
@@ -93,8 +93,8 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
 
         LOGIN_RATE_LIMIT_REMAINING--;
 
-        Flowable<AuthenticationResponse> authenticationResponseFlowable =
-                Flowable.fromPublisher(authenticator.authenticate(httpRequest, usernamePasswordCredentials));
+        Flux<AuthenticationResponse> authenticationResponseFlowable =
+                Flux.from(authenticator.authenticate(httpRequest, usernamePasswordCredentials));
 
         return authenticationResponseFlowable.map(authenticationResponse -> {
             addRateLimitHeaders(graphQLContext);
@@ -114,7 +114,7 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
 
                 return LoginPayload.ofError(authenticationResponse.getMessage().orElse(null));
             }
-        }).blockingFirst();
+        }).blockFirst();
     }
 
     private Optional<Cookie> accessTokenCookie(UserDetails userDetails, HttpRequest<?> request) {

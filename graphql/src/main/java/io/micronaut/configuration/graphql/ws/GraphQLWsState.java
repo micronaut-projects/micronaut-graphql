@@ -16,10 +16,10 @@
 package io.micronaut.configuration.graphql.ws;
 
 import io.micronaut.websocket.WebSocketSession;
-import io.reactivex.Flowable;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
+import reactor.core.publisher.Flux;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -78,7 +78,7 @@ class GraphQLWsState {
         activeSessions.remove(session.getId());
         Optional.ofNullable(activeOperations.remove(session.getId()))
                 .ifPresent(GraphQLWsOperations::cancelAll);
-        return Flowable.empty();
+        return Flux.empty();
     }
 
     /**
@@ -106,14 +106,14 @@ class GraphQLWsState {
         String sessionId = session.getId();
         String operationId = request.getId();
         if (operationId == null || sessionId == null) {
-            return Flowable.empty();
+            return Flux.empty();
         }
         boolean removed = Optional.ofNullable(activeOperations.get(sessionId))
                                   .map(graphQLWsOperations -> {
                                       graphQLWsOperations.cancelOperation(operationId);
                                       return graphQLWsOperations.removeCompleted(operationId);
                                   }).orElse(false);
-        return removed ? Flowable.just(new GraphQLWsResponse(GQL_COMPLETE, operationId)) : Flowable.empty();
+        return removed ? Flux.just(new GraphQLWsResponse(GQL_COMPLETE, operationId)) : Flux.empty();
     }
 
     /**

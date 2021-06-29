@@ -20,12 +20,12 @@ import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
 import io.micronaut.core.async.subscriber.CompletionAwareSubscriber;
 import io.micronaut.websocket.WebSocketSession;
-import io.reactivex.Flowable;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 
 import java.util.Collection;
 import java.util.function.Function;
@@ -62,18 +62,18 @@ public class GraphQLWsSender {
     /**
      * Transform the result from the a websocket request to a message that can be send to the client.
      *
-     * @param operationId  Sting value of the operation id
+     * @param operationId  String value of the operation id
      * @param responseBody GraphQLResponseBody of the executed operation
-     * @param session      the websocket session by which the operation was executed
+     * @param session      The websocket session by which the operation was executed
      * @return GraphQLWsOperationMessage
      */
     @SuppressWarnings("unchecked")
-    Flowable<GraphQLWsResponse> send(String operationId, GraphQLResponseBody responseBody, WebSocketSession session) {
+    Flux<GraphQLWsResponse> send(String operationId, GraphQLResponseBody responseBody, WebSocketSession session) {
         Object dataObject = responseBody.getSpecification().get("data");
         if (dataObject instanceof Publisher) {
             return startSubscription(operationId, (Publisher<ExecutionResult>) dataObject, session);
         } else {
-            return Flowable.just(
+            return Flux.just(
                     toGraphQLWsResponse(operationId, responseBody),
                     new GraphQLWsResponse(GQL_COMPLETE, operationId));
         }
@@ -105,10 +105,10 @@ public class GraphQLWsSender {
         };
     }
 
-    private Flowable<GraphQLWsResponse> startSubscription(String operationId, Publisher<ExecutionResult> publisher,
+    private Flux<GraphQLWsResponse> startSubscription(String operationId, Publisher<ExecutionResult> publisher,
             WebSocketSession session) {
         state.saveOperation(operationId, session, starter(publisher, session));
-        return Flowable.empty();
+        return Flux.empty();
     }
 
     /**

@@ -24,6 +24,9 @@ subprojects { Project subproject ->
     }
 
     dependencies {
+        // TODO: Remove when RxJava2 -> Reactor is merged in core
+        api 'io.micronaut.reactor:micronaut-reactor'
+
         testImplementation("org.spockframework:spock-core:${spockVersion}") {
             exclude module:'groovy-all'
         }
