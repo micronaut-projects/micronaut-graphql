@@ -18,6 +18,7 @@ package io.micronaut.configuration.graphql;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import io.micronaut.context.BeanProvider;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
@@ -27,7 +28,6 @@ import jakarta.inject.Singleton;
 import org.dataloader.DataLoaderRegistry;
 import org.reactivestreams.Publisher;
 
-import javax.inject.Provider;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -45,7 +45,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
     private final GraphQL graphQL;
     private final GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer;
-    private final Provider<DataLoaderRegistry> dataLoaderRegistry;
+    private final BeanProvider<DataLoaderRegistry> dataLoaderRegistry;
 
     /**
      * Default constructor.
@@ -57,7 +57,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
     public DefaultGraphQLInvocation(
             GraphQL graphQL,
             GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
-            @Nullable Provider<DataLoaderRegistry> dataLoaderRegistry) {
+            @Nullable BeanProvider<DataLoaderRegistry> dataLoaderRegistry) {
         this.graphQL = graphQL;
         this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
         this.dataLoaderRegistry = dataLoaderRegistry;
