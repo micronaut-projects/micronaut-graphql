@@ -68,15 +68,13 @@ public class GraphQLWsSender {
      * @return GraphQLWsOperationMessage
      */
     @SuppressWarnings("unchecked")
-    Flux<GraphQLWsResponse> send(String operationId, GraphQLResponseBody responseBody, WebSocketSession session) {
+    Publisher<GraphQLWsResponse> send(String operationId, GraphQLResponseBody responseBody, WebSocketSession session) {
         Object dataObject = responseBody.getSpecification().get("data");
         if (dataObject instanceof Publisher) {
-            return startSubscription(operationId, (Publisher<ExecutionResult>) dataObject, session);
-        } else {
-            return Flux.just(
-                    toGraphQLWsResponse(operationId, responseBody),
-                    new GraphQLWsResponse(GQL_COMPLETE, operationId));
+            startSubscription(operationId, (Publisher<ExecutionResult>) dataObject, session);
+            return Flux.empty();
         }
+        return Flux.just(toGraphQLWsResponse(operationId, responseBody), new GraphQLWsResponse(GQL_COMPLETE, operationId));
     }
 
     private GraphQLWsResponse toGraphQLWsResponse(String operationId, GraphQLResponseBody responseBody) {
@@ -105,10 +103,9 @@ public class GraphQLWsSender {
         };
     }
 
-    private Flux<GraphQLWsResponse> startSubscription(String operationId, Publisher<ExecutionResult> publisher,
+    private void startSubscription(String operationId, Publisher<ExecutionResult> publisher,
             WebSocketSession session) {
         state.saveOperation(operationId, session, starter(publisher, session));
-        return Flux.empty();
     }
 
     /**
