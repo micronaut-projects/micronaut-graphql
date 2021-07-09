@@ -9,4 +9,5 @@ apply from: "../examples.gradle"
 dependencies {
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation 'io.projectreactor:reactor-core'
 }
