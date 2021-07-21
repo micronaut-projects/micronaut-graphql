@@ -150,7 +150,7 @@
 <p>        <div class="listingblock multi-language-sample">
 <div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.graphql:micronaut-graphql:2.3.2-SNAPSHOT")</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.graphql:micronaut-graphql:3.0.0-SNAPSHOT")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -158,7 +158,7 @@
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut.graphql&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-graphql&lt;/artifactId&gt;
-    &lt;version&gt;2.3.2-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -242,8 +242,8 @@ import graphql.schema.idl.TypeDefinitionRegistry;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.core.io.ResourceResolver;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -288,7 +288,7 @@ import groovy.transform.CompileStatic
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.core.io.ResourceResolver
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 @Factory <b class="conum">(1)</b>
 @CompileStatic
@@ -331,9 +331,9 @@ import graphql.schema.idl.TypeDefinitionRegistry
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.core.io.ResourceResolver
+import jakarta.inject.Singleton
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import javax.inject.Singleton
 
 @Factory <b class="conum">(1)</b>
 class GraphQLFactory {
