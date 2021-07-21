@@ -17,9 +17,8 @@ package io.micronaut.configuration.graphql;
 
 import graphql.ExecutionResult;
 import io.micronaut.core.async.publisher.Publishers;
+import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
-
-import javax.inject.Singleton;
 
 /**
  * The default implementation for handling GraphQL {@link ExecutionResult}s.

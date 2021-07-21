@@ -1,9 +1,9 @@
 package io.micronaut.configuration.graphql.ws
 
-import edu.umd.cs.findbugs.annotations.Nullable
 import io.micronaut.configuration.graphql.GraphQLJsonSerializer
 import io.micronaut.configuration.graphql.GraphQLRequestBody
 import io.micronaut.configuration.graphql.GraphQLResponseBody
+import io.micronaut.core.annotation.Nullable
 import io.micronaut.websocket.WebSocketSession
 import io.micronaut.websocket.annotation.ClientWebSocket
 import io.micronaut.websocket.annotation.OnMessage

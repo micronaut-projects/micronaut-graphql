@@ -15,8 +15,8 @@
  */
 package io.micronaut.configuration.graphql;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionResult;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
 import org.reactivestreams.Publisher;

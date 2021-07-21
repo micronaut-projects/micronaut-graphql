@@ -20,8 +20,7 @@ import graphql.schema.GraphQLSchema;
 import io.leangen.graphql.GraphQLSchemaGenerator;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
-
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * @author Marcel Overdijk

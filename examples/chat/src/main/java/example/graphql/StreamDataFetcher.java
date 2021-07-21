@@ -19,9 +19,8 @@ import example.domain.ChatMessage;
 import example.repository.ChatRepository;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
-
-import javax.inject.Singleton;
 
 /**
  * @author Gerard Klijs

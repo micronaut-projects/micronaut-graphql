@@ -3,8 +3,10 @@ package io.micronaut.configuration.graphql.ws
 
 import io.micronaut.context.ApplicationContext
 import io.micronaut.runtime.server.EmbeddedServer
-import io.micronaut.websocket.RxWebSocketClient
+import io.micronaut.websocket.WebSocketClient
+import reactor.core.publisher.Flux
 import spock.lang.AutoCleanup
+import spock.lang.Shared
 import spock.lang.Specification
 
 /**
@@ -14,16 +16,14 @@ import spock.lang.Specification
 class GraphQLWsKeepAliveSpec extends Specification {
 
     @AutoCleanup
-    EmbeddedServer embeddedServer
+    @Shared
+    EmbeddedServer embeddedServer = embeddedServer = ApplicationContext.run(EmbeddedServer, "keepalive") as EmbeddedServer
 
-    GraphQLWsClient graphQLWsClient
+    @Shared
+    WebSocketClient wsClient = embeddedServer.applicationContext.createBean(WebSocketClient, embeddedServer.getURI())
 
-    def setup() {
-        embeddedServer = ApplicationContext.run(
-                EmbeddedServer, "keepalive") as EmbeddedServer
-        RxWebSocketClient wsClient = embeddedServer.applicationContext.createBean(RxWebSocketClient, embeddedServer.getURI())
-        graphQLWsClient = wsClient.connect(GraphQLWsClient, "/ka-ws").blockingFirst();
-    }
+    @Shared
+    GraphQLWsClient graphQLWsClient = Flux.from(wsClient.connect(GraphQLWsClient, "/ka-ws")).blockFirst();
 
     void "test keep alive starts and stops"() {
         given:

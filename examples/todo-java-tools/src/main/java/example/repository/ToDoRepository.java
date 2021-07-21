@@ -16,8 +16,8 @@
 package example.repository;
 
 import example.domain.ToDo;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;

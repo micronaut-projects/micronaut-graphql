@@ -19,8 +19,7 @@ import example.domain.ToDo;
 import example.repository.ToDoRepository;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * @author Marcel Overdijk

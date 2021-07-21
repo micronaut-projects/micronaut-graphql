@@ -16,14 +16,17 @@
 package example.repository;
 
 import example.domain.ChatMessage;
-import io.reactivex.*;
+import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
-import javax.inject.Singleton;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -34,12 +37,16 @@ public class ChatRepository {
 
     private List<ChatMessage> chats = new ArrayList<>();
     private BlockingQueue<ChatMessage> blockingQueue = new ArrayBlockingQueue<>(10);
-    private Flowable<ChatMessage> stream = Flowable.create((FlowableOnSubscribe<ChatMessage>) emitter -> {
-        while (!emitter.isCancelled()) {
-            emitter.onNext(blockingQueue.take());
+    private Flux<ChatMessage> stream = Flux.create((Consumer<FluxSink<ChatMessage>>) sink -> {
+        while (!sink.isCancelled()) {
+            try {
+                sink.next(blockingQueue.take());
+            } catch (InterruptedException e) {
+                sink.error(e);
+            }
         }
-        emitter.onComplete();
-    }, BackpressureStrategy.BUFFER).share();
+        sink.complete();
+    }, FluxSink.OverflowStrategy.BUFFER).share();
 
     public Iterable<ChatMessage> findAll() {
         return chats;
@@ -47,8 +54,8 @@ public class ChatRepository {
 
     public Iterable<ChatMessage> findAfter(ZonedDateTime after) {
         return chats.stream()
-                    .filter(chat -> chat.getTime().isAfter(after))
-                    .collect(Collectors.toList());
+                .filter(chat -> chat.getTime().isAfter(after))
+                .collect(Collectors.toList());
     }
 
     public ChatMessage save(String text, String from) {

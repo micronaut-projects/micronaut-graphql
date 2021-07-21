@@ -3,14 +3,18 @@ package io.micronaut.configuration.graphql.ws
 import graphql.GraphQL
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
-import graphql.schema.idl.*
+import graphql.schema.idl.RuntimeWiring
+import graphql.schema.idl.SchemaGenerator
+import graphql.schema.idl.SchemaParser
+import graphql.schema.idl.TypeDefinitionRegistry
+import graphql.schema.idl.TypeRuntimeWiring
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Requires
-import io.reactivex.Flowable
 import org.reactivestreams.Publisher
+import reactor.core.publisher.Flux
 
-import java.util.concurrent.TimeUnit
+import java.time.Duration
 
 @Factory
 class GraphQLWsFactory {
@@ -82,8 +86,8 @@ class GraphQLWsFactory {
     class Counter implements DataFetcher<Publisher<Integer>> {
         @Override
         Publisher<Integer> get(DataFetchingEnvironment environment) throws Exception {
-            return Flowable.range(0, 3)
-                    .delay(1L, TimeUnit.SECONDS)
+            return Flux.range(0, 3)
+                    .delayElements(Duration.ofSeconds(1))
         }
     }
 }

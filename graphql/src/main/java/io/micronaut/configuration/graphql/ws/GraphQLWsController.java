@@ -28,10 +28,10 @@ import io.micronaut.websocket.annotation.OnError;
 import io.micronaut.websocket.annotation.OnMessage;
 import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
-import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 
 import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ERROR;
 
@@ -103,13 +103,13 @@ public class GraphQLWsController {
             GraphQLWsRequest request = graphQLJsonSerializer.deserialize(message, GraphQLWsRequest.class);
             if (request.getType() == null) {
                 LOG.warn("Type was null on operation message");
-                return send(Flowable.just(errorMessage), session);
+                return send(Flux.just(errorMessage), session);
             } else {
                 return send(messageHandler.handleMessage(request, session), session);
             }
         } catch (Exception e) {
             LOG.warn("Error deserializing message received from client: {}", message, e);
-            return send(Flowable.just(errorMessage), session);
+            return send(Flux.just(errorMessage), session);
         }
     }
 

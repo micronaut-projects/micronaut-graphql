@@ -26,12 +26,13 @@ import io.micronaut.core.async.publisher.Publishers
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.runtime.server.EmbeddedServer
-import io.micronaut.websocket.RxWebSocketClient
+import io.micronaut.websocket.WebSocketClient
+import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
+import reactor.core.publisher.Flux
 import spock.lang.AutoCleanup
+import spock.lang.Shared
 import spock.lang.Specification
-
-import javax.inject.Singleton
 
 /**
  * @author Gerard Klijs
@@ -41,16 +42,13 @@ class GraphQLWsControllerSpec extends Specification {
 
     @AutoCleanup
     EmbeddedServer embeddedServer
-
+    
     GraphQLWsClient graphQLWsClient
 
     def setup() {
-        embeddedServer = ApplicationContext.run(
-                EmbeddedServer,
-                ["spec.name": GraphQLWsControllerSpec.simpleName],
-                "websocket") as EmbeddedServer
-        RxWebSocketClient wsClient = embeddedServer.applicationContext.createBean(RxWebSocketClient, embeddedServer.getURI())
-        graphQLWsClient = wsClient.connect(GraphQLWsClient, "/graphql-ws").blockingFirst();
+        embeddedServer = embeddedServer = ApplicationContext.run(EmbeddedServer, ["spec.name": GraphQLWsControllerSpec.simpleName], "websocket") as EmbeddedServer
+        WebSocketClient wsClient = embeddedServer.applicationContext.createBean(WebSocketClient, embeddedServer.getURI())
+        graphQLWsClient = Flux.from(wsClient.connect(GraphQLWsClient, "/graphql-ws")).blockFirst()
     }
 
     void "test init connection, keep alive off"() {

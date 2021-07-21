@@ -20,8 +20,7 @@ import example.domain.ToDo;
 import example.repository.AuthorRepository;
 import example.repository.ToDoRepository;
 import graphql.kickstart.tools.GraphQLMutationResolver;
-
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * @author Marcel Overdijk
