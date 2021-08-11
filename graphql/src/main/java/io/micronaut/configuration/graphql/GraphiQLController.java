@@ -119,6 +119,7 @@ public class GraphiQLController {
         String graphQLWsPath = graphQLWsConfiguration.isEnabled() ? graphQLWsConfiguration.getPath() : "";
         parameters.put("graphqlWsPath", graphQLWsPath);
         parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
+        parameters.put("graphiqlPath", graphiQLConfiguration.getPath());
         if (graphiQLConfiguration.getTemplateParameters() != null) {
             graphiQLConfiguration.getTemplateParameters().forEach((name, value) ->
                     // De-capitalize and de-hyphenate the parameter names.
