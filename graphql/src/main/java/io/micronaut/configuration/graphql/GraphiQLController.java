@@ -30,6 +30,7 @@ import io.micronaut.core.value.MapPropertyResolver;
 import io.micronaut.core.value.PropertyResolver;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.server.HttpServerConfiguration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,6 +57,7 @@ import static io.micronaut.http.MediaType.TEXT_HTML;
 public class GraphiQLController {
 
     private final GraphQLConfiguration graphQLConfiguration;
+    private final HttpServerConfiguration httpServerConfiguration;
     private final GraphQLConfiguration.GraphiQLConfiguration graphiQLConfiguration;
     private final GraphQLWsConfiguration graphQLWsConfiguration;
     private final ResourceResolver resourceResolver;
@@ -74,10 +76,12 @@ public class GraphiQLController {
      */
     public GraphiQLController(
             GraphQLConfiguration graphQLConfiguration,
+            HttpServerConfiguration httpServerConfiguration,
             GraphQLWsConfiguration graphQLWsConfiguration,
             ResourceResolver resourceResolver,
             ConversionService conversionService) {
         this.graphQLConfiguration = graphQLConfiguration;
+        this.httpServerConfiguration = httpServerConfiguration;
         this.graphiQLConfiguration = graphQLConfiguration.getGraphiql();
         this.graphQLWsConfiguration = graphQLWsConfiguration;
         this.resourceResolver = resourceResolver;
@@ -115,10 +119,11 @@ public class GraphiQLController {
     private String resolvedTemplate() {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("graphiqlVersion", graphiQLConfiguration.getVersion());
-        parameters.put("graphqlPath", graphQLConfiguration.getPath());
-        String graphQLWsPath = graphQLWsConfiguration.isEnabled() ? graphQLWsConfiguration.getPath() : "";
+        parameters.put("graphqlPath", withServerContextPath(graphQLConfiguration.getPath()));
+        String graphQLWsPath = graphQLWsConfiguration.isEnabled() ? withServerContextPath(graphQLWsConfiguration.getPath()) : "";
         parameters.put("graphqlWsPath", graphQLWsPath);
         parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
+        parameters.put("graphiqlPath", withServerContextPath(graphiQLConfiguration.getPath()));
         if (graphiQLConfiguration.getTemplateParameters() != null) {
             graphiQLConfiguration.getTemplateParameters().forEach((name, value) ->
                     // De-capitalize and de-hyphenate the parameter names.
@@ -127,6 +132,12 @@ public class GraphiQLController {
                     parameters.put(NameUtils.decapitalize(NameUtils.dehyphenate(name)), value));
         }
         return replaceParameters(this.rawTemplate, parameters);
+    }
+
+    private String withServerContextPath(final String path) {
+
+        String contextPath = httpServerConfiguration.getContextPath();
+        return contextPath == null ? path : contextPath + path;
     }
 
     private String replaceParameters(final String str, final Map<String, String> parameters) {
