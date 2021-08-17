@@ -24,7 +24,6 @@ import io.micronaut.security.authentication.AuthenticationFailureReason;
 import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;
 import io.micronaut.security.authentication.AuthenticationResponse;
-import io.micronaut.security.authentication.UserDetails;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -53,7 +52,7 @@ public class AuthenticationProviderUserPassword implements AuthenticationProvide
         }
 
         if (authenticationRequest.getSecret().equals(user.get().getPassword())) {
-            return Flux.just(new UserDetails(user.get().getUsername(), user.get().getRoles()));
+            return Flux.just(AuthenticationResponse.success(user.get().getUsername(), user.get().getRoles()));
         }
 
         return Flux.just(new AuthenticationFailed(AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH));
