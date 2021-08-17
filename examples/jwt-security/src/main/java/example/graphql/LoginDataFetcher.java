@@ -25,9 +25,9 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.CookieConfiguration;
+import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.Authenticator;
-import io.micronaut.security.authentication.UserDetails;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.event.LoginFailedEvent;
 import io.micronaut.security.event.LoginSuccessfulEvent;
@@ -100,13 +100,12 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
             addRateLimitHeaders(graphQLContext);
 
             if (authenticationResponse.isAuthenticated()) {
-                UserDetails userDetails = (UserDetails) authenticationResponse;
-                eventPublisher.publishEvent(new LoginSuccessfulEvent(userDetails));
+                eventPublisher.publishEvent(new LoginSuccessfulEvent(authenticationResponse));
 
-                Optional<Cookie> jwtCookie = accessTokenCookie(userDetails, httpRequest);
+                Optional<Cookie> jwtCookie = accessTokenCookie(Authentication.build(username), httpRequest);
                 jwtCookie.ifPresent(httpResponse::cookie);
 
-                User user = userRepository.findByUsername(userDetails.getUsername()).orElse(null);
+                User user = userRepository.findByUsername(username).orElse(null);
 
                 return LoginPayload.ofUser(user);
             } else {
@@ -117,8 +116,8 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
         }).blockFirst();
     }
 
-    private Optional<Cookie> accessTokenCookie(UserDetails userDetails, HttpRequest<?> request) {
-        Optional<AccessRefreshToken> accessRefreshTokenOptional = accessRefreshTokenGenerator.generate(userDetails);
+    private Optional<Cookie> accessTokenCookie(Authentication authentication, HttpRequest<?> request) {
+        Optional<AccessRefreshToken> accessRefreshTokenOptional = accessRefreshTokenGenerator.generate(authentication);
         if (accessRefreshTokenOptional.isPresent()) {
             Cookie cookie = Cookie.of(cookieConfiguration.getCookieName(), accessRefreshTokenOptional.get().getAccessToken());
             cookie.configure(cookieConfiguration, request.isSecure());
