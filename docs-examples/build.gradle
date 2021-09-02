@@ -12,6 +12,7 @@ subprojects { Project subproject ->
     }
 
     dependencies {
+        implementation(project(":graphql"))
         testImplementation(project(":graphql"))
     }
 }

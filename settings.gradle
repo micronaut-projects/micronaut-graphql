@@ -4,7 +4,9 @@ include "graphql"
 include 'docs-examples:hello-world-java'
 include 'docs-examples:hello-world-groovy'
 include 'docs-examples:hello-world-kotlin'
-
+include 'docs-examples:graphql-bean-java'
+include 'docs-examples:graphql-bean-groovy'
+include 'docs-examples:graphql-bean-kotlin'
 
 String[] examples = [
         "chat",

@@ -1,0 +1,18 @@
+plugins {
+    id "groovy"
+}
+
+repositories {
+    mavenCentral()
+}
+
+micronaut {
+    testRuntime "spock"
+}
+
+mainClassName = "io.micronaut.graphql.docs.Application"
+
+project.afterEvaluate {
+    nativeImage.enabled = false
+    testNativeImage.enabled = false
+}

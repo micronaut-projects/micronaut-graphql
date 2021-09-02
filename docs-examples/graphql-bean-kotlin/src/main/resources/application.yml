@@ -1,0 +1,4 @@
+graphql:
+  enabled: true
+  graphiql:
+    enabled: true
