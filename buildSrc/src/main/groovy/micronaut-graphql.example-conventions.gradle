@@ -1,8 +1,12 @@
+plugins {
+    id "com.github.johnrengelman.shadow"
+    id("io.micronaut.application")
+}
+
 group "io.micronaut.example"
 version project.projectVersion
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
@@ -30,9 +34,6 @@ sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
 mainClassName = "example.Application"
-
-checkstyleMain.enabled = false
-checkstyleTest.enabled = false
 
 run.jvmArgs("-noverify", "-XX:TieredStopAtLevel=1")
 

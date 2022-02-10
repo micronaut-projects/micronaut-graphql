@@ -1,0 +1,16 @@
+plugins {
+    id("io.micronaut.application")
+}
+
+repositories {
+    mavenCentral()
+}
+
+micronaut {
+    version project.ext.micronautVersion
+    runtime "netty"
+}
+
+dependencies {
+    testImplementation(project(":graphql"))
+}
