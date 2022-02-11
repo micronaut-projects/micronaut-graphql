@@ -9,7 +9,6 @@ repositories {
 micronaut {
     version project.ext.micronautVersion
     runtime "netty"
-    enableNativeImage = false
 }
 
 dependencies {
@@ -17,7 +16,11 @@ dependencies {
 }
 
 project.afterEvaluate {
-    tasks.named('testNativeImage') {
+    tasks.named('nativeImage').configure {
+        enabled = false
+    }
+
+    tasks.named('testNativeImage').configure {
         it.enabled = false
     }
 }
