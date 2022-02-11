@@ -9,8 +9,15 @@ repositories {
 micronaut {
     version project.ext.micronautVersion
     runtime "netty"
+    enableNativeImage = false
 }
 
 dependencies {
     testImplementation(project(":graphql"))
+}
+
+project.afterEvaluate {
+    tasks.named('testNativeImage') {
+        it.enabled = false
+    }
 }
