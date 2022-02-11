@@ -1,5 +1,5 @@
 plugins {
-    id("io.micronaut.application")
+    id("io.micronaut.minimal-application")
 }
 
 repositories {
@@ -13,14 +13,4 @@ micronaut {
 
 dependencies {
     testImplementation(project(":graphql"))
-}
-
-project.afterEvaluate {
-    tasks.named('nativeImage').configure {
-        enabled = false
-    }
-
-    tasks.named('testNativeImage').configure {
-        it.enabled = false
-    }
 }
