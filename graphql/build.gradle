@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor("io.micronaut:micronaut-inject-java")
     annotationProcessor("io.micronaut:micronaut-validation")
 
     api("com.graphql-java:graphql-java:${graphqlJavaVersion}")
