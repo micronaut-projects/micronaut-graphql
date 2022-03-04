@@ -1,31 +1,4 @@
-subprojects { Project subproject ->
-
-    group "io.micronaut.graphql"
-
-    // TODO: Remove this when using a non-snapshot version of core
-    repositories {
-        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
-    }
-
-    apply plugin: "io.micronaut.build.internal.common"
-
-    apply plugin: "io.micronaut.build.internal.dependency-updates"
-    if (subproject.name != 'test-suite') {
-        apply plugin: "io.micronaut.build.internal.publishing"
-    }
-
-    if (subproject.parent.name == "docs-examples" || subproject.name == "docs-examples") {
-        return
-    }
-
-    dependencies {
-        testImplementation("org.spockframework:spock-core:${spockVersion}") {
-            exclude module:'groovy-all'
-        }
-        testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"        
-    }
+plugins {
+    id "io.micronaut.build.internal.docs"
+    id "io.micronaut.build.internal.dependency-updates"
 }
-
-apply plugin: "io.micronaut.build.internal.docs"
-apply plugin: "io.micronaut.build.internal.dependency-updates"
-

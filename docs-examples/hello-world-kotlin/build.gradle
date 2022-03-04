@@ -1,6 +1,7 @@
 plugins {
     id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
     id "org.jetbrains.kotlin.kapt" version "${kotlinVersion}"
+    id("micronaut-graphql.docs-examples-conventions")
 }
 
 dependencies {
