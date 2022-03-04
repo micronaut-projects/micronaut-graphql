@@ -20,7 +20,6 @@ include 'docs-examples:hello-world-kotlin'
 String[] examples = [
         "chat",
         "jwt-security",
-        "todo",
         "todo-java-tools",
         "todo-spqr"
 ]
