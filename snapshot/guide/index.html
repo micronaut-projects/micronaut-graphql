@@ -161,8 +161,7 @@
     &lt;version&gt;3.1.0-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>The <code>micronaut-graphql</code> module transitively includes the <code>com.graphql-java:graphql-java</code> dependency and provides a Micronaut
@@ -233,7 +232,7 @@ configuring a <code>graphql.GraphQL</code> <a href="https://docs.micronaut.io/la
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import graphql.GraphQL;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
@@ -247,12 +246,12 @@ import jakarta.inject.Singleton;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-@Factory <b class="conum">(1)</b>
+@Factory // <b class="conum">(1)</b>
 public class GraphQLFactory {
 
     @Bean
     @Singleton
-    public GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) { <b class="conum">(2)</b>
+    public GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) { // <b class="conum">(2)</b>
 
         SchemaParser schemaParser = new SchemaParser();
         SchemaGenerator schemaGenerator = new SchemaGenerator();
@@ -279,7 +278,7 @@ public class GraphQLFactory {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">import graphql.GraphQL
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import graphql.GraphQL
 import graphql.schema.idl.RuntimeWiring
 import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
@@ -290,13 +289,13 @@ import io.micronaut.context.annotation.Factory
 import io.micronaut.core.io.ResourceResolver
 import jakarta.inject.Singleton
 
-@Factory <b class="conum">(1)</b>
+@Factory // <b class="conum">(1)</b>
 @CompileStatic
 class GraphQLFactory {
 
     @Bean
     @Singleton
-    GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) { <b class="conum">(2)</b>
+    GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) { // <b class="conum">(2)</b>
 
         def schemaParser = new SchemaParser()
         def schemaGenerator = new SchemaGenerator()
@@ -323,7 +322,7 @@ class GraphQLFactory {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">import graphql.GraphQL
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import graphql.GraphQL
 import graphql.schema.idl.RuntimeWiring
 import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
@@ -335,12 +334,12 @@ import jakarta.inject.Singleton
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-@Factory <b class="conum">(1)</b>
+@Factory // <b class="conum">(1)</b>
 class GraphQLFactory {
 
     @Bean
     @Singleton
-    fun graphQL(resourceResolver: ResourceResolver, helloDataFetcher: HelloDataFetcher): GraphQL { <b class="conum">(2)</b>
+    fun graphQL(resourceResolver: ResourceResolver, helloDataFetcher: HelloDataFetcher): GraphQL { // <b class="conum">(2)</b>
 
         val schemaParser = SchemaParser()
         val schemaGenerator = SchemaGenerator()
