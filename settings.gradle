@@ -6,8 +6,10 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "5.2.2"
+    id("io.micronaut.build.shared.settings") version "5.2.3"
 }
+
+rootProject.name = 'graphql-parent'
 
 include "graphql"
 include 'docs-examples:hello-world-java'
