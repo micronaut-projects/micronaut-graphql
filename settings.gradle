@@ -19,7 +19,6 @@ include 'docs-examples:hello-world-kotlin'
 [
         "chat",
         "jwt-security",
-        "todo",
         "todo-java-tools",
         "todo-spqr"
 ].each { name ->

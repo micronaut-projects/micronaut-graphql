@@ -1,3 +1,0 @@
-plugins {
-    id("micronaut-graphql.example-conventions")
-}
