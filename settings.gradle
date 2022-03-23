@@ -6,25 +6,22 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "4.2.6"
+    id("io.micronaut.build.shared.settings") version "5.2.3"
 }
 
-rootProject.name = "graphql"
+rootProject.name = 'graphql-parent'
 
 include "graphql"
 include 'docs-examples:hello-world-java'
 include 'docs-examples:hello-world-groovy'
 include 'docs-examples:hello-world-kotlin'
 
-
-String[] examples = [
+[
         "chat",
         "jwt-security",
         "todo-java-tools",
         "todo-spqr"
-]
-
-examples.each { name ->
+].each { name ->
     include name
     def project = findProject(":${name}")
     project.name = "graphql-example-${name}"
