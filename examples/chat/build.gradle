@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation("com.graphql-java:graphql-java-extended-scalars:17.0")
+    implementation libs.managed.graphql.java.extended.scalars
     implementation 'io.projectreactor:reactor-core'
 }

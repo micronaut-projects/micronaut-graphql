@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation("io.leangen.graphql:spqr:${graphqlSpqrVersion}")
+    implementation libs.managed.graphql.spqr
 }

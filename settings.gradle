@@ -12,6 +12,8 @@ plugins {
 rootProject.name = 'graphql-parent'
 
 include "graphql"
+include "graphql-bom"
+
 include 'docs-examples:hello-world-java'
 include 'docs-examples:hello-world-groovy'
 include 'docs-examples:hello-world-kotlin'

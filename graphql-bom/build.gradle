@@ -1,0 +1,9 @@
+plugins {
+    id "io.micronaut.build.internal.bom"
+}
+
+micronautBom {
+    excludeProject.set({ p ->
+        p.name.contains('example') || p.name.contains('hello-world')
+    } as Spec<String>)
+}

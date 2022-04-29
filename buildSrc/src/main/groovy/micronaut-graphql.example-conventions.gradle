@@ -49,6 +49,6 @@ tasks.withType(JavaCompile) {
 micronautBuild {
     resolutionStrategy {
         force "com.graphql-java:graphql-java-extended-scalars:17.0"
-        force "com.graphql-java:graphql-java:$graphqlJavaVersion"
+        force "com.graphql-java:graphql-java:${libs.versions.managed.graphql.java}"
     }
 }
