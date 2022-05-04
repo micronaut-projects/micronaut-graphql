@@ -1,6 +1,6 @@
 [versions]
-managed-graphql-java = "18.0"
-managed-graphql-java-extended-scalars = "17.0"
+managed-graphql-java = "18.1"
+managed-graphql-java-extended-scalars = "18.0"
 managed-graphql-java-tools = "12.0.2"
 managed-graphql-spqr = "0.11.2"
 
