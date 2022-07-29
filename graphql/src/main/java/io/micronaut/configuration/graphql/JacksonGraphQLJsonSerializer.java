@@ -15,9 +15,7 @@
  */
 package io.micronaut.configuration.graphql;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.core.type.Argument;
-import io.micronaut.jackson.databind.JacksonDatabindMapper;
 import io.micronaut.json.JsonMapper;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -35,17 +33,6 @@ import java.nio.charset.StandardCharsets;
 public class JacksonGraphQLJsonSerializer implements GraphQLJsonSerializer {
 
     private final JsonMapper jsonMapper;
-
-    /**
-     * Default constructor.
-     *
-     * @param objectMapper the {@link ObjectMapper} instance
-     * @deprecated Use {@link #JacksonGraphQLJsonSerializer(JsonMapper)} instead
-     */
-    @Deprecated
-    public JacksonGraphQLJsonSerializer(ObjectMapper objectMapper) {
-        this(new JacksonDatabindMapper(objectMapper));
-    }
 
     /**
      * Default constructor.
