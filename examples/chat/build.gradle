@@ -2,6 +2,11 @@ plugins {
     id("micronaut-graphql.example-conventions")
 }
 
+repositories {
+    mavenCentral()
+    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 dependencies {
     implementation("com.graphql-java:graphql-java-extended-scalars:1.0.1")
     implementation 'io.projectreactor:reactor-core'
