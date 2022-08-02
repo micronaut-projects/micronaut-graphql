@@ -1,9 +1,5 @@
 plugins {
-    id "java"
-}
-
-repositories {
-    mavenCentral()
+    id("micronaut-graphql.docs-examples-conventions")
 }
 
 compileJava.options.compilerArgs += '-parameters'

@@ -1,13 +1,7 @@
 plugins {
+    id("micronaut-graphql.docs-examples-conventions")
     id "java"
 }
-
-repositories {
-    mavenCentral()
-}
-
-compileJava.options.compilerArgs += '-parameters'
-compileTestJava.options.compilerArgs += '-parameters'
 
 micronaut {
     testRuntime "spock"

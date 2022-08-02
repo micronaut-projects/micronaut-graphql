@@ -1,9 +1,10 @@
 plugins {
+    id("micronaut-graphql.docs-examples-conventions")
     id "groovy"
 }
 
-repositories {
-    mavenCentral()
+dependencies {
+    implementation("org.codehaus.groovy:groovy:${groovyVersion}")
 }
 
 micronaut {
@@ -11,8 +12,3 @@ micronaut {
 }
 
 mainClassName = "io.micronaut.graphql.docs.Application"
-
-project.afterEvaluate {
-    nativeImage.enabled = false
-    testNativeImage.enabled = false
-}

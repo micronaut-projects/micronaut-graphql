@@ -1,4 +1,15 @@
-rootProject.name = "graphql"
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id("io.micronaut.build.shared.settings") version "5.3.14"
+}
+
+rootProject.name = 'graphql-parent'
 
 include "graphql"
 include 'docs-examples:hello-world-java'
@@ -8,15 +19,12 @@ include 'docs-examples:graphql-bean-java'
 include 'docs-examples:graphql-bean-groovy'
 include 'docs-examples:graphql-bean-kotlin'
 
-String[] examples = [
+[
         "chat",
         "jwt-security",
-        "todo",
         "todo-java-tools",
         "todo-spqr"
-]
-
-examples.each { name ->
+].each { name ->
     include name
     def project = findProject(":${name}")
     project.name = "graphql-example-${name}"

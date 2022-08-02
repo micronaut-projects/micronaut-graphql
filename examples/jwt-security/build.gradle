@@ -1,10 +1,6 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.0.0"
-    id "application"
-    id "java"
+    id("micronaut-graphql.example-conventions")
 }
-
-apply from: "../examples.gradle"
 
 dependencies {
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
