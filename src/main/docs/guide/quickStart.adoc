@@ -9,16 +9,6 @@ If you already have an application, add the micronaut graphql dependency:
 
 dependency:micronaut-graphql[version="{version}", groupId="io.micronaut.graphql"]
 
-In the `resources` folder, create a file named `schema.graphqls`. This file will
-contain the definition of your GraphQL schema. In our case, it will contain the
-following:
-
-```graphql
-type Query {
-    hello(name: String): String!
-}
-```
-
 Configure the `/graphql` endpoint by adding to `application.yml`:
 
 ```yaml
@@ -28,15 +18,29 @@ graphql:
     enabled: true
 ```
 
-Create the GraphQL bean:
+And then in the `resources` folder, create a file named `schema.graphqls`.
+This file will contain the definition of your GraphQL schema.
+In our case, it will contain the following:
 
-snippet::io.micronaut.graphql.docs.GraphQLFactory[tags="imports,clazz", project-base="docs-examples/graphql-bean", source="main"]
+```graphql
+type Query {
+    hello(name: String): String!
+}
+```
 
-You should be all set. Start your application by running `./gradlew run`, open your browser to
-your http://localhost:8080/graphiql[local graphiql], and you should be able to run the following
-queries:
+Create a DataFetcher for the `hello` query:
+
+snippet::io.micronaut.graphql.docs.HelloDataFetcher[tags="imports,clazz", project-base="docs-examples/hello-world"]
+
+And then create the GraphQL bean:
+
+snippet::io.micronaut.graphql.docs.GraphQLFactory[tags="imports,clazz", project-base="docs-examples/hello-world"]
+
+You should be all set.
+Start your application by running `./gradlew run`, open your browser to your http://localhost:8080/graphiql[local graphiql], and you should be able to run the following queries:
 
 Query without params:
+
 ```graphql
 query {
     hello
@@ -44,6 +48,7 @@ query {
 ```
 
 Returns:
+
 ```json
 {
   "data": {
@@ -53,6 +58,7 @@ Returns:
 ```
 
 Query with params:
+
 ```graphql
 query {
     hello(name: "Micronaut")
@@ -60,6 +66,7 @@ query {
 ```
 
 Returns:
+
 ```json
 {
   "data": {
