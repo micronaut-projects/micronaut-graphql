@@ -5,3 +5,6 @@ plugins {
 dependencies {
     implementation("com.graphql-java-kickstart:graphql-java-tools:${graphqlJavaToolsVersion}")
 }
+
+// graphQL-java-tools is not compatible with GraalVM native image
+tasks.named("nativeCompile").configure { it.onlyIf { false } }
