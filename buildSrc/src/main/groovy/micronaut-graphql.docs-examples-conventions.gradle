@@ -12,5 +12,5 @@ micronaut {
 }
 
 dependencies {
-    implementation(project(":graphql"))
+    testImplementation(project(":graphql"))
 }
