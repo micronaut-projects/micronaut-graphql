@@ -1,5 +1,4 @@
-After installing the https://docs.micronaut.io/1.3.3/guide/index.html#buildCLI[cli],
-create your first application:
+Create your application via the Command Line tool:
 
 ```
 mn create-app helloworld --features=graphql
