@@ -10,8 +10,4 @@ managed-graphql-java-extended-scalars = { module = 'com.graphql-java:graphql-jav
 managed-graphql-java-tools = { module = 'com.graphql-java-kickstart:graphql-java-tools', version.ref = 'managed-graphql-java-tools' }
 managed-graphql-spqr = { module = 'io.leangen.graphql:spqr', version.ref = 'managed-graphql-spqr' }
 
-micronaut-http-server = { module = 'io.micronaut:micronaut-http-server' }
-micronaut-http-server-netty = { module = 'io.micronaut:micronaut-http-server-netty' }
-micronaut-http-client = { module = 'io.micronaut:micronaut-http-client' }
-
 reactor-core = { module = 'io.projectreactor:reactor-core' }
