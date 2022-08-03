@@ -40,7 +40,6 @@ public class JacksonGraphQLJsonSerializer implements GraphQLJsonSerializer {
      * @param jsonMapper the {@link JsonMapper} instance
      * @since 3.1.0
      */
-    @Inject
     public JacksonGraphQLJsonSerializer(JsonMapper jsonMapper) {
         this.jsonMapper = jsonMapper;
     }
