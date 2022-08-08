@@ -35,7 +35,7 @@ import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType
  * @since 1.3
  */
 @Singleton
-class GraphQLWsState {
+public class GraphQLWsState {
 
     private ConcurrentSkipListSet<String> activeSessions = new ConcurrentSkipListSet<>();
     private ConcurrentHashMap<String, GraphQLWsOperations> activeOperations = new ConcurrentHashMap<>();
