@@ -19,7 +19,7 @@ abstract class GraphQLWsClient implements AutoCloseable {
     private final GraphQLJsonSerializer serializer
 
     GraphQLWsClient(GraphQLJsonSerializer serializer) {
-        this.serializer = serializer;
+        this.serializer = serializer
     }
 
     @OnMessage
@@ -67,7 +67,7 @@ class SerializableRequest {
 
     String type
     String id
-    GraphQLRequestBody payload;
+    Object payload
 
     SerializableRequest(GraphQLWsRequest request){
         this.type = request.getType().getType()

@@ -21,6 +21,7 @@ import io.micronaut.configuration.graphql.GraphQLInvocation;
 import io.micronaut.configuration.graphql.GraphQLInvocationData;
 import io.micronaut.configuration.graphql.GraphQLRequestBody;
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.websocket.WebSocketSession;
@@ -29,6 +30,8 @@ import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+
+import javax.validation.constraints.Null;
 
 import static io.micronaut.configuration.graphql.ws.GraphQLWsController.HTTP_REQUEST_KEY;
 import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;
@@ -52,6 +55,8 @@ public class GraphQLWsMessageHandler {
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
     private final GraphQLWsSender responseSender;
 
+    private final GraphQLWsConnectionInitializer connectionInitializer;
+
     /**
      * Default constructor.
      *
@@ -60,18 +65,22 @@ public class GraphQLWsMessageHandler {
      * @param graphQLInvocation             the {@link GraphQLInvocation} instance
      * @param graphQLExecutionResultHandler the {@link GraphQLExecutionResultHandler} instance
      * @param responseSender                the {@link GraphQLWsSender} instance
+     * @param connectionInitializer         the {@link GraphQLWsConnectionInitializer} instance
      */
     public GraphQLWsMessageHandler(
-            GraphQLWsConfiguration graphQLWsConfiguration,
-            GraphQLWsState state,
-            GraphQLInvocation graphQLInvocation,
-            GraphQLExecutionResultHandler graphQLExecutionResultHandler,
-            GraphQLWsSender responseSender) {
+        GraphQLWsConfiguration graphQLWsConfiguration,
+        GraphQLWsState state,
+        GraphQLInvocation graphQLInvocation,
+        GraphQLExecutionResultHandler graphQLExecutionResultHandler,
+        GraphQLWsSender responseSender,
+        @Nullable
+        GraphQLWsConnectionInitializer connectionInitializer) {
         this.graphQLWsConfiguration = graphQLWsConfiguration;
         this.state = state;
         this.graphQLInvocation = graphQLInvocation;
         this.graphQLExecutionResultHandler = graphQLExecutionResultHandler;
         this.responseSender = responseSender;
+        this.connectionInitializer = connectionInitializer;
     }
 
     /**
@@ -81,12 +90,15 @@ public class GraphQLWsMessageHandler {
      * @param session WebSocketSession
      * @return Publisher<GraphQLWsResponse>
      */
-    public Publisher<GraphQLWsResponse> handleMessage(GraphQLWsRequest request, WebSocketSession session) {
+    public <P> Publisher<GraphQLWsResponse> handleMessage(GraphQLWsRequest<P> request, WebSocketSession session) {
         switch (request.getType()) {
             case GQL_CONNECTION_INIT:
+                if (connectionInitializer != null) {
+                    connectionInitializer.initialize((GraphQLWsInitRequest) request, session); // We can trust this cast, as it's checked in the WsController
+                }
                 return init(session);
             case GQL_START:
-                return startOperation(request, session);
+                return startOperation((GraphQLWsStartRequest) request, session); // We can trust this cast, as it's checked in the WsController
             case GQL_STOP:
                 return state.stopOperation(request, session);
             case GQL_CONNECTION_TERMINATE:
@@ -106,7 +118,7 @@ public class GraphQLWsMessageHandler {
         }
     }
 
-    private Publisher<GraphQLWsResponse> startOperation(GraphQLWsRequest request, WebSocketSession session) {
+    private Publisher<GraphQLWsResponse> startOperation(GraphQLWsStartRequest request, WebSocketSession session) {
         if (request.getId() == null) {
             LOG.warn("GraphQL operation id is required with type start");
             return Flux.just(new GraphQLWsResponse(GQL_ERROR));

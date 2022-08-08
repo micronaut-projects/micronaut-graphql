@@ -23,11 +23,11 @@ class GraphQLWsKeepAliveSpec extends Specification {
     WebSocketClient wsClient = embeddedServer.applicationContext.createBean(WebSocketClient, embeddedServer.getURI())
 
     @Shared
-    GraphQLWsClient graphQLWsClient = Flux.from(wsClient.connect(GraphQLWsClient, "/ka-ws")).blockFirst();
+    GraphQLWsClient graphQLWsClient = Flux.from(wsClient.connect(GraphQLWsClient, "/ka-ws")).blockFirst()
 
     void "test keep alive starts and stops"() {
         given:
-        GraphQLWsRequest request = new GraphQLWsRequest()
+        GraphQLWsRequest request = new GraphQLWsStartRequest()
         request.setType(GraphQLWsRequest.ClientType.GQL_CONNECTION_INIT.getType())
 
         when:

@@ -19,8 +19,11 @@ import io.micronaut.configuration.graphql.GraphQLConfiguration;
 import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
+import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MutableHttpRequest;
+import io.micronaut.inject.BeanDefinition;
 import io.micronaut.websocket.CloseReason;
 import io.micronaut.websocket.WebSocketSession;
 import io.micronaut.websocket.annotation.OnClose;
@@ -37,7 +40,7 @@ import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType
 
 /**
  * The GraphQL websocket controller handling GraphQL requests.
- * Implementation of https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md
+ * Implementation of <a href="https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md">...</a>
  *
  * @author Gerard Klijs
  * @since 1.3
@@ -47,7 +50,7 @@ import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType
 @Requires(property = GraphQLWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphQLWsController {
 
-    static final String HTTP_REQUEST_KEY = "httpRequest";
+    public static final String HTTP_REQUEST_KEY = "httpRequest";
     private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsController.class);
 
     private final GraphQLWsMessageHandler messageHandler;
@@ -100,16 +103,32 @@ public class GraphQLWsController {
             String message,
             WebSocketSession session) {
         try {
-            GraphQLWsRequest request = graphQLJsonSerializer.deserialize(message, GraphQLWsRequest.class);
-            if (request.getType() == null) {
+            GraphQLWsType graphQLWsType = graphQLJsonSerializer.deserialize(message, GraphQLWsType.class);
+            if (graphQLWsType.getType() == null) {
                 LOG.warn("Type was null on operation message");
                 return send(Flux.just(errorMessage), session);
             } else {
+                Class<?> clazz = graphQLWsType.getType() == GraphQLWsRequest.ClientType.GQL_CONNECTION_INIT
+                    ? GraphQLWsInitRequest.class
+                    : GraphQLWsStartRequest.class;
+                GraphQLWsRequest<?> request = (GraphQLWsRequest<?>) graphQLJsonSerializer.deserialize(message, clazz);
                 return send(messageHandler.handleMessage(request, session), session);
             }
         } catch (Exception e) {
             LOG.warn("Error deserializing message received from client: {}", message, e);
             return send(Flux.just(errorMessage), session);
+        }
+    }
+
+
+    private static class GraphQLWsType {
+        private GraphQLWsRequest.ClientType type;
+
+        public GraphQLWsRequest.ClientType getType() {
+            return type;
+        }
+        public void setType(final String type) {
+            this.type = GraphQLWsRequest.fromString(type);
         }
     }
 

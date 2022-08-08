@@ -15,16 +15,16 @@
  */
 package io.micronaut.configuration.graphql.ws;
 
-import io.micronaut.configuration.graphql.GraphQLRequestBody;
 import io.micronaut.core.annotation.Nullable;
 
 /**
  * Class to handle the message to and from the websocket.
  *
+ * @param <P> The payload type
  * @author Gerard Klijs
  * @since 1.3
  */
-public class GraphQLWsRequest {
+public abstract class GraphQLWsRequest<P> {
 
     private static final String TYPE_ERROR_MESSAGE = "Could not map %s to a known client type.";
 
@@ -32,7 +32,7 @@ public class GraphQLWsRequest {
     @Nullable
     private String id;
     @Nullable
-    private GraphQLRequestBody payload;
+    private P payload;
 
     /**
      * Get the type.
@@ -74,10 +74,10 @@ public class GraphQLWsRequest {
     /**
      * Get the payload.
      *
-     * @return payload as map, likely to contain a graphql query
+     * @return the payload
      */
     @Nullable
-    public GraphQLRequestBody getPayload() {
+    public P getPayload() {
         return payload;
     }
 
@@ -86,11 +86,11 @@ public class GraphQLWsRequest {
      *
      * @param payload the payload
      */
-    public void setPayload(@Nullable final GraphQLRequestBody payload) {
+    public void setPayload(@Nullable final P payload) {
         this.payload = payload;
     }
 
-    private ClientType fromString(String type) {
+    static ClientType fromString(String type) {
         for (ClientType clientType : ClientType.values()) {
             if (clientType.getType().equals(type)) {
                 return clientType;
@@ -108,7 +108,7 @@ public class GraphQLWsRequest {
         GQL_STOP("stop"),
         GQL_CONNECTION_TERMINATE("connection_terminate");
 
-        private String type;
+        private final String type;
 
         /**
          * Default constructor.

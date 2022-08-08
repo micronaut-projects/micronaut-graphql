@@ -27,6 +27,7 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.websocket.WebSocketClient
+import io.micronaut.websocket.WebSocketSession
 import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
@@ -42,7 +43,7 @@ class GraphQLWsControllerSpec extends Specification {
 
     @AutoCleanup
     EmbeddedServer embeddedServer
-    
+
     GraphQLWsClient graphQLWsClient
 
     def setup() {
@@ -51,9 +52,32 @@ class GraphQLWsControllerSpec extends Specification {
         graphQLWsClient = Flux.from(wsClient.connect(GraphQLWsClient, "/graphql-ws")).blockFirst()
     }
 
+    void "test init connection with custom Initializer"() {
+        given:
+        String payload = '{"works": true}'
+        GraphQLWsInitRequest request = new GraphQLWsInitRequest()
+        request.setPayload(payload)
+        request.setType(GraphQLWsRequest.ClientType.GQL_CONNECTION_INIT.getType())
+        TestConnectionInitializer testConnectionInitializer = embeddedServer.getApplicationContext().getBean(TestConnectionInitializer.class)
+
+        when:
+        graphQLWsClient.send(request)
+
+        then:
+        GraphQLWsResponse response = graphQLWsClient.nextResponse()
+        response.getType() == GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK.getType()
+        payload == testConnectionInitializer.getPayload()
+        GraphQLWsResponse noResponse = graphQLWsClient.nextResponse()
+        noResponse == null
+
+        and:
+        response.id == null
+        response.payload == null
+    }
+
     void "test init connection, keep alive off"() {
         given:
-        GraphQLWsRequest request = new GraphQLWsRequest()
+        GraphQLWsRequest request = new GraphQLWsInitRequest()
         request.setType(GraphQLWsRequest.ClientType.GQL_CONNECTION_INIT.getType())
 
         when:
@@ -72,9 +96,9 @@ class GraphQLWsControllerSpec extends Specification {
 
     void "test query over websocket"() {
         given:
-        GraphQLRequestBody body = new GraphQLRequestBody();
+        GraphQLRequestBody body = new GraphQLRequestBody()
         body.query = "query{ foo }"
-        GraphQLWsRequest request = new GraphQLWsRequest()
+        GraphQLWsRequest request = new GraphQLWsStartRequest()
         request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
         request.setId("foo_id")
         request.setPayload(body)
@@ -95,9 +119,9 @@ class GraphQLWsControllerSpec extends Specification {
 
     void "handle error in query over websocket"() {
         given:
-        GraphQLRequestBody body = new GraphQLRequestBody();
+        GraphQLRequestBody body = new GraphQLRequestBody()
         body.query = "query{ error }"
-        GraphQLWsRequest request = new GraphQLWsRequest()
+        GraphQLWsRequest request = new GraphQLWsStartRequest()
         request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
         request.setId("error_id")
         request.setPayload(body)
@@ -126,9 +150,9 @@ class GraphQLWsControllerSpec extends Specification {
 
     void "test mutation over websocket"() {
         given:
-        GraphQLRequestBody body = new GraphQLRequestBody();
+        GraphQLRequestBody body = new GraphQLRequestBody()
         body.query = "mutation{ change( newValue: \"Value_B\" ){ current old }}"
-        GraphQLWsRequest request = new GraphQLWsRequest()
+        GraphQLWsRequest request = new GraphQLWsStartRequest()
         request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
         request.setId("change_id")
         request.setPayload(body)
@@ -149,9 +173,9 @@ class GraphQLWsControllerSpec extends Specification {
 
     void "test customizer using http request in mutation over websocket"() {
         given:
-        GraphQLRequestBody body = new GraphQLRequestBody();
+        GraphQLRequestBody body = new GraphQLRequestBody()
         body.query = "mutation{ change( newValue: \"\$[path]\" ){ current old }}"
-        GraphQLWsRequest request = new GraphQLWsRequest()
+        GraphQLWsRequest request = new GraphQLWsStartRequest()
         request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
         request.setId("change_id")
         request.setPayload(body)
@@ -174,7 +198,7 @@ class GraphQLWsControllerSpec extends Specification {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody()
         body.query = "subscription{ counter }"
-        GraphQLWsRequest request = new GraphQLWsRequest()
+        GraphQLWsRequest request = new GraphQLWsStartRequest()
         request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
         request.setId("counter_id")
         request.setPayload(body)
@@ -202,9 +226,9 @@ class GraphQLWsControllerSpec extends Specification {
 
     void "test subscription over websocket, let it complete"() {
         given:
-        GraphQLRequestBody body = new GraphQLRequestBody();
+        GraphQLRequestBody body = new GraphQLRequestBody()
         body.query = "subscription{ counter }"
-        GraphQLWsRequest request = new GraphQLWsRequest()
+        GraphQLWsRequest request = new GraphQLWsStartRequest()
         request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
         request.setId("counter_id")
         request.setPayload(body)
@@ -230,6 +254,22 @@ class GraphQLWsControllerSpec extends Specification {
         response3.type == "data"
         response4.id == "counter_id"
         response4.type == "complete"
+    }
+}
+
+@Singleton
+@Requires(property = "spec.name", value = "GraphQLWsControllerSpec")
+class TestConnectionInitializer implements GraphQLWsConnectionInitializer {
+
+    private String payload
+
+    @Override
+    void initialize(GraphQLWsInitRequest request, WebSocketSession session) {
+        this.payload = request.payload
+    }
+
+    String getPayload() {
+        return payload
     }
 }
 
