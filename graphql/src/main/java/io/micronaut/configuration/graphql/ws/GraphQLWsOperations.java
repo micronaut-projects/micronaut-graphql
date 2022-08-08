@@ -31,7 +31,7 @@ import java.util.function.Function;
 @Singleton
 public class GraphQLWsOperations {
 
-    private ConcurrentHashMap<String, Subscription> activeOperations = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Subscription> activeOperations = new ConcurrentHashMap<>();
 
     /**
      * Cancels all containing subscriptions.

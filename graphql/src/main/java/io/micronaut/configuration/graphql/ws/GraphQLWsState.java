@@ -37,8 +37,8 @@ import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType
 @Singleton
 public class GraphQLWsState {
 
-    private ConcurrentSkipListSet<String> activeSessions = new ConcurrentSkipListSet<>();
-    private ConcurrentHashMap<String, GraphQLWsOperations> activeOperations = new ConcurrentHashMap<>();
+    private final ConcurrentSkipListSet<String> activeSessions = new ConcurrentSkipListSet<>();
+    private final ConcurrentHashMap<String, GraphQLWsOperations> activeOperations = new ConcurrentHashMap<>();
 
     /**
      * Sets the session to active.
