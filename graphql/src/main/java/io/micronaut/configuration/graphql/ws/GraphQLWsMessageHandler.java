@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.graphql.ws;
 
+import com.sun.tools.javac.util.List;
 import graphql.ExecutionResult;
 import io.micronaut.configuration.graphql.GraphQLExecutionResultHandler;
 import io.micronaut.configuration.graphql.GraphQLInvocation;
@@ -32,6 +33,9 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import javax.validation.constraints.Null;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.micronaut.configuration.graphql.ws.GraphQLWsController.HTTP_REQUEST_KEY;
 import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;
@@ -94,7 +98,11 @@ public class GraphQLWsMessageHandler {
         switch (request.getType()) {
             case GQL_CONNECTION_INIT:
                 if (connectionInitializer != null) {
-                    connectionInitializer.initialize((GraphQLWsInitRequest) request, session); // We can trust this cast, as it's checked in the WsController
+                    GraphQLWsInitRequest initRequest = (GraphQLWsInitRequest) request;
+                    if (request.getPayload() == null) {
+                        initRequest.setPayload(new HashMap<>()); // should be non null to maintain usability
+                    }
+                    connectionInitializer.initialize(initRequest, session); // We can trust this cast, as it's checked in the WsController
                 }
                 return init(session);
             case GQL_START:

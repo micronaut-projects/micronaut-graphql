@@ -32,7 +32,6 @@ import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import spock.lang.AutoCleanup
-import spock.lang.Shared
 import spock.lang.Specification
 
 /**
@@ -54,19 +53,23 @@ class GraphQLWsControllerSpec extends Specification {
 
     void "test init connection with custom Initializer"() {
         given:
-        String payload = '{"works": true}'
-        GraphQLWsInitRequest request = new GraphQLWsInitRequest()
-        request.setPayload(payload)
-        request.setType(GraphQLWsRequest.ClientType.GQL_CONNECTION_INIT.getType())
+        String message = """
+{
+    "type": "connection_init",
+    "payload": {
+        "works": true
+    }
+}
+"""
         TestConnectionInitializer testConnectionInitializer = embeddedServer.getApplicationContext().getBean(TestConnectionInitializer.class)
 
         when:
-        graphQLWsClient.send(request)
+        graphQLWsClient.send(message)
 
         then:
         GraphQLWsResponse response = graphQLWsClient.nextResponse()
         response.getType() == GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK.getType()
-        payload == testConnectionInitializer.getPayload()
+        testConnectionInitializer.isWorking()
         GraphQLWsResponse noResponse = graphQLWsClient.nextResponse()
         noResponse == null
 
@@ -261,15 +264,15 @@ class GraphQLWsControllerSpec extends Specification {
 @Requires(property = "spec.name", value = "GraphQLWsControllerSpec")
 class TestConnectionInitializer implements GraphQLWsConnectionInitializer {
 
-    private String payload
+    private boolean works
 
     @Override
     void initialize(GraphQLWsInitRequest request, WebSocketSession session) {
-        this.payload = request.payload
+        this.works = request.payload.get("works")
     }
 
-    String getPayload() {
-        return payload
+    boolean isWorking() {
+        return works
     }
 }
 
