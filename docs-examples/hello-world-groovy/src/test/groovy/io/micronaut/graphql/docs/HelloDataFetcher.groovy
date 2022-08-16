@@ -15,14 +15,17 @@
  */
 package io.micronaut.graphql.docs
 
+// tag::imports[]
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import groovy.transform.CompileStatic
 import jakarta.inject.Singleton
+// end::imports[]
 
 /**
  * @author Marcel Overdijk
  */
+// tag::clazz[]
 @Singleton
 @CompileStatic
 class HelloDataFetcher implements DataFetcher<String> {
@@ -34,3 +37,4 @@ class HelloDataFetcher implements DataFetcher<String> {
         return "Hello ${name}!"
     }
 }
+// end::clazz[]
