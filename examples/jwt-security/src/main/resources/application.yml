@@ -1,14 +1,7 @@
 micronaut:
   security:
-    enabled: true
     authentication: cookie
     token:
-      jwt:
-        enabled: true
-        bearer:
-          enabled: false
-        cookie:
-          enabled: true
       refresh:
         cookie:
           enabled: false
