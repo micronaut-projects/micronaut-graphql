@@ -2,11 +2,6 @@ plugins {
     id("micronaut-graphql.example-conventions")
 }
 
-repositories {
-    mavenCentral()
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
-}
-
 dependencies {
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     implementation("io.micronaut.security:micronaut-security-jwt")

@@ -2,11 +2,6 @@ plugins {
     id "io.micronaut.build.internal.graphql-module"
 }
 
-repositories {
-    mavenCentral()
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
-}
-
 dependencies {
     api libs.managed.graphql.java
 
