@@ -1,5 +1,5 @@
 plugins {
-    id "io.micronaut.build.internal.module"
+    id "io.micronaut.build.internal.graphql-module"
 }
 
 repositories {
@@ -8,22 +8,17 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor("io.micronaut:micronaut-validation")
+    api libs.managed.graphql.java
 
-    api("com.graphql-java:graphql-java:${graphqlJavaVersion}")
-    api("io.micronaut:micronaut-http")
-    api("io.micronaut:micronaut-http-server")
-    api("io.micronaut:micronaut-inject")
+    api mn.micronaut.http.server
+    api libs.reactor.core
 
-    implementation 'io.projectreactor:reactor-core'
-
-    testImplementation("cglib:cglib-nodep:${cglibVersion}")
-    testImplementation("io.micronaut:micronaut-http-client")
-    testImplementation("io.micronaut:micronaut-http-server-netty")
+    testImplementation mn.micronaut.http.server.netty
+    testImplementation mn.micronaut.http.client
 }
 
 micronautBuild {
     resolutionStrategy {
-        force "com.graphql-java:graphql-java:$graphqlJavaVersion"
+        force "com.graphql-java:graphql-java:${libs.versions.managed.graphql.java}"
     }
 }

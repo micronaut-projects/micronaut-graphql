@@ -8,6 +8,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.graphql-java:graphql-java-extended-scalars:1.0.1")
+    implementation libs.managed.graphql.java.extended.scalars
     implementation 'io.projectreactor:reactor-core'
 }

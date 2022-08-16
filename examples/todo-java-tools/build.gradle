@@ -8,6 +8,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.graphql-java-kickstart:graphql-java-tools:${graphqlJavaToolsVersion}")
-    nativeImageCompileOnly("io.micronaut.kotlin:micronaut-kotlin-runtime")
+    implementation libs.managed.graphql.java.tools
+    nativeImageCompileOnly(mn.micronaut.kotlin.runtime)
 }
