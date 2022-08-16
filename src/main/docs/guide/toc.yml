@@ -1,5 +1,6 @@
 introduction: Introduction
 releaseHistory: Release History
+quickStart: Quick Start
 configuration:
   title: Configuration
   graphql-bean: Configuring the GraphQL Bean
