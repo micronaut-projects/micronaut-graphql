@@ -29,6 +29,7 @@ import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.websocket.WebSocketClient
 import io.micronaut.websocket.WebSocketSession
 import jakarta.inject.Singleton
+import org.jetbrains.annotations.NotNull
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import spock.lang.AutoCleanup
@@ -267,7 +268,7 @@ class TestConnectionInitializer implements GraphQLWsConnectionInitializer {
     private boolean works
 
     @Override
-    void initialize(GraphQLWsInitRequest request, WebSocketSession session) {
+    void initialize(@NotNull GraphQLWsInitRequest request, WebSocketSession session) {
         this.works = request.payload.get("works")
     }
 

@@ -15,7 +15,6 @@
  */
 package io.micronaut.configuration.graphql.ws;
 
-import com.sun.tools.javac.util.List;
 import graphql.ExecutionResult;
 import io.micronaut.configuration.graphql.GraphQLExecutionResultHandler;
 import io.micronaut.configuration.graphql.GraphQLInvocation;
@@ -32,10 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
-import javax.validation.constraints.Null;
-
 import java.util.HashMap;
-import java.util.Map;
 
 import static io.micronaut.configuration.graphql.ws.GraphQLWsController.HTTP_REQUEST_KEY;
 import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;

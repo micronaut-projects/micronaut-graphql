@@ -120,7 +120,6 @@ public class GraphQLWsController {
         }
     }
 
-
     private static class GraphQLWsType {
         private GraphQLWsRequest.ClientType type;
 

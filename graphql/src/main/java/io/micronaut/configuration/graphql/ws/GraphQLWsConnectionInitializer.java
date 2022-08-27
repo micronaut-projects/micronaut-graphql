@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.graphql.ws;
 
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.websocket.WebSocketSession;
 
 /**
@@ -24,6 +25,7 @@ import io.micronaut.websocket.WebSocketSession;
  * @since 4.0
  */
 
+@FunctionalInterface
 public interface GraphQLWsConnectionInitializer {
 
     /**
@@ -32,5 +34,5 @@ public interface GraphQLWsConnectionInitializer {
      * @param session The WebSocketSession
      * @since 4.0
      */
-    void initialize(GraphQLWsInitRequest request, WebSocketSession session);
+    void initialize(@NonNull GraphQLWsInitRequest request, @NonNull WebSocketSession session);
 }
