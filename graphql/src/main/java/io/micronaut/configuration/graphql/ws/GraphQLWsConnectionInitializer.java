@@ -29,7 +29,7 @@ import io.micronaut.websocket.WebSocketSession;
 public interface GraphQLWsConnectionInitializer {
 
     /**
-     * This method is called, when a GQL_CONNECTION_INIT message is received
+     * This method is called, when a GQL_CONNECTION_INIT message is received.
      * @param request The GraphQlWs request
      * @param session The WebSocketSession
      * @since 4.0

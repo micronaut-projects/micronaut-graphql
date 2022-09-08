@@ -88,6 +88,7 @@ public class GraphQLWsMessageHandler {
      *
      * @param request Message from client
      * @param session WebSocketSession
+     * @param <P> The payload type
      * @return Publisher<GraphQLWsResponse>
      */
     public <P> Publisher<GraphQLWsResponse> handleMessage(GraphQLWsRequest<P> request, WebSocketSession session) {

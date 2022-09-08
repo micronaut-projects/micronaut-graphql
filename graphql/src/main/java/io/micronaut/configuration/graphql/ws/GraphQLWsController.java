@@ -19,11 +19,8 @@ import io.micronaut.configuration.graphql.GraphQLConfiguration;
 import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
-import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
-import io.micronaut.http.MutableHttpRequest;
-import io.micronaut.inject.BeanDefinition;
 import io.micronaut.websocket.CloseReason;
 import io.micronaut.websocket.WebSocketSession;
 import io.micronaut.websocket.annotation.OnClose;
@@ -120,17 +117,6 @@ public class GraphQLWsController {
         }
     }
 
-    private static class GraphQLWsType {
-        private GraphQLWsRequest.ClientType type;
-
-        public GraphQLWsRequest.ClientType getType() {
-            return type;
-        }
-        public void setType(final String type) {
-            this.type = GraphQLWsRequest.fromString(type);
-        }
-    }
-
     /**
      * Called when the websocket is closed.
      *
@@ -164,5 +150,17 @@ public class GraphQLWsController {
                 session.sendSync(graphQLJsonSerializer.serialize(response));
             }
         });
+    }
+
+    private static class GraphQLWsType {
+        private GraphQLWsRequest.ClientType type;
+
+        public GraphQLWsRequest.ClientType getType() {
+            return type;
+        }
+
+        public void setType(final String type) {
+            this.type = GraphQLWsRequest.fromString(type);
+        }
     }
 }
