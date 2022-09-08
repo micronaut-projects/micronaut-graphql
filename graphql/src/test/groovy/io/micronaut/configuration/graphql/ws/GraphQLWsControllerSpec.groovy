@@ -22,6 +22,7 @@ import io.micronaut.configuration.graphql.GraphQLRequestBody
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Requires
+import io.micronaut.core.annotation.NonNull
 import io.micronaut.core.async.publisher.Publishers
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.MutableHttpResponse
@@ -29,7 +30,6 @@ import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.websocket.WebSocketClient
 import io.micronaut.websocket.WebSocketSession
 import jakarta.inject.Singleton
-import org.jetbrains.annotations.NotNull
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import spock.lang.AutoCleanup
@@ -268,7 +268,7 @@ class TestConnectionInitializer implements GraphQLWsConnectionInitializer {
     private boolean works
 
     @Override
-    void initialize(@NotNull GraphQLWsInitRequest request, WebSocketSession session) {
+    void initialize(@NonNull GraphQLWsInitRequest request, WebSocketSession session) {
         this.works = request.payload.get("works")
     }
 
