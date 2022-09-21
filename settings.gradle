@@ -9,8 +9,16 @@ plugins {
     id("io.micronaut.build.shared.settings") version "5.3.14"
 }
 
-micronautBuild {
-    importMicronautCatalog()
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    }
+    versionCatalogs {
+        "mn" {
+            from("io.micronaut:micronaut-bom:${providers.gradleProperty("micronautVersion").get()}")
+        }
+    }
 }
 
 rootProject.name = 'graphql-parent'
