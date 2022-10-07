@@ -4,11 +4,15 @@ pluginManagement {
         mavenCentral()
     }
 }
-
 plugins {
     id("io.micronaut.build.shared.settings") version "6.0.0"
 }
-
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    }
+}
 micronautBuild {
     importMicronautCatalog()
 }
