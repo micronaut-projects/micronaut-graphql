@@ -14,17 +14,13 @@ micronaut {
 
 mainClassName = "io.micronaut.graphql.docs.ApplicationKt"
 
-java {
-    sourceCompatibility = JavaVersion.toVersion('1.8')
-}
-
 compileKotlin {
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 }

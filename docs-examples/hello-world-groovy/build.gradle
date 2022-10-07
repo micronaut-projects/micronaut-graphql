@@ -7,8 +7,15 @@ micronaut {
     testRuntime "spock"
 }
 
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module("org.codehaus.groovy:groovy"))
+                .using(module("org.apache.groovy:groovy:4.0.5"))
+    }
+}
+
 dependencies {
-    implementation("org.codehaus.groovy:groovy:${groovyVersion}")
+    implementation("org.apache.groovy:groovy:${groovyVersion}")
 }
 
 mainClassName = "io.micronaut.graphql.docs.Application"
