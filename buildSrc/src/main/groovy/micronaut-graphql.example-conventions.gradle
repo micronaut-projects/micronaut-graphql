@@ -22,6 +22,7 @@ dependencies {
 
     runtimeOnly("ch.qos.logback:logback-classic")
     compileOnly("org.graalvm.nativeimage:svm")
+    testRuntimeOnly mn.snakeyaml
 }
 
 mainClassName = "example.Application"
