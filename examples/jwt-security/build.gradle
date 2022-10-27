@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
-    implementation("io.micronaut.security:micronaut-security-jwt")
-    implementation 'io.projectreactor:reactor-core'
+    annotationProcessor mn.micronaut.security.annotations
+    implementation mn.micronaut.security.jwt
+    implementation mn.reactor
 }

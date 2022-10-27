@@ -1,31 +1,24 @@
 plugins {
     id "com.github.johnrengelman.shadow"
     id("io.micronaut.application")
+    id 'io.micronaut.build.internal.graphql-base'
 }
 
 group "io.micronaut.example"
 version project.projectVersion
 
-repositories {
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
-    mavenCentral()
-}
-
 dependencies {
-    implementation(project(":graphql"))
+    annotationProcessor mn.micronaut.http.validation
 
-    annotationProcessor("io.micronaut:micronaut-http-validation")
-    implementation("io.micronaut:micronaut-http-client")
-    implementation("io.micronaut:micronaut-jackson-databind")
-    implementation("io.micronaut:micronaut-validation")
-    implementation("io.micronaut:micronaut-runtime")
+    compileOnly mn.graal
+    implementation projects.graphql
+    implementation mn.micronaut.http.client
+    implementation libs.micronaut.jackson.databind
+    implementation mn.micronaut.validation
+    implementation mn.micronaut.runtime
 
-    runtimeOnly("ch.qos.logback:logback-classic")
-    compileOnly("org.graalvm.nativeimage:svm")
+    runtimeOnly mn.logback
 }
-
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
 
 mainClassName = "example.Application"
 

@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     implementation libs.managed.graphql.java.extended.scalars
-    implementation 'io.projectreactor:reactor-core'
+    implementation mn.reactor
 }
