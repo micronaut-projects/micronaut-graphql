@@ -16,7 +16,7 @@ dependencies {
     implementation libs.micronaut.jackson.databind
     implementation mn.micronaut.validation
     implementation mn.micronaut.runtime
-
+    testRuntimeOnly mn.snakeyaml
     runtimeOnly mn.logback
 }
 
