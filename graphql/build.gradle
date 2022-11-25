@@ -6,10 +6,13 @@ dependencies {
     api libs.managed.graphql.java
 
     api mn.micronaut.http.server
-    api libs.reactor.core
+    api mn.reactor
+    api mn.micronaut.jackson.databind
+    api mn.micronaut.websocket
 
     testImplementation mn.micronaut.http.server.netty
     testImplementation mn.micronaut.http.client
+    testRuntimeOnly mn.snakeyaml
 }
 
 micronautBuild {

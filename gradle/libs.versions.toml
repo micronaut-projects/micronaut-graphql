@@ -1,13 +1,23 @@
 [versions]
+kotlin = '1.7.20'
+shadow = '7.1.2'
+micronaut-gradle-plugin = "3.6.2"
+
 managed-graphql-java = "16.2"
 managed-graphql-java-extended-scalars = "1.0.1"
-managed-graphql-java-tools = "11.1.2"
+managed-graphql-java-tools = "13.0.2"
 managed-graphql-spqr = "0.11.2"
 
 [libraries]
+micronaut-jackson-databind = { module = 'io.micronaut:micronaut-jackson-databind' }
+
 managed-graphql-java = { module = 'com.graphql-java:graphql-java', version.ref = 'managed-graphql-java' }
 managed-graphql-java-extended-scalars = { module = 'com.graphql-java:graphql-java-extended-scalars', version.ref = 'managed-graphql-java-extended-scalars' }
 managed-graphql-java-tools = { module = 'com.graphql-java-kickstart:graphql-java-tools', version.ref = 'managed-graphql-java-tools' }
 managed-graphql-spqr = { module = 'io.leangen.graphql:spqr', version.ref = 'managed-graphql-spqr' }
 
-reactor-core = { module = 'io.projectreactor:reactor-core' }
+#plugins
+kotlin-gradle-plugin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version.ref = 'kotlin' }
+kotlin-gradle-allopen = { module = 'org.jetbrains.kotlin:kotlin-allopen', version.ref = 'kotlin' }
+shadow-plugin = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "shadow" }
+micronaut-gradle-plugin = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref="micronaut-gradle-plugin" }

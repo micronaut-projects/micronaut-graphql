@@ -1,10 +1,6 @@
 plugins {
+    id 'io.micronaut.build.internal.graphql-base'
     id('io.micronaut.minimal.application')
-}
-
-repositories {
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
-    mavenCentral()
 }
 
 micronaut {
@@ -13,5 +9,7 @@ micronaut {
 }
 
 dependencies {
-    testImplementation(project(":graphql"))
+    testImplementation projects.graphql
+
+    testRuntimeOnly mn.snakeyaml
 }

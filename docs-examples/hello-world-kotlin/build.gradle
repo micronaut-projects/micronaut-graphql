@@ -4,27 +4,19 @@ plugins {
     id("micronaut-graphql.docs-examples-conventions")
 }
 
-dependencies {
-    kaptTest(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-}
-
 micronaut {
     testRuntime "junit5"
 }
 
 mainClassName = "io.micronaut.graphql.docs.ApplicationKt"
 
-java {
-    sourceCompatibility = JavaVersion.toVersion('1.8')
-}
-
 compileKotlin {
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 }
