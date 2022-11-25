@@ -8,8 +8,8 @@ repositories {
 }
 
 dependencies {
-    implementation("io.micronaut.gradle:micronaut-gradle-plugin:3.6.2")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10")
-    implementation("org.jetbrains.kotlin:kotlin-allopen:1.6.0")
-    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
+    implementation libs.micronaut.gradle.plugin
+    implementation libs.kotlin.gradle.plugin
+    implementation libs.kotlin.gradle.allopen
+    implementation libs.shadow.plugin
 }

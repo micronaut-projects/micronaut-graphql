@@ -8,7 +8,7 @@ micronaut {
 }
 
 dependencies {
-    implementation("org.codehaus.groovy:groovy:${groovyVersion}")
+    implementation mn.groovy
 }
 
 mainClassName = "io.micronaut.graphql.docs.Application"
