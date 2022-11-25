@@ -4,10 +4,6 @@ plugins {
     id("micronaut-graphql.docs-examples-conventions")
 }
 
-dependencies {
-    kaptTest(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-}
-
 micronaut {
     testRuntime "junit5"
 }
