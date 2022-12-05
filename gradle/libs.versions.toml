@@ -1,7 +1,7 @@
 [versions]
 kotlin = '1.7.20'
 shadow = '7.1.2'
-micronaut-gradle-plugin = "3.6.2"
+micronaut-gradle-plugin = "3.6.6"
 
 managed-graphql-java = "16.2"
 managed-graphql-java-extended-scalars = "1.1.0"
