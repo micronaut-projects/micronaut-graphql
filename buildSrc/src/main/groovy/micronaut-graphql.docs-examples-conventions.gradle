@@ -10,6 +10,6 @@ micronaut {
 
 dependencies {
     testImplementation projects.graphql
-
+    runtimeOnly mn.snakeyaml
     testRuntimeOnly mn.snakeyaml
 }

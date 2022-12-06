@@ -7,17 +7,29 @@ plugins {
 group "io.micronaut.example"
 version project.projectVersion
 
+configurations.configureEach {
+    resolutionStrategy {
+        force "com.graphql-java:graphql-java-extended-scalars:1.0.1"
+        force "com.graphql-java:graphql-java:16.2"
+//        force "com.graphql-java:graphql-java-extended-scalars:${libs.versions.managed.graphql.java.extended.scalars.get()}"
+//        force "com.graphql-java:graphql-java:${libs.versions.managed.graphql.java.get()}"
+    }
+}
+
 dependencies {
     annotationProcessor mn.micronaut.http.validation
 
-    compileOnly mn.graal
+    compileOnly libs.graal.svm
     implementation projects.graphql
+
+
     implementation mn.micronaut.http.client
-    implementation libs.micronaut.jackson.databind
+    implementation mn.micronaut.jackson.databind
     implementation mn.micronaut.validation
     implementation mn.micronaut.runtime
+    runtimeOnly mn.logback.classic
+    runtimeOnly mn.snakeyaml
     testRuntimeOnly mn.snakeyaml
-    runtimeOnly mn.logback
 }
 
 mainClassName = "example.Application"
