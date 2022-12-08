@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     implementation libs.managed.graphql.java.tools
-    nativeImageCompileOnly mn.micronaut.kotlin.runtime
+    nativeImageCompileOnly mnKotlin.micronaut.kotlin.runtime
 }
