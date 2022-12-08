@@ -75,7 +75,7 @@ class GraphQLControllerSpec extends Specification {
                 EmbeddedServer,
                 ["spec.name": GraphQLControllerSpec.simpleName],
                 Environment.TEST)
-        embeddedServer.applicationContext.registerSingleton(graphQL)
+        embeddedServer.applicationContext.registerSingleton(GraphQL, graphQL)
         graphQLClient = embeddedServer.applicationContext.getBean(GraphQLClient)
         executionInput = null
         1 * graphQL.executeAsync(_) >> { ExecutionInput executionInput ->

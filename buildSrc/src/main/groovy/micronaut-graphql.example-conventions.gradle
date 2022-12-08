@@ -10,25 +10,21 @@ version project.projectVersion
 dependencies {
     annotationProcessor mn.micronaut.http.validation
 
-    compileOnly mn.graal
+    compileOnly libs.graal.svm
     implementation projects.graphql
+
+
     implementation mn.micronaut.http.client
-    implementation libs.micronaut.jackson.databind
+    implementation mn.micronaut.jackson.databind
     implementation mn.micronaut.validation
     implementation mn.micronaut.runtime
+    runtimeOnly mn.logback.classic
+    runtimeOnly mn.snakeyaml
     testRuntimeOnly mn.snakeyaml
-    runtimeOnly mn.logback
 }
 
 mainClassName = "example.Application"
 
 micronaut {
     runtime("netty")
-}
-
-micronautBuild {
-    resolutionStrategy {
-        force "com.graphql-java:graphql-java-extended-scalars:${libs.managed.graphql.java.extended.scalars}"
-        force "com.graphql-java:graphql-java:${libs.versions.managed.graphql.java}"
-    }
 }
