@@ -7,20 +7,20 @@ Some clients have a way of configuring a different endpoint for subscriptions an
 
 The following configuration properties can be set:
 
-.src/main/resources/application.yml
-[source,yaml]
+.src/main/resources/application configuration
+[configuration]
 ----
 graphql:
   graphql-ws:
-    enabled: false // <1>
-    path: /graphql-ws // <2>
-    keep-alive-enabled: true // <3>
-    keep-alive-interval: 15s // <4>
+    enabled: false
+    path: /graphql-ws
+    keep-alive-enabled: true
+    keep-alive-interval: 15s
 ----
-<1> Enables/disables GraphQL over web sockets. Default `false`.
-<2> Configures the GraphQLWs endpoint path. Default `/graphql-ws`.
-<3> Enables/disables keep alive, this might be needed to prevent clients reconnecting. Default `true`.
-<4> Configures the keep alive interval, specific clients might need different values, or it could be set higher to reduce some load `15s`.
+- `enabled` enables/disables GraphQL over web sockets. Default `false`.
+- `path` configures the GraphQLWs endpoint path. Default `/graphql-ws`.
+- `keep-alive-enabled` enables/disables keep alive, this might be needed to prevent clients reconnecting. Default `true`.
+- `keep-alive-interval` configures the keep alive interval, specific clients might need different values, or it could be set higher to reduce some load `15s`.
 
 There is an example present https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples/chat[chat], that features a very basic chat application.
 For real applications the subscriptions are usually based on some pub/sub solution.

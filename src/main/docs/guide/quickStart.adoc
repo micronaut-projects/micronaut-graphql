@@ -10,12 +10,17 @@ dependency:micronaut-graphql[version="{version}", groupId="io.micronaut.graphql"
 
 Configure the `/graphql` endpoint by adding to `application.yml`:
 
-```yaml
+.src/main/resources/application configuration
+[configuration]
+----
 graphql:
   enabled: true
-  graphiql: # enables the /graphiql endpoint to test calls against your graph.
+  graphiql:
     enabled: true
-```
+----
+
+- `graphql.enabled` enables/disables GraphiQL. Default `false`.
+- `graphql.graphiql.enabled` enables the /graphiql endpoint to test calls against your graph.
 
 And then in the `resources` folder, create a file named `schema.graphqls`.
 This file will contain the definition of your GraphQL schema.
