@@ -14,7 +14,6 @@ Both produce a `application/json` response.
 
 By default the GraphQL endpoint is exposed on `/graphql` but this can be changed via the `graphql.path` application property.
 
-.src/main/resources/application configuration
 [configuration]
 ----
 graphql:

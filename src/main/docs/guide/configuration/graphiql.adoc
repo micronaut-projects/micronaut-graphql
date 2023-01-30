@@ -6,7 +6,6 @@ Graph__i__QL must be explicitly enabled via the `graphql.graphiql.enabled` appli
 
 The following configuration properties can be set:
 
-.src/main/resources/application configuration
 [configuration]
 ----
 graphql:
