@@ -14,14 +14,13 @@ Both produce a `application/json` response.
 
 By default the GraphQL endpoint is exposed on `/graphql` but this can be changed via the `graphql.path` application property.
 
-.src/main/resources/application.yml
-[source,yaml]
+[configuration]
 ----
 graphql:
-  enabled: true // <1>
-  path: /graphql // <2>
+  enabled: true
+  path: /graphql
 ----
-<1> Enables/disables the GraphQL integration. Default `true`.
-<2> Configures the GraphQL endpoint path. Default `/graphql`.
+- `enabled` enables/disables the GraphQL integration. Default `true`.
+- `path` configures the GraphQL endpoint path. Default `/graphql`.
 
 You only must configure a bean of type `graphql.GraphQL` containing the GraphQL schema and runtime wiring.

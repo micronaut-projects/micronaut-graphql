@@ -6,24 +6,23 @@ Graph__i__QL must be explicitly enabled via the `graphql.graphiql.enabled` appli
 
 The following configuration properties can be set:
 
-.src/main/resources/application.yml
-[source,yaml]
+[configuration]
 ----
 graphql:
   graphiql:
-    enabled: true // <1>
-    version: 0.13.2 // <2>
-    path: /graphiql // <3>
-    template-path: classpath:graphiql/index.html // <4>
-    template-parameters: // <5>
-    page-title: GraphiQL // <6>
+    enabled: true
+    version: 0.13.2
+    path: /graphiql
+    template-path: classpath:graphiql/index.html
+    template-parameters:
+    page-title: GraphiQL
 ----
-<1> Enables/disables GraphiQL. Default `false`.
-<2> Configures the GraphiQL version. Default `0.13.2`.
-<3> Configures the GraphiQL endpoint path. Default `/graphiql`.
-<4> Configures the GraphiQL template path. Default `classpath:graphiql/index.html`.
-<5> Configures the GraphiQL template parameters. Default none.
-<6> Configures the GraphiQL page title. Default `GraphiQL`.
+- `enabled` enables/disables GraphiQL. Default `false`.
+- `version` configures the GraphiQL version. Default `0.13.2`.
+- `path` configures the GraphiQL endpoint path. Default `/graphiql`.
+- `template-path` configures the GraphiQL template path. Default `classpath:graphiql/index.html`.
+- `template-parameters` configures the GraphiQL template parameters. Default none.
+- `page-title` configures the GraphiQL page title. Default `GraphiQL`.
 
 The out of the box rendered Graph__i__QL page does not provide many customisations except the Graph__i__QL version, path and page title.
 It also takes into account the `graphql.path` application property,
