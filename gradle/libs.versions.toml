@@ -1,6 +1,6 @@
 [versions]
 graal-svm = "22.0.0.2"
-kotlin = '1.7.21'
+kotlin = '1.8.10'
 shadow = '7.1.2'
 micronaut-gradle-plugin = "3.6.6"
 
