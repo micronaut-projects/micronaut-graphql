@@ -5,7 +5,7 @@ plugins {
 configurations.all {
     resolutionStrategy.dependencySubstitution {
         substitute(module("org.codehaus.groovy:groovy"))
-                .using(module("org.apache.groovy:groovy:4.0.5"))
+                .using(module("org.apache.groovy:groovy:4.0.6"))
     }
 }
 

@@ -5,16 +5,16 @@ pluginManagement {
     }
 }
 plugins {
-    id("io.micronaut.build.shared.settings") version "6.0.0"
+    id("io.micronaut.build.shared.settings") version "6.2.1"
 }
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
-    }
-}
+
+enableFeaturePreview 'TYPESAFE_PROJECT_ACCESSORS'
+
 micronautBuild {
+    addSnapshotRepository()
     importMicronautCatalog()
+    importMicronautCatalog("micronaut-kotlin")
+    importMicronautCatalog("micronaut-security")
 }
 
 rootProject.name = 'graphql-parent'

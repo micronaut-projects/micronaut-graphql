@@ -1,9 +1,4 @@
 plugins {
+    id 'io.micronaut.build.internal.graphql-base'
     id 'io.micronaut.build.internal.module'
 }
-
-repositories {
-    mavenCentral()
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
-}
-
