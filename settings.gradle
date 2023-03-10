@@ -4,14 +4,16 @@ pluginManagement {
         mavenCentral()
     }
 }
+
 plugins {
-    id("io.micronaut.build.shared.settings") version "6.2.2"
+    id("io.micronaut.build.shared.settings") version "6.3.5"
 }
 
 enableFeaturePreview 'TYPESAFE_PROJECT_ACCESSORS'
 
 micronautBuild {
     addSnapshotRepository()
+    useStandardizedProjectNames = true
     importMicronautCatalog()
     importMicronautCatalog("micronaut-kotlin")
     importMicronautCatalog("micronaut-security")
@@ -34,6 +36,6 @@ include 'docs-examples:hello-world-kotlin'
 ].each { name ->
     include name
     def project = findProject(":${name}")
-    project.name = "graphql-example-${name}"
+    project.name = "micronaut-graphql-example-${name}"
     project.projectDir = new File(settingsDir, "examples/${name}")
 }
