@@ -2,7 +2,7 @@
 graal-svm = "22.0.0.2"
 kotlin = '1.7.21'
 shadow = '7.1.2'
-micronaut-gradle-plugin = "3.6.6"
+micronaut-gradle-plugin = "3.7.5"
 
 micronaut-kotlin = "3.2.2"
 micronaut-security = "4.0.0-SNAPSHOT"
