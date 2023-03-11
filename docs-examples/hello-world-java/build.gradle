@@ -2,13 +2,6 @@ plugins {
     id("micronaut-graphql.docs-examples-conventions")
 }
 
-configurations.all {
-    resolutionStrategy.dependencySubstitution {
-        substitute(module("org.codehaus.groovy:groovy"))
-                .using(module("org.apache.groovy:groovy:4.0.6"))
-    }
-}
-
 compileJava.options.compilerArgs += '-parameters'
 compileTestJava.options.compilerArgs += '-parameters'
 

@@ -8,15 +8,12 @@ group "io.micronaut.example"
 version project.projectVersion
 
 dependencies {
-    annotationProcessor mn.micronaut.http.validation
-
     compileOnly libs.graal.svm
-    implementation projects.graphql
+    implementation projects.micronautGraphql
 
 
     implementation mn.micronaut.http.client
     implementation mn.micronaut.jackson.databind
-    implementation mn.micronaut.validation
     implementation mn.micronaut.runtime
     runtimeOnly mn.logback.classic
     runtimeOnly mn.snakeyaml

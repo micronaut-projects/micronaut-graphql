@@ -1,10 +1,16 @@
 [versions]
-graal-svm = "22.0.0.2"
-kotlin = '1.7.21'
-shadow = '7.1.2'
-micronaut-gradle-plugin = "3.6.6"
+micronaut-docs = "2.0.0"
+micronaut = "4.0.0-SNAPSHOT"
+micronaut-test = "4.0.0-SNAPSHOT"
+groovy = "4.0.9"
+spock = "2.3-groovy-4.0"
 
-micronaut-kotlin = "3.2.2"
+graal-svm = "22.0.0.2"
+kotlin = '1.8.10'
+shadow = '7.1.2'
+micronaut-gradle-plugin = "4.0.0-SNAPSHOT"
+
+micronaut-kotlin = "4.0.0-SNAPSHOT"
 micronaut-security = "4.0.0-SNAPSHOT"
 
 managed-graphql-java = "16.2"
@@ -17,7 +23,6 @@ graal-svm = { module = "org.graalvm.nativeimage:svm", version.ref = "graal-svm" 
 
 micronaut-kotlin = { module = "io.micronaut.kotlin:micronaut-kotlin-bom", version.ref = "micronaut-kotlin" }
 micronaut-security = { module = "io.micronaut.security:micronaut-security-bom", version.ref = "micronaut-security" }
-
 
 managed-graphql-java = { module = 'com.graphql-java:graphql-java', version.ref = 'managed-graphql-java' }
 managed-graphql-java-extended-scalars = { module = 'com.graphql-java:graphql-java-extended-scalars', version.ref = 'managed-graphql-java-extended-scalars' }
