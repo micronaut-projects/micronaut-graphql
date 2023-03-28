@@ -6,6 +6,7 @@ plugins {
 
 micronaut {
     testRuntime "junit5"
+    version '4.0.0-SNAPSHOT'
 }
 
 mainClassName = "io.micronaut.graphql.docs.ApplicationKt"

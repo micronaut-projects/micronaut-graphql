@@ -2,6 +2,10 @@ plugins {
     id("micronaut-graphql.example-conventions")
 }
 
+micronaut {
+    version '4.0.0-SNAPSHOT'
+}
+
 dependencies {
     annotationProcessor mnSecurity.micronaut.security.annotations
     implementation mnSecurity.micronaut.security.jwt
