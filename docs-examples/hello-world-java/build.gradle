@@ -5,8 +5,12 @@ plugins {
 compileJava.options.compilerArgs += '-parameters'
 compileTestJava.options.compilerArgs += '-parameters'
 
+dependencies {
+    testImplementation "io.micronaut:micronaut-http-client"
+}
+
 micronaut {
-    testRuntime "spock"
+    testRuntime "junit5"
 }
 
 mainClassName = "io.micronaut.graphql.docs.Application"

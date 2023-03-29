@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     kaptTest(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    testImplementation "io.micronaut:micronaut-http-client"
 }
 
 micronaut {
