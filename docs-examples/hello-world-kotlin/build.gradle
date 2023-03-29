@@ -9,4 +9,8 @@ micronaut {
     version '4.0.0-SNAPSHOT'
 }
 
+dependencies {
+    testImplementation mn.micronaut.http.client
+}
+
 mainClassName = "io.micronaut.graphql.docs.ApplicationKt"

@@ -5,8 +5,12 @@ plugins {
 compileJava.options.compilerArgs += '-parameters'
 compileTestJava.options.compilerArgs += '-parameters'
 
+dependencies {
+    testImplementation mn.micronaut.http.client
+}
+
 micronaut {
-    testRuntime "spock"
+    testRuntime "junit5"
     version '4.0.0-SNAPSHOT'
 }
 
