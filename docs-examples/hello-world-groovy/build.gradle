@@ -5,6 +5,7 @@ plugins {
 
 micronaut {
     testRuntime "spock"
+    version '4.0.0-SNAPSHOT'
 }
 
 dependencies {
