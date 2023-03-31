@@ -10,7 +10,7 @@ kotlin = '1.8.10'
 shadow = '7.1.2'
 micronaut-gradle-plugin = "4.0.0-SNAPSHOT"
 
-micronaut-kotlin = "4.0.0-M1"
+micronaut-kotlin = "4.0.0-SNAPSHOT"
 micronaut-security = "4.0.0-M1"
 
 managed-graphql-java = "16.2"
