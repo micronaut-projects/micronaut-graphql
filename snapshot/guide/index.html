@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <title>Micronaut GraphQL Integration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8" />
     <link rel="stylesheet" href="../css/custom.css" type="text/css" media="screen, print" title="Style" charset="utf-8" />
@@ -112,7 +113,7 @@
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/3.2.x/src/main/docs/guide/introduction.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/introduction.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -125,7 +126,7 @@
 <h1 id="releaseHistory"><a class="anchor" href="#releaseHistory"></a>2 Release History</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/3.2.x/src/main/docs/guide/releaseHistory.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/releaseHistory.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -141,7 +142,7 @@
 <h1 id="quickStart"><a class="anchor" href="#quickStart"></a>3 Quick Start</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/3.2.x/src/main/docs/guide/quickStart.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/quickStart.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -162,7 +163,7 @@
 <p>        <div class="listingblock multi-language-sample">
 <div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.graphql:micronaut-graphql:3.2.1-SNAPSHOT")</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.graphql:micronaut-graphql:4.0.0-SNAPSHOT")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -170,7 +171,7 @@
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut.graphql&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-graphql&lt;/artifactId&gt;
-    &lt;version&gt;3.2.1-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;4.0.0-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div></p>
@@ -178,75 +179,13 @@
 <div class="paragraph">
 <p>Configure the <code>/graphql</code> endpoint by adding to <code>application.yml</code>:</p>
 </div>
-<div class="openblock">
-<div class="content">
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">graphql.enabled=true
-graphql.graphiql.enabled=true</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
   enabled: true
-  graphiql:
+  graphiql: # enables the /graphiql endpoint to test calls against your graph.
     enabled: true</code></pre>
 </div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[graphql]
-  enabled=true
-  [graphql.graphiql]
-    enabled=true</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">graphql {
-  enabled = true
-  graphiql {
-    enabled = true
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
-  graphql {
-    enabled = true
-    graphiql {
-      enabled = true
-    }
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
-  "graphql": {
-    "enabled": true,
-    "graphiql": {
-      "enabled": true
-    }
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>graphql.enabled</code> enables/disables GraphiQL. Default <code>false</code>.</p>
-</li>
-<li>
-<p><code>graphql.graphiql.enabled</code> enables the /graphiql endpoint to test calls against your graph.</p>
-</li>
-</ul>
 </div>
 <div class="paragraph">
 <p>And then in the <code>resources</code> folder, create a file named <code>schema.graphqls</code>.
@@ -511,7 +450,7 @@ Start your application by running <code>./gradlew run</code>, open your browser 
 <h1 id="configuration"><a class="anchor" href="#configuration"></a>4 Configuration</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/3.2.x/src/main/docs/guide/configuration.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -524,7 +463,7 @@ Start your application by running <code>./gradlew run</code>, open your browser 
 <p>        <div class="listingblock multi-language-sample">
 <div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.graphql:micronaut-graphql:3.2.1-SNAPSHOT")</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.graphql:micronaut-graphql:4.0.0-SNAPSHOT")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -532,7 +471,7 @@ Start your application by running <code>./gradlew run</code>, open your browser 
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut.graphql&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-graphql&lt;/artifactId&gt;
-    &lt;version&gt;3.2.1-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;4.0.0-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div></p>
@@ -560,67 +499,25 @@ Start your application by running <code>./gradlew run</code>, open your browser 
 <div class="paragraph">
 <p>By default the GraphQL endpoint is exposed on <code>/graphql</code> but this can be changed via the <code>graphql.path</code> application property.</p>
 </div>
-<div class="openblock">
-<div class="content">
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">graphql.enabled=true
-graphql.path=/graphql</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
+<div class="listingblock">
+<div class="title">src/main/resources/application.yml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
-  enabled: true
-  path: /graphql</code></pre>
+  enabled: true <i class="conum" data-value="1"></i><b>(1)</b>
+  path: /graphql <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[graphql]
-  enabled=true
-  path="/graphql"</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">graphql {
-  enabled = true
-  path = "/graphql"
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
-  graphql {
-    enabled = true
-    path = "/graphql"
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
-  "graphql": {
-    "enabled": true,
-    "path": "/graphql"
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>enabled</code> enables/disables the GraphQL integration. Default <code>true</code>.</p>
-</li>
-<li>
-<p><code>path</code> configures the GraphQL endpoint path. Default <code>/graphql</code>.</p>
-</li>
-</ul>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables/disables the GraphQL integration. Default <code>true</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configures the GraphQL endpoint path. Default <code>/graphql</code>.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>You only must configure a bean of type <code>graphql.GraphQL</code> containing the GraphQL schema and runtime wiring.</p>
@@ -629,7 +526,7 @@ graphql.path=/graphql</code></pre>
 <h2 id="graphql-bean"><a class="anchor" href="#graphql-bean"></a>4.1 Configuring the GraphQL Bean</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/3.2.x/src/main/docs/guide/configuration/graphql-bean.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphql-bean.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -800,7 +697,7 @@ provided in the repository.</p>
 <h2 id="graphql-ws"><a class="anchor" href="#graphql-ws"></a>4.2 Configuring GraphQL over websockets</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/3.2.x/src/main/docs/guide/configuration/graphql-ws.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphql-ws.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -818,93 +715,36 @@ Some clients have a way of configuring a different endpoint for subscriptions an
 <div class="paragraph">
 <p>The following configuration properties can be set:</p>
 </div>
-<div class="openblock">
-<div class="content">
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">graphql.graphql-ws.enabled=false
-graphql.graphql-ws.path=/graphql-ws
-graphql.graphql-ws.keep-alive-enabled=true
-graphql.graphql-ws.keep-alive-interval=15s</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
+<div class="listingblock">
+<div class="title">src/main/resources/application.yml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
   graphql-ws:
-    enabled: false
-    path: /graphql-ws
-    keep-alive-enabled: true
-    keep-alive-interval: 15s</code></pre>
+    enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
+    path: /graphql-ws <i class="conum" data-value="2"></i><b>(2)</b>
+    keep-alive-enabled: true <i class="conum" data-value="3"></i><b>(3)</b>
+    keep-alive-interval: 15s <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
 </div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[graphql]
-  [graphql.graphql-ws]
-    enabled=false
-    path="/graphql-ws"
-    keep-alive-enabled=true
-    keep-alive-interval="15s"</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">graphql {
-  graphqlWs {
-    enabled = false
-    path = "/graphql-ws"
-    keepAliveEnabled = true
-    keepAliveInterval = "15s"
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
-  graphql {
-    graphql-ws {
-      enabled = false
-      path = "/graphql-ws"
-      keep-alive-enabled = true
-      keep-alive-interval = "15s"
-    }
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
-  "graphql": {
-    "graphql-ws": {
-      "enabled": false,
-      "path": "/graphql-ws",
-      "keep-alive-enabled": true,
-      "keep-alive-interval": "15s"
-    }
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>enabled</code> enables/disables GraphQL over web sockets. Default <code>false</code>.</p>
-</li>
-<li>
-<p><code>path</code> configures the GraphQLWs endpoint path. Default <code>/graphql-ws</code>.</p>
-</li>
-<li>
-<p><code>keep-alive-enabled</code> enables/disables keep alive, this might be needed to prevent clients reconnecting. Default <code>true</code>.</p>
-</li>
-<li>
-<p><code>keep-alive-interval</code> configures the keep alive interval, specific clients might need different values, or it could be set higher to reduce some load <code>15s</code>.</p>
-</li>
-</ul>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables/disables GraphQL over web sockets. Default <code>false</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configures the GraphQLWs endpoint path. Default <code>/graphql-ws</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Enables/disables keep alive, this might be needed to prevent clients reconnecting. Default <code>true</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Configures the keep alive interval, specific clients might need different values, or it could be set higher to reduce some load <code>15s</code>.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>There is an example present <a href="https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples/chat">chat</a>, that features a very basic chat application.
@@ -915,7 +755,7 @@ An example using subscriptions with kafka can be found here, <a href="https://gi
 <h2 id="graphiql"><a class="anchor" href="#graphiql"></a>4.3 Configuring GraphiQL</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/3.2.x/src/main/docs/guide/configuration/graphiql.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/graphiql.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -935,110 +775,46 @@ An example using subscriptions with kafka can be found here, <a href="https://gi
 <div class="paragraph">
 <p>The following configuration properties can be set:</p>
 </div>
-<div class="openblock">
-<div class="content">
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">graphql.graphiql.enabled=true
-graphql.graphiql.version=0.13.2
-graphql.graphiql.path=/graphiql
-graphql.graphiql.template-path=classpath:graphiql/index.html
-graphql.graphiql.template-parameters=null
-graphql.graphiql.page-title=GraphiQL</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
+<div class="listingblock">
+<div class="title">src/main/resources/application.yml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
   graphiql:
-    enabled: true
-    version: 0.13.2
-    path: /graphiql
-    template-path: classpath:graphiql/index.html
-    template-parameters:
-    page-title: GraphiQL</code></pre>
+    enabled: true <i class="conum" data-value="1"></i><b>(1)</b>
+    version: 0.13.2 <i class="conum" data-value="2"></i><b>(2)</b>
+    path: /graphiql <i class="conum" data-value="3"></i><b>(3)</b>
+    template-path: classpath:graphiql/index.html <i class="conum" data-value="4"></i><b>(4)</b>
+    template-parameters: <i class="conum" data-value="5"></i><b>(5)</b>
+    page-title: GraphiQL <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
 </div>
 </div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[graphql]
-  [graphql.graphiql]
-    enabled=true
-    version="0.13.2"
-    path="/graphiql"
-    template-path="classpath:graphiql/index.html"
-    page-title="GraphiQL"</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">graphql {
-  graphiql {
-    enabled = true
-    version = "0.13.2"
-    path = "/graphiql"
-    templatePath = "classpath:graphiql/index.html"
-    templateParameters = null
-    pageTitle = "GraphiQL"
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
-  graphql {
-    graphiql {
-      enabled = true
-      version = "0.13.2"
-      path = "/graphiql"
-      template-path = "classpath:graphiql/index.html"
-      template-parameters = null
-      page-title = "GraphiQL"
-    }
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
-  "graphql": {
-    "graphiql": {
-      "enabled": true,
-      "version": "0.13.2",
-      "path": "/graphiql",
-      "template-path": "classpath:graphiql/index.html",
-      "template-parameters": null,
-      "page-title": "GraphiQL"
-    }
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>enabled</code> enables/disables GraphiQL. Default <code>false</code>.</p>
-</li>
-<li>
-<p><code>version</code> configures the GraphiQL version. Default <code>0.13.2</code>.</p>
-</li>
-<li>
-<p><code>path</code> configures the GraphiQL endpoint path. Default <code>/graphiql</code>.</p>
-</li>
-<li>
-<p><code>template-path</code> configures the GraphiQL template path. Default <code>classpath:graphiql/index.html</code>.</p>
-</li>
-<li>
-<p><code>template-parameters</code> configures the GraphiQL template parameters. Default none.</p>
-</li>
-<li>
-<p><code>page-title</code> configures the GraphiQL page title. Default <code>GraphiQL</code>.</p>
-</li>
-</ul>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables/disables GraphiQL. Default <code>false</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configures the GraphiQL version. Default <code>0.13.2</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Configures the GraphiQL endpoint path. Default <code>/graphiql</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Configures the GraphiQL template path. Default <code>classpath:graphiql/index.html</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Configures the GraphiQL template parameters. Default none.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Configures the GraphiQL page title. Default <code>GraphiQL</code>.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>The out of the box rendered Graph<em>i</em>QL page does not provide many customisations except the Graph<em>i</em>QL version, path and page title.
@@ -1057,7 +833,7 @@ application property.</p>
 <h1 id="repository"><a class="anchor" href="#repository"></a>5 Repository</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/3.2.x/src/main/docs/guide/repository.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/repository.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
