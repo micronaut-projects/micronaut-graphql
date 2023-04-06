@@ -41,9 +41,9 @@ import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsRespon
  * @since 1.3
  */
 @Singleton
-public class GraphQLWsSender {
+public class GraphQLApolloWsSender {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsSender.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GraphQLApolloWsSender.class);
 
     private final GraphQLApolloWsState state;
     private final GraphQLJsonSerializer graphQLJsonSerializer;
@@ -54,7 +54,7 @@ public class GraphQLWsSender {
      * @param state                 the {@link GraphQLApolloWsState} instance
      * @param graphQLJsonSerializer the {@link GraphQLJsonSerializer} instance
      */
-    public GraphQLWsSender(GraphQLApolloWsState state, GraphQLJsonSerializer graphQLJsonSerializer) {
+    public GraphQLApolloWsSender(GraphQLApolloWsState state, GraphQLJsonSerializer graphQLJsonSerializer) {
         this.state = state;
         this.graphQLJsonSerializer = graphQLJsonSerializer;
     }

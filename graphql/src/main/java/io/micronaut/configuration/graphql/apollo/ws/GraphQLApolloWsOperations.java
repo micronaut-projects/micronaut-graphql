@@ -29,7 +29,7 @@ import java.util.function.Function;
  * @since 1.3
  */
 @Singleton
-class GraphQLWsOperations {
+class GraphQLApolloWsOperations {
 
     private ConcurrentHashMap<String, Subscription> activeOperations = new ConcurrentHashMap<>();
 

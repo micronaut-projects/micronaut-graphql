@@ -42,15 +42,15 @@ import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsRespon
  * @since 1.3
  */
 @Singleton
-public class GraphQLWsMessageHandler {
+public class GraphQLApolloWsMessageHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsMessageHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GraphQLApolloWsMessageHandler.class);
 
     private final GraphQLApolloWsConfiguration graphQLApolloWsConfiguration;
     private final GraphQLApolloWsState state;
     private final GraphQLInvocation graphQLInvocation;
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
-    private final GraphQLWsSender responseSender;
+    private final GraphQLApolloWsSender responseSender;
 
     /**
      * Default constructor.
@@ -59,14 +59,14 @@ public class GraphQLWsMessageHandler {
      * @param state                         the {@link GraphQLApolloWsState} instance
      * @param graphQLInvocation             the {@link GraphQLInvocation} instance
      * @param graphQLExecutionResultHandler the {@link GraphQLExecutionResultHandler} instance
-     * @param responseSender                the {@link GraphQLWsSender} instance
+     * @param responseSender                the {@link GraphQLApolloWsSender} instance
      */
-    public GraphQLWsMessageHandler(
+    public GraphQLApolloWsMessageHandler(
             GraphQLApolloWsConfiguration graphQLApolloWsConfiguration,
             GraphQLApolloWsState state,
             GraphQLInvocation graphQLInvocation,
             GraphQLExecutionResultHandler graphQLExecutionResultHandler,
-            GraphQLWsSender responseSender) {
+            GraphQLApolloWsSender responseSender) {
         this.graphQLApolloWsConfiguration = graphQLApolloWsConfiguration;
         this.state = state;
         this.graphQLInvocation = graphQLInvocation;
