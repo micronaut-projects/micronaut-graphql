@@ -74,10 +74,10 @@ public class GraphQLApolloWsSender {
             startSubscription(operationId, (Publisher<ExecutionResult>) dataObject, session);
             return Flux.empty();
         }
-        return Flux.just(toGraphQLWsResponse(operationId, responseBody), new GraphQLApolloWsResponse(GQL_COMPLETE, operationId));
+        return Flux.just(toGraphQLApolloWsResponse(operationId, responseBody), new GraphQLApolloWsResponse(GQL_COMPLETE, operationId));
     }
 
-    private GraphQLApolloWsResponse toGraphQLWsResponse(String operationId, GraphQLResponseBody responseBody) {
+    private GraphQLApolloWsResponse toGraphQLApolloWsResponse(String operationId, GraphQLResponseBody responseBody) {
         if (hasErrors(responseBody)) {
             return new GraphQLApolloWsResponse(GQL_ERROR, operationId, responseBody);
         } else {
@@ -153,7 +153,7 @@ public class GraphQLApolloWsSender {
         }
 
         private void convertAndSend(ExecutionResult executionResult) {
-            GraphQLApolloWsResponse response = toGraphQLWsResponse(
+            GraphQLApolloWsResponse response = toGraphQLApolloWsResponse(
                     operationId, new GraphQLResponseBody(executionResult.toSpecification()));
             send(response);
         }

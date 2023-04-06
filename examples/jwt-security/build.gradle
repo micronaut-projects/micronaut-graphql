@@ -6,6 +6,12 @@ micronaut {
     version '4.0.0-SNAPSHOT'
 }
 
+configurations.all {
+    resolutionStrategy {
+        preferProjectModules()
+    }
+}
+
 dependencies {
     annotationProcessor mnSecurity.micronaut.security.annotations
     implementation mnSecurity.micronaut.security.jwt

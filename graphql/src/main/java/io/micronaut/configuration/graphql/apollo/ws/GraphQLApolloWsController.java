@@ -93,7 +93,7 @@ public class GraphQLApolloWsController {
      *
      * @param message Message received from a client
      * @param session WebSocketSession
-     * @return Publisher<GraphQLWsResponse>
+     * @return Publisher<GraphQLApolloWsResponse>
      */
     @OnMessage
     public Publisher<GraphQLApolloWsResponse> onMessage(
@@ -118,7 +118,7 @@ public class GraphQLApolloWsController {
      *
      * @param session     WebSocketSession
      * @param closeReason CloseReason
-     * @return Publisher<GraphQLWsResponse>
+     * @return Publisher<GraphQLApolloWsResponse>
      */
     @OnClose
     public Publisher<GraphQLApolloWsResponse> onClose(WebSocketSession session, CloseReason closeReason) {
@@ -132,7 +132,7 @@ public class GraphQLApolloWsController {
      *
      * @param session WebSocketSession
      * @param t       Throwable, the cause of the error
-     * @return Publisher<GraphQLWsResponse>
+     * @return Publisher<GraphQLApolloWsResponse>
      */
     @OnError
     public Publisher<GraphQLApolloWsResponse> onError(WebSocketSession session, Throwable t) {
