@@ -45,10 +45,10 @@ import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsRespon
 @ServerWebSocket(value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.PATH + ":"
         + GraphQLApolloWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-ws")
 @Requires(property = GraphQLApolloWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
-public class GraphQLWsController {
+public class GraphQLApolloWsController {
 
     static final String HTTP_REQUEST_KEY = "httpRequest";
-    private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GraphQLApolloWsController.class);
 
     private final GraphQLApolloWsMessageHandler messageHandler;
     private final GraphQLApolloWsState state;
@@ -62,7 +62,7 @@ public class GraphQLWsController {
      * @param state                 the {@link GraphQLApolloWsState} instance
      * @param graphQLJsonSerializer the {@link GraphQLJsonSerializer} instance
      */
-    public GraphQLWsController(
+    public GraphQLApolloWsController(
             GraphQLApolloWsMessageHandler messageHandler,
             GraphQLApolloWsState state,
             GraphQLJsonSerializer graphQLJsonSerializer) {

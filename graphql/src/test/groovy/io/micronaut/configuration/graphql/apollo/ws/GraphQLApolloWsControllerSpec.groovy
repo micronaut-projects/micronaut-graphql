@@ -37,7 +37,7 @@ import spock.lang.Specification
  * @author Gerard Klijs
  * @since 1.3
  */
-class GraphQLWsControllerSpec extends Specification {
+class GraphQLApolloWsControllerSpec extends Specification {
 
     @AutoCleanup
     EmbeddedServer embeddedServer
@@ -45,7 +45,7 @@ class GraphQLWsControllerSpec extends Specification {
     GraphQLWsClient graphQLWsClient
 
     def setup() {
-        embeddedServer = embeddedServer = ApplicationContext.run(EmbeddedServer, ["spec.name": GraphQLWsControllerSpec.simpleName], "websocket") as EmbeddedServer
+        embeddedServer = embeddedServer = ApplicationContext.run(EmbeddedServer, ["spec.name": GraphQLApolloWsControllerSpec.simpleName], "websocket") as EmbeddedServer
         WebSocketClient wsClient = embeddedServer.applicationContext.createBean(WebSocketClient, embeddedServer.getURI())
         graphQLWsClient = Flux.from(wsClient.connect(GraphQLWsClient, "/graphql-ws")).blockFirst()
     }
@@ -234,7 +234,7 @@ class GraphQLWsControllerSpec extends Specification {
 
 @Singleton
 @Primary
-@Requires(property = "spec.name", value = "GraphQLWsControllerSpec")
+@Requires(property = "spec.name", value = "GraphQLApolloWsControllerSpec")
 class SetValueFromRequestInputCustomizer implements GraphQLExecutionInputCustomizer {
     private final static String PATH_PLACEHOLDER = "\$[path]"
 

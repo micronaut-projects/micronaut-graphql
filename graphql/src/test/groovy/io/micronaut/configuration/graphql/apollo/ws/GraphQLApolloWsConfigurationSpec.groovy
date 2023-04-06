@@ -36,7 +36,7 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        !context.containsBean(GraphQLWsController)
+        !context.containsBean(GraphQLApolloWsController)
 
         cleanup:
         context.close()
@@ -51,8 +51,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        context.containsBean(GraphQLWsController)
-        context.getBeanDefinition(GraphQLWsController).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/graphql-ws"
+        context.containsBean(GraphQLApolloWsController)
+        context.getBeanDefinition(GraphQLApolloWsController).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/graphql-ws"
         GraphQLApolloWsConfiguration graphQLApolloWsConfiguration = context.getBean(GraphQLApolloWsConfiguration)
         graphQLApolloWsConfiguration.path == "/graphql-ws"
 
@@ -75,8 +75,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        context.containsBean(GraphQLWsController)
-        context.getBeanDefinition(GraphQLWsController).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/custom-graphql-ws"
+        context.containsBean(GraphQLApolloWsController)
+        context.getBeanDefinition(GraphQLApolloWsController).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/custom-graphql-ws"
         context.getBean(GraphQLApolloWsConfiguration).path == "/custom-graphql-ws"
 
         cleanup:
@@ -92,7 +92,7 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        !context.containsBean(GraphQLWsController)
+        !context.containsBean(GraphQLApolloWsController)
 
         cleanup:
         context.close()
