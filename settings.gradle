@@ -17,6 +17,7 @@ micronautBuild {
     importMicronautCatalog()
     importMicronautCatalog("micronaut-kotlin")
     importMicronautCatalog("micronaut-security")
+    importMicronautCatalog("micronaut-serde")
 }
 
 rootProject.name = 'graphql-parent'

@@ -17,6 +17,7 @@ package io.micronaut.configuration.graphql.apollo.ws;
 
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.serde.annotation.Serdeable;
 
 /**
  * Class to handle the message to and from the websocket.
@@ -24,6 +25,7 @@ import io.micronaut.core.annotation.Nullable;
  * @author Gerard Klijs
  * @since 1.3
  */
+@Serdeable
 public class GraphQLApolloWsResponse {
 
     private final String type;

@@ -3,6 +3,9 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor mnSerde.micronaut.serde.processor
+    implementation mnSerde.micronaut.serde.support
+
     api libs.managed.graphql.java
 
     api mn.micronaut.http.server
