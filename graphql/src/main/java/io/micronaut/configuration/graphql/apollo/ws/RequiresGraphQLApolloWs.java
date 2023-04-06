@@ -36,5 +36,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.PACKAGE, ElementType.TYPE})
 @Requires(property = GraphQLApolloWsConfiguration.ENABLED, notEquals = StringUtils.FALSE)
 @Requires(beans = GraphQL.class)
-public @interface RequiresGraphQLWs {
+public @interface RequiresGraphQLApolloWs {
 }
