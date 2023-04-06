@@ -47,7 +47,7 @@ public class GraphQLWsMessageHandler {
     private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsMessageHandler.class);
 
     private final GraphQLApolloWsConfiguration graphQLApolloWsConfiguration;
-    private final GraphQLWsState state;
+    private final GraphQLApolloWsState state;
     private final GraphQLInvocation graphQLInvocation;
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
     private final GraphQLWsSender responseSender;
@@ -56,14 +56,14 @@ public class GraphQLWsMessageHandler {
      * Default constructor.
      *
      * @param graphQLApolloWsConfiguration        the {@link GraphQLApolloWsConfiguration} instance
-     * @param state                         the {@link GraphQLWsState} instance
+     * @param state                         the {@link GraphQLApolloWsState} instance
      * @param graphQLInvocation             the {@link GraphQLInvocation} instance
      * @param graphQLExecutionResultHandler the {@link GraphQLExecutionResultHandler} instance
      * @param responseSender                the {@link GraphQLWsSender} instance
      */
     public GraphQLWsMessageHandler(
             GraphQLApolloWsConfiguration graphQLApolloWsConfiguration,
-            GraphQLWsState state,
+            GraphQLApolloWsState state,
             GraphQLInvocation graphQLInvocation,
             GraphQLExecutionResultHandler graphQLExecutionResultHandler,
             GraphQLWsSender responseSender) {

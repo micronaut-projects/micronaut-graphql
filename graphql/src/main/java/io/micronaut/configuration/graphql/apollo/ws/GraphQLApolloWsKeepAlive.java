@@ -33,22 +33,22 @@ import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.Ser
  */
 @Singleton
 @Requires(property = GraphQLApolloWsConfiguration.KEEP_ALIVE_ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
-public class GraphQLWsKeepAlive {
+public class GraphQLApolloWsKeepAlive {
 
     private final WebSocketBroadcaster broadcaster;
-    private final GraphQLWsState state;
+    private final GraphQLApolloWsState state;
     private final String kaMessage;
 
     /**
      * Default constructor.
      *
      * @param broadcaster           the {@link WebSocketBroadcaster} instance
-     * @param state                 the {@link GraphQLWsState} instance
+     * @param state                 the {@link GraphQLApolloWsState} instance
      * @param graphQLJsonSerializer the {@link GraphQLJsonSerializer} instance
      */
-    public GraphQLWsKeepAlive(
+    public GraphQLApolloWsKeepAlive(
             WebSocketBroadcaster broadcaster,
-            GraphQLWsState state,
+            GraphQLApolloWsState state,
             GraphQLJsonSerializer graphQLJsonSerializer) {
         this.broadcaster = broadcaster;
         this.state = state;

@@ -35,7 +35,7 @@ import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.Ser
  * @since 1.3
  */
 @Singleton
-class GraphQLWsState {
+class GraphQLApolloWsState {
 
     private ConcurrentSkipListSet<String> activeSessions = new ConcurrentSkipListSet<>();
     private ConcurrentHashMap<String, GraphQLWsOperations> activeOperations = new ConcurrentHashMap<>();

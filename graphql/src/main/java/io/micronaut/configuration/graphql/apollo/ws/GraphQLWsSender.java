@@ -45,16 +45,16 @@ public class GraphQLWsSender {
 
     private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsSender.class);
 
-    private final GraphQLWsState state;
+    private final GraphQLApolloWsState state;
     private final GraphQLJsonSerializer graphQLJsonSerializer;
 
     /**
      * Default constructor.
      *
-     * @param state                 the {@link GraphQLWsState} instance
+     * @param state                 the {@link GraphQLApolloWsState} instance
      * @param graphQLJsonSerializer the {@link GraphQLJsonSerializer} instance
      */
-    public GraphQLWsSender(GraphQLWsState state, GraphQLJsonSerializer graphQLJsonSerializer) {
+    public GraphQLWsSender(GraphQLApolloWsState state, GraphQLJsonSerializer graphQLJsonSerializer) {
         this.state = state;
         this.graphQLJsonSerializer = graphQLJsonSerializer;
     }

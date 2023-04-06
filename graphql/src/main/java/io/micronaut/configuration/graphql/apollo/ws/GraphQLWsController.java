@@ -51,7 +51,7 @@ public class GraphQLWsController {
     private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsController.class);
 
     private final GraphQLWsMessageHandler messageHandler;
-    private final GraphQLWsState state;
+    private final GraphQLApolloWsState state;
     private final GraphQLJsonSerializer graphQLJsonSerializer;
     private final GraphQLWsResponse errorMessage;
 
@@ -59,12 +59,12 @@ public class GraphQLWsController {
      * Default constructor.
      *
      * @param messageHandler        the {@link GraphQLWsMessageHandler} instance
-     * @param state                 the {@link GraphQLWsState} instance
+     * @param state                 the {@link GraphQLApolloWsState} instance
      * @param graphQLJsonSerializer the {@link GraphQLJsonSerializer} instance
      */
     public GraphQLWsController(
             GraphQLWsMessageHandler messageHandler,
-            GraphQLWsState state,
+            GraphQLApolloWsState state,
             GraphQLJsonSerializer graphQLJsonSerializer) {
         this.messageHandler = messageHandler;
         this.state = state;

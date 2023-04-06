@@ -13,7 +13,7 @@ import spock.lang.Specification
  * @author Gerard Klijs
  * @since 1.3
  */
-class GraphQLWsKeepAliveSpec extends Specification {
+class GraphQLApolloWsKeepAliveSpec extends Specification {
 
     @AutoCleanup
     @Shared
