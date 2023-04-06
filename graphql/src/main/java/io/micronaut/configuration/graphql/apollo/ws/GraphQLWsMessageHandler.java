@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.ws;
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import graphql.ExecutionResult;
 import io.micronaut.configuration.graphql.GraphQLExecutionResultHandler;
@@ -30,10 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
-import static io.micronaut.configuration.graphql.ws.GraphQLWsController.HTTP_REQUEST_KEY;
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_ERROR;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsController.HTTP_REQUEST_KEY;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_ERROR;
 
 /**
  * Handles the messages send over the websocket.

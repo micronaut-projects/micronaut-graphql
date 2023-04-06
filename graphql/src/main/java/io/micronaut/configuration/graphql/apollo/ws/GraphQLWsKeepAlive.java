@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.ws;
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import io.micronaut.configuration.graphql.GraphQLConfiguration;
 import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
@@ -23,7 +23,7 @@ import io.micronaut.scheduling.annotation.Scheduled;
 import io.micronaut.websocket.WebSocketBroadcaster;
 import jakarta.inject.Singleton;
 
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
 
 /**
  * Used to send keep alive messages to the active sessions at a regular interval.

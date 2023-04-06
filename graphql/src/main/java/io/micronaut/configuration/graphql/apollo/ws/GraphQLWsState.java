@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.ws;
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import io.micronaut.websocket.WebSocketSession;
 import jakarta.inject.Singleton;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_COMPLETE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_COMPLETE;
 
 /**
  * Keeps the state of the web socket subscriptions.

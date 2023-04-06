@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package io.micronaut.configuration.graphql.ws
+package io.micronaut.configuration.graphql.apollo.ws
 
-import io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration
-import io.micronaut.configuration.graphql.ws.GraphQLWsController
+import io.micronaut.configuration.graphql.apollo.ws.GraphQLWsConfiguration
+import io.micronaut.configuration.graphql.apollo.ws.GraphQLWsController
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.Environment

@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.graphql;
 
-import io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration;
+import io.micronaut.configuration.graphql.apollo.ws.GraphQLWsConfiguration;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.DefaultPropertyPlaceholderResolver;
 import io.micronaut.context.env.PropertyPlaceholderResolver;

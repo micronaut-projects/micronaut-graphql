@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.ws;
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import graphql.ExecutionResult;
 import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
@@ -30,9 +30,9 @@ import reactor.core.publisher.Flux;
 import java.util.Collection;
 import java.util.function.Function;
 
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_COMPLETE;
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_DATA;
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_ERROR;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_COMPLETE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_DATA;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_ERROR;
 
 /**
  * Sends the GraphQL response(s) to the client.

@@ -1,4 +1,4 @@
-package io.micronaut.configuration.graphql.ws
+package io.micronaut.configuration.graphql.apollo.ws
 
 import graphql.GraphQL
 import graphql.schema.DataFetcher

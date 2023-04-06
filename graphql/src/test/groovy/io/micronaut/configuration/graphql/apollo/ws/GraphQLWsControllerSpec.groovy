@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.micronaut.configuration.graphql.ws
+package io.micronaut.configuration.graphql.apollo.ws
 
 import graphql.ExecutionInput
 import io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer
@@ -31,7 +31,6 @@ import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import spock.lang.AutoCleanup
-import spock.lang.Shared
 import spock.lang.Specification
 
 /**
@@ -42,7 +41,7 @@ class GraphQLWsControllerSpec extends Specification {
 
     @AutoCleanup
     EmbeddedServer embeddedServer
-    
+
     GraphQLWsClient graphQLWsClient
 
     def setup() {
