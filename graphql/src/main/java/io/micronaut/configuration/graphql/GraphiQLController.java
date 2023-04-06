@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.graphql;
 
-import io.micronaut.configuration.graphql.apollo.ws.GraphQLWsConfiguration;
+import io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsConfiguration;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.DefaultPropertyPlaceholderResolver;
 import io.micronaut.context.env.PropertyPlaceholderResolver;
@@ -57,7 +57,7 @@ public class GraphiQLController {
 
     private final GraphQLConfiguration graphQLConfiguration;
     private final GraphQLConfiguration.GraphiQLConfiguration graphiQLConfiguration;
-    private final GraphQLWsConfiguration graphQLWsConfiguration;
+    private final GraphQLApolloWsConfiguration graphQLApolloWsConfiguration;
     private final ResourceResolver resourceResolver;
     private final ConversionService conversionService;
 
@@ -68,18 +68,18 @@ public class GraphiQLController {
      * Default constructor.
      *
      * @param graphQLConfiguration   the {@link GraphQLConfiguration} instance
-     * @param graphQLWsConfiguration the {@link GraphQLWsConfiguration} instance
+     * @param graphQLApolloWsConfiguration the {@link GraphQLApolloWsConfiguration} instance
      * @param resourceResolver       the {@link ResourceResolver} instance
      * @param conversionService      the {@link ConversionService} instance
      */
     public GraphiQLController(
             GraphQLConfiguration graphQLConfiguration,
-            GraphQLWsConfiguration graphQLWsConfiguration,
+            GraphQLApolloWsConfiguration graphQLApolloWsConfiguration,
             ResourceResolver resourceResolver,
             ConversionService conversionService) {
         this.graphQLConfiguration = graphQLConfiguration;
         this.graphiQLConfiguration = graphQLConfiguration.getGraphiql();
-        this.graphQLWsConfiguration = graphQLWsConfiguration;
+        this.graphQLApolloWsConfiguration = graphQLApolloWsConfiguration;
         this.resourceResolver = resourceResolver;
         this.conversionService = conversionService;
         // Load the raw template (variables are not yet resolved).
@@ -116,7 +116,7 @@ public class GraphiQLController {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("graphiqlVersion", graphiQLConfiguration.getVersion());
         parameters.put("graphqlPath", graphQLConfiguration.getPath());
-        String graphQLWsPath = graphQLWsConfiguration.isEnabled() ? graphQLWsConfiguration.getPath() : "";
+        String graphQLWsPath = graphQLApolloWsConfiguration.isEnabled() ? graphQLApolloWsConfiguration.getPath() : "";
         parameters.put("graphqlWsPath", graphQLWsPath);
         parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
         parameters.put("graphiqlPath", graphiQLConfiguration.getPath());

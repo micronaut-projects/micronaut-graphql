@@ -46,7 +46,7 @@ public class GraphQLWsMessageHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsMessageHandler.class);
 
-    private final GraphQLWsConfiguration graphQLWsConfiguration;
+    private final GraphQLApolloWsConfiguration graphQLApolloWsConfiguration;
     private final GraphQLWsState state;
     private final GraphQLInvocation graphQLInvocation;
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
@@ -55,19 +55,19 @@ public class GraphQLWsMessageHandler {
     /**
      * Default constructor.
      *
-     * @param graphQLWsConfiguration        the {@link GraphQLWsConfiguration} instance
+     * @param graphQLApolloWsConfiguration        the {@link GraphQLApolloWsConfiguration} instance
      * @param state                         the {@link GraphQLWsState} instance
      * @param graphQLInvocation             the {@link GraphQLInvocation} instance
      * @param graphQLExecutionResultHandler the {@link GraphQLExecutionResultHandler} instance
      * @param responseSender                the {@link GraphQLWsSender} instance
      */
     public GraphQLWsMessageHandler(
-            GraphQLWsConfiguration graphQLWsConfiguration,
+            GraphQLApolloWsConfiguration graphQLApolloWsConfiguration,
             GraphQLWsState state,
             GraphQLInvocation graphQLInvocation,
             GraphQLExecutionResultHandler graphQLExecutionResultHandler,
             GraphQLWsSender responseSender) {
-        this.graphQLWsConfiguration = graphQLWsConfiguration;
+        this.graphQLApolloWsConfiguration = graphQLApolloWsConfiguration;
         this.state = state;
         this.graphQLInvocation = graphQLInvocation;
         this.graphQLExecutionResultHandler = graphQLExecutionResultHandler;
@@ -97,7 +97,7 @@ public class GraphQLWsMessageHandler {
     }
 
     private Publisher<GraphQLWsResponse> init(WebSocketSession session) {
-        if (graphQLWsConfiguration.keepAliveEnabled) {
+        if (graphQLApolloWsConfiguration.keepAliveEnabled) {
             state.activateSession(session);
             return Flux.just(new GraphQLWsResponse(GQL_CONNECTION_ACK),
                     new GraphQLWsResponse(GQL_CONNECTION_KEEP_ALIVE));

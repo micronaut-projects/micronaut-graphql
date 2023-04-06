@@ -25,8 +25,8 @@ import io.micronaut.core.util.Toggleable;
  * @author Gerard Klijs
  * @since 1.3
  */
-@ConfigurationProperties(GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PREFIX)
-public class GraphQLWsConfiguration implements Toggleable {
+@ConfigurationProperties(GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.PREFIX)
+public class GraphQLApolloWsConfiguration implements Toggleable {
 
     /**
      * The prefix to use for all GraphQL websocket configuration properties.

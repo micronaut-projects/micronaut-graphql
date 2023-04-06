@@ -42,9 +42,9 @@ import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.Ser
  * @author Gerard Klijs
  * @since 1.3
  */
-@ServerWebSocket(value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PATH + ":"
-        + GraphQLWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-ws")
-@Requires(property = GraphQLWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
+@ServerWebSocket(value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.PATH + ":"
+        + GraphQLApolloWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-ws")
+@Requires(property = GraphQLApolloWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphQLWsController {
 
     static final String HTTP_REQUEST_KEY = "httpRequest";

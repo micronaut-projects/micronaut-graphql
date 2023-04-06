@@ -16,8 +16,7 @@
 
 package io.micronaut.configuration.graphql.apollo.ws
 
-import io.micronaut.configuration.graphql.apollo.ws.GraphQLWsConfiguration
-import io.micronaut.configuration.graphql.apollo.ws.GraphQLWsController
+
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.Environment
@@ -29,7 +28,7 @@ import spock.lang.Specification
  * @author Gerard Klijs
  * @since 1.3
  */
-class GraphQLWsConfigurationSpec extends Specification {
+class GraphQLApolloWsConfigurationSpec extends Specification {
 
     void "test graphql websocket disabled by default"() {
         given:
@@ -54,13 +53,13 @@ class GraphQLWsConfigurationSpec extends Specification {
         expect:
         context.containsBean(GraphQLWsController)
         context.getBeanDefinition(GraphQLWsController).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/graphql-ws"
-        GraphQLWsConfiguration graphQLWsConfiguration = context.getBean(GraphQLWsConfiguration)
-        graphQLWsConfiguration.path == "/graphql-ws"
+        GraphQLApolloWsConfiguration graphQLApolloWsConfiguration = context.getBean(GraphQLApolloWsConfiguration)
+        graphQLApolloWsConfiguration.path == "/graphql-ws"
 
         and:
-        graphQLWsConfiguration.enabled
-        graphQLWsConfiguration.keepAliveEnabled
-        graphQLWsConfiguration.keepAliveInterval == "15s"
+        graphQLApolloWsConfiguration.enabled
+        graphQLApolloWsConfiguration.keepAliveEnabled
+        graphQLApolloWsConfiguration.keepAliveInterval == "15s"
 
         cleanup:
         context.close()
@@ -78,7 +77,7 @@ class GraphQLWsConfigurationSpec extends Specification {
         expect:
         context.containsBean(GraphQLWsController)
         context.getBeanDefinition(GraphQLWsController).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/custom-graphql-ws"
-        context.getBean(GraphQLWsConfiguration).path == "/custom-graphql-ws"
+        context.getBean(GraphQLApolloWsConfiguration).path == "/custom-graphql-ws"
 
         cleanup:
         context.close()
@@ -108,7 +107,7 @@ class GraphQLWsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        !context.getBean(GraphQLWsConfiguration).enabled
+        !context.getBean(GraphQLApolloWsConfiguration).enabled
 
         cleanup:
         context.close()
@@ -123,7 +122,7 @@ class GraphQLWsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        context.getBean(GraphQLWsConfiguration).keepAliveInterval == "1s"
+        context.getBean(GraphQLApolloWsConfiguration).keepAliveInterval == "1s"
 
         cleanup:
         context.close()
