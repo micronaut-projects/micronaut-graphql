@@ -31,9 +31,9 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsController.HTTP_REQUEST_KEY;
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_ERROR;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_ACK;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_ERROR;
 
 /**
  * Handles the messages send over the websocket.
@@ -81,7 +81,7 @@ public class GraphQLWsMessageHandler {
      * @param session WebSocketSession
      * @return Publisher<GraphQLWsResponse>
      */
-    public Publisher<GraphQLWsResponse> handleMessage(GraphQLWsRequest request, WebSocketSession session) {
+    public Publisher<GraphQLApolloWsResponse> handleMessage(GraphQLApolloWsRequest request, WebSocketSession session) {
         switch (request.getType()) {
             case GQL_CONNECTION_INIT:
                 return init(session);
@@ -96,20 +96,20 @@ public class GraphQLWsMessageHandler {
         }
     }
 
-    private Publisher<GraphQLWsResponse> init(WebSocketSession session) {
+    private Publisher<GraphQLApolloWsResponse> init(WebSocketSession session) {
         if (graphQLApolloWsConfiguration.keepAliveEnabled) {
             state.activateSession(session);
-            return Flux.just(new GraphQLWsResponse(GQL_CONNECTION_ACK),
-                    new GraphQLWsResponse(GQL_CONNECTION_KEEP_ALIVE));
+            return Flux.just(new GraphQLApolloWsResponse(GQL_CONNECTION_ACK),
+                    new GraphQLApolloWsResponse(GQL_CONNECTION_KEEP_ALIVE));
         } else {
-            return Flux.just(new GraphQLWsResponse(GQL_CONNECTION_ACK));
+            return Flux.just(new GraphQLApolloWsResponse(GQL_CONNECTION_ACK));
         }
     }
 
-    private Publisher<GraphQLWsResponse> startOperation(GraphQLWsRequest request, WebSocketSession session) {
+    private Publisher<GraphQLApolloWsResponse> startOperation(GraphQLApolloWsRequest request, WebSocketSession session) {
         if (request.getId() == null) {
             LOG.warn("GraphQL operation id is required with type start");
-            return Flux.just(new GraphQLWsResponse(GQL_ERROR));
+            return Flux.just(new GraphQLApolloWsResponse(GQL_ERROR));
         }
 
         if (state.operationExists(request, session)) {
@@ -121,14 +121,14 @@ public class GraphQLWsMessageHandler {
         if (payload == null || StringUtils.isEmpty(payload.getQuery())) {
             LOG.info("Payload was null or query empty for operation {} in session {}", request.getId(),
                     session.getId());
-            return Flux.just(new GraphQLWsResponse(GQL_ERROR, request.getId()));
+            return Flux.just(new GraphQLApolloWsResponse(GQL_ERROR, request.getId()));
         }
 
         return executeRequest(request.getId(), payload, session);
     }
 
     @SuppressWarnings("rawtypes")
-    private Publisher<GraphQLWsResponse> executeRequest(
+    private Publisher<GraphQLApolloWsResponse> executeRequest(
             String operationId,
             GraphQLRequestBody payload,
             WebSocketSession session) {

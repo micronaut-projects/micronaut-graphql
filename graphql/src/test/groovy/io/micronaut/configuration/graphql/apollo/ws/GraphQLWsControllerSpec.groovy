@@ -52,16 +52,16 @@ class GraphQLWsControllerSpec extends Specification {
 
     void "test init connection, keep alive off"() {
         given:
-        GraphQLWsRequest request = new GraphQLWsRequest()
-        request.setType(GraphQLWsRequest.ClientType.GQL_CONNECTION_INIT.getType())
+        GraphQLApolloWsRequest request = new GraphQLApolloWsRequest()
+        request.setType(GraphQLApolloWsRequest.ClientType.GQL_CONNECTION_INIT.getType())
 
         when:
         graphQLWsClient.send(request)
 
         then:
-        GraphQLWsResponse response = graphQLWsClient.nextResponse()
-        response.getType() == GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK.getType()
-        GraphQLWsResponse noResponse = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response = graphQLWsClient.nextResponse()
+        response.getType() == GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_ACK.getType()
+        GraphQLApolloWsResponse noResponse = graphQLWsClient.nextResponse()
         noResponse == null
 
         and:
@@ -73,8 +73,8 @@ class GraphQLWsControllerSpec extends Specification {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody();
         body.query = "query{ foo }"
-        GraphQLWsRequest request = new GraphQLWsRequest()
-        request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
+        GraphQLApolloWsRequest request = new GraphQLApolloWsRequest()
+        request.setType(GraphQLApolloWsRequest.ClientType.GQL_START.type)
         request.setId("foo_id")
         request.setPayload(body)
 
@@ -82,9 +82,9 @@ class GraphQLWsControllerSpec extends Specification {
         graphQLWsClient.send(request)
 
         then:
-        GraphQLWsResponse response = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response = graphQLWsClient.nextResponse()
         response.getPayload().getSpecification().get("data") == [foo: "bar"]
-        GraphQLWsResponse completeResponse = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse completeResponse = graphQLWsClient.nextResponse()
 
         and:
         response.id == "foo_id"
@@ -96,8 +96,8 @@ class GraphQLWsControllerSpec extends Specification {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody();
         body.query = "query{ error }"
-        GraphQLWsRequest request = new GraphQLWsRequest()
-        request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
+        GraphQLApolloWsRequest request = new GraphQLApolloWsRequest()
+        request.setType(GraphQLApolloWsRequest.ClientType.GQL_START.type)
         request.setId("error_id")
         request.setPayload(body)
 
@@ -105,7 +105,7 @@ class GraphQLWsControllerSpec extends Specification {
         graphQLWsClient.send(request)
 
         then:
-        GraphQLWsResponse response = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response = graphQLWsClient.nextResponse()
         response.getPayload().getSpecification().get("data") == null
         response.getPayload().getSpecification().get("errors") != null
         List<Map> errorList = (List<Map>) response.getPayload().getSpecification().get("errors")
@@ -115,7 +115,7 @@ class GraphQLWsControllerSpec extends Specification {
         errorList.get(0).get("locations") == [[line: 1, column: 8]]
         errorList.get(0).get("path") == ["error"]
         errorList.get(0).get("extensions") == [classification: "DataFetchingException"]
-        GraphQLWsResponse completeResponse = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse completeResponse = graphQLWsClient.nextResponse()
 
         and:
         response.id == "error_id"
@@ -127,8 +127,8 @@ class GraphQLWsControllerSpec extends Specification {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody();
         body.query = "mutation{ change( newValue: \"Value_B\" ){ current old }}"
-        GraphQLWsRequest request = new GraphQLWsRequest()
-        request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
+        GraphQLApolloWsRequest request = new GraphQLApolloWsRequest()
+        request.setType(GraphQLApolloWsRequest.ClientType.GQL_START.type)
         request.setId("change_id")
         request.setPayload(body)
 
@@ -136,9 +136,9 @@ class GraphQLWsControllerSpec extends Specification {
         graphQLWsClient.send(request)
 
         then:
-        GraphQLWsResponse response = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response = graphQLWsClient.nextResponse()
         response.getPayload().getSpecification().get("data") == [change: [current: "Value_B", old: ["Value_A"]]]
-        GraphQLWsResponse completeResponse = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse completeResponse = graphQLWsClient.nextResponse()
 
         and:
         response.id == "change_id"
@@ -150,8 +150,8 @@ class GraphQLWsControllerSpec extends Specification {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody();
         body.query = "mutation{ change( newValue: \"\$[path]\" ){ current old }}"
-        GraphQLWsRequest request = new GraphQLWsRequest()
-        request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
+        GraphQLApolloWsRequest request = new GraphQLApolloWsRequest()
+        request.setType(GraphQLApolloWsRequest.ClientType.GQL_START.type)
         request.setId("change_id")
         request.setPayload(body)
 
@@ -159,9 +159,9 @@ class GraphQLWsControllerSpec extends Specification {
         graphQLWsClient.send(request)
 
         then:
-        GraphQLWsResponse response = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response = graphQLWsClient.nextResponse()
         response.getPayload().getSpecification().get("data") == [change: [current: "/graphql-ws", old: ["Value_A"]]]
-        GraphQLWsResponse completeResponse = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse completeResponse = graphQLWsClient.nextResponse()
 
         and:
         response.id == "change_id"
@@ -173,8 +173,8 @@ class GraphQLWsControllerSpec extends Specification {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody()
         body.query = "subscription{ counter }"
-        GraphQLWsRequest request = new GraphQLWsRequest()
-        request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
+        GraphQLApolloWsRequest request = new GraphQLApolloWsRequest()
+        request.setType(GraphQLApolloWsRequest.ClientType.GQL_START.type)
         request.setId("counter_id")
         request.setPayload(body)
 
@@ -182,13 +182,13 @@ class GraphQLWsControllerSpec extends Specification {
         graphQLWsClient.send(request)
 
         then:
-        GraphQLWsResponse response1 = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response1 = graphQLWsClient.nextResponse()
         response1.getPayload().getSpecification().get("data") == [counter: 0]
-        GraphQLWsResponse response2 = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response2 = graphQLWsClient.nextResponse()
         response2.getPayload().getSpecification().get("data") == [counter: 1]
-        request.setType(GraphQLWsRequest.ClientType.GQL_STOP.type)
+        request.setType(GraphQLApolloWsRequest.ClientType.GQL_STOP.type)
         graphQLWsClient.send(request)
-        GraphQLWsResponse response3 = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response3 = graphQLWsClient.nextResponse()
 
         and:
         response1.id == "counter_id"
@@ -203,8 +203,8 @@ class GraphQLWsControllerSpec extends Specification {
         given:
         GraphQLRequestBody body = new GraphQLRequestBody();
         body.query = "subscription{ counter }"
-        GraphQLWsRequest request = new GraphQLWsRequest()
-        request.setType(GraphQLWsRequest.ClientType.GQL_START.type)
+        GraphQLApolloWsRequest request = new GraphQLApolloWsRequest()
+        request.setType(GraphQLApolloWsRequest.ClientType.GQL_START.type)
         request.setId("counter_id")
         request.setPayload(body)
 
@@ -212,13 +212,13 @@ class GraphQLWsControllerSpec extends Specification {
         graphQLWsClient.send(request)
 
         then:
-        GraphQLWsResponse response1 = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response1 = graphQLWsClient.nextResponse()
         response1.getPayload().getSpecification().get("data") == [counter: 0]
-        GraphQLWsResponse response2 = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response2 = graphQLWsClient.nextResponse()
         response2.getPayload().getSpecification().get("data") == [counter: 1]
-        GraphQLWsResponse response3 = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response3 = graphQLWsClient.nextResponse()
         response3.getPayload().getSpecification().get("data") == [counter: 2]
-        GraphQLWsResponse response4 = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response4 = graphQLWsClient.nextResponse()
 
         and:
         response1.id == "counter_id"

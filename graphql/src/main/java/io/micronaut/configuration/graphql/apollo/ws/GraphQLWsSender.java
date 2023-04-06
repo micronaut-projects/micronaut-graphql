@@ -30,9 +30,9 @@ import reactor.core.publisher.Flux;
 import java.util.Collection;
 import java.util.function.Function;
 
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_COMPLETE;
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_DATA;
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_ERROR;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_COMPLETE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_DATA;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_ERROR;
 
 /**
  * Sends the GraphQL response(s) to the client.
@@ -68,20 +68,20 @@ public class GraphQLWsSender {
      * @return GraphQLWsOperationMessage
      */
     @SuppressWarnings("unchecked")
-    Publisher<GraphQLWsResponse> send(String operationId, GraphQLResponseBody responseBody, WebSocketSession session) {
+    Publisher<GraphQLApolloWsResponse> send(String operationId, GraphQLResponseBody responseBody, WebSocketSession session) {
         Object dataObject = responseBody.getSpecification().get("data");
         if (dataObject instanceof Publisher) {
             startSubscription(operationId, (Publisher<ExecutionResult>) dataObject, session);
             return Flux.empty();
         }
-        return Flux.just(toGraphQLWsResponse(operationId, responseBody), new GraphQLWsResponse(GQL_COMPLETE, operationId));
+        return Flux.just(toGraphQLWsResponse(operationId, responseBody), new GraphQLApolloWsResponse(GQL_COMPLETE, operationId));
     }
 
-    private GraphQLWsResponse toGraphQLWsResponse(String operationId, GraphQLResponseBody responseBody) {
+    private GraphQLApolloWsResponse toGraphQLWsResponse(String operationId, GraphQLResponseBody responseBody) {
         if (hasErrors(responseBody)) {
-            return new GraphQLWsResponse(GQL_ERROR, operationId, responseBody);
+            return new GraphQLApolloWsResponse(GQL_ERROR, operationId, responseBody);
         } else {
-            return new GraphQLWsResponse(GQL_DATA, operationId, responseBody);
+            return new GraphQLApolloWsResponse(GQL_DATA, operationId, responseBody);
         }
     }
 
@@ -141,24 +141,24 @@ public class GraphQLWsSender {
         @Override
         protected void doOnError(Throwable t) {
             LOG.warn("Error in SendSubscriber", t);
-            send(new GraphQLWsResponse(GQL_ERROR, operationId));
+            send(new GraphQLApolloWsResponse(GQL_ERROR, operationId));
         }
 
         @Override
         protected void doOnComplete() {
             LOG.info("Completed results for operation {} in session {}", operationId, session.getId());
             if (state.removeCompleted(operationId, session)) {
-                send(new GraphQLWsResponse(GQL_COMPLETE, operationId));
+                send(new GraphQLApolloWsResponse(GQL_COMPLETE, operationId));
             }
         }
 
         private void convertAndSend(ExecutionResult executionResult) {
-            GraphQLWsResponse response = toGraphQLWsResponse(
+            GraphQLApolloWsResponse response = toGraphQLWsResponse(
                     operationId, new GraphQLResponseBody(executionResult.toSpecification()));
             send(response);
         }
 
-        private void send(GraphQLWsResponse response) {
+        private void send(GraphQLApolloWsResponse response) {
             if (session.isOpen()) {
                 session.sendSync(graphQLJsonSerializer.serialize(response));
             }

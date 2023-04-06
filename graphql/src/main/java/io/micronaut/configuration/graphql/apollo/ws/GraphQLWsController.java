@@ -33,7 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ERROR;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_ERROR;
 
 /**
  * The GraphQL websocket controller handling GraphQL requests.
@@ -53,7 +53,7 @@ public class GraphQLWsController {
     private final GraphQLWsMessageHandler messageHandler;
     private final GraphQLApolloWsState state;
     private final GraphQLJsonSerializer graphQLJsonSerializer;
-    private final GraphQLWsResponse errorMessage;
+    private final GraphQLApolloWsResponse errorMessage;
 
     /**
      * Default constructor.
@@ -69,7 +69,7 @@ public class GraphQLWsController {
         this.messageHandler = messageHandler;
         this.state = state;
         this.graphQLJsonSerializer = graphQLJsonSerializer;
-        errorMessage = new GraphQLWsResponse(GQL_CONNECTION_ERROR);
+        errorMessage = new GraphQLApolloWsResponse(GQL_CONNECTION_ERROR);
     }
 
     /**
@@ -96,11 +96,11 @@ public class GraphQLWsController {
      * @return Publisher<GraphQLWsResponse>
      */
     @OnMessage
-    public Publisher<GraphQLWsResponse> onMessage(
+    public Publisher<GraphQLApolloWsResponse> onMessage(
             String message,
             WebSocketSession session) {
         try {
-            GraphQLWsRequest request = graphQLJsonSerializer.deserialize(message, GraphQLWsRequest.class);
+            GraphQLApolloWsRequest request = graphQLJsonSerializer.deserialize(message, GraphQLApolloWsRequest.class);
             if (request.getType() == null) {
                 LOG.warn("Type was null on operation message");
                 return send(Flux.just(errorMessage), session);
@@ -121,7 +121,7 @@ public class GraphQLWsController {
      * @return Publisher<GraphQLWsResponse>
      */
     @OnClose
-    public Publisher<GraphQLWsResponse> onClose(WebSocketSession session, CloseReason closeReason) {
+    public Publisher<GraphQLApolloWsResponse> onClose(WebSocketSession session, CloseReason closeReason) {
         LOG.trace("Closed websocket connection with id {} with reason {}", session.getId(), closeReason);
         return send(state.terminateSession(session), session);
     }
@@ -135,12 +135,12 @@ public class GraphQLWsController {
      * @return Publisher<GraphQLWsResponse>
      */
     @OnError
-    public Publisher<GraphQLWsResponse> onError(WebSocketSession session, Throwable t) {
+    public Publisher<GraphQLApolloWsResponse> onError(WebSocketSession session, Throwable t) {
         LOG.debug("Error websocket connection with id {} with error {}", session.getId(), t.getMessage());
         return send(state.terminateSession(session), session);
     }
 
-    private Publisher<GraphQLWsResponse> send(Publisher<GraphQLWsResponse> publisher, WebSocketSession session) {
+    private Publisher<GraphQLApolloWsResponse> send(Publisher<GraphQLApolloWsResponse> publisher, WebSocketSession session) {
         return Publishers.then(publisher, response -> {
             if (session.isOpen()) {
                 session.sendSync(graphQLJsonSerializer.serialize(response));

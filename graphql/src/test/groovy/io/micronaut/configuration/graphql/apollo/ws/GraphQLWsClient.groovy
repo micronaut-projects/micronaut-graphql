@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 @ClientWebSocket(uri = "\${graphql.graphql-ws.path:/graphql-ws}", subprotocol = "graphql-ws")
 abstract class GraphQLWsClient implements AutoCloseable {
 
-    private BlockingQueue<GraphQLWsResponse> responses = new ArrayBlockingQueue<>(10)
+    private BlockingQueue<GraphQLApolloWsResponse> responses = new ArrayBlockingQueue<>(10)
     private final GraphQLJsonSerializer serializer
 
     GraphQLWsClient(GraphQLJsonSerializer serializer) {
@@ -25,29 +25,29 @@ abstract class GraphQLWsClient implements AutoCloseable {
     @OnMessage
     void onMessage(String message, WebSocketSession session) {
         DeserializableResponse response = serializer.deserialize(message, DeserializableResponse)
-        responses.add(new GraphQLWsResponse(response.type, response.id, response.payload))
+        responses.add(new GraphQLApolloWsResponse(response.type, response.id, response.payload))
     }
 
-    void send(GraphQLWsRequest request) {
+    void send(GraphQLApolloWsRequest request) {
         send(serializer.serialize(new SerializableRequest(request)))
     }
 
     abstract void send(String message);
 
-    GraphQLWsResponse nextResponse() {
-        GraphQLWsResponse response = responses.poll(5, TimeUnit.SECONDS)
+    GraphQLApolloWsResponse nextResponse() {
+        GraphQLApolloWsResponse response = responses.poll(5, TimeUnit.SECONDS)
         return response
     }
 }
 
 class DeserializableResponse {
 
-    GraphQLWsResponse.ServerType type
+    GraphQLApolloWsResponse.ServerType type
     String id
     GraphQLResponseBody payload
 
     void setType(String type) {
-        for (GraphQLWsResponse.ServerType serverType : GraphQLWsResponse.ServerType.values()) {
+        for (GraphQLApolloWsResponse.ServerType serverType : GraphQLApolloWsResponse.ServerType.values()) {
             if (serverType.getType().equals(type)) {
                 this.type = serverType
             }
@@ -69,7 +69,7 @@ class SerializableRequest {
     String id
     GraphQLRequestBody payload;
 
-    SerializableRequest(GraphQLWsRequest request){
+    SerializableRequest(GraphQLApolloWsRequest request){
         this.type = request.getType().getType()
         this.id = request.getId()
         this.payload = request.getPayload()

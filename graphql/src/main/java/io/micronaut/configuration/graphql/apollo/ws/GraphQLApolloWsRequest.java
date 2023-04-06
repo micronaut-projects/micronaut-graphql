@@ -24,7 +24,7 @@ import io.micronaut.core.annotation.Nullable;
  * @author Gerard Klijs
  * @since 1.3
  */
-public class GraphQLWsRequest {
+public class GraphQLApolloWsRequest {
 
     private static final String TYPE_ERROR_MESSAGE = "Could not map %s to a known client type.";
 

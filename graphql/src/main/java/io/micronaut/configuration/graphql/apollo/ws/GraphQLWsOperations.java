@@ -79,12 +79,12 @@ class GraphQLWsOperations {
     /**
      * Whether the operation currently already exists.
      *
-     * @param request the {@link GraphQLWsRequest} instance
+     * @param request the {@link GraphQLApolloWsRequest} instance
      * @return whether it exists or not
      */
-    boolean operationExists(GraphQLWsRequest request) {
+    boolean operationExists(GraphQLApolloWsRequest request) {
         return Optional.ofNullable(request)
-                       .map(GraphQLWsRequest::getId)
+                       .map(GraphQLApolloWsRequest::getId)
                        .map(id -> activeOperations.containsKey(id))
                        .orElse(false);
     }

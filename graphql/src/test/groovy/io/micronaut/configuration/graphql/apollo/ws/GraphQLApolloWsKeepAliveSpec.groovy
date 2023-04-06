@@ -27,27 +27,27 @@ class GraphQLApolloWsKeepAliveSpec extends Specification {
 
     void "test keep alive starts and stops"() {
         given:
-        GraphQLWsRequest request = new GraphQLWsRequest()
-        request.setType(GraphQLWsRequest.ClientType.GQL_CONNECTION_INIT.getType())
+        GraphQLApolloWsRequest request = new GraphQLApolloWsRequest()
+        request.setType(GraphQLApolloWsRequest.ClientType.GQL_CONNECTION_INIT.getType())
 
         when:
         graphQLWsClient.send(request)
 
         then:
-        GraphQLWsResponse response = graphQLWsClient.nextResponse()
-        response.getType() == GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK.getType()
-        GraphQLWsResponse firstAk = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse response = graphQLWsClient.nextResponse()
+        response.getType() == GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_ACK.getType()
+        GraphQLApolloWsResponse firstAk = graphQLWsClient.nextResponse()
         firstAk != null
-        GraphQLWsResponse secondAk = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse secondAk = graphQLWsClient.nextResponse()
         secondAk != null
-        request.setType(GraphQLWsRequest.ClientType.GQL_CONNECTION_TERMINATE.getType())
+        request.setType(GraphQLApolloWsRequest.ClientType.GQL_CONNECTION_TERMINATE.getType())
         graphQLWsClient.send(request)
-        GraphQLWsResponse noResponse = graphQLWsClient.nextResponse()
+        GraphQLApolloWsResponse noResponse = graphQLWsClient.nextResponse()
         noResponse == null
 
         and:
-        firstAk.type == GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE.getType()
-        secondAk.type == GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE.getType()
+        firstAk.type == GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE.getType()
+        secondAk.type == GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE.getType()
         response.id == null
         response.payload == null
     }

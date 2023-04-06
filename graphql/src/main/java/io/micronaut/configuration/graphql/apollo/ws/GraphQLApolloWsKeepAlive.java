@@ -23,7 +23,7 @@ import io.micronaut.scheduling.annotation.Scheduled;
 import io.micronaut.websocket.WebSocketBroadcaster;
 import jakarta.inject.Singleton;
 
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
 
 /**
  * Used to send keep alive messages to the active sessions at a regular interval.
@@ -52,7 +52,7 @@ public class GraphQLApolloWsKeepAlive {
             GraphQLJsonSerializer graphQLJsonSerializer) {
         this.broadcaster = broadcaster;
         this.state = state;
-        kaMessage = graphQLJsonSerializer.serialize(new GraphQLWsResponse(GQL_CONNECTION_KEEP_ALIVE));
+        kaMessage = graphQLJsonSerializer.serialize(new GraphQLApolloWsResponse(GQL_CONNECTION_KEEP_ALIVE));
     }
 
     /**

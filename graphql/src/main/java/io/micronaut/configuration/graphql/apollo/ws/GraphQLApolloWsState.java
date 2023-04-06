@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLWsResponse.ServerType.GQL_COMPLETE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_COMPLETE;
 
 /**
  * Keeps the state of the web socket subscriptions.
@@ -74,7 +74,7 @@ class GraphQLApolloWsState {
      * @param session WebSocketSession
      * @return Publisher<GraphQLWsOperationMessage>
      */
-    Publisher<GraphQLWsResponse> terminateSession(WebSocketSession session) {
+    Publisher<GraphQLApolloWsResponse> terminateSession(WebSocketSession session) {
         activeSessions.remove(session.getId());
         Optional.ofNullable(activeOperations.remove(session.getId()))
                 .ifPresent(GraphQLWsOperations::cancelAll);
@@ -102,7 +102,7 @@ class GraphQLApolloWsState {
      * @param session WebSocketSession
      * @return the complete message, or nothing if there was no operation running
      */
-    Publisher<GraphQLWsResponse> stopOperation(GraphQLWsRequest request, WebSocketSession session) {
+    Publisher<GraphQLApolloWsResponse> stopOperation(GraphQLApolloWsRequest request, WebSocketSession session) {
         String sessionId = session.getId();
         String operationId = request.getId();
         if (operationId == null || sessionId == null) {
@@ -113,7 +113,7 @@ class GraphQLApolloWsState {
                                       graphQLWsOperations.cancelOperation(operationId);
                                       return graphQLWsOperations.removeCompleted(operationId);
                                   }).orElse(false);
-        return removed ? Flux.just(new GraphQLWsResponse(GQL_COMPLETE, operationId)) : Flux.empty();
+        return removed ? Flux.just(new GraphQLApolloWsResponse(GQL_COMPLETE, operationId)) : Flux.empty();
     }
 
     /**
@@ -138,7 +138,7 @@ class GraphQLApolloWsState {
      * @param session WebSocketSession
      * @return true or false
      */
-    boolean operationExists(GraphQLWsRequest request, WebSocketSession session) {
+    boolean operationExists(GraphQLApolloWsRequest request, WebSocketSession session) {
         return Optional.ofNullable(session)
                        .map(WebSocketSession::getId)
                        .map(sessionId -> activeOperations.get(sessionId))
