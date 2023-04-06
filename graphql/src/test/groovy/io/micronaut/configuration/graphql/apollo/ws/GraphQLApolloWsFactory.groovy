@@ -17,7 +17,7 @@ import reactor.core.publisher.Flux
 import java.time.Duration
 
 @Factory
-class GraphQLWsFactory {
+class GraphQLApolloWsFactory {
 
     @Bean
     @Requires(env = ["websocket", "keepalive"])

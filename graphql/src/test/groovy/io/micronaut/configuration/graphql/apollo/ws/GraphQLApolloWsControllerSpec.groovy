@@ -42,12 +42,12 @@ class GraphQLApolloWsControllerSpec extends Specification {
     @AutoCleanup
     EmbeddedServer embeddedServer
 
-    GraphQLWsClient graphQLWsClient
+    GraphQLApolloWsClient graphQLWsClient
 
     def setup() {
         embeddedServer = embeddedServer = ApplicationContext.run(EmbeddedServer, ["spec.name": GraphQLApolloWsControllerSpec.simpleName], "websocket") as EmbeddedServer
         WebSocketClient wsClient = embeddedServer.applicationContext.createBean(WebSocketClient, embeddedServer.getURI())
-        graphQLWsClient = Flux.from(wsClient.connect(GraphQLWsClient, "/graphql-ws")).blockFirst()
+        graphQLWsClient = Flux.from(wsClient.connect(GraphQLApolloWsClient, "/graphql-ws")).blockFirst()
     }
 
     void "test init connection, keep alive off"() {
