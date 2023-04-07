@@ -79,7 +79,7 @@ public class GraphQLApolloWsMessageHandler {
      *
      * @param request Message from client
      * @param session WebSocketSession
-     * @return Publisher<GraphQLApolloWsResponse>
+     * @return {@code Publisher<GraphQLApolloWsResponse>}
      */
     public Publisher<GraphQLApolloWsResponse> handleMessage(GraphQLApolloWsRequest request, WebSocketSession session) {
         switch (request.getType()) {
