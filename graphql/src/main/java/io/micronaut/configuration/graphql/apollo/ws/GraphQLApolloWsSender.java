@@ -87,9 +87,8 @@ public class GraphQLApolloWsSender {
 
     @SuppressWarnings("rawtypes")
     private boolean hasErrors(GraphQLResponseBody responseBody) {
-        Object errorObject = responseBody.getSpecification().get("errors");
-        if (errorObject instanceof Collection) {
-            return !((Collection) errorObject).isEmpty();
+        if (responseBody.getSpecification().get("errors") instanceof Collection errorObject) {
+            return !errorObject.isEmpty();
         } else {
             return false;
         }

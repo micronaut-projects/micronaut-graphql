@@ -17,7 +17,6 @@ package io.micronaut.configuration.graphql;
 
 import io.micronaut.core.type.Argument;
 import io.micronaut.json.JsonMapper;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 import java.io.IOException;
