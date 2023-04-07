@@ -1,5 +1,5 @@
 graphql:
-  graphql-ws:
+  graphql-apollo-ws:
     enabled: true
     keep-alive-enabled: false
   factory: false

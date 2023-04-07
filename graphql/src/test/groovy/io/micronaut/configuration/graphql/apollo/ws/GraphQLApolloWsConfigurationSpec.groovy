@@ -46,7 +46,7 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-ws.enabled": true]
+                ["graphql.graphql-apollo-ws.enabled": true]
         ))
         context.start()
 
@@ -69,8 +69,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-ws.enabled": true,
-                 "graphql.graphql-ws.path"   : "/custom-graphql-ws"]
+                ["graphql.graphql-apollo-ws.enabled": true,
+                 "graphql.graphql-apollo-ws.path"   : "/custom-graphql-ws"]
         ))
         context.start()
 
@@ -87,7 +87,7 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-ws.enabled": false]
+                ["graphql.graphql-apollo-ws.enabled": false]
         ))
         context.start()
 
@@ -102,7 +102,7 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-ws.keep-alive-enabled": false]
+                ["graphql.graphql-apollo-ws.keep-alive-enabled": false]
         ))
         context.start()
 
@@ -117,7 +117,7 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-ws.keep-alive-interval": "1s"]
+                ["graphql.graphql-apollo-ws.keep-alive-interval": "1s"]
         ))
         context.start()
 

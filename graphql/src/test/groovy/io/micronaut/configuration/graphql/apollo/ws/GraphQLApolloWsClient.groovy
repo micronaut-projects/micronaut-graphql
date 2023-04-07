@@ -13,7 +13,7 @@ import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.TimeUnit
 
-@ClientWebSocket(uri = "\${graphql.graphql-ws.path:/graphql-ws}", subprotocol = "graphql-ws")
+@ClientWebSocket(uri = "\${graphql.graphql-apollo-ws.path:/graphql-ws}", subprotocol = "graphql-apollo-ws")
 abstract class GraphQLApolloWsClient implements AutoCloseable {
 
     private BlockingQueue<GraphQLApolloWsResponse> responses = new ArrayBlockingQueue<>(10)

@@ -43,7 +43,7 @@ import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsRespon
  * @since 1.3
  */
 @ServerWebSocket(value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.PATH + ":"
-        + GraphQLApolloWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-ws")
+        + GraphQLApolloWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-apollo-ws")
 @Requires(property = GraphQLApolloWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphQLApolloWsController {
 

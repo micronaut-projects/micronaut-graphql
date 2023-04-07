@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ public class GraphQLApolloWsConfiguration implements Toggleable {
     /**
      * The prefix to use for all GraphQL websocket configuration properties.
      */
-    public static final String PREFIX = "graphql-ws";
+    public static final String PREFIX = "graphql-apollo-ws";
 
     /**
      * The configuration name whether the GraphQL websocket is enabled.

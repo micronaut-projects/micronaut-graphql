@@ -1,7 +1,7 @@
 The `micronaut-graphql` module comes bundled with support for GraphQL over web sockets
 (https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md).
 
-GraphQL over web sockets must be explicitly enabled via the `graphql.graphql-ws.enabled` application property.
+GraphQL over web sockets must be explicitly enabled via the `graphql.graphql-apollo-ws.enabled` application property.
 While the server is capable of handling the queries and mutations also over web sockets it might not be supported in all clients.
 Some clients have a way of configuring a different endpoint for subscriptions and/or some filter to only use the websocket for subscriptions.
 
@@ -11,14 +11,14 @@ The following configuration properties can be set:
 [source,yaml]
 ----
 graphql:
-  graphql-ws:
+  graphql-apollo-ws:
     enabled: false // <1>
     path: /graphql-ws // <2>
     keep-alive-enabled: true // <3>
     keep-alive-interval: 15s // <4>
 ----
 <1> Enables/disables GraphQL over web sockets. Default `false`.
-<2> Configures the GraphQLWs endpoint path. Default `/graphql-ws`.
+<2> Configures the GraphQLApolloWs endpoint path. Default `/graphql-ws`.
 <3> Enables/disables keep alive, this might be needed to prevent clients reconnecting. Default `true`.
 <4> Configures the keep alive interval, specific clients might need different values, or it could be set higher to reduce some load `15s`.
 
