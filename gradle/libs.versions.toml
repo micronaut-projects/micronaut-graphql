@@ -1,14 +1,14 @@
 [versions]
 micronaut-docs = "2.0.0"
-micronaut = "4.0.0-M1"
+micronaut = "4.0.0-M2"
 micronaut-test = "4.0.0-M1"
-groovy = "4.0.10"
+groovy = "4.0.11"
 spock = "2.3-groovy-4.0"
 
 graal-svm = "22.3.2"
 kotlin = '1.8.20'
 shadow = '7.1.2'
-micronaut-gradle-plugin = "4.0.0-SNAPSHOT"
+micronaut-gradle-plugin = "4.0.0-M2"
 
 micronaut-kotlin = "4.0.0-M1"
 micronaut-security = "4.0.0-M1"
