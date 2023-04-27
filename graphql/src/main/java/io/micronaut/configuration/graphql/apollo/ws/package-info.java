@@ -20,7 +20,7 @@
  * @since 1.0
  */
 @Configuration
-@RequiresGraphQLWs
-package io.micronaut.configuration.graphql.ws;
+@RequiresGraphQLApolloWs
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import io.micronaut.context.annotation.Configuration;

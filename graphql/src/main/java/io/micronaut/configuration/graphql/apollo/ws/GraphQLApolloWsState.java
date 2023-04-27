@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.ws;
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import io.micronaut.websocket.WebSocketSession;
 import jakarta.inject.Singleton;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_COMPLETE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_COMPLETE;
 
 /**
  * Keeps the state of the web socket subscriptions.
@@ -35,10 +35,10 @@ import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType
  * @since 1.3
  */
 @Singleton
-class GraphQLWsState {
+class GraphQLApolloWsState {
 
     private ConcurrentSkipListSet<String> activeSessions = new ConcurrentSkipListSet<>();
-    private ConcurrentHashMap<String, GraphQLWsOperations> activeOperations = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, GraphQLApolloWsOperations> activeOperations = new ConcurrentHashMap<>();
 
     /**
      * Sets the session to active.
@@ -65,7 +65,7 @@ class GraphQLWsState {
      * @param session WebSocketSession
      */
     void init(WebSocketSession session) {
-        activeOperations.putIfAbsent(session.getId(), new GraphQLWsOperations());
+        activeOperations.putIfAbsent(session.getId(), new GraphQLApolloWsOperations());
     }
 
     /**
@@ -74,10 +74,10 @@ class GraphQLWsState {
      * @param session WebSocketSession
      * @return Publisher<GraphQLWsOperationMessage>
      */
-    Publisher<GraphQLWsResponse> terminateSession(WebSocketSession session) {
+    Publisher<GraphQLApolloWsResponse> terminateSession(WebSocketSession session) {
         activeSessions.remove(session.getId());
         Optional.ofNullable(activeOperations.remove(session.getId()))
-                .ifPresent(GraphQLWsOperations::cancelAll);
+                .ifPresent(GraphQLApolloWsOperations::cancelAll);
         return Flux.empty();
     }
 
@@ -92,7 +92,7 @@ class GraphQLWsState {
         Optional.ofNullable(session)
                 .map(WebSocketSession::getId)
                 .map(id -> activeOperations.get(id))
-                .ifPresent(graphQLWsOperations -> graphQLWsOperations.addSubscription(operationId, starter));
+                .ifPresent(graphQLApolloWsOperations -> graphQLApolloWsOperations.addSubscription(operationId, starter));
     }
 
     /**
@@ -102,18 +102,18 @@ class GraphQLWsState {
      * @param session WebSocketSession
      * @return the complete message, or nothing if there was no operation running
      */
-    Publisher<GraphQLWsResponse> stopOperation(GraphQLWsRequest request, WebSocketSession session) {
+    Publisher<GraphQLApolloWsResponse> stopOperation(GraphQLApolloWsRequest request, WebSocketSession session) {
         String sessionId = session.getId();
         String operationId = request.getId();
         if (operationId == null || sessionId == null) {
             return Flux.empty();
         }
         boolean removed = Optional.ofNullable(activeOperations.get(sessionId))
-                                  .map(graphQLWsOperations -> {
-                                      graphQLWsOperations.cancelOperation(operationId);
-                                      return graphQLWsOperations.removeCompleted(operationId);
+                                  .map(graphQLApolloWsOperations -> {
+                                      graphQLApolloWsOperations.cancelOperation(operationId);
+                                      return graphQLApolloWsOperations.removeCompleted(operationId);
                                   }).orElse(false);
-        return removed ? Flux.just(new GraphQLWsResponse(GQL_COMPLETE, operationId)) : Flux.empty();
+        return removed ? Flux.just(new GraphQLApolloWsResponse(GQL_COMPLETE, operationId)) : Flux.empty();
     }
 
     /**
@@ -127,7 +127,7 @@ class GraphQLWsState {
         return Optional.ofNullable(session)
                        .map(WebSocketSession::getId)
                        .map(sessionId -> activeOperations.get(sessionId))
-                       .map(graphQLWsOperations -> graphQLWsOperations.removeCompleted(operationId))
+                       .map(graphQLApolloWsOperations -> graphQLApolloWsOperations.removeCompleted(operationId))
                        .orElse(false);
     }
 
@@ -138,11 +138,11 @@ class GraphQLWsState {
      * @param session WebSocketSession
      * @return true or false
      */
-    boolean operationExists(GraphQLWsRequest request, WebSocketSession session) {
+    boolean operationExists(GraphQLApolloWsRequest request, WebSocketSession session) {
         return Optional.ofNullable(session)
                        .map(WebSocketSession::getId)
                        .map(sessionId -> activeOperations.get(sessionId))
-                       .map(graphQLWsOperations -> graphQLWsOperations.operationExists(request))
+                       .map(graphQLApolloWsOperations -> graphQLApolloWsOperations.operationExists(request))
                        .orElse(false);
     }
 }

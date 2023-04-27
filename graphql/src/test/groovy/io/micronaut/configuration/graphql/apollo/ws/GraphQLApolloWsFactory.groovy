@@ -1,4 +1,4 @@
-package io.micronaut.configuration.graphql.ws
+package io.micronaut.configuration.graphql.apollo.ws
 
 import graphql.GraphQL
 import graphql.schema.DataFetcher
@@ -17,7 +17,7 @@ import reactor.core.publisher.Flux
 import java.time.Duration
 
 @Factory
-class GraphQLWsFactory {
+class GraphQLApolloWsFactory {
 
     @Bean
     @Requires(env = ["websocket", "keepalive"])

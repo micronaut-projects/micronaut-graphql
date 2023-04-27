@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.ws;
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.serde.annotation.Serdeable;
 
 /**
  * Class to handle the message to and from the websocket.
@@ -24,7 +25,8 @@ import io.micronaut.core.annotation.Nullable;
  * @author Gerard Klijs
  * @since 1.3
  */
-public class GraphQLWsResponse {
+@Serdeable
+public class GraphQLApolloWsResponse {
 
     private final String type;
     @Nullable
@@ -37,7 +39,7 @@ public class GraphQLWsResponse {
      *
      * @param serverType type as serverType
      */
-    public GraphQLWsResponse(ServerType serverType) {
+    public GraphQLApolloWsResponse(ServerType serverType) {
         type = serverType.getType();
     }
 
@@ -47,7 +49,7 @@ public class GraphQLWsResponse {
      * @param serverType serverType as serverType
      * @param id         id as string
      */
-    public GraphQLWsResponse(ServerType serverType, @Nullable String id) {
+    public GraphQLApolloWsResponse(ServerType serverType, @Nullable String id) {
         type = serverType.getType();
         this.id = id;
     }
@@ -59,7 +61,7 @@ public class GraphQLWsResponse {
      * @param id         id as string
      * @param payload    payload as string
      */
-    public GraphQLWsResponse(ServerType serverType, @Nullable String id, @Nullable GraphQLResponseBody payload) {
+    public GraphQLApolloWsResponse(ServerType serverType, @Nullable String id, @Nullable GraphQLResponseBody payload) {
         type = serverType.getType();
         this.id = id;
         this.payload = payload;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.ws;
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import io.micronaut.configuration.graphql.GraphQLRequestBody;
 import io.micronaut.core.annotation.Nullable;
@@ -24,7 +24,7 @@ import io.micronaut.core.annotation.Nullable;
  * @author Gerard Klijs
  * @since 1.3
  */
-public class GraphQLWsRequest {
+public class GraphQLApolloWsRequest {
 
     private static final String TYPE_ERROR_MESSAGE = "Could not map %s to a known client type.";
 

@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "6.4.1"
+    id("io.micronaut.build.shared.settings") version "6.4.2"
 }
 
 enableFeaturePreview 'TYPESAFE_PROJECT_ACCESSORS'
@@ -17,6 +17,7 @@ micronautBuild {
     importMicronautCatalog()
     importMicronautCatalog("micronaut-kotlin")
     importMicronautCatalog("micronaut-security")
+    importMicronautCatalog("micronaut-serde")
 }
 
 rootProject.name = 'graphql-parent'

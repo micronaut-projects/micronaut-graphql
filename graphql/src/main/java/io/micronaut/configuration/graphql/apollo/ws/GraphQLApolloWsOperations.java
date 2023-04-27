@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.ws;
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import jakarta.inject.Singleton;
 import org.reactivestreams.Subscription;
@@ -29,7 +29,7 @@ import java.util.function.Function;
  * @since 1.3
  */
 @Singleton
-class GraphQLWsOperations {
+class GraphQLApolloWsOperations {
 
     private ConcurrentHashMap<String, Subscription> activeOperations = new ConcurrentHashMap<>();
 
@@ -79,12 +79,12 @@ class GraphQLWsOperations {
     /**
      * Whether the operation currently already exists.
      *
-     * @param request the {@link GraphQLWsRequest} instance
+     * @param request the {@link GraphQLApolloWsRequest} instance
      * @return whether it exists or not
      */
-    boolean operationExists(GraphQLWsRequest request) {
+    boolean operationExists(GraphQLApolloWsRequest request) {
         return Optional.ofNullable(request)
-                       .map(GraphQLWsRequest::getId)
+                       .map(GraphQLApolloWsRequest::getId)
                        .map(id -> activeOperations.containsKey(id))
                        .orElse(false);
     }

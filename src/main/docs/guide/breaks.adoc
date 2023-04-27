@@ -1,0 +1,7 @@
+=== Version 4.0.0
+
+The Apollo Websocket protocol classes and configuration have been refactored to pave the way for a newer websocket protocol.
+
+- The configuration prefix is changed from `graphql-ws` to `graphql-apollo-ws`
+- The implementation classes have moved from the `io.micronaut.configuration.graphql.ws` package to `io.micronaut.configuration.graphql.apollo.ws`
+- The implementation classes have been renamed from `GraphQLWs*` to `GraphQLApolloWs*`. For example, `GraphQLWsConfiguration` is now `GraphQLApolloWsConfiguration`.

@@ -144,12 +144,12 @@
   "allPublicMethods": true,
   "allDeclaredConstructors": true
 }, {
-  "name": "io.micronaut.configuration.graphql.ws.GraphQLWsRequest",
+  "name": "io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsRequest",
   "allDeclaredFields": true,
   "allPublicMethods": true,
   "allDeclaredConstructors": true
 }, {
-  "name": "io.micronaut.configuration.graphql.ws.GraphQLWsResponse",
+  "name": "io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse",
   "allDeclaredFields": true,
   "allPublicMethods": true,
   "allDeclaredConstructors": true

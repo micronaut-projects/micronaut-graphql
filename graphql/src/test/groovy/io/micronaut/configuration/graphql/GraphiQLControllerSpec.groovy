@@ -18,13 +18,13 @@ package io.micronaut.configuration.graphql
 
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
+import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.Specification
 
-import static io.micronaut.http.HttpRequest.GET
 import static io.micronaut.http.MediaType.TEXT_HTML
 
 /**
@@ -43,7 +43,7 @@ class GraphiQLControllerSpec extends Specification {
         HttpClient client = embeddedServer.applicationContext.createBean(HttpClient, embeddedServer.getURL())
 
         when:
-        HttpResponse response = client.toBlocking().exchange(GET("/graphiql"), String)
+        HttpResponse response = client.toBlocking().exchange(HttpRequest.GET("/graphiql"), String)
 
         then:
         response.status() == HttpStatus.OK

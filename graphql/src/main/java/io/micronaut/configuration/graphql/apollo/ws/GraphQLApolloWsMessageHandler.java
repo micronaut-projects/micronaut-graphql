@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.ws;
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import graphql.ExecutionResult;
 import io.micronaut.configuration.graphql.GraphQLExecutionResultHandler;
@@ -30,10 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
-import static io.micronaut.configuration.graphql.ws.GraphQLWsController.HTTP_REQUEST_KEY;
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_ACK;
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_ERROR;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsController.HTTP_REQUEST_KEY;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_ACK;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_ERROR;
 
 /**
  * Handles the messages send over the websocket.
@@ -42,32 +42,32 @@ import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType
  * @since 1.3
  */
 @Singleton
-public class GraphQLWsMessageHandler {
+public class GraphQLApolloWsMessageHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsMessageHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GraphQLApolloWsMessageHandler.class);
 
-    private final GraphQLWsConfiguration graphQLWsConfiguration;
-    private final GraphQLWsState state;
+    private final GraphQLApolloWsConfiguration graphQLApolloWsConfiguration;
+    private final GraphQLApolloWsState state;
     private final GraphQLInvocation graphQLInvocation;
     private final GraphQLExecutionResultHandler graphQLExecutionResultHandler;
-    private final GraphQLWsSender responseSender;
+    private final GraphQLApolloWsSender responseSender;
 
     /**
      * Default constructor.
      *
-     * @param graphQLWsConfiguration        the {@link GraphQLWsConfiguration} instance
-     * @param state                         the {@link GraphQLWsState} instance
+     * @param graphQLApolloWsConfiguration        the {@link GraphQLApolloWsConfiguration} instance
+     * @param state                         the {@link GraphQLApolloWsState} instance
      * @param graphQLInvocation             the {@link GraphQLInvocation} instance
      * @param graphQLExecutionResultHandler the {@link GraphQLExecutionResultHandler} instance
-     * @param responseSender                the {@link GraphQLWsSender} instance
+     * @param responseSender                the {@link GraphQLApolloWsSender} instance
      */
-    public GraphQLWsMessageHandler(
-            GraphQLWsConfiguration graphQLWsConfiguration,
-            GraphQLWsState state,
+    public GraphQLApolloWsMessageHandler(
+            GraphQLApolloWsConfiguration graphQLApolloWsConfiguration,
+            GraphQLApolloWsState state,
             GraphQLInvocation graphQLInvocation,
             GraphQLExecutionResultHandler graphQLExecutionResultHandler,
-            GraphQLWsSender responseSender) {
-        this.graphQLWsConfiguration = graphQLWsConfiguration;
+            GraphQLApolloWsSender responseSender) {
+        this.graphQLApolloWsConfiguration = graphQLApolloWsConfiguration;
         this.state = state;
         this.graphQLInvocation = graphQLInvocation;
         this.graphQLExecutionResultHandler = graphQLExecutionResultHandler;
@@ -79,9 +79,9 @@ public class GraphQLWsMessageHandler {
      *
      * @param request Message from client
      * @param session WebSocketSession
-     * @return Publisher<GraphQLWsResponse>
+     * @return {@code Publisher<GraphQLApolloWsResponse>}
      */
-    public Publisher<GraphQLWsResponse> handleMessage(GraphQLWsRequest request, WebSocketSession session) {
+    public Publisher<GraphQLApolloWsResponse> handleMessage(GraphQLApolloWsRequest request, WebSocketSession session) {
         switch (request.getType()) {
             case GQL_CONNECTION_INIT:
                 return init(session);
@@ -96,20 +96,20 @@ public class GraphQLWsMessageHandler {
         }
     }
 
-    private Publisher<GraphQLWsResponse> init(WebSocketSession session) {
-        if (graphQLWsConfiguration.keepAliveEnabled) {
+    private Publisher<GraphQLApolloWsResponse> init(WebSocketSession session) {
+        if (graphQLApolloWsConfiguration.keepAliveEnabled) {
             state.activateSession(session);
-            return Flux.just(new GraphQLWsResponse(GQL_CONNECTION_ACK),
-                    new GraphQLWsResponse(GQL_CONNECTION_KEEP_ALIVE));
+            return Flux.just(new GraphQLApolloWsResponse(GQL_CONNECTION_ACK),
+                    new GraphQLApolloWsResponse(GQL_CONNECTION_KEEP_ALIVE));
         } else {
-            return Flux.just(new GraphQLWsResponse(GQL_CONNECTION_ACK));
+            return Flux.just(new GraphQLApolloWsResponse(GQL_CONNECTION_ACK));
         }
     }
 
-    private Publisher<GraphQLWsResponse> startOperation(GraphQLWsRequest request, WebSocketSession session) {
+    private Publisher<GraphQLApolloWsResponse> startOperation(GraphQLApolloWsRequest request, WebSocketSession session) {
         if (request.getId() == null) {
             LOG.warn("GraphQL operation id is required with type start");
-            return Flux.just(new GraphQLWsResponse(GQL_ERROR));
+            return Flux.just(new GraphQLApolloWsResponse(GQL_ERROR));
         }
 
         if (state.operationExists(request, session)) {
@@ -121,14 +121,14 @@ public class GraphQLWsMessageHandler {
         if (payload == null || StringUtils.isEmpty(payload.getQuery())) {
             LOG.info("Payload was null or query empty for operation {} in session {}", request.getId(),
                     session.getId());
-            return Flux.just(new GraphQLWsResponse(GQL_ERROR, request.getId()));
+            return Flux.just(new GraphQLApolloWsResponse(GQL_ERROR, request.getId()));
         }
 
         return executeRequest(request.getId(), payload, session);
     }
 
     @SuppressWarnings("rawtypes")
-    private Publisher<GraphQLWsResponse> executeRequest(
+    private Publisher<GraphQLApolloWsResponse> executeRequest(
             String operationId,
             GraphQLRequestBody payload,
             WebSocketSession session) {

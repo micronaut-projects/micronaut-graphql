@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.ws;
+package io.micronaut.configuration.graphql.apollo.ws;
 
 import io.micronaut.configuration.graphql.GraphQLConfiguration;
 import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
@@ -23,7 +23,7 @@ import io.micronaut.scheduling.annotation.Scheduled;
 import io.micronaut.websocket.WebSocketBroadcaster;
 import jakarta.inject.Singleton;
 
-import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
+import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_KEEP_ALIVE;
 
 /**
  * Used to send keep alive messages to the active sessions at a regular interval.
@@ -32,34 +32,34 @@ import static io.micronaut.configuration.graphql.ws.GraphQLWsResponse.ServerType
  * @since 1.3
  */
 @Singleton
-@Requires(property = GraphQLWsConfiguration.KEEP_ALIVE_ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
-public class GraphQLWsKeepAlive {
+@Requires(property = GraphQLApolloWsConfiguration.KEEP_ALIVE_ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+public class GraphQLApolloWsKeepAlive {
 
     private final WebSocketBroadcaster broadcaster;
-    private final GraphQLWsState state;
+    private final GraphQLApolloWsState state;
     private final String kaMessage;
 
     /**
      * Default constructor.
      *
      * @param broadcaster           the {@link WebSocketBroadcaster} instance
-     * @param state                 the {@link GraphQLWsState} instance
+     * @param state                 the {@link GraphQLApolloWsState} instance
      * @param graphQLJsonSerializer the {@link GraphQLJsonSerializer} instance
      */
-    public GraphQLWsKeepAlive(
+    public GraphQLApolloWsKeepAlive(
             WebSocketBroadcaster broadcaster,
-            GraphQLWsState state,
+            GraphQLApolloWsState state,
             GraphQLJsonSerializer graphQLJsonSerializer) {
         this.broadcaster = broadcaster;
         this.state = state;
-        kaMessage = graphQLJsonSerializer.serialize(new GraphQLWsResponse(GQL_CONNECTION_KEEP_ALIVE));
+        kaMessage = graphQLJsonSerializer.serialize(new GraphQLApolloWsResponse(GQL_CONNECTION_KEEP_ALIVE));
     }
 
     /**
      * Send ka messages to active sessions.
      */
-    @Scheduled(fixedDelay = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.KEEP_ALIVE_INTERVAL + ":"
-            + GraphQLWsConfiguration.DEFAULT_KEEP_ALIVE_INTERVAL + "}")
+    @Scheduled(fixedDelay = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.KEEP_ALIVE_INTERVAL + ":"
+            + GraphQLApolloWsConfiguration.DEFAULT_KEEP_ALIVE_INTERVAL + "}")
     public void keepAliveSender() {
         broadcaster.broadcastSync(kaMessage, state::isActive);
     }

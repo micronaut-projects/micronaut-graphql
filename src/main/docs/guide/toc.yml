@@ -1,5 +1,6 @@
 introduction: Introduction
 releaseHistory: Release History
+breaks: Breaking Changes
 quickStart: Quick Start
 configuration:
   title: Configuration
