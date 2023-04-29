@@ -12,7 +12,7 @@ micronaut-gradle-plugin = "4.0.0-M1"
 
 micronaut-kotlin = "4.0.0-M1"
 micronaut-security = "4.0.0-M2"
-micronaut-serde = "2.0.0-M1"
+micronaut-serde = "2.0.0-SNAPSHOT"
 
 managed-graphql-java = "16.2"
 managed-graphql-java-extended-scalars = "1.0.1"
