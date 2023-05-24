@@ -6,7 +6,7 @@ groovy = "4.0.11"
 spock = "2.3-groovy-4.0"
 
 graal-svm = "22.3.2"
-kotlin = '1.8.20'
+kotlin = '1.8.21'
 shadow = '7.1.2'
 micronaut-gradle-plugin = "4.0.0-M1"
 
