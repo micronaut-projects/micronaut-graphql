@@ -8,7 +8,6 @@ repositories {
 
     // need to pull in micronaut-gradle-plugin:4.0.0-SNAPSHOT
     // to prevent leaking codehaus groovy from micronaut-test 3.x
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {

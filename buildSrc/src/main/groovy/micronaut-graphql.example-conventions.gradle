@@ -15,7 +15,7 @@ dependencies {
     implementation mn.micronaut.http.client
     implementation mn.micronaut.jackson.databind
     implementation mn.micronaut.runtime
-    runtimeOnly mn.logback.classic
+    runtimeOnly mnLogging.logback.classic
     runtimeOnly mn.snakeyaml
     testRuntimeOnly mn.snakeyaml
 }
