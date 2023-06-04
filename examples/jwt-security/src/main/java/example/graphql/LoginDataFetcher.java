@@ -31,9 +31,9 @@ import io.micronaut.security.authentication.Authenticator;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.event.LoginFailedEvent;
 import io.micronaut.security.event.LoginSuccessfulEvent;
-import io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator;
-import io.micronaut.security.token.jwt.generator.AccessTokenConfiguration;
-import io.micronaut.security.token.jwt.render.AccessRefreshToken;
+import io.micronaut.security.token.generator.AccessRefreshTokenGenerator;
+import io.micronaut.security.token.generator.AccessTokenConfiguration;
+import io.micronaut.security.token.render.AccessRefreshToken;
 import jakarta.inject.Singleton;
 import reactor.core.publisher.Flux;
 

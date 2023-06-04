@@ -34,7 +34,7 @@ import java.util.Optional;
  * @author Alexey Zhokhov
  */
 @Singleton
-public class AuthenticationProviderUserPassword implements AuthenticationProvider {
+public class AuthenticationProviderUserPassword implements AuthenticationProvider<HttpRequest<?>> {
 
     private final UserRepository userRepository;
 
