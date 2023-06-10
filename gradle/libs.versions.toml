@@ -19,7 +19,7 @@ managed-graphql-java-extended-scalars = "2023-01-24T02-11-56-babda5f"
 managed-graphql-java-tools = "13.0.3"
 managed-graphql-spqr = "0.12.2"
 
-micronaut-logging = "1.0.0-M3"
+micronaut-logging = "1.0.0-M4"
 [libraries]
 micronaut-logging = { module = "io.micronaut.logging:micronaut-logging-bom", version.ref = "micronaut-logging" }
 # Core
