@@ -12,7 +12,7 @@ micronaut-gradle-plugin = "4.0.0-M4"
 
 micronaut-kotlin = "4.0.0-M4"
 micronaut-security = "4.0.0-M5"
-micronaut-serde = "2.0.0-M9"
+micronaut-serde = "2.0.0-M10"
 
 managed-graphql-java = "20.4"
 managed-graphql-java-extended-scalars = "2023-01-24T02-11-56-babda5f"
