@@ -110,7 +110,7 @@ implements <a href="GraphQLInvocation.html" title="interface in io.micronaut.con
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(graphql.GraphQL,io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer,io.micronaut.context.BeanProvider)" class="member-name-link">DefaultGraphQLInvocation</a><wbr>(graphql.GraphQL&nbsp;graphQL,
  <a href="GraphQLExecutionInputCustomizer.html" title="interface in io.micronaut.configuration.graphql">GraphQLExecutionInputCustomizer</a>&nbsp;graphQLExecutionInputCustomizer,
- io.micronaut.context.BeanProvider&lt;org.dataloader.DataLoaderRegistry&gt;&nbsp;dataLoaderRegistry)</code></div>
+ @Nullable io.micronaut.context.BeanProvider&lt;org.dataloader.DataLoaderRegistry&gt;&nbsp;dataLoaderRegistry)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Default constructor.</div>
 </div>
@@ -131,7 +131,7 @@ implements <a href="GraphQLInvocation.html" title="interface in io.micronaut.con
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.reactivestreams.Publisher&lt;graphql.ExecutionResult&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#invoke(io.micronaut.configuration.graphql.GraphQLInvocationData,io.micronaut.http.HttpRequest,io.micronaut.http.MutableHttpResponse)" class="member-name-link">invoke</a><wbr>(<a href="GraphQLInvocationData.html" title="class in io.micronaut.configuration.graphql">GraphQLInvocationData</a>&nbsp;invocationData,
  io.micronaut.http.HttpRequest&nbsp;httpRequest,
- io.micronaut.http.MutableHttpResponse&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;httpResponse)</code></div>
+ @Nullable io.micronaut.http.MutableHttpResponse&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;httpResponse)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Invokes the GraphQL request and returns a publisher that emits <code>ExecutionResult</code> objects.</div>
 </div>
@@ -158,7 +158,7 @@ implements <a href="GraphQLInvocation.html" title="interface in io.micronaut.con
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DefaultGraphQLInvocation</span><wbr><span class="parameters">(graphql.GraphQL&nbsp;graphQL,
  <a href="GraphQLExecutionInputCustomizer.html" title="interface in io.micronaut.configuration.graphql">GraphQLExecutionInputCustomizer</a>&nbsp;graphQLExecutionInputCustomizer,
  @Nullable
- io.micronaut.context.BeanProvider&lt;org.dataloader.DataLoaderRegistry&gt;&nbsp;dataLoaderRegistry)</span></div>
+ @Nullable io.micronaut.context.BeanProvider&lt;org.dataloader.DataLoaderRegistry&gt;&nbsp;dataLoaderRegistry)</span></div>
 <div class="block">Default constructor.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -182,7 +182,7 @@ implements <a href="GraphQLInvocation.html" title="interface in io.micronaut.con
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.reactivestreams.Publisher&lt;graphql.ExecutionResult&gt;</span>&nbsp;<span class="element-name">invoke</span><wbr><span class="parameters">(<a href="GraphQLInvocationData.html" title="class in io.micronaut.configuration.graphql">GraphQLInvocationData</a>&nbsp;invocationData,
  io.micronaut.http.HttpRequest&nbsp;httpRequest,
  @Nullable
- io.micronaut.http.MutableHttpResponse&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;httpResponse)</span></div>
+ @Nullable io.micronaut.http.MutableHttpResponse&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;httpResponse)</span></div>
 <div class="block">Invokes the GraphQL request and returns a publisher that emits <code>ExecutionResult</code> objects.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
