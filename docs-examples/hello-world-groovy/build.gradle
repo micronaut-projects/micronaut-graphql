@@ -5,7 +5,8 @@ plugins {
 
 micronaut {
     testRuntime "spock"
-    version '4.0.0-M2'
+    version.set(libs.versions.micronaut.platform.get())
+    coreVersion.set(libs.versions.micronaut.asProvider().get())
 }
 
 dependencies {
