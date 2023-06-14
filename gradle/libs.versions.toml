@@ -6,7 +6,7 @@ micronaut-test = "4.0.0-M7"
 groovy = "4.0.12"
 spock = "2.3-groovy-4.0"
 
-graal-svm = "22.3.2"
+graal-svm = "23.0.0"
 kotlin = '1.8.22'
 shadow = '7.1.2'
 micronaut-gradle-plugin = "4.0.0-M4"
