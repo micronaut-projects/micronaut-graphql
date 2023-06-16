@@ -12,7 +12,7 @@ shadow = '7.1.2'
 micronaut-gradle-plugin = "4.0.0-M4"
 micronaut-kotlin = "4.0.0-M5"
 micronaut-security = "4.0.0-M6"
-micronaut-serde = "2.0.0-M10"
+micronaut-serde = "2.0.0-M12"
 micronaut-logging = "1.0.0-M4"
 
 managed-graphql-java = "20.4"
