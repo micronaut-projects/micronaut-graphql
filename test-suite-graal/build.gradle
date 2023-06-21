@@ -1,0 +1,17 @@
+plugins {
+    id("io.micronaut.build.internal.graphql.test-suite-graal")
+}
+
+application {
+    mainClass = "example.micronaut.Application"
+}
+
+dependencies {
+    implementation(project(":micronaut-graphql"))
+
+    runtimeOnly(mnLogging.logback.classic)
+    runtimeOnly(mn.snakeyaml)
+
+    testImplementation(mn.micronaut.http.client)
+    testImplementation(mnTest.micronaut.test.junit5)
+}

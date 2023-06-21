@@ -1,0 +1,15 @@
+plugins {
+    id("io.micronaut.application")
+}
+
+micronaut {
+    importMicronautPlatform = false
+    runtime("netty")
+    testRuntime("junit5")
+}
+
+configurations.all {
+    resolutionStrategy {
+        preferProjectModules()
+    }
+}

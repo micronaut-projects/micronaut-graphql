@@ -1,0 +1,44 @@
+[
+    {
+        "name": "example.micronaut.Author",
+        "queryAllDeclaredMethods": true,
+        "condition": {
+            "typeReachable": "graphql.execution.Execution"
+        },
+        "methods": [
+            {
+                "name": "getFirstName",
+                "parameterTypes": [
+
+                ]
+            },
+            {
+                "name": "getLastName",
+                "parameterTypes": [
+
+                ]
+            }
+        ]
+    },
+    {
+        "name": "example.micronaut.Book",
+        "queryAllDeclaredMethods": true,
+        "condition": {
+            "typeReachable": "graphql.execution.Execution"
+        },
+        "methods": [
+            {
+                "name": "getName",
+                "parameterTypes": [
+
+                ]
+            },
+            {
+                "name": "getPageCount",
+                "parameterTypes": [
+
+                ]
+            }
+        ]
+    }
+]

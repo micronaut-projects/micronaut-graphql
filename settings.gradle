@@ -40,3 +40,5 @@ include 'docs-examples:hello-world-kotlin'
     project.name = "micronaut-graphql-example-${name}"
     project.projectDir = new File(settingsDir, "examples/${name}")
 }
+
+include 'test-suite-graal'
