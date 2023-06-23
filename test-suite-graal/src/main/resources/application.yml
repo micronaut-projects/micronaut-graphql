@@ -4,3 +4,6 @@ micronaut:
 graphql:
   graphiql:
     enabled: true
+  graphql-apollo-ws:
+    enabled: true
+    keep-alive-enabled: false
