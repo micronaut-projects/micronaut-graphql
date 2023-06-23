@@ -1,27 +1,14 @@
 package io.micronaut.configuration.graphql.apollo.ws
 
-import com.fasterxml.jackson.core.JsonFactory
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.micronaut.configuration.graphql.GraphQLRequestBody
 import io.micronaut.configuration.graphql.GraphQLResponseBody
-import io.micronaut.jackson.JacksonConfiguration
-import io.micronaut.jackson.ObjectMapperFactory
-import spock.lang.Shared
+import io.micronaut.jackson.databind.JacksonDatabindMapper
+import io.micronaut.json.JsonMapper
 import spock.lang.Specification
 
 class GraphQLApolloWsSerializationSpec extends Specification {
 
-    @Shared
-    ObjectMapper objectMapper
-
-    def setupSpec() {
-        JacksonConfiguration jacksonConfiguration = new JacksonConfiguration()
-        ObjectMapperFactory objectMapperFactory = new ObjectMapperFactory()
-        JsonFactory jsonFactory = objectMapperFactory.jsonFactory(jacksonConfiguration)
-        objectMapper = objectMapperFactory.objectMapper(jacksonConfiguration, jsonFactory)
-    }
-
-    void "test request serialization"() {
+    void "test request serialization using jackson object mapper"() {
         given:
         GraphQLApolloWsRequest request = new GraphQLApolloWsRequest()
         request.setType(GraphQLApolloWsRequest.ClientType.GQL_CONNECTION_INIT.getType())
@@ -33,18 +20,20 @@ class GraphQLApolloWsSerializationSpec extends Specification {
         request.setPayload(body)
 
         when:
-        String serializedRequest = objectMapper.writeValueAsString(request)
+        JsonMapper jsonMapper = new JacksonDatabindMapper();
+        String serializedRequest = jsonMapper.writeValueAsString(request)
 
         then:
         serializedRequest == "{\"type\":\"connection_init\",\"id\":\"test-id\",\"payload\":{\"query\":\"test-query\",\"operationName\":\"test-operation\",\"variables\":{\"test-key\":\"test-value\"}}}"
     }
 
-    void "test request deserialization"() {
+    void "test request deserialization using jackson object mapper"() {
         given:
         String request = "{\"type\":\"connection_init\",\"id\":\"test-id\",\"payload\":{\"query\":\"test-query\",\"operationName\":\"test-operation\",\"variables\":{\"test-key\":\"test-value\"}}}"
 
         when:
-        GraphQLApolloWsRequest deserializedRequest = objectMapper.readValue(request, GraphQLApolloWsRequest)
+        JsonMapper jsonMapper = new JacksonDatabindMapper();
+        GraphQLApolloWsRequest deserializedRequest = jsonMapper.readValue(request, GraphQLApolloWsRequest)
 
         then:
         deserializedRequest.getType() == GraphQLApolloWsRequest.ClientType.GQL_CONNECTION_INIT
@@ -55,24 +44,26 @@ class GraphQLApolloWsSerializationSpec extends Specification {
         deserializedRequest.getPayload().getVariables().get("test-key") == "test-value"
     }
 
-    void "test response serialization"() {
+    void "test response serialization using jackson object mapper"() {
         given:
         GraphQLResponseBody body = new GraphQLResponseBody(Map.of("test-key", "test-value"))
         GraphQLApolloWsResponse response = new GraphQLApolloWsResponse(GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_ACK, "test-id", body)
 
         when:
-        String serializedResponse = objectMapper.writeValueAsString(response)
+        JsonMapper jsonMapper = new JacksonDatabindMapper();
+        String serializedResponse = jsonMapper.writeValueAsString(response)
 
         then:
         serializedResponse == "{\"type\":\"connection_ack\",\"id\":\"test-id\",\"payload\":{\"test-key\":\"test-value\"}}"
     }
 
-    void "test response deserialization"() {
+    void "test response deserialization using jackson object mapper"() {
         given:
         String response = "{\"type\":\"connection_ack\",\"id\":\"test-id\",\"payload\":{\"test-key\":\"test-value\"}}"
 
         when:
-        GraphQLApolloWsResponse deserializedResponse = objectMapper.readValue(response, GraphQLApolloWsResponse)
+        JsonMapper jsonMapper = new JacksonDatabindMapper();
+        GraphQLApolloWsResponse deserializedResponse = jsonMapper.readValue(response, GraphQLApolloWsResponse)
 
         then:
         deserializedResponse.getType() == GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_ACK.type
