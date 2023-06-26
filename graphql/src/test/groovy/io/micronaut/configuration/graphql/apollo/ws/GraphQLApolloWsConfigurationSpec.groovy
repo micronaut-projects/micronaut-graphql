@@ -122,11 +122,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         ))
         context.start()
 
-        when:
-        context.getBean(GraphQLApolloWsKeepAlive)
-
-        then:
-        thrown(NoSuchBeanException)
+        expect:
+        !context.containsBean(GraphQLApolloWsKeepAlive)
 
         cleanup:
         context.close()
