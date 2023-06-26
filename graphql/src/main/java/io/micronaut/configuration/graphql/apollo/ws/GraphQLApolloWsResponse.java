@@ -15,6 +15,8 @@
  */
 package io.micronaut.configuration.graphql.apollo.ws;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.serde.annotation.Serdeable;
@@ -39,7 +41,7 @@ public class GraphQLApolloWsResponse {
      *
      * @param serverType type as serverType
      */
-    public GraphQLApolloWsResponse(ServerType serverType) {
+    public GraphQLApolloWsResponse(@JsonProperty("type") ServerType serverType) {
         type = serverType.getType();
     }
 
@@ -123,6 +125,7 @@ public class GraphQLApolloWsResponse {
          *
          * @return type as string
          */
+        @JsonValue
         public String getType() {
             return type;
         }
