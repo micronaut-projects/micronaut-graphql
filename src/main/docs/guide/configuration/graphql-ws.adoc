@@ -20,6 +20,9 @@ graphql:
 <3> Configures the maximum time allowed for a client to initiate a graphql-ws connection after the WebSocket is initially opened. Default `15s`.
 
 The deprecated subscriptions-transport-ws support must be explicitly enabled via the `graphql.graphql-apollo-ws.enabled` application property.
+
+NOTE: Prior to version 4.0 of this module, the subscriptions-transport-ws protocol was the only supported implementation, and its configuration was set via the `graphql.graphql-ws` property path. This configuration must be migrated to the `graphql.graphql-apollo-ws` if you have existing client code that depends on this protocol.
+
 While the subscriptions-transport-ws implementation is capable of also handling queries and mutations over WebSocket it might not be supported in all clients.
 Some clients have a way of configuring a different endpoint for subscriptions and/or some filter to only use the websocket for subscriptions.
 
