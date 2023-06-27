@@ -21,6 +21,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.Environment
 import io.micronaut.context.env.PropertySource
+import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.websocket.annotation.ServerWebSocket
 import spock.lang.Specification
 
@@ -108,6 +109,21 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
 
         expect:
         !context.getBean(GraphQLApolloWsConfiguration).enabled
+
+        cleanup:
+        context.close()
+    }
+
+    void "test bean not created when graphql websocket keepalive disabled"() {
+        given:
+        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
+        context.environment.addPropertySource(PropertySource.of(
+                ["graphql.graphql-apollo-ws.keep-alive-enabled": false]
+        ))
+        context.start()
+
+        expect:
+        !context.containsBean(GraphQLApolloWsKeepAlive)
 
         cleanup:
         context.close()

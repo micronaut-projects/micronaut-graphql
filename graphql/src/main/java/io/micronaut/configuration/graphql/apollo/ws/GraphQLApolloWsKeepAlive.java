@@ -32,7 +32,7 @@ import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsRespon
  * @since 1.3
  */
 @Singleton
-@Requires(property = GraphQLApolloWsConfiguration.KEEP_ALIVE_ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+@Requires(property = GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.KEEP_ALIVE_ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 public class GraphQLApolloWsKeepAlive {
 
     private final WebSocketBroadcaster broadcaster;
