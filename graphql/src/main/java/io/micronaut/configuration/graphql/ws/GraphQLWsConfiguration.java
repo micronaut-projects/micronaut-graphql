@@ -83,6 +83,15 @@ public class GraphQLWsConfiguration implements Toggleable {
     }
 
     /**
+     * Sets whether GraphQL websocket is enabled.
+     *
+     * @param enabled whether GraphQL websocket is enabled
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
      * Returns the GraphQL websocket path.
      *
      * @return the GraphQL websocket path
@@ -92,11 +101,29 @@ public class GraphQLWsConfiguration implements Toggleable {
     }
 
     /**
+     * Sets the GraphQL websocket path.
+     *
+     * @param path the GraphQL websocket path
+     */
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    /**
      * Returns the connection intialisation wait timeout.
      *
      * @return the connection intialisation wait timeout
      */
     public Duration getConnectionInitWaitTimeout() {
         return connectionInitWaitTimeout;
+    }
+
+    /**
+     * Sets the connection intialisation wait timeout.
+     *
+     * @param connectionInitWaitTimeout the connection intialisation wait timeout
+     */
+    public void setConnectionInitWaitTimeout(Duration connectionInitWaitTimeout) {
+        this.connectionInitWaitTimeout = connectionInitWaitTimeout;
     }
 }

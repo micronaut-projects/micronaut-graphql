@@ -43,7 +43,7 @@ class GraphQLWsHandlerSpec extends Specification {
 
     void "connection initialization timeout"() {
         when: "no connection is initialized before the configured timeout"
-        Thread.sleep(3000)
+        Thread.sleep(6000)
 
         then: "the socket is closed with an error response"
         graphQLWsClient.nextResponse() == null
