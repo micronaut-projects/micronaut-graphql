@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.graphql;
 
-import io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsConfiguration;
+import io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.DefaultPropertyPlaceholderResolver;
 import io.micronaut.context.env.PropertyPlaceholderResolver;
@@ -60,7 +60,6 @@ public class GraphiQLController {
     private final GraphQLApolloWsConfiguration graphQLApolloWsConfiguration;
     private final ResourceResolver resourceResolver;
     private final ConversionService conversionService;
-
     private final String rawTemplate;
     private final Supplier<String> resolvedTemplate;
 

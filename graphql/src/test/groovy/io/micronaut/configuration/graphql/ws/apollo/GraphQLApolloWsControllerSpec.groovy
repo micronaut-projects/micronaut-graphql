@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.micronaut.configuration.graphql.apollo.ws
+package io.micronaut.configuration.graphql.ws.apollo
 
 import graphql.ExecutionInput
 import io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer
@@ -32,7 +32,6 @@ import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import spock.lang.AutoCleanup
 import spock.lang.Specification
-
 /**
  * @author Gerard Klijs
  * @since 1.3
@@ -45,7 +44,7 @@ class GraphQLApolloWsControllerSpec extends Specification {
     GraphQLApolloWsClient graphQLWsClient
 
     def setup() {
-        embeddedServer = embeddedServer = ApplicationContext.run(EmbeddedServer, ["spec.name": GraphQLApolloWsControllerSpec.simpleName], "websocket") as EmbeddedServer
+        embeddedServer = ApplicationContext.run(EmbeddedServer, ["spec.name": GraphQLApolloWsControllerSpec.simpleName], "apollows") as EmbeddedServer
         WebSocketClient wsClient = embeddedServer.applicationContext.createBean(WebSocketClient, embeddedServer.getURI())
         graphQLWsClient = Flux.from(wsClient.connect(GraphQLApolloWsClient, "/graphql-ws")).blockFirst()
     }

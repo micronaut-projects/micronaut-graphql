@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.micronaut.configuration.graphql.apollo.ws
+package io.micronaut.configuration.graphql.ws.apollo
 
 
 import io.micronaut.context.ApplicationContext
@@ -23,7 +23,6 @@ import io.micronaut.context.env.Environment
 import io.micronaut.context.env.PropertySource
 import io.micronaut.websocket.annotation.ServerWebSocket
 import spock.lang.Specification
-
 /**
  * @author Gerard Klijs
  * @since 1.3
@@ -65,7 +64,7 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         context.close()
     }
 
-    void "test custom graphiql path"() {
+    void "test custom path"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(

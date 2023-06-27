@@ -1,4 +1,4 @@
-package io.micronaut.configuration.graphql.apollo.ws
+package io.micronaut.configuration.graphql.ws.apollo
 
 import io.micronaut.configuration.graphql.GraphQLJsonSerializer
 import io.micronaut.configuration.graphql.GraphQLRequestBody
@@ -13,7 +13,7 @@ import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.TimeUnit
 
-@ClientWebSocket(uri = "\${graphql.graphql-apollo-ws.path:/graphql-ws}", subprotocol = "graphql-apollo-ws")
+@ClientWebSocket(uri = "\${graphql.graphql-apollo-ws.path:/graphql-ws}", subprotocol = "graphql-ws")
 abstract class GraphQLApolloWsClient implements AutoCloseable {
 
     private BlockingQueue<GraphQLApolloWsResponse> responses = new ArrayBlockingQueue<>(10)
