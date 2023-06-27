@@ -59,8 +59,8 @@ class GraphQLWsHandlerSpec extends Specification {
 
         when: "a connection init is received on an already established connection"
         graphQLWsClient.send(request1)
-        graphQLWsClient.send(request2)
         Message ack = graphQLWsClient.nextResponse()
+        graphQLWsClient.send(request2)
 
         then: "the socket is closed with an error response"
         ack instanceof ConnectionAckMessage
