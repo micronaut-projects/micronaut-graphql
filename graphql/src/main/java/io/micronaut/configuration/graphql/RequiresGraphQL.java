@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PACKAGE, ElementType.TYPE})
-@Requires(property = GraphQLConfiguration.ENABLED, notEquals = StringUtils.FALSE)
+@Requires(property = GraphQLConfiguration.ENABLED_CONFIG, notEquals = StringUtils.FALSE)
 @Requires(beans = GraphQL.class)
 public @interface RequiresGraphQL {
 }

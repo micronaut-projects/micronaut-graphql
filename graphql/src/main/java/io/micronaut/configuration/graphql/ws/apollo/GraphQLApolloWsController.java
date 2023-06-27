@@ -40,9 +40,9 @@ import static io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRespon
  * @deprecated The Apollo subscriptions-transport-ws protocol is deprecated and its usage should be replaced with the new graphql-ws implementation.
  */
 @Deprecated(since = "4.0")
-@ServerWebSocket(value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.PATH + ":"
+@ServerWebSocket(value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.PATH_CONFIG + ":"
         + GraphQLApolloWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-ws")
-@Requires(property = GraphQLApolloWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
+@Requires(property = GraphQLApolloWsConfiguration.ENABLED_CONFIG, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphQLApolloWsController {
 
     static final String HTTP_REQUEST_KEY = "httpRequest";

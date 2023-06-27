@@ -34,7 +34,7 @@ import static io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRespon
  */
 @Deprecated(since = "4.0")
 @Singleton
-@Requires(property = GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.KEEP_ALIVE_ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+@Requires(property = GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.KEEP_ALIVE_ENABLED_CONFIG, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 public class GraphQLApolloWsKeepAlive {
 
     private final WebSocketBroadcaster broadcaster;
@@ -60,7 +60,7 @@ public class GraphQLApolloWsKeepAlive {
     /**
      * Send ka messages to active sessions.
      */
-    @Scheduled(fixedDelay = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.KEEP_ALIVE_INTERVAL + ":"
+    @Scheduled(fixedDelay = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLApolloWsConfiguration.KEEP_ALIVE_INTERVAL_CONFIG + ":"
             + GraphQLApolloWsConfiguration.DEFAULT_KEEP_ALIVE_INTERVAL + "}")
     public void keepAliveSender() {
         broadcaster.broadcastSync(kaMessage, state::isActive);

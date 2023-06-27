@@ -38,7 +38,7 @@ public class GraphQLWsConfiguration implements Toggleable {
     /**
      * The configuration name whether the GraphQL websocket is enabled.
      */
-    public static final String ENABLED = GraphQLConfiguration.PREFIX + "." + PREFIX + ".enabled";
+    public static final String ENABLED_CONFIG = GraphQLConfiguration.PREFIX + "." + PREFIX + ".enabled";
 
     /**
      * The default enabled value.
@@ -48,12 +48,7 @@ public class GraphQLWsConfiguration implements Toggleable {
     /**
      * The configuration name of the GraphQL websocket path.
      */
-    public static final String PATH = PREFIX + ".path";
-
-    /**
-     * The configuration name of the GraphQL websocket connection initialisation wait timeout.
-     */
-    public static final String CONNECTION_TIMEOUT = PREFIX + ".connection-init-wait-timeout";
+    public static final String PATH_CONFIG = PREFIX + ".path";
 
     /**
      * The default GraphQL websocket path.

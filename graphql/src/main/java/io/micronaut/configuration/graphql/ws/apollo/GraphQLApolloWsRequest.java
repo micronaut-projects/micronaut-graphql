@@ -99,7 +99,7 @@ public class GraphQLApolloWsRequest {
                 return clientType;
             }
         }
-        throw new RuntimeException(String.format(TYPE_ERROR_MESSAGE, type));
+        throw new IllegalArgumentException(String.format(TYPE_ERROR_MESSAGE, type));
     }
 
     /**

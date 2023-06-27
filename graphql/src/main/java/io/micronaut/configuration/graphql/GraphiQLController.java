@@ -50,9 +50,9 @@ import static io.micronaut.http.MediaType.TEXT_HTML;
  * @author James Kleeh
  * @since 1.0
  */
-@Controller("${" + GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphiQLConfiguration.PATH + ":"
+@Controller("${" + GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphiQLConfiguration.PATH_CONFIG + ":"
         + GraphQLConfiguration.GraphiQLConfiguration.DEFAULT_PATH + "}")
-@Requires(property = GraphQLConfiguration.GraphiQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
+@Requires(property = GraphQLConfiguration.GraphiQLConfiguration.ENABLED_CONFIG, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphiQLController {
 
     private final GraphQLConfiguration graphQLConfiguration;

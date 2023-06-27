@@ -44,9 +44,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * @author Jeremy Grelle
  * @since 4.0
  */
-@ServerWebSocket(value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PATH + ":"
+@ServerWebSocket(value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PATH_CONFIG + ":"
     + GraphQLWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-transport-ws")
-@Requires(property = GraphQLWsConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
+@Requires(property = GraphQLWsConfiguration.ENABLED_CONFIG, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphQLWsHandler {
 
     static final String HTTP_REQUEST_KEY = "httpRequest";
@@ -104,7 +104,7 @@ public class GraphQLWsHandler {
      * @return {@code Publisher<Message>}
      */
     @OnMessage
-    public Publisher<? extends Message> onMessage(
+    public Publisher<Message> onMessage(
         Message message,
         WebSocketSession session) {
         if (message instanceof ConnectionInitMessage) {
@@ -121,7 +121,7 @@ public class GraphQLWsHandler {
             if (subscriptions.containsKey(m.getId())) {
                 return subscriberAlreadyExists(m.getId(), session);
             }
-            Publisher<? extends Message> subscription = executeSubscribe(m, session).doFinally(s -> subscriptions.remove(m.getId()));
+            Publisher<Message> subscription = executeSubscribe(m, session).doFinally(s -> subscriptions.remove(m.getId()));
             subscriptions.put(m.getId(), subscription);
             return subscription;
         } else if (message instanceof CompleteMessage m) {
@@ -132,7 +132,7 @@ public class GraphQLWsHandler {
     }
 
     @SuppressWarnings({"rawtypes"})
-    private Mono<? extends Message> executeSubscribe(SubscribeMessage subscribeMessage, WebSocketSession session) {
+    private Mono<Message> executeSubscribe(SubscribeMessage subscribeMessage, WebSocketSession session) {
         GraphQLInvocationData invocationData = new GraphQLInvocationData(subscribeMessage.getSubscribePayload().getQuery(),
             subscribeMessage.getSubscribePayload().getOperationName(), subscribeMessage.getSubscribePayload().getVariables());
 
@@ -144,42 +144,54 @@ public class GraphQLWsHandler {
         return Flux.from(graphQLInvocation.invoke(invocationData, httpRequest.get(), null))
             .flatMap(executionResult -> {
                 if (executionResult.isDataPresent() && executionResult.getData() != null && executionResult.getData() instanceof Publisher<?> p) {
-                    return Flux.from(p).map(o -> {
-                        if (o instanceof ExecutionResult publishedExecutionResult) {
-                            return publishedExecutionResult;
-                        }
-                        throw new IllegalArgumentException("Subscription data is an invalid type " + o.getClass().getName() + "- expected to be an ExecutionResult");
-                    });
+                    return handleExecutionResultPublisher(p);
                 }
                 return Flux.just(executionResult);
             })
             .takeUntil(e -> !subscriptions.containsKey(subscribeMessage.getId()))
             .flatMap(executionResult -> {
-                if (!session.isOpen() && subscriptions.containsKey(subscribeMessage.getId())) {
-                    return Mono.empty();
-                }
-                if (executionResult.getErrors().isEmpty()) {
-                    return session.send((Message) new NextMessage(subscribeMessage.getId(), executionResult));
-                }
-                return session.send((Message) ErrorMessage.of(subscribeMessage.getId(), executionResult.getErrors()));
+                return handleExecutionResult(subscribeMessage, session, executionResult);
             })
             .last()
             .filter(finalResponseMessage -> finalResponseMessage instanceof NextMessage)
-            .flatMap(m -> Mono.from(session.isOpen() && subscriptions.containsKey(subscribeMessage.getId())
-                ? session.send(new CompleteMessage(subscribeMessage.getId())) : Mono.empty()));
+            .flatMap(m -> completeSubscription(subscribeMessage, session));
     }
 
-    private Publisher<? extends Message> unauthorized(WebSocketSession session) {
+    private Flux<ExecutionResult> handleExecutionResultPublisher(Publisher<?> p) {
+        return Flux.from(p).map(o -> {
+            if (o instanceof ExecutionResult publishedExecutionResult) {
+                return publishedExecutionResult;
+            }
+            throw new IllegalArgumentException("Subscription data is an invalid type " + o.getClass().getName() + "- expected to be an ExecutionResult");
+        });
+    }
+
+    private Publisher<Message> handleExecutionResult(SubscribeMessage subscribeMessage, WebSocketSession session, ExecutionResult executionResult) {
+        if (!session.isOpen() && subscriptions.containsKey(subscribeMessage.getId())) {
+            return Mono.empty();
+        }
+        if (executionResult.getErrors().isEmpty()) {
+            return session.send(new NextMessage(subscribeMessage.getId(), executionResult));
+        }
+        return session.send(ErrorMessage.of(subscribeMessage.getId(), executionResult.getErrors()));
+    }
+
+    private Mono<CompleteMessage> completeSubscription(SubscribeMessage subscribeMessage, WebSocketSession session) {
+        return Mono.from(session.isOpen() && subscriptions.containsKey(subscribeMessage.getId())
+            ? session.send(new CompleteMessage(subscribeMessage.getId())) : Mono.empty());
+    }
+
+    private Publisher<Message> unauthorized(WebSocketSession session) {
         session.close(new CloseReason(4401, "Unauthorized."));
         return Mono.empty();
     }
 
-    private Publisher<? extends Message> tooManyInitialisationRequests(WebSocketSession session) {
+    private Publisher<Message> tooManyInitialisationRequests(WebSocketSession session) {
         session.close(new CloseReason(4403, "Too many initialisation requests."));
         return Mono.empty();
     }
 
-    private Publisher<? extends Message> subscriberAlreadyExists(String id, WebSocketSession session) {
+    private Publisher<Message> subscriberAlreadyExists(String id, WebSocketSession session) {
         session.close(new CloseReason(4409, "Subscriber for " + id + " already exists."));
         return Mono.empty();
     }

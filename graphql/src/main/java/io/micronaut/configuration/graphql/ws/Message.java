@@ -24,7 +24,6 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -56,17 +55,31 @@ public abstract sealed class Message {
     abstract String getMessageType();
 
     /**
+     * Validate a required message id.
+     *
+     * @param id The required message id
+     */
+    protected void checkRequiredId(String id) {
+        if (StringUtils.isEmpty(id)) {
+            throw new IllegalArgumentException("'id' is required for messages with type '" + getMessageType() + "'.");
+        }
+    }
+
+    /**
      * The allowable graphql-ws message types.
      */
-    public static class Types {
-        public static final String CONNECTION_INIT = "connection_init";
-        public static final String CONNECTION_ACK = "connection_ack";
-        public static final String PING = "ping";
-        public static final String PONG = "pong";
-        public static final String SUBSCRIBE = "subscribe";
-        public static final String NEXT = "next";
-        public static final String ERROR = "error";
-        public static final String COMPLETE = "complete";
+    static final class Types {
+
+        static final String CONNECTION_INIT = "connection_init";
+        static final String CONNECTION_ACK = "connection_ack";
+        static final String PING = "ping";
+        static final String PONG = "pong";
+        static final String SUBSCRIBE = "subscribe";
+        static final String NEXT = "next";
+        static final String ERROR = "error";
+        static final String COMPLETE = "complete";
+
+        private Types() { }
     }
 }
 
@@ -83,7 +96,7 @@ abstract sealed class PayloadMessage<T> extends Message {
     /**
      * Default constructor for a graphql-ws message with an optional payload.
      */
-    public PayloadMessage() {
+    protected PayloadMessage() {
         this(null);
     }
 
@@ -92,7 +105,7 @@ abstract sealed class PayloadMessage<T> extends Message {
      *
      * @param payload The message payload.
      */
-    public PayloadMessage(@Nullable T payload) {
+    protected PayloadMessage(@Nullable T payload) {
         this.payload = payload;
     }
 
@@ -122,7 +135,7 @@ abstract sealed class RequiredPayloadMessage<T> extends Message {
      *
      * @param payload The message payload.
      */
-    public RequiredPayloadMessage(@NonNull T payload) {
+    protected RequiredPayloadMessage(@NonNull T payload) {
         Objects.requireNonNull(payload, "A payload is required for message type '" + getMessageType() + ".");
         this.payload = payload;
     }
@@ -227,9 +240,7 @@ final class NextMessage extends RequiredPayloadMessage<Map<String, Object>> {
     @JsonCreator
     public NextMessage(@NonNull @JsonProperty("id") String id, @NonNull @JsonProperty("payload") Map<String, Object> payload) {
         super(payload);
-        if (StringUtils.isEmpty(id)) {
-            throw new IllegalArgumentException("'id' is required for messages with type '" + getMessageType() + "'.");
-        }
+        checkRequiredId(id);
         this.id = id;
     }
 
@@ -270,7 +281,7 @@ final class NextMessage extends RequiredPayloadMessage<Map<String, Object>> {
  * A graphql-ws message for subscribing to the execution of a query.
  */
 final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>> {
-    //TODO - this should be a RequiredPayloadMessage<SubscribeMessage.SubscribePayload>, but Micronaut fails on JSON serialization with a BeanIntrospection error
+
     @NonNull
     private final String id;
 
@@ -283,9 +294,7 @@ final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>>
     @JsonCreator
     public SubscribeMessage(@NonNull @JsonProperty("id") String id, @NonNull @JsonProperty("payload") SubscribePayload payload) {
         super(payload.toMap());
-        if (StringUtils.isEmpty(id)) {
-            throw new IllegalArgumentException("'id' is required for messages with type '" + getMessageType() + "'.");
-        }
+        checkRequiredId(id);
         this.id = id;
     }
 
@@ -460,9 +469,7 @@ final class ErrorMessage extends RequiredPayloadMessage<List<Map<String, Object>
     @JsonCreator
     public ErrorMessage(@NonNull @JsonProperty("id") String id, @NonNull @JsonProperty("payload") List<Map<String, Object>> errors) {
         super(errors);
-        if (StringUtils.isEmpty(id)) {
-            throw new IllegalArgumentException("'id' is required for messages with type '" + getMessageType() + "'.");
-        }
+        checkRequiredId(id);
         this.id = id;
     }
 
@@ -474,7 +481,7 @@ final class ErrorMessage extends RequiredPayloadMessage<List<Map<String, Object>
      * @return A new error message.
      */
     public static ErrorMessage of(@NonNull String id, @NonNull List<GraphQLError> errors) {
-        return new ErrorMessage(id, errors.stream().map(GraphQLError::toSpecification).collect(Collectors.toList()));
+        return new ErrorMessage(id, errors.stream().map(GraphQLError::toSpecification).toList());
     }
 
     /**
@@ -514,9 +521,7 @@ final class CompleteMessage extends Message {
      * @param id The required non-empty id of the message.
      */
     public CompleteMessage(@NonNull String id) {
-        if (StringUtils.isEmpty(id)) {
-            throw new IllegalArgumentException("'id' is required for messages with type '" + getMessageType() + "'.");
-        }
+        checkRequiredId(id);
         this.id = id;
     }
 
