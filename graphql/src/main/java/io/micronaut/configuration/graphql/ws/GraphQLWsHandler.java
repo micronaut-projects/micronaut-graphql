@@ -149,11 +149,9 @@ public class GraphQLWsHandler {
                 return Flux.just(executionResult);
             })
             .takeUntil(e -> !subscriptions.containsKey(subscribeMessage.getId()))
-            .flatMap(executionResult -> {
-                return handleExecutionResult(subscribeMessage, session, executionResult);
-            })
+            .flatMap(executionResult -> handleExecutionResult(subscribeMessage, session, executionResult))
             .last()
-            .filter(finalResponseMessage -> finalResponseMessage instanceof NextMessage)
+            .filter(NextMessage.class::isInstance)
             .flatMap(m -> completeSubscription(subscribeMessage, session));
     }
 
