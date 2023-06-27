@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.graphql.ws.apollo;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.micronaut.configuration.graphql.GraphQLRequestBody;
 import io.micronaut.core.annotation.Nullable;
 
@@ -126,6 +127,7 @@ public class GraphQLApolloWsRequest {
          *
          * @return type as string
          */
+        @JsonValue
         public String getType() {
             return type;
         }
