@@ -98,7 +98,9 @@ public class GraphQLWsHandler {
                 session.close(new CloseReason(4408, "Connection initialisation timeout."));
             }
         });
-        LOG.trace("Opened websocket connection with id {}", session.getId());
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Opened websocket connection with id {}", session.getId());
+        }
     }
 
     /**
@@ -113,13 +115,19 @@ public class GraphQLWsHandler {
         Message message,
         WebSocketSession session) {
         if (message instanceof ConnectionInitMessage) {
-            LOG.trace("Received connection initialisation request for session id {}", session.getId());
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Received connection initialisation request for session id {}", session.getId());
+            }
             return connections.add(session.getId()) ? session.send(new ConnectionAckMessage()) : tooManyInitialisationRequests(session);
         } else if (message instanceof PingMessage) {
-            LOG.trace("Received a ping message for session id {}", session.getId());
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Received a ping message for session id {}", session.getId());
+            }
             return session.send(new PongMessage());
         } else if (message instanceof SubscribeMessage m) {
-            LOG.trace("Received subscription message for session id {}", session.getId());
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Received subscription message for session id {}", session.getId());
+            }
             if (!connections.contains(session.getId())) {
                 return unauthorized(session);
             }
@@ -130,7 +138,9 @@ public class GraphQLWsHandler {
             subscriptions.put(m.getId(), subscription);
             return subscription;
         } else if (message instanceof CompleteMessage m) {
-            LOG.trace("Received complete message for session id {}", session.getId());
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Received complete message for session id {}", session.getId());
+            }
             subscriptions.remove(m.getId());
         }
         return Mono.empty();
@@ -207,7 +217,9 @@ public class GraphQLWsHandler {
      */
     @OnClose
     public void onClose(WebSocketSession session, CloseReason closeReason) {
-        LOG.trace("Closed websocket connection with id {} with reason {}", session.getId(), closeReason);
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Closed websocket connection with id {} with reason {}", session.getId(), closeReason);
+        }
     }
 
     /**
@@ -219,7 +231,9 @@ public class GraphQLWsHandler {
      */
     @OnError
     public void onError(WebSocketSession session, Throwable t) {
-        LOG.debug("Error websocket connection with id {} with error {}", session.getId(), t.getMessage());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Error websocket connection with id {} with error {}", session.getId(), t.getMessage());
+        }
         if (t instanceof CodecException) {
             session.close(new CloseReason(4400, "Invalid message."));
         }
