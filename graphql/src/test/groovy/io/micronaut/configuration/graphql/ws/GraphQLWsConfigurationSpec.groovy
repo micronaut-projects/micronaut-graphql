@@ -68,6 +68,7 @@ class GraphQLWsConfigurationSpec extends Specification {
         cleanup:
         context.close()
     }
+
     void "test custom path"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
