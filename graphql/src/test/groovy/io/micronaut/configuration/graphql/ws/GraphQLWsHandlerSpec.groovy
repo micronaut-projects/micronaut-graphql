@@ -34,7 +34,7 @@ class GraphQLWsHandlerSpec extends Specification {
         Message request = new ConnectionInitMessage();
 
         when: "a connection is initialized"
-        graphQLWsClient.send(request)
+        graphQLWsClient.sendMessage(request)
         Message ack = graphQLWsClient.nextResponse()
 
         then: "the server responds with an ack"
@@ -58,9 +58,9 @@ class GraphQLWsHandlerSpec extends Specification {
         Message request2 = new ConnectionInitMessage()
 
         when: "a connection init is received on an already established connection"
-        graphQLWsClient.send(request1)
+        graphQLWsClient.sendMessage(request1)
         Message ack = graphQLWsClient.nextResponse()
-        graphQLWsClient.send(request2)
+        graphQLWsClient.sendMessage(request2)
 
         then: "the socket is closed with an error response"
         ack instanceof ConnectionAckMessage
@@ -76,14 +76,14 @@ class GraphQLWsHandlerSpec extends Specification {
         Message ping = new PingMessage()
 
         when:
-        graphQLWsClient.send(connect)
+        graphQLWsClient.sendMessage(connect)
         Message ack = graphQLWsClient.nextResponse()
 
         then:
         ack instanceof ConnectionAckMessage
 
         when: "a heartbeat ping message is received"
-        graphQLWsClient.send(ping)
+        graphQLWsClient.sendMessage(ping)
         Message pong = graphQLWsClient.nextResponse()
 
         then: "a heartbeat pong message is sent in response"
@@ -96,9 +96,9 @@ class GraphQLWsHandlerSpec extends Specification {
         Message subscribe = new SubscribeMessage("query_id", new SubscribeMessage.SubscribePayload("query{ foo }"));
 
         when:
-        graphQLWsClient.send(connect)
+        graphQLWsClient.sendMessage(connect)
         graphQLWsClient.nextResponse()
-        graphQLWsClient.send(subscribe)
+        graphQLWsClient.sendMessage(subscribe)
         Message nextResult = graphQLWsClient.nextResponse()
         Message completeResult = graphQLWsClient.nextResponse()
 
@@ -113,9 +113,9 @@ class GraphQLWsHandlerSpec extends Specification {
         Message subscribe = new SubscribeMessage("change_id", new SubscribeMessage.SubscribePayload("mutation{ change( newValue: \"Value_B\" ){ current old }}"));
 
         when:
-        graphQLWsClient.send(connect)
+        graphQLWsClient.sendMessage(connect)
         graphQLWsClient.nextResponse()
-        graphQLWsClient.send(subscribe)
+        graphQLWsClient.sendMessage(subscribe)
         Message nextResult = graphQLWsClient.nextResponse()
         Message completeResult = graphQLWsClient.nextResponse()
 
@@ -130,9 +130,9 @@ class GraphQLWsHandlerSpec extends Specification {
         Message subscribe = new SubscribeMessage("change_id", new SubscribeMessage.SubscribePayload("mutation{ change( newValue: \"\$[path]\" ){ current old }}"));
 
         when:
-        graphQLWsClient.send(connect)
+        graphQLWsClient.sendMessage(connect)
         graphQLWsClient.nextResponse()
-        graphQLWsClient.send(subscribe)
+        graphQLWsClient.sendMessage(subscribe)
         Message nextResult = graphQLWsClient.nextResponse()
         Message completeResult = graphQLWsClient.nextResponse()
 
@@ -147,9 +147,9 @@ class GraphQLWsHandlerSpec extends Specification {
         Message subscribe = new SubscribeMessage("query_id", new SubscribeMessage.SubscribePayload("foo"));
 
         when:
-        graphQLWsClient.send(connect)
+        graphQLWsClient.sendMessage(connect)
         graphQLWsClient.nextResponse()
-        graphQLWsClient.send(subscribe)
+        graphQLWsClient.sendMessage(subscribe)
         Message errorResult = graphQLWsClient.nextResponse()
 
         then:
@@ -163,9 +163,9 @@ class GraphQLWsHandlerSpec extends Specification {
         Message subscribe = new SubscribeMessage("counter_id", new SubscribeMessage.SubscribePayload("subscription{ counter }"));
 
         when:
-        graphQLWsClient.send(connect)
+        graphQLWsClient.sendMessage(connect)
         graphQLWsClient.nextResponse()
-        graphQLWsClient.send(subscribe)
+        graphQLWsClient.sendMessage(subscribe)
         Message nextResult1 = graphQLWsClient.nextResponse()
         Message nextResult2 = graphQLWsClient.nextResponse()
         Message nextResult3 = graphQLWsClient.nextResponse()
@@ -184,11 +184,11 @@ class GraphQLWsHandlerSpec extends Specification {
         Message subscribe = new SubscribeMessage("counter_id", new SubscribeMessage.SubscribePayload("subscription{ counter }"));
 
         when:
-        graphQLWsClient.send(connect)
+        graphQLWsClient.sendMessage(connect)
         graphQLWsClient.nextResponse()
-        graphQLWsClient.send(subscribe)
+        graphQLWsClient.sendMessage(subscribe)
         Message nextResult1 = graphQLWsClient.nextResponse()
-        graphQLWsClient.send(new CompleteMessage("counter_id"))
+        graphQLWsClient.sendMessage(new CompleteMessage("counter_id"))
         List<Message> responses = new ArrayList<>()
         while(true) {
             Message next = graphQLWsClient.nextResponse()
@@ -208,7 +208,7 @@ class GraphQLWsHandlerSpec extends Specification {
         Message subscribe = new SubscribeMessage("12345", new SubscribeMessage.SubscribePayload("foo"))
 
         when: "a subscribe message is received without a connection"
-        graphQLWsClient.send(subscribe)
+        graphQLWsClient.sendMessage(subscribe)
 
         then: "the socket is closed with a an unauthorized error"
         graphQLWsClient.nextResponse() == null
@@ -224,10 +224,10 @@ class GraphQLWsHandlerSpec extends Specification {
         Message subscribe2 = new SubscribeMessage("counter_id", new SubscribeMessage.SubscribePayload("subscription{ counter }"));
 
         when:
-        graphQLWsClient.send(connect)
+        graphQLWsClient.sendMessage(connect)
         graphQLWsClient.nextResponse()
-        graphQLWsClient.send(subscribe1)
-        graphQLWsClient.send(subscribe2)
+        graphQLWsClient.sendMessage(subscribe1)
+        graphQLWsClient.sendMessage(subscribe2)
         Message response = graphQLWsClient.nextResponse()
         while(response != null) {
             response = graphQLWsClient.nextResponse()
@@ -244,7 +244,7 @@ class GraphQLWsHandlerSpec extends Specification {
         Map<String, Object> invalidMessage = Map.of("foo", "bar")
 
         when:
-        graphQLWsClient.send(invalidMessage)
+        graphQLWsClient.sendMap(invalidMessage)
         graphQLWsClient.nextResponse()
 
         then:
@@ -259,7 +259,7 @@ class GraphQLWsHandlerSpec extends Specification {
         Map<String, Object> invalidMessage = Map.of("type", "foo", "id", "12345")
 
         when:
-        graphQLWsClient.send(invalidMessage)
+        graphQLWsClient.sendMap(invalidMessage)
         graphQLWsClient.nextResponse()
 
         then:

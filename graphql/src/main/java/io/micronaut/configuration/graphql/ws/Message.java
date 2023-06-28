@@ -287,7 +287,7 @@ final class NextMessage extends RequiredPayloadMessage<Map<String, Object>> {
 /**
  * A graphql-ws message for subscribing to the execution of a query.
  */
-final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>> {
+final class SubscribeMessage extends RequiredPayloadMessage<SubscribeMessage.SubscribePayload> {
 
     @NonNull
     private final String id;
@@ -300,7 +300,7 @@ final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>>
      */
     @JsonCreator
     public SubscribeMessage(@NonNull @JsonProperty("id") String id, @NonNull @JsonProperty("payload") SubscribePayload payload) {
-        super(payload.toMap());
+        super(payload);
         checkRequiredId(id);
         this.id = id;
     }
@@ -335,7 +335,8 @@ final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>>
     @JsonIgnore
     @NonNull
     SubscribePayload getSubscribePayload() {
-        return SubscribePayload.fromMap(getPayload());
+        //return SubscribePayload.fromMap(getPayload());
+        return getPayload();
     }
 
     public static class SubscribePayload {

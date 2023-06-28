@@ -30,7 +30,9 @@ abstract class GraphQLWsClient implements AutoCloseable {
         closeReason = reason
     }
 
-    abstract void send(Object message);
+    abstract void sendMessage(Message message);
+
+    abstract void sendMap(Map<String, Object> map);
 
     Message nextResponse() {
         Message response = responses.poll(2, TimeUnit.SECONDS)
