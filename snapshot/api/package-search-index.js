@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"io.micronaut.configuration.graphql"},{"l":"io.micronaut.configuration.graphql.apollo.ws"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"io.micronaut.configuration.graphql"},{"l":"io.micronaut.configuration.graphql.ws"},{"l":"io.micronaut.configuration.graphql.ws.apollo"}];updateSearchResults();
