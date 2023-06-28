@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-
 /**
  * A class for mapping graphql-ws messages.
  *
