@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.apollo.ws;
+package io.micronaut.configuration.graphql.ws.apollo;
 
 import graphql.ExecutionResult;
 import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
@@ -30,16 +30,18 @@ import reactor.core.publisher.Flux;
 import java.util.Collection;
 import java.util.function.Function;
 
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_COMPLETE;
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_DATA;
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_ERROR;
+import static io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse.ServerType.GQL_COMPLETE;
+import static io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse.ServerType.GQL_DATA;
+import static io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse.ServerType.GQL_ERROR;
 
 /**
  * Sends the GraphQL response(s) to the client.
  *
  * @author Gerard Klijs
  * @since 1.3
+ * @deprecated The Apollo subscriptions-transport-ws protocol is deprecated and its usage should be replaced with the new graphql-ws implementation.
  */
+@Deprecated(since = "4.0")
 @Singleton
 public class GraphQLApolloWsSender {
 

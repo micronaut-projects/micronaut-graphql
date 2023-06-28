@@ -1,4 +1,4 @@
-package io.micronaut.configuration.graphql.apollo.ws
+package io.micronaut.configuration.graphql.ws.apollo
 
 import graphql.GraphQL
 import graphql.schema.DataFetcher
@@ -20,7 +20,7 @@ import java.time.Duration
 class GraphQLApolloWsFactory {
 
     @Bean
-    @Requires(env = ["websocket", "keepalive"])
+    @Requires(env = ["websocket", "apollows", "keepalive"])
     GraphQL graphQL() {
         SchemaParser schemaParser = new SchemaParser()
         SchemaGenerator schemaGenerator = new SchemaGenerator()

@@ -1,4 +1,4 @@
-package io.micronaut.configuration.graphql.apollo.ws
+package io.micronaut.configuration.graphql.ws.apollo
 
 import io.micronaut.configuration.graphql.GraphQLRequestBody
 import io.micronaut.configuration.graphql.GraphQLResponseBody

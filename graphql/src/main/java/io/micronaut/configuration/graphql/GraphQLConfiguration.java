@@ -41,7 +41,7 @@ public class GraphQLConfiguration implements Toggleable {
     /**
      * The configuration name whether GraphQL is enabled.
      */
-    public static final String ENABLED = PREFIX + ".enabled";
+    public static final String ENABLED_CONFIG = PREFIX + ".enabled";
 
     /**
      * The default enabled value.
@@ -51,7 +51,7 @@ public class GraphQLConfiguration implements Toggleable {
     /**
      * The configuration name of the GraphQL path.
      */
-    public static final String PATH = PREFIX + ".path";
+    public static final String PATH_CONFIG = PREFIX + ".path";
 
     /**
      * The default GraphQL path.
@@ -104,7 +104,7 @@ public class GraphQLConfiguration implements Toggleable {
         /**
          * The configuration name whether GraphiQL is enabled.
          */
-        public static final String ENABLED = GraphQLConfiguration.PREFIX + "." + PREFIX + ".enabled";
+        public static final String ENABLED_CONFIG = GraphQLConfiguration.PREFIX + "." + PREFIX + ".enabled";
 
         /**
          * The default enabled value.
@@ -114,7 +114,7 @@ public class GraphQLConfiguration implements Toggleable {
         /**
          * The configuration name of the GraphiQL version.
          */
-        public static final String VERSION = PREFIX + ".version";
+        public static final String VERSION_CONFIG = PREFIX + ".version";
 
         /**
          * The default GraphiQL version.
@@ -124,7 +124,7 @@ public class GraphQLConfiguration implements Toggleable {
         /**
          * The configuration name of the GraphiQL path.
          */
-        public static final String PATH = PREFIX + ".path";
+        public static final String PATH_CONFIG = PREFIX + ".path";
 
         /**
          * The default GraphiQL path.
@@ -134,7 +134,7 @@ public class GraphQLConfiguration implements Toggleable {
         /**
          * The configuration name of the GraphiQL template path.
          */
-        public static final String TEMPLATE_PATH = PREFIX + ".template-path";
+        public static final String TEMPLATE_PATH_CONFIG = PREFIX + ".template-path";
 
         /**
          * The default GraphiQL template path.
@@ -144,7 +144,7 @@ public class GraphQLConfiguration implements Toggleable {
         /**
          * The configuration name of the GraphiQL template parameters.
          */
-        public static final String TEMPLATE_PARAMETERS = PREFIX + ".template-parameters";
+        public static final String TEMPLATE_PARAMETERS_CONFIG = PREFIX + ".template-parameters";
 
         /**
          * The default GraphiQL template parameters.
@@ -154,7 +154,7 @@ public class GraphQLConfiguration implements Toggleable {
         /**
          * The configuration name of the GraphiQL page title.
          */
-        public static final String PAGE_TITLE = PREFIX + ".page-title";
+        public static final String PAGE_TITLE_CONFIG = PREFIX + ".page-title";
 
         /**
          * The default GraphiQL page title.
