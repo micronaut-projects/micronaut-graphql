@@ -48,8 +48,10 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * @author Jeremy Grelle
  * @since 4.0
  */
-@ServerWebSocket(value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PATH_CONFIG + ":"
-    + GraphQLWsConfiguration.DEFAULT_PATH + "}", subprotocols = "graphql-transport-ws")
+@ServerWebSocket(
+    value = "${" + GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PATH_CONFIG + ":" + GraphQLWsConfiguration.DEFAULT_PATH + "}",
+    subprotocols = "graphql-transport-ws"
+)
 @Requires(property = GraphQLWsConfiguration.ENABLED_CONFIG, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphQLWsHandler {
 
