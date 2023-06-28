@@ -18,9 +18,11 @@
  *
  * @author Gerard Klijs
  * @since 1.0
+ * @deprecated The Apollo subscriptions-transport-ws protocol is deprecated and its usage should be replaced with the new graphql-ws implementation.
  */
+@Deprecated(since = "4.0")
 @Configuration
 @RequiresGraphQLApolloWs
-package io.micronaut.configuration.graphql.apollo.ws;
+package io.micronaut.configuration.graphql.ws.apollo;
 
 import io.micronaut.context.annotation.Configuration;

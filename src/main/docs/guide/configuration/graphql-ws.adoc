@@ -1,11 +1,32 @@
-The `micronaut-graphql` module comes bundled with support for GraphQL over web sockets
-(https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md).
+The `micronaut-graphql` module comes bundled with support for GraphQL over web sockets.
 
-GraphQL over web sockets must be explicitly enabled via the `graphql.graphql-apollo-ws.enabled` application property.
-While the server is capable of handling the queries and mutations also over web sockets it might not be supported in all clients.
+Support is provided both for the both current graphql-ws protocol (https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md) and the now deprecated subscriptions-transport-ws protocol from Apollo (https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md).
+
+GraphQL over web sockets via the current graphql-ws protocol must be explicitly enabled via the `graphql.graphql-ws.enabled` application property.
+
+The following configuration properties can be set for the graphql-ws support:
+
+.src/main/resources/application.yml
+[source,yaml]
+----
+graphql:
+  graphql-ws:
+    enabled: false // <1>
+    path: /graphql-ws // <2>
+    connection-init-wait-timeout: 5s // <3>
+----
+<1> Enables/disables the graphql-ws implementation of GraphQL over web sockets. Default `false`.
+<2> Configures the graphql-ws endpoint path. Default `/graphql-ws`.
+<3> Configures the maximum time allowed for a client to initiate a graphql-ws connection after the WebSocket is initially opened. Default `15s`.
+
+The deprecated subscriptions-transport-ws support must be explicitly enabled via the `graphql.graphql-apollo-ws.enabled` application property.
+
+NOTE: Prior to version 4.0 of this module, the subscriptions-transport-ws protocol was the only supported implementation, and its configuration was set via the `graphql.graphql-ws` property path. This configuration must be migrated to the `graphql.graphql-apollo-ws` if you have existing client code that depends on this protocol.
+
+While the subscriptions-transport-ws implementation is capable of also handling queries and mutations over WebSocket it might not be supported in all clients.
 Some clients have a way of configuring a different endpoint for subscriptions and/or some filter to only use the websocket for subscriptions.
 
-The following configuration properties can be set:
+The following configuration properties can be set for the subscriptions-transport-ws support:
 
 .src/main/resources/application.yml
 [source,yaml]

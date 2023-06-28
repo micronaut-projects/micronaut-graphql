@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.apollo.ws;
+package io.micronaut.configuration.graphql.ws.apollo;
 
 import io.micronaut.websocket.WebSocketSession;
 import jakarta.inject.Singleton;
@@ -26,14 +26,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 
-import static io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse.ServerType.GQL_COMPLETE;
+import static io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse.ServerType.GQL_COMPLETE;
 
 /**
  * Keeps the state of the web socket subscriptions.
  *
  * @author Gerard Klijs
  * @since 1.3
+ * @deprecated The Apollo subscriptions-transport-ws protocol is deprecated and its usage should be replaced with the new graphql-ws implementation.
  */
+@Deprecated(since = "4.0")
 @Singleton
 class GraphQLApolloWsState {
 

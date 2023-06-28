@@ -1,5 +1,4 @@
-package io.micronaut.configuration.graphql.apollo.ws
-
+package io.micronaut.configuration.graphql.ws.apollo
 
 import io.micronaut.context.ApplicationContext
 import io.micronaut.runtime.server.EmbeddedServer

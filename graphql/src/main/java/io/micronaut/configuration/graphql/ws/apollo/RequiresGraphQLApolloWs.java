@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql;
+package io.micronaut.configuration.graphql.ws.apollo;
 
 import graphql.GraphQL;
 import io.micronaut.context.annotation.Requires;
@@ -26,15 +26,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Meta annotation for GraphQL requirements.
+ * Meta annotation for GraphQL web socket requirements.
  *
- * @author James Kleeh
- * @since 1.0
+ * @author Gerard Klijs
+ * @since 1.3
+ * @deprecated The Apollo subscriptions-transport-ws protocol is deprecated and its usage should be replaced with the new graphql-ws implementation.
  */
+@Deprecated(since = "4.0")
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PACKAGE, ElementType.TYPE})
-@Requires(property = GraphQLConfiguration.ENABLED_CONFIG, notEquals = StringUtils.FALSE)
+@Requires(property = GraphQLApolloWsConfiguration.ENABLED_CONFIG, notEquals = StringUtils.FALSE)
 @Requires(beans = GraphQL.class)
-public @interface RequiresGraphQL {
+public @interface RequiresGraphQLApolloWs {
 }

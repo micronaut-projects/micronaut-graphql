@@ -49,7 +49,7 @@ import static io.micronaut.http.MediaType.APPLICATION_JSON_TYPE;
  * @author Alexey Zhokhov
  * @since 1.0
  */
-@Controller("${" + GraphQLConfiguration.PATH + ":" + GraphQLConfiguration.DEFAULT_PATH + "}")
+@Controller("${" + GraphQLConfiguration.PATH_CONFIG + ":" + GraphQLConfiguration.DEFAULT_PATH + "}")
 public class GraphQLController {
 
     private final GraphQLInvocation graphQLInvocation;

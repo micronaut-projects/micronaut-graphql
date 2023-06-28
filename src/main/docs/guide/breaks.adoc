@@ -1,7 +1,7 @@
 === Version 4.0.0
 
-The Apollo Websocket protocol classes and configuration have been refactored to pave the way for a newer websocket protocol.
+The Apollo Websocket protocol (subscriptions-transport-ws) classes and configuration have been refactored  and deprecated to pave the way for a newer websocket protocol (graphql-ws). The subscriptions-transport-ws protocol will be removed in a future version and client code should be migrated to use the new protocol. To continue using the subscriptions-transport-ws protocol, the following must be considered when upgrading:
 
-- The configuration prefix is changed from `graphql-ws` to `graphql-apollo-ws`
-- The implementation classes have moved from the `io.micronaut.configuration.graphql.ws` package to `io.micronaut.configuration.graphql.apollo.ws`
-- The implementation classes have been renamed from `GraphQLWs*` to `GraphQLApolloWs*`. For example, `GraphQLWsConfiguration` is now `GraphQLApolloWsConfiguration`.
+- The configuration prefix for subscriptions-transport-ws is changed from `graphql-ws` to `graphql-apollo-ws`
+- The implementation classes for subscriptions-transport-ws have moved from the `io.micronaut.configuration.graphql.ws` package to `io.micronaut.configuration.graphql.ws.apollo`. The implementation for the newer protocol has taken their place in `io.micronaut.configuration.graphql.ws`
+- The implementation classes for subscriptions-transport-ws have been renamed from `GraphQLWs*` to `GraphQLApolloWs*`. For example, `GraphQLWsConfiguration` is now `GraphQLApolloWsConfiguration`.

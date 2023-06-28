@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.apollo.ws;
+package io.micronaut.configuration.graphql.ws.apollo;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.micronaut.configuration.graphql.GraphQLRequestBody;
@@ -24,7 +24,9 @@ import io.micronaut.core.annotation.Nullable;
  *
  * @author Gerard Klijs
  * @since 1.3
+ * @deprecated The Apollo subscriptions-transport-ws protocol is deprecated and its usage should be replaced with the new graphql-ws implementation.
  */
+@Deprecated(since = "4.0")
 public class GraphQLApolloWsRequest {
 
     private static final String TYPE_ERROR_MESSAGE = "Could not map %s to a known client type.";
@@ -97,7 +99,7 @@ public class GraphQLApolloWsRequest {
                 return clientType;
             }
         }
-        throw new RuntimeException(String.format(TYPE_ERROR_MESSAGE, type));
+        throw new IllegalArgumentException(String.format(TYPE_ERROR_MESSAGE, type));
     }
 
     /**

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql.apollo.ws;
+package io.micronaut.configuration.graphql.ws;
 
 import graphql.GraphQL;
 import io.micronaut.context.annotation.Requires;
@@ -28,13 +28,13 @@ import java.lang.annotation.Target;
 /**
  * Meta annotation for GraphQL web socket requirements.
  *
- * @author Gerard Klijs
- * @since 1.3
+ * @author Jeremy Grelle
+ * @since 4.0
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PACKAGE, ElementType.TYPE})
-@Requires(property = GraphQLApolloWsConfiguration.ENABLED, notEquals = StringUtils.FALSE)
+@Requires(property = GraphQLWsConfiguration.ENABLED_CONFIG, notEquals = StringUtils.FALSE)
 @Requires(beans = GraphQL.class)
-public @interface RequiresGraphQLApolloWs {
+public @interface RequiresGraphQLWs {
 }
