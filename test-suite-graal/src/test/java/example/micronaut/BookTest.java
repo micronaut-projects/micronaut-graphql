@@ -3,8 +3,8 @@ package example.micronaut;
 import example.micronaut.apollo.ws.GraphQLApolloWsClient;
 import io.micronaut.configuration.graphql.GraphQLRequestBody;
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
-import io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsRequest;
-import io.micronaut.configuration.graphql.apollo.ws.GraphQLApolloWsResponse;
+import io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest;
+import io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.HttpClient;
@@ -18,9 +18,7 @@ import reactor.core.publisher.Flux;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @MicronautTest
 public class BookTest {
