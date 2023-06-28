@@ -64,7 +64,7 @@ class GraphiQLControllerSpec extends Specification {
         HttpClient client = embeddedServer.applicationContext.createBean(HttpClient, embeddedServer.getURL())
 
         when:
-        HttpResponse response = client.toBlocking().exchange(GET("/test/graphiql"), String)
+        HttpResponse response = client.toBlocking().exchange(HttpRequest.GET("/test/graphiql"), String)
 
         then:
         response.status() == HttpStatus.OK
