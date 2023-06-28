@@ -101,7 +101,6 @@ public class GraphQLWsHandler {
         LOG.trace("Opened websocket connection with id {}", session.getId());
     }
 
-
     /**
      * Called on every message received from the client.
      *
