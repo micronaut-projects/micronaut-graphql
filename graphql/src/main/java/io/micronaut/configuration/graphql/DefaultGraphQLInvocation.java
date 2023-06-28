@@ -15,19 +15,19 @@
  */
 package io.micronaut.configuration.graphql;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import io.micronaut.context.BeanProvider;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
-import io.reactivex.Flowable;
+import jakarta.inject.Singleton;
 import org.dataloader.DataLoaderRegistry;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -45,7 +45,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
     private final GraphQL graphQL;
     private final GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer;
-    private final Provider<DataLoaderRegistry> dataLoaderRegistry;
+    private final BeanProvider<DataLoaderRegistry> dataLoaderRegistry;
 
     /**
      * Default constructor.
@@ -57,7 +57,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
     public DefaultGraphQLInvocation(
             GraphQL graphQL,
             GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
-            @Nullable Provider<DataLoaderRegistry> dataLoaderRegistry) {
+            @Nullable BeanProvider<DataLoaderRegistry> dataLoaderRegistry) {
         this.graphQL = graphQL;
         this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
         this.dataLoaderRegistry = dataLoaderRegistry;
@@ -79,8 +79,8 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
             executionInputBuilder.dataLoaderRegistry(dataLoaderRegistry.get());
         }
         ExecutionInput executionInput = executionInputBuilder.build();
-        return Flowable
-                .fromPublisher(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
+        return Flux
+                .from(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
                 .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() -> {
                     try {
                         return graphQL.executeAsync(customizedExecutionInput);

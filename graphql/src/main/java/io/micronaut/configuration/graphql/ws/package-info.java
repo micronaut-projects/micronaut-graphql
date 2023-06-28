@@ -16,8 +16,8 @@
 /**
  * Micronaut GraphQL web socket integration.
  *
- * @author Gerard Klijs
- * @since 1.0
+ * @author Jeremy Grelle
+ * @since 4.0
  */
 @Configuration
 @RequiresGraphQLWs

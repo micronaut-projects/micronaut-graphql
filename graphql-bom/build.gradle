@@ -1,0 +1,15 @@
+plugins {
+    id "io.micronaut.build.internal.bom"
+}
+
+// First BOM release, this can be removed after a BOM is out
+micronautBuild {
+    // Required as a workaround to https://github.com/micronaut-projects/micronaut-build/pull/376
+    tasks.named("checkVersionCatalogCompatibility") { onlyIf { false } }
+}
+
+micronautBom {
+    excludeProject.set({ p ->
+        p.name.contains('example') || p.name.contains('hello-world')
+    } as Spec<String>)
+}

@@ -1,29 +1,17 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
-    id "org.jetbrains.kotlin.kapt" version "${kotlinVersion}"
-}
-
-dependencies {
-    kaptTest(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    id "org.jetbrains.kotlin.jvm"
+    id "org.jetbrains.kotlin.kapt"
+    id("micronaut-graphql.docs-examples-conventions")
 }
 
 micronaut {
     testRuntime "junit5"
+    version.set(libs.versions.micronaut.platform.get())
+    coreVersion.set(libs.versions.micronaut.asProvider().get())
+}
+
+dependencies {
+    testImplementation mn.micronaut.http.client
 }
 
 mainClassName = "io.micronaut.graphql.docs.ApplicationKt"
-
-java {
-    sourceCompatibility = JavaVersion.toVersion('1.8')
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-}

@@ -15,22 +15,21 @@
  */
 package io.micronaut.configuration.graphql;
 
-import io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration;
+import io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.DefaultPropertyPlaceholderResolver;
 import io.micronaut.context.env.PropertyPlaceholderResolver;
 import io.micronaut.context.exceptions.ConfigurationException;
-import io.micronaut.core.async.SupplierUtil;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.io.IOUtils;
 import io.micronaut.core.io.ResourceResolver;
 import io.micronaut.core.naming.NameUtils;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.core.util.SupplierUtil;
 import io.micronaut.core.value.MapPropertyResolver;
 import io.micronaut.core.value.PropertyResolver;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.http.server.HttpServerConfiguration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,18 +50,16 @@ import static io.micronaut.http.MediaType.TEXT_HTML;
  * @author James Kleeh
  * @since 1.0
  */
-@Controller("${" + GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphiQLConfiguration.PATH + ":"
+@Controller("${" + GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphiQLConfiguration.PATH_CONFIG + ":"
         + GraphQLConfiguration.GraphiQLConfiguration.DEFAULT_PATH + "}")
-@Requires(property = GraphQLConfiguration.GraphiQLConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
+@Requires(property = GraphQLConfiguration.GraphiQLConfiguration.ENABLED_CONFIG, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 public class GraphiQLController {
 
     private final GraphQLConfiguration graphQLConfiguration;
-    private final HttpServerConfiguration httpServerConfiguration;
     private final GraphQLConfiguration.GraphiQLConfiguration graphiQLConfiguration;
-    private final GraphQLWsConfiguration graphQLWsConfiguration;
+    private final GraphQLApolloWsConfiguration graphQLApolloWsConfiguration;
     private final ResourceResolver resourceResolver;
     private final ConversionService conversionService;
-
     private final String rawTemplate;
     private final Supplier<String> resolvedTemplate;
 
@@ -70,20 +67,18 @@ public class GraphiQLController {
      * Default constructor.
      *
      * @param graphQLConfiguration   the {@link GraphQLConfiguration} instance
-     * @param graphQLWsConfiguration the {@link GraphQLWsConfiguration} instance
+     * @param graphQLApolloWsConfiguration the {@link GraphQLApolloWsConfiguration} instance
      * @param resourceResolver       the {@link ResourceResolver} instance
      * @param conversionService      the {@link ConversionService} instance
      */
     public GraphiQLController(
             GraphQLConfiguration graphQLConfiguration,
-            HttpServerConfiguration httpServerConfiguration,
-            GraphQLWsConfiguration graphQLWsConfiguration,
+            GraphQLApolloWsConfiguration graphQLApolloWsConfiguration,
             ResourceResolver resourceResolver,
             ConversionService conversionService) {
         this.graphQLConfiguration = graphQLConfiguration;
-        this.httpServerConfiguration = httpServerConfiguration;
         this.graphiQLConfiguration = graphQLConfiguration.getGraphiql();
-        this.graphQLWsConfiguration = graphQLWsConfiguration;
+        this.graphQLApolloWsConfiguration = graphQLApolloWsConfiguration;
         this.resourceResolver = resourceResolver;
         this.conversionService = conversionService;
         // Load the raw template (variables are not yet resolved).
@@ -119,11 +114,11 @@ public class GraphiQLController {
     private String resolvedTemplate() {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("graphiqlVersion", graphiQLConfiguration.getVersion());
-        parameters.put("graphqlPath", withServerContextPath(graphQLConfiguration.getPath()));
-        String graphQLWsPath = graphQLWsConfiguration.isEnabled() ? withServerContextPath(graphQLWsConfiguration.getPath()) : "";
+        parameters.put("graphqlPath", graphQLConfiguration.getPath());
+        String graphQLWsPath = graphQLApolloWsConfiguration.isEnabled() ? graphQLApolloWsConfiguration.getPath() : "";
         parameters.put("graphqlWsPath", graphQLWsPath);
         parameters.put("pageTitle", graphiQLConfiguration.getPageTitle());
-        parameters.put("graphiqlPath", withServerContextPath(graphiQLConfiguration.getPath()));
+        parameters.put("graphiqlPath", graphiQLConfiguration.getPath());
         if (graphiQLConfiguration.getTemplateParameters() != null) {
             graphiQLConfiguration.getTemplateParameters().forEach((name, value) ->
                     // De-capitalize and de-hyphenate the parameter names.
@@ -132,12 +127,6 @@ public class GraphiQLController {
                     parameters.put(NameUtils.decapitalize(NameUtils.dehyphenate(name)), value));
         }
         return replaceParameters(this.rawTemplate, parameters);
-    }
-
-    private String withServerContextPath(final String path) {
-
-        String contextPath = httpServerConfiguration.getContextPath();
-        return contextPath == null ? path : contextPath + path;
     }
 
     private String replaceParameters(final String str, final Map<String, String> parameters) {

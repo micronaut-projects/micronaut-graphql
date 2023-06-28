@@ -1,5 +1,5 @@
 graphql:
-  graphql-ws:
+  graphql-apollo-ws:
     enabled: true
     path: /ka-ws
     keep-alive-enabled: true

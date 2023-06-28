@@ -15,14 +15,16 @@
  */
 package io.micronaut.graphql.docs;
 
+// tag::imports[]
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
+// end::imports[]
 
 /**
  * @author Marcel Overdijk
  */
+// tag::clazz[]
 @Singleton
 public class HelloDataFetcher implements DataFetcher<String> {
 
@@ -35,3 +37,4 @@ public class HelloDataFetcher implements DataFetcher<String> {
         return String.format("Hello %s!", name);
     }
 }
+// end::clazz[]

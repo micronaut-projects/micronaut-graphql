@@ -1,18 +1,26 @@
+plugins {
+    id "io.micronaut.build.internal.graphql-module"
+}
+
 dependencies {
-    annotationProcessor("io.micronaut:micronaut-inject-java:${micronautVersion}")
-    annotationProcessor("io.micronaut:micronaut-validation:${micronautVersion}")
-    api("com.graphql-java:graphql-java:${graphqlJavaVersion}")
-    api("io.micronaut:micronaut-http:${micronautVersion}")
-    api("io.micronaut:micronaut-http-server:${micronautVersion}")
-    api("io.micronaut:micronaut-inject:${micronautVersion}")
-    compileOnly("io.micronaut:micronaut-inject-java:${micronautVersion}")
-    testImplementation("cglib:cglib-nodep:${cglibVersion}")
-    testImplementation("io.micronaut:micronaut-http-client:${micronautVersion}")
-    testImplementation("io.micronaut:micronaut-http-server-netty:${micronautVersion}")
+    annotationProcessor mnSerde.micronaut.serde.processor
+    compileOnly mnSerde.micronaut.serde.support
+
+    api libs.managed.graphql.java
+
+    api mn.micronaut.http.server
+    api mn.reactor
+    api mn.micronaut.jackson.databind
+    api mn.micronaut.websocket
+
+    testImplementation mnSerde.micronaut.serde.support
+    testImplementation mn.micronaut.http.server.netty
+    testImplementation mn.micronaut.http.client
+    testRuntimeOnly mn.snakeyaml
 }
 
 micronautBuild {
     resolutionStrategy {
-        force "com.graphql-java:graphql-java:$graphqlJavaVersion"
+        force "com.graphql-java:graphql-java:${libs.versions.managed.graphql.java}"
     }
 }

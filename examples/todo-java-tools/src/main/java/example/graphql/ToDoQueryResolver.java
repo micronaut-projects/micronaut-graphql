@@ -18,8 +18,7 @@ package example.graphql;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import example.domain.ToDo;
 import example.repository.ToDoRepository;
-
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * @author Marcel Overdijk

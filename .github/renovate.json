@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "addLabels": ["type: dependency-upgrade"],
+  "schedule": [
+    "every weekend"
+  ],
+  "prHourlyLimit": 1,
+  "prConcurrentLimit": 20,
+  "timezone": "Europe/Prague",
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["actions.*"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "matchPackagePrefixes": ["com.graphql-java:"],
+      "allowedVersions": "/^[0-9]+\\.[0-9]+(\\.[0-9]+)?$/"
+    }
+  ]
+}

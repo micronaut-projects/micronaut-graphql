@@ -1,13 +1,10 @@
 micronaut:
   security:
-    enabled: true
+    authentication: cookie
     token:
-      jwt:
-        enabled: true
-        bearer:
-          enabled: false
+      refresh:
         cookie:
-          enabled: true
+          enabled: false
     intercept-url-map:
       - pattern: /**
         http-method: GET

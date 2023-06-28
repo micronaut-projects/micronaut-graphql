@@ -1,0 +1,11 @@
+[
+  {
+    "type": "io.micronaut.configuration.graphql.JacksonGraphQLJsonSerializer",
+    "member": "Class io.micronaut.configuration.graphql.JacksonGraphQLJsonSerializer",
+    "reason": "removed deprecated constructor for Micronaut 4.0.x"
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.JacksonGraphQLJsonSerializer",
+    "member": "Constructor io.micronaut.configuration.graphql.JacksonGraphQLJsonSerializer(com.fasterxml.jackson.databind.ObjectMapper)",
+    "reason": "removed deprecated constructor for Micronaut 4.0.x"
+  }]

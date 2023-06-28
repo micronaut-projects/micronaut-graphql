@@ -1,0 +1,15 @@
+plugins {
+    id 'io.micronaut.build.internal.graphql-base'
+    id('io.micronaut.minimal.application')
+}
+
+micronaut {
+    version = libs.versions.micronaut.asProvider().get()
+    runtime "netty"
+}
+
+dependencies {
+    testImplementation projects.micronautGraphql
+    runtimeOnly mn.snakeyaml
+    testRuntimeOnly mn.snakeyaml
+}

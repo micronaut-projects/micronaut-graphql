@@ -19,9 +19,9 @@ import example.domain.Author;
 import example.domain.ToDo;
 import graphql.kickstart.tools.GraphQLResolver;
 import graphql.schema.DataFetchingEnvironment;
+import jakarta.inject.Singleton;
 import org.dataloader.DataLoader;
 
-import javax.inject.Singleton;
 import java.util.concurrent.CompletableFuture;
 
 /**

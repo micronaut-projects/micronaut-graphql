@@ -1,0 +1,40 @@
+[versions]
+micronaut-docs = "2.0.0"
+micronaut = "4.0.0-RC3"
+micronaut-platform = "4.0.0-M4"
+micronaut-test = "4.0.0-M7"
+groovy = "4.0.12"
+spock = "2.3-groovy-4.0"
+
+graal-svm = "23.0.0"
+kotlin = '1.8.22'
+shadow = '7.1.2'
+micronaut-gradle-plugin = "4.0.0-M6"
+micronaut-kotlin = "4.0.0-M6"
+micronaut-security = "4.0.0-M8"
+micronaut-serde = "2.0.0-M12"
+micronaut-logging = "1.0.0-M5"
+
+managed-graphql-java = "20.4"
+managed-graphql-java-extended-scalars = "2023-01-24T02-11-56-babda5f"
+managed-graphql-java-tools = "13.0.3"
+managed-graphql-spqr = "0.12.3"
+
+[libraries]
+graal-svm = { module = "org.graalvm.nativeimage:svm", version.ref = "graal-svm" }
+micronaut-logging = { module = "io.micronaut.logging:micronaut-logging-bom", version.ref = "micronaut-logging" }
+micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'micronaut' }
+micronaut-kotlin = { module = "io.micronaut.kotlin:micronaut-kotlin-bom", version.ref = "micronaut-kotlin" }
+micronaut-security = { module = "io.micronaut.security:micronaut-security-bom", version.ref = "micronaut-security" }
+micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
+
+managed-graphql-java = { module = 'com.graphql-java:graphql-java', version.ref = 'managed-graphql-java' }
+managed-graphql-java-extended-scalars = { module = 'com.graphql-java:graphql-java-extended-scalars', version.ref = 'managed-graphql-java-extended-scalars' }
+managed-graphql-java-tools = { module = 'com.graphql-java-kickstart:graphql-java-tools', version.ref = 'managed-graphql-java-tools' }
+managed-graphql-spqr = { module = 'io.leangen.graphql:spqr', version.ref = 'managed-graphql-spqr' }
+
+#plugins
+kotlin-gradle-plugin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version.ref = 'kotlin' }
+kotlin-gradle-allopen = { module = 'org.jetbrains.kotlin:kotlin-allopen', version.ref = 'kotlin' }
+shadow-plugin = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "shadow" }
+micronaut-gradle-plugin = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref="micronaut-gradle-plugin" }

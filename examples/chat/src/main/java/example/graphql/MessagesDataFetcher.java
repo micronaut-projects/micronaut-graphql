@@ -19,8 +19,8 @@ import example.domain.ChatMessage;
 import example.repository.ChatRepository;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 

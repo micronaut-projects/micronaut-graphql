@@ -15,8 +15,8 @@
  */
 package example.graphql;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
 import example.domain.User;
+import io.micronaut.core.annotation.Nullable;
 
 /**
  * @author Alexey Zhokhov

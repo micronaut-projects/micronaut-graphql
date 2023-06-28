@@ -1,23 +1,6 @@
-/*
- * Copyright 2017-2019 original authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package io.micronaut.configuration.graphql.ws
 
-import io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration
-import io.micronaut.configuration.graphql.ws.GraphQLWsController
+
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.Environment
@@ -25,10 +8,8 @@ import io.micronaut.context.env.PropertySource
 import io.micronaut.websocket.annotation.ServerWebSocket
 import spock.lang.Specification
 
-/**
- * @author Gerard Klijs
- * @since 1.3
- */
+import java.time.Duration
+
 class GraphQLWsConfigurationSpec extends Specification {
 
     void "test graphql websocket disabled by default"() {
@@ -37,7 +18,7 @@ class GraphQLWsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        !context.containsBean(GraphQLWsController)
+        !context.containsBean(GraphQLWsHandler)
 
         cleanup:
         context.close()
@@ -52,21 +33,43 @@ class GraphQLWsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        context.containsBean(GraphQLWsController)
-        context.getBeanDefinition(GraphQLWsController).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/graphql-ws"
+        context.containsBean(GraphQLWsHandler)
+        context.getBeanDefinition(GraphQLWsHandler).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/graphql-ws"
         GraphQLWsConfiguration graphQLWsConfiguration = context.getBean(GraphQLWsConfiguration)
         graphQLWsConfiguration.path == "/graphql-ws"
 
         and:
         graphQLWsConfiguration.enabled
-        graphQLWsConfiguration.keepAliveEnabled
-        graphQLWsConfiguration.keepAliveInterval == "15s"
+        graphQLWsConfiguration.connectionInitWaitTimeout == Duration.ofSeconds(15L)
 
         cleanup:
         context.close()
     }
 
-    void "test custom graphiql path"() {
+    void "test graphql websocket enabled with custom connection timeout"() {
+        given:
+        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
+        context.environment.addPropertySource(PropertySource.of(
+                ["graphql.graphql-ws.enabled"                     : true,
+                 "graphql.graphql-ws.connection-init-wait-timeout": "30s"]
+        ))
+        context.start()
+
+        expect:
+        context.containsBean(GraphQLWsHandler)
+        context.getBeanDefinition(GraphQLWsHandler).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/graphql-ws"
+        GraphQLWsConfiguration graphQLWsConfiguration = context.getBean(GraphQLWsConfiguration)
+        graphQLWsConfiguration.path == "/graphql-ws"
+
+        and:
+        graphQLWsConfiguration.enabled
+        graphQLWsConfiguration.connectionInitWaitTimeout == Duration.ofSeconds(30L)
+
+        cleanup:
+        context.close()
+    }
+
+    void "test custom path"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
@@ -76,8 +79,8 @@ class GraphQLWsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        context.containsBean(GraphQLWsController)
-        context.getBeanDefinition(GraphQLWsController).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/custom-graphql-ws"
+        context.containsBean(GraphQLWsHandler)
+        context.getBeanDefinition(GraphQLWsHandler).getAnnotation(ServerWebSocket).getRequiredValue(String) == "/custom-graphql-ws"
         context.getBean(GraphQLWsConfiguration).path == "/custom-graphql-ws"
 
         cleanup:
@@ -93,37 +96,7 @@ class GraphQLWsConfigurationSpec extends Specification {
         context.start()
 
         expect:
-        !context.containsBean(GraphQLWsController)
-
-        cleanup:
-        context.close()
-    }
-
-    void "test graphql websocket keepalive disabled"() {
-        given:
-        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
-        context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-ws.keep-alive-enabled": false]
-        ))
-        context.start()
-
-        expect:
-        !context.getBean(GraphQLWsConfiguration).enabled
-
-        cleanup:
-        context.close()
-    }
-
-    void "test graphql websocket keepalive different interval"() {
-        given:
-        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
-        context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-ws.keep-alive-interval": "1s"]
-        ))
-        context.start()
-
-        expect:
-        context.getBean(GraphQLWsConfiguration).keepAliveInterval == "1s"
+        !context.containsBean(GraphQLWsHandler)
 
         cleanup:
         context.close()

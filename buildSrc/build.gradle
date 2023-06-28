@@ -1,0 +1,18 @@
+plugins {
+    id 'groovy-gradle-plugin'
+}
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+
+    // need to pull in micronaut-gradle-plugin:4.0.0-SNAPSHOT
+    // to prevent leaking codehaus groovy from micronaut-test 3.x
+}
+
+dependencies {
+    implementation libs.micronaut.gradle.plugin
+    implementation libs.kotlin.gradle.plugin
+    implementation libs.kotlin.gradle.allopen
+    implementation libs.shadow.plugin
+}

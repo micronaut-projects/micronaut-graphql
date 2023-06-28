@@ -1,18 +1,17 @@
 plugins {
+    id("micronaut-graphql.docs-examples-conventions")
     id "groovy"
-}
-
-repositories {
-    mavenCentral()
 }
 
 micronaut {
     testRuntime "spock"
+    version.set(libs.versions.micronaut.platform.get())
+    coreVersion.set(libs.versions.micronaut.asProvider().get())
+}
+
+dependencies {
+    implementation mn.groovy
+    testImplementation mn.micronaut.http.client
 }
 
 mainClassName = "io.micronaut.graphql.docs.Application"
-
-project.afterEvaluate {
-    nativeImage.enabled = false
-    testNativeImage.enabled = false
-}

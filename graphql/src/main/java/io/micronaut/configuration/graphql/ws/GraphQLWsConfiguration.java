@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,13 @@ import io.micronaut.configuration.graphql.GraphQLConfiguration;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.core.util.Toggleable;
 
+import java.time.Duration;
+
 /**
- * Configuration properties for using a web socket with GraphQL.
+ * Configuration of the graphql-ws protocol support.
  *
- * @author Gerard Klijs
- * @since 1.3
+ * @author Jeremy Grelle
+ * @since 4.0
  */
 @ConfigurationProperties(GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PREFIX)
 public class GraphQLWsConfiguration implements Toggleable {
@@ -36,7 +38,7 @@ public class GraphQLWsConfiguration implements Toggleable {
     /**
      * The configuration name whether the GraphQL websocket is enabled.
      */
-    public static final String ENABLED = GraphQLConfiguration.PREFIX + "." + PREFIX + ".enabled";
+    public static final String ENABLED_CONFIG = GraphQLConfiguration.PREFIX + "." + PREFIX + ".enabled";
 
     /**
      * The default enabled value.
@@ -46,7 +48,7 @@ public class GraphQLWsConfiguration implements Toggleable {
     /**
      * The configuration name of the GraphQL websocket path.
      */
-    public static final String PATH = PREFIX + ".path";
+    public static final String PATH_CONFIG = PREFIX + ".path";
 
     /**
      * The default GraphQL websocket path.
@@ -54,29 +56,16 @@ public class GraphQLWsConfiguration implements Toggleable {
     public static final String DEFAULT_PATH = "/graphql-ws";
 
     /**
-     * The configuration name of the GraphQL keep alive enabled path..
+     * The default connection initialisation wait timeout.
      */
-    public static final String KEEP_ALIVE_ENABLED = PREFIX + ".keep-alive-enabled";
-
-    /**
-     * The default keep alive enabled value.
-     */
-    public static final boolean DEFAULT_KEEP_ALIVE_ENABLED = true;
-
-    /**
-     * The configuration name of the GraphQL keep alive interval path..
-     */
-    public static final String KEEP_ALIVE_INTERVAL = PREFIX + ".keep-alive-interval";
-
-    /**
-     * The default keep alive interval value.
-     */
-    public static final String DEFAULT_KEEP_ALIVE_INTERVAL = "15s";
+    public static final Duration DEFAULT_CONNECTION_TIMEOUT = Duration.ofSeconds(15L);
 
     protected boolean enabled = DEFAULT_ENABLED;
+
     protected String path = DEFAULT_PATH;
-    protected boolean keepAliveEnabled = DEFAULT_KEEP_ALIVE_ENABLED;
-    protected String keepAliveInterval = DEFAULT_KEEP_ALIVE_INTERVAL;
+
+    protected Duration connectionInitWaitTimeout = DEFAULT_CONNECTION_TIMEOUT;
+
 
     /**
      * Returns whether GraphQL websocket is enabled.
@@ -89,6 +78,15 @@ public class GraphQLWsConfiguration implements Toggleable {
     }
 
     /**
+     * Sets whether GraphQL websocket is enabled.
+     *
+     * @param enabled whether GraphQL websocket is enabled
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
      * Returns the GraphQL websocket path.
      *
      * @return the GraphQL websocket path
@@ -98,20 +96,29 @@ public class GraphQLWsConfiguration implements Toggleable {
     }
 
     /**
-     * Returns whether GraphQL websocket keep alive is enabled.
+     * Sets the GraphQL websocket path.
      *
-     * @return whether GraphQL websocket keep alive is enabled
+     * @param path the GraphQL websocket path
      */
-    public boolean isKeepAliveEnabled() {
-        return keepAliveEnabled;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     /**
-     * Returns the GraphQL keep alive interval in seconds.
+     * Returns the connection intialisation wait timeout.
      *
-     * @return the GraphQL keep alive interval in seconds
+     * @return the connection intialisation wait timeout
      */
-    public String getKeepAliveInterval() {
-        return keepAliveInterval;
+    public Duration getConnectionInitWaitTimeout() {
+        return connectionInitWaitTimeout;
+    }
+
+    /**
+     * Sets the connection intialisation wait timeout.
+     *
+     * @param connectionInitWaitTimeout the connection intialisation wait timeout
+     */
+    public void setConnectionInitWaitTimeout(Duration connectionInitWaitTimeout) {
+        this.connectionInitWaitTimeout = connectionInitWaitTimeout;
     }
 }

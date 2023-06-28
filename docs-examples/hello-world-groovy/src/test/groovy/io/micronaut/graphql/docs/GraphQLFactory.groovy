@@ -25,7 +25,7 @@ import groovy.transform.CompileStatic
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.core.io.ResourceResolver
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 // end::imports[]
 
 /**

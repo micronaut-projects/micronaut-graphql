@@ -1,5 +1,5 @@
 graphql:
   graphql-ws:
     enabled: true
-    keep-alive-enabled: false
+    connection-init-wait-timeout: 5s
   factory: false

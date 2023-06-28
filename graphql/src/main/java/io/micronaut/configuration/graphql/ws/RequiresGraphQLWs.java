@@ -28,13 +28,13 @@ import java.lang.annotation.Target;
 /**
  * Meta annotation for GraphQL web socket requirements.
  *
- * @author Gerard Klijs
- * @since 1.3
+ * @author Jeremy Grelle
+ * @since 4.0
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PACKAGE, ElementType.TYPE})
-@Requires(property = GraphQLWsConfiguration.ENABLED, notEquals = StringUtils.FALSE)
+@Requires(property = GraphQLWsConfiguration.ENABLED_CONFIG, notEquals = StringUtils.FALSE)
 @Requires(beans = GraphQL.class)
 public @interface RequiresGraphQLWs {
 }

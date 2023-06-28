@@ -1,22 +1,42 @@
-rootProject.name = "graphql"
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id("io.micronaut.build.shared.settings") version "6.5.0"
+}
+
+enableFeaturePreview 'TYPESAFE_PROJECT_ACCESSORS'
+
+micronautBuild {
+    importMicronautCatalog("micronaut-logging")
+    useStandardizedProjectNames = true
+    importMicronautCatalog()
+    importMicronautCatalog("micronaut-kotlin")
+    importMicronautCatalog("micronaut-security")
+    importMicronautCatalog("micronaut-serde")
+}
+
+rootProject.name = 'graphql-parent'
 
 include "graphql"
+include "graphql-bom"
+
 include 'docs-examples:hello-world-java'
 include 'docs-examples:hello-world-groovy'
 include 'docs-examples:hello-world-kotlin'
 
-
-String[] examples = [
+[
         "chat",
         "jwt-security",
-        "todo",
         "todo-java-tools",
         "todo-spqr"
-]
-
-examples.each { name ->
+].each { name ->
     include name
     def project = findProject(":${name}")
-    project.name = "graphql-example-${name}"
+    project.name = "micronaut-graphql-example-${name}"
     project.projectDir = new File(settingsDir, "examples/${name}")
 }

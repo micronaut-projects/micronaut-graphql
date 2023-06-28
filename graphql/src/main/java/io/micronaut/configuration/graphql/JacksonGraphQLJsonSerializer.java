@@ -15,10 +15,12 @@
  */
 package io.micronaut.configuration.graphql;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micronaut.core.type.Argument;
+import io.micronaut.json.JsonMapper;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * The Jackson implementation for serializing and deserializing GraphQL objects.
@@ -29,15 +31,16 @@ import java.io.IOException;
 @Singleton
 public class JacksonGraphQLJsonSerializer implements GraphQLJsonSerializer {
 
-    private final ObjectMapper objectMapper;
+    private final JsonMapper jsonMapper;
 
     /**
      * Default constructor.
      *
-     * @param objectMapper the {@link ObjectMapper} instance
+     * @param jsonMapper the {@link JsonMapper} instance
+     * @since 3.1.0
      */
-    public JacksonGraphQLJsonSerializer(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public JacksonGraphQLJsonSerializer(JsonMapper jsonMapper) {
+        this.jsonMapper = jsonMapper;
     }
 
     /**
@@ -46,7 +49,7 @@ public class JacksonGraphQLJsonSerializer implements GraphQLJsonSerializer {
     @Override
     public String serialize(Object object) {
         try {
-            return objectMapper.writeValueAsString(object);
+            return new String(jsonMapper.writeValueAsBytes(object), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException("Error serializing object to JSON: " + e.getMessage(), e);
         }
@@ -58,7 +61,7 @@ public class JacksonGraphQLJsonSerializer implements GraphQLJsonSerializer {
     @Override
     public <T> T deserialize(String json, Class<T> requiredType) {
         try {
-            return objectMapper.readValue(json, requiredType);
+            return jsonMapper.readValue(json, Argument.of(requiredType));
         } catch (IOException e) {
             throw new RuntimeException("Error deserializing object from JSON: " + e.getMessage(), e);
         }
