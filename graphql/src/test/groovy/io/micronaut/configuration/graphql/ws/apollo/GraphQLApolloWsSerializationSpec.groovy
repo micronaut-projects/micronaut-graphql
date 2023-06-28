@@ -1,14 +1,12 @@
- package io.micronaut.configuration.graphql.apollo.ws
+package io.micronaut.configuration.graphql.ws.apollo
 
- import io.micronaut.configuration.graphql.GraphQLRequestBody
- import io.micronaut.configuration.graphql.GraphQLResponseBody
- import io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest
- import io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse
- import io.micronaut.jackson.databind.JacksonDatabindMapper
- import io.micronaut.json.JsonMapper
- import spock.lang.Specification
+import io.micronaut.configuration.graphql.GraphQLRequestBody
+import io.micronaut.configuration.graphql.GraphQLResponseBody
+import io.micronaut.jackson.databind.JacksonDatabindMapper
+import io.micronaut.json.JsonMapper
+import spock.lang.Specification
 
- class GraphQLApolloWsSerializationSpec extends Specification {
+class GraphQLApolloWsSerializationSpec extends Specification {
 
     void "test request serialization using jackson object mapper"() {
         given:
