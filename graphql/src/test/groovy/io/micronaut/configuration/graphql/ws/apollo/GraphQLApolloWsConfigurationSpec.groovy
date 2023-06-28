@@ -4,7 +4,6 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.env.Environment
 import io.micronaut.context.env.PropertySource
-import io.micronaut.context.exceptions.NoSuchBeanException
 import io.micronaut.websocket.annotation.ServerWebSocket
 import spock.lang.Specification
 
