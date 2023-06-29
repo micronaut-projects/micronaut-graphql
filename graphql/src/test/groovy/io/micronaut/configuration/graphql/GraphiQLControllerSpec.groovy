@@ -52,4 +52,25 @@ class GraphiQLControllerSpec extends Specification {
         cleanup:
         embeddedServer.close()
     }
+
+    void "test simple get with context path"() {
+        given:
+        EmbeddedServer embeddedServer = ApplicationContext.run(
+                EmbeddedServer,
+                ["spec.name"       : GraphiQLControllerSpec.simpleName,
+                 "micronaut.server.context-path": "/test",
+                 "graphql.graphiql.enabled": true],
+                Environment.TEST)
+        HttpClient client = embeddedServer.applicationContext.createBean(HttpClient, embeddedServer.getURL())
+
+        when:
+        HttpResponse response = client.toBlocking().exchange(HttpRequest.GET("/test/graphiql"), String)
+
+        then:
+        response.status() == HttpStatus.OK
+        response.contentType.get().toString() == TEXT_HTML + ";charset=UTF-8"
+
+        cleanup:
+        embeddedServer.close()
+    }
 }
