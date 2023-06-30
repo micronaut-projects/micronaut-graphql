@@ -2,10 +2,3 @@ plugins {
     id 'io.micronaut.build.internal.graphql-base'
     id 'io.micronaut.build.internal.module'
 }
-
-// TODO: Temporary disabled binary compatibility check
-micronautBuild {
-    binaryCompatibility {
-        enabled = false
-    }
-}
