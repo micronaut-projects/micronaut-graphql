@@ -6,7 +6,7 @@ mn create-app helloworld --features=graphql
 
 If you already have an application, add the micronaut graphql dependency:
 
-dependency:micronaut-graphql[version="{version}", groupId="io.micronaut.graphql"]
+dependency:micronaut-graphql[groupId="io.micronaut.graphql"]
 
 Configure the `/graphql` endpoint by adding to `application.yml`:
 
