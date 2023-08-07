@@ -16,6 +16,7 @@
 package io.micronaut.configuration.graphql.ws.apollo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
 import io.micronaut.core.annotation.Nullable;
@@ -32,11 +33,17 @@ import io.micronaut.serde.annotation.Serdeable;
 @Serdeable
 public class GraphQLApolloWsResponse {
 
-    private final String type;
+    private String type;
     @Nullable
     private String id;
     @Nullable
     private GraphQLResponseBody payload;
+
+    /**
+     * Empty constructor.
+     */
+    public GraphQLApolloWsResponse() {
+    }
 
     /**
      * Constructor for messages with just the type, like errors.
@@ -81,6 +88,16 @@ public class GraphQLApolloWsResponse {
     }
 
     /**
+     * Sets the type.
+     *
+     * @param type the type as string
+     */
+    @JsonSetter
+    public void setType(final String type) {
+        this.type = type;
+    }
+
+    /**
      * Get the id.
      *
      * @return id as string
@@ -91,6 +108,16 @@ public class GraphQLApolloWsResponse {
     }
 
     /**
+     * Sets the id.
+     *
+     * @param id the id
+     */
+    @JsonSetter
+    public void setId(@Nullable final String id) {
+        this.id = id;
+    }
+
+    /**
      * Get the payload.
      *
      * @return result of the query
@@ -98,6 +125,16 @@ public class GraphQLApolloWsResponse {
     @Nullable
     public GraphQLResponseBody getPayload() {
         return payload;
+    }
+
+    /**
+     * Sets the payload.
+     *
+     * @param payload the payload
+     */
+    @JsonSetter
+    public void setPayload(@Nullable GraphQLResponseBody payload) {
+        this.payload = payload;
     }
 
     /**
