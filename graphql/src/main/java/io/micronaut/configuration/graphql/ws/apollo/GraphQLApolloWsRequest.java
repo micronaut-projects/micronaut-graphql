@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.graphql.ws.apollo;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.micronaut.configuration.graphql.GraphQLRequestBody;
 import io.micronaut.core.annotation.Nullable;
@@ -53,6 +54,7 @@ public class GraphQLApolloWsRequest {
      *
      * @param type the type as string
      */
+    @JsonSetter
     public void setType(final String type) {
         this.type = fromString(type);
     }
@@ -72,6 +74,7 @@ public class GraphQLApolloWsRequest {
      *
      * @param id the id
      */
+    @JsonSetter
     public void setId(@Nullable final String id) {
         this.id = id;
     }
@@ -91,6 +94,7 @@ public class GraphQLApolloWsRequest {
      *
      * @param payload the payload
      */
+    @JsonSetter
     public void setPayload(@Nullable final GraphQLRequestBody payload) {
         this.payload = payload;
     }
