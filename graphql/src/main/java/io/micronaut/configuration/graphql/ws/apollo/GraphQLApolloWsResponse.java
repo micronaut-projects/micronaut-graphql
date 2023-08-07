@@ -103,6 +103,7 @@ public class GraphQLApolloWsResponse {
     /**
      * Types of messages send to the client.
      */
+    @Serdeable
     public enum ServerType {
         GQL_CONNECTION_ACK("connection_ack"),
         GQL_CONNECTION_ERROR("connection_error"),

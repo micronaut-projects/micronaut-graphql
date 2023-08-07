@@ -18,6 +18,7 @@ package io.micronaut.configuration.graphql;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.micronaut.serde.annotation.Serdeable;
 
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import java.util.Map;
  * @author Marcel Overdijk
  * @since 1.0
  */
+@Serdeable
 public class GraphQLResponseBody {
 
     private final Map<String, Object> specification;

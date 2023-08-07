@@ -18,6 +18,7 @@ package io.micronaut.configuration.graphql.ws.apollo;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.micronaut.configuration.graphql.GraphQLRequestBody;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.serde.annotation.Serdeable;
 
 /**
  * Class to handle the message to and from the websocket.
@@ -27,6 +28,7 @@ import io.micronaut.core.annotation.Nullable;
  * @deprecated The Apollo subscriptions-transport-ws protocol is deprecated and its usage should be replaced with the new graphql-ws implementation.
  */
 @Deprecated(since = "4.0")
+@Serdeable
 public class GraphQLApolloWsRequest {
 
     private static final String TYPE_ERROR_MESSAGE = "Could not map %s to a known client type.";
@@ -105,6 +107,7 @@ public class GraphQLApolloWsRequest {
     /**
      * Types of messages received from the client.
      */
+    @Serdeable
     public enum ClientType {
         GQL_CONNECTION_INIT("connection_init"),
         GQL_START("start"),
