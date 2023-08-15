@@ -5,7 +5,7 @@ plugins {
 dependencies {
     annotationProcessor(mnSerde.micronaut.serde.processor)
     compileOnly(mnSerde.micronaut.serde.api)
-    api(mn.jackson.annotations)
+    compileOnly(mn.jackson.annotations)
     api(libs.managed.graphql.java)
 
     api(mn.micronaut.http.server)
