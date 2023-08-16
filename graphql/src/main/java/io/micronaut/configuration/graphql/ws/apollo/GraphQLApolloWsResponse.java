@@ -15,8 +15,8 @@
  */
 package io.micronaut.configuration.graphql.ws.apollo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
 import io.micronaut.core.annotation.Nullable;
@@ -33,16 +33,24 @@ import io.micronaut.serde.annotation.Serdeable;
 @Serdeable
 public class GraphQLApolloWsResponse {
 
-    private String type;
+    private final String type;
     @Nullable
     private String id;
     @Nullable
     private GraphQLResponseBody payload;
 
     /**
-     * Empty constructor.
+     * Constructor having all the types, like a graphql query response.
+     *
+     * @param serverType serverType as string
+     * @param id         id as string
+     * @param payload    payload as string
      */
-    public GraphQLApolloWsResponse() {
+    @JsonCreator
+    public GraphQLApolloWsResponse(@JsonProperty("type") String serverType, @JsonProperty("id") @Nullable String id, @JsonProperty("payload") @Nullable GraphQLResponseBody payload) {
+        this.type = serverType;
+        this.id = id;
+        this.payload = payload;
     }
 
     /**
@@ -88,16 +96,6 @@ public class GraphQLApolloWsResponse {
     }
 
     /**
-     * Sets the type.
-     *
-     * @param type the type as string
-     */
-    @JsonSetter
-    public void setType(final String type) {
-        this.type = type;
-    }
-
-    /**
      * Get the id.
      *
      * @return id as string
@@ -108,16 +106,6 @@ public class GraphQLApolloWsResponse {
     }
 
     /**
-     * Sets the id.
-     *
-     * @param id the id
-     */
-    @JsonSetter
-    public void setId(@Nullable final String id) {
-        this.id = id;
-    }
-
-    /**
      * Get the payload.
      *
      * @return result of the query
@@ -125,16 +113,6 @@ public class GraphQLApolloWsResponse {
     @Nullable
     public GraphQLResponseBody getPayload() {
         return payload;
-    }
-
-    /**
-     * Sets the payload.
-     *
-     * @param payload the payload
-     */
-    @JsonSetter
-    public void setPayload(@Nullable GraphQLResponseBody payload) {
-        this.payload = payload;
     }
 
     /**
