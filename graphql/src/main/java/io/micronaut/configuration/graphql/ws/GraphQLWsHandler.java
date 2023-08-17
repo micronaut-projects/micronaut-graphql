@@ -234,7 +234,7 @@ public class GraphQLWsHandler {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Error websocket connection with id {} with error {}", session.getId(), t.getMessage());
         }
-        if (t instanceof CodecException) {
+        if (t instanceof CodecException || t instanceof InstantiationError) {
             session.close(new CloseReason(4400, "Invalid message."));
         }
     }
