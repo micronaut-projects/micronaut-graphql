@@ -15,6 +15,7 @@
  */
 package io.micronaut.configuration.graphql.ws.apollo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
@@ -37,6 +38,20 @@ public class GraphQLApolloWsResponse {
     private String id;
     @Nullable
     private GraphQLResponseBody payload;
+
+    /**
+     * Constructor having all the types, like a graphql query response.
+     *
+     * @param serverType serverType as string
+     * @param id         id as string
+     * @param payload    payload as string
+     */
+    @JsonCreator
+    public GraphQLApolloWsResponse(@JsonProperty("type") String serverType, @JsonProperty("id") @Nullable String id, @JsonProperty("payload") @Nullable GraphQLResponseBody payload) {
+        this.type = serverType;
+        this.id = id;
+        this.payload = payload;
+    }
 
     /**
      * Constructor for messages with just the type, like errors.
@@ -103,6 +118,7 @@ public class GraphQLApolloWsResponse {
     /**
      * Types of messages send to the client.
      */
+    @Serdeable
     public enum ServerType {
         GQL_CONNECTION_ACK("connection_ack"),
         GQL_CONNECTION_ERROR("connection_error"),

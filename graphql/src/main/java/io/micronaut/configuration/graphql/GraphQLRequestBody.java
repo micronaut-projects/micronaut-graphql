@@ -15,6 +15,8 @@
  */
 package io.micronaut.configuration.graphql;
 
+import io.micronaut.serde.annotation.Serdeable;
+
 import java.util.Map;
 
 /**
@@ -23,6 +25,7 @@ import java.util.Map;
  * @author Marcel Overdijk
  * @since 1.0
  */
+@Serdeable
 public class GraphQLRequestBody {
 
     private String query;

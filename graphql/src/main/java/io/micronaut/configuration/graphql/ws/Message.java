@@ -26,6 +26,7 @@ import graphql.GraphQLError;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.serde.annotation.Serdeable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -161,6 +162,7 @@ abstract sealed class RequiredPayloadMessage<T> extends Message {
 /**
  * A graphql-ws message for connection initialisation.
  */
+@Serdeable
 final class ConnectionInitMessage extends PayloadMessage<Map<String, Object>> {
 
     /**
@@ -179,6 +181,7 @@ final class ConnectionInitMessage extends PayloadMessage<Map<String, Object>> {
 /**
  * A graphql-ws message for connection acknowledgement.
  */
+@Serdeable
 final class ConnectionAckMessage extends PayloadMessage<Map<String, Object>> {
 
     /**
@@ -197,6 +200,7 @@ final class ConnectionAckMessage extends PayloadMessage<Map<String, Object>> {
 /**
  * A graphql-ws message for a ping.
  */
+@Serdeable
 final class PingMessage extends PayloadMessage<Map<String, Object>> {
 
     /**
@@ -215,6 +219,7 @@ final class PingMessage extends PayloadMessage<Map<String, Object>> {
 /**
  * A graphql-ws message for a pong.
  */
+@Serdeable
 final class PongMessage extends PayloadMessage<Map<String, Object>> {
 
     /**
@@ -233,6 +238,7 @@ final class PongMessage extends PayloadMessage<Map<String, Object>> {
 /**
  * A graphql-ws message for encoding the 'next' result from an executed operation.
  */
+@Serdeable
 final class NextMessage extends RequiredPayloadMessage<Map<String, Object>> {
 
     @NonNull
@@ -287,6 +293,7 @@ final class NextMessage extends RequiredPayloadMessage<Map<String, Object>> {
 /**
  * A graphql-ws message for subscribing to the execution of a query.
  */
+@Serdeable
 final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>> {
 
     @NonNull
@@ -338,6 +345,7 @@ final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>>
         return SubscribePayload.fromMap(getPayload());
     }
 
+    @Serdeable
     public static class SubscribePayload {
 
         @NonNull
@@ -462,6 +470,7 @@ final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>>
 /**
  * A graphql-ws message for reporting errors pertaining to a specific subscription.
  */
+@Serdeable
 final class ErrorMessage extends RequiredPayloadMessage<List<Map<String, Object>>> {
 
     @NonNull
@@ -517,6 +526,7 @@ final class ErrorMessage extends RequiredPayloadMessage<List<Map<String, Object>
 /**
  * A graphql-ws message for the completion of a subscription.
  */
+@Serdeable
 final class CompleteMessage extends Message {
 
     @NonNull
