@@ -17,7 +17,7 @@ package io.micronaut.configuration.graphql;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micronaut.serde.annotation.Serdeable;
 
 import java.util.Map;
@@ -51,7 +51,7 @@ public class GraphQLResponseBody {
      * @return the GraphQL response body data
      */
     @JsonAnyGetter
-    @JsonInclude
+    @JsonIgnore
     public Map<String, Object> getSpecification() {
         return specification;
     }
