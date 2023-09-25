@@ -1,0 +1,7 @@
+micronaut:
+  application:
+    name: graphql
+graphql:
+  graphiql:
+    enabled: true
+
