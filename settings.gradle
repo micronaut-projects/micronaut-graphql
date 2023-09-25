@@ -42,3 +42,5 @@ include 'docs-examples:hello-world-kotlin'
 }
 
 include 'test-suite-graal'
+include 'test-suite-serde'
+include 'test-suite-jackson'

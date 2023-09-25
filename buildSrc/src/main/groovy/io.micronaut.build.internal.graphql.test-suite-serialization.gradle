@@ -1,0 +1,22 @@
+plugins {
+    id("io.micronaut.application")
+}
+
+micronaut {
+    importMicronautPlatform = false
+    runtime("netty")
+    testRuntime("junit5")
+}
+
+configurations.all {
+    resolutionStrategy {
+        preferProjectModules()
+    }
+}
+
+dependencies {
+    implementation(projects.micronautGraphql)
+    runtimeOnly(mnLogging.logback.classic)
+    testImplementation(mn.micronaut.http.client)
+    testImplementation(mnTest.micronaut.test.junit5)
+}
