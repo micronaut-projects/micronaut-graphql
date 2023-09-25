@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.micronaut.configuration.graphql.GraphQLResponseBody
-import org.junit.jupiter.api.Disabled
 
 @MicronautTest
 class GraphQLJacksonSerializationTest {
@@ -14,7 +13,6 @@ class GraphQLJacksonSerializationTest {
     @Inject
     lateinit var mapper: ObjectMapper
 
-    @Disabled("https://github.com/micronaut-projects/micronaut-core/pull/9872")
     @Test
     fun serializeGraphQLResponseBody() {
         val specification = mapOf("foo" to "bar")
