@@ -1,5 +1,6 @@
 package example.micronaut;
 
+import io.micronaut.context.annotation.Property;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.HttpClient;
@@ -14,6 +15,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Property(name = "spec.name", value = "BookTest")
 @MicronautTest
 class BookTest {
 

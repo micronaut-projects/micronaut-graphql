@@ -8,6 +8,7 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.io.ResourceResolver;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
+@Requires(property= "spec.name", value = "BookTest")
 @Factory
 public class GraphQLFactory {
 

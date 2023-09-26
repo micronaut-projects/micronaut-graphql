@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest
+@Property(name = "spec.name", value = "BookTest")
 @Property(name = "jackson.serialization-inclusion", value = "ALWAYS")
 class BookTest {
 

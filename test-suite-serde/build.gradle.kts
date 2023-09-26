@@ -8,5 +8,5 @@ application {
 
 dependencies {
     annotationProcessor(mnSerde.micronaut.serde.processor)
-    testImplementation(mnSerde.micronaut.serde.jackson)
+    implementation(mnSerde.micronaut.serde.jackson)
 }
