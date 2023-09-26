@@ -100,9 +100,9 @@
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
-<a id="io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration" href="#io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration">&#128279;</a>
+<a id="io.micronaut.configuration.graphql.GraphQLConfiguration" href="#io.micronaut.configuration.graphql.GraphQLConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/ws/GraphQLWsConfiguration.html">GraphQLWsConfiguration</a></caption>
+<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/GraphQLConfiguration.html">GraphQLConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -117,19 +117,14 @@
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-ws.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.enabled</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Returns whether GraphQL websocket is enabled.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns whether GraphQL is enabled.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-ws.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.path</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphQL websocket path.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-ws.connection-init-wait-timeout</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the connection intialisation wait timeout.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphQL path.</p></td>
 </tr>
 </tbody>
 </table>
@@ -173,9 +168,9 @@
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
-<a id="io.micronaut.configuration.graphql.GraphQLConfiguration" href="#io.micronaut.configuration.graphql.GraphQLConfiguration">&#128279;</a>
+<a id="io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration" href="#io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/GraphQLConfiguration.html">GraphQLConfiguration</a></caption>
+<caption class="title">Table 4. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/ws/GraphQLWsConfiguration.html">GraphQLWsConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -190,14 +185,19 @@
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-ws.enabled</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Returns whether GraphQL is enabled.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns whether GraphQL websocket is enabled.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-ws.path</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphQL path.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphQL websocket path.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-ws.connection-init-wait-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the connection intialisation wait timeout.</p></td>
 </tr>
 </tbody>
 </table>
