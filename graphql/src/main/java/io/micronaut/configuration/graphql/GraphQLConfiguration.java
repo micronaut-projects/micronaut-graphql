@@ -125,7 +125,7 @@ public class GraphQLConfiguration implements Toggleable {
         /**
          * The default GraphiQL version.
          */
-        public static final String DEFAULT_VERSION = "0.13.2";
+        public static final String DEFAULT_VERSION = "3.0.6";
 
         /**
          * The default GraphIQL Explorer plugin version.
