@@ -117,9 +117,21 @@ public class GraphQLConfiguration implements Toggleable {
         public static final String VERSION_CONFIG = PREFIX + ".version";
 
         /**
+         * The configuration name of the GraphIQL Explorer plugin version.
+         * @since 4.1
+         */
+        public static final String EXPLORER_PLUGIN_VERSION = PREFIX + ".explorerPluginVersion";
+
+        /**
          * The default GraphiQL version.
          */
         public static final String DEFAULT_VERSION = "0.13.2";
+
+        /**
+         * The default GraphIQL Explorer plugin version.
+         * @since 4.1
+         */
+        public static final String DEFAULT_EXPLORER_PLUGIN_VERSION = "0.3.5";
 
         /**
          * The configuration name of the GraphiQL path.
@@ -163,13 +175,14 @@ public class GraphQLConfiguration implements Toggleable {
 
         protected boolean enabled = DEFAULT_ENABLED;
         protected String version = DEFAULT_VERSION;
+        protected String explorerPluginVersion = DEFAULT_EXPLORER_PLUGIN_VERSION;
         protected String path = DEFAULT_PATH;
         protected String templatePath = DEFAULT_TEMPLATE_PATH;
         protected Map<String, String> templateParameters = DEFAULT_TEMPLATE_PARAMETERS;
         protected String pageTitle = DEFAULT_PAGE_TITLE;
 
         /**
-         * Returns whether GraphiQL is enabled.
+         * Returns whether GraphiQL is enabled. Default value ({@value #DEFAULT_ENABLED}).
          *
          * @return whether GraphiQL is enabled
          */
@@ -179,7 +192,7 @@ public class GraphQLConfiguration implements Toggleable {
         }
 
         /**
-         * Returns the GraphiQL version.
+         * Returns the GraphiQL version. Default value ({@value #DEFAULT_VERSION}).
          *
          * @return the GraphiQL version
          */
@@ -188,7 +201,17 @@ public class GraphQLConfiguration implements Toggleable {
         }
 
         /**
-         * Returns the GraphiQL path.
+         * Returns the GraphIQL Explorer plugin version. Default value ({@value #DEFAULT_EXPLORER_PLUGIN_VERSION}).
+         *
+         * @return the GraphIQL Explorer plugin version
+         * @since 4.1
+         */
+        public String getExplorerPluginVersion() {
+            return explorerPluginVersion;
+        }
+
+        /**
+         * Returns the GraphiQL path. Default value ({@value #DEFAULT_PATH}).
          *
          * @return the GraphiQL path
          */
@@ -197,7 +220,7 @@ public class GraphQLConfiguration implements Toggleable {
         }
 
         /**
-         * Returns the GraphiQL template path.
+         * Returns the GraphiQL template path. Default value ({@value #DEFAULT_TEMPLATE_PATH}).
          *
          * @return the GraphiQL template path
          */
@@ -215,7 +238,7 @@ public class GraphQLConfiguration implements Toggleable {
         }
 
         /**
-         * Returns the GraphiQL page title.
+         * Returns the GraphiQL page title. Default value ({@value #DEFAULT_PAGE_TITLE}).
          *
          * @return the GraphiQL page title
          */
