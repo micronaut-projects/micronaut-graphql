@@ -48,6 +48,7 @@ class GraphiQLControllerSpec extends Specification {
         then:
         response.status() == HttpStatus.OK
         response.contentType.get().toString() == TEXT_HTML + ";charset=UTF-8"
+        response.body().contains("'X-GraphiQL-Version': '${GraphQLConfiguration.GraphiQLConfiguration.DEFAULT_VERSION}'")
 
         cleanup:
         embeddedServer.close()
@@ -69,6 +70,7 @@ class GraphiQLControllerSpec extends Specification {
         then:
         response.status() == HttpStatus.OK
         response.contentType.get().toString() == TEXT_HTML + ";charset=UTF-8"
+        response.body().contains("'X-GraphiQL-Version': '${GraphQLConfiguration.GraphiQLConfiguration.DEFAULT_VERSION}'")
 
         cleanup:
         embeddedServer.close()
