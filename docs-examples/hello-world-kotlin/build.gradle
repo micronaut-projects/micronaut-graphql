@@ -16,3 +16,9 @@ dependencies {
 }
 
 mainClassName = "io.micronaut.graphql.docs.ApplicationKt"
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
