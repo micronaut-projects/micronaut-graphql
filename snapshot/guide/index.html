@@ -854,47 +854,59 @@ An example using subscriptions with kafka can be found here, <a href="https://gi
 <div class="paragraph">
 <p>The following configuration properties can be set:</p>
 </div>
-<div class="listingblock">
-<div class="title">src/main/resources/application.yml</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
-  graphiql:
-    enabled: true <i class="conum" data-value="1"></i><b>(1)</b>
-    version: 0.13.2 <i class="conum" data-value="2"></i><b>(2)</b>
-    path: /graphiql <i class="conum" data-value="3"></i><b>(3)</b>
-    template-path: classpath:graphiql/index.html <i class="conum" data-value="4"></i><b>(4)</b>
-    template-parameters: <i class="conum" data-value="5"></i><b>(5)</b>
-    page-title: GraphiQL <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
+<a id="io.micronaut.configuration.graphql.GraphQLConfiguration$GraphiQLConfiguration" href="#io.micronaut.configuration.graphql.GraphQLConfiguration$GraphiQLConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/GraphQLConfiguration.GraphiQLConfiguration.html">GraphQLConfiguration$GraphiQLConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
 <tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Enables/disables GraphiQL. Default <code>false</code>.</td>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphiql.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns whether GraphiQL is enabled. Default value (false).</p></td>
 </tr>
 <tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configures the GraphiQL version. Default <code>0.13.2</code>.</td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphiql.version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphiQL version. Default value ("3.0.6").</p></td>
 </tr>
 <tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Configures the GraphiQL endpoint path. Default <code>/graphiql</code>.</td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphiql.explorer-plugin-version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphIQL Explorer plugin version. Default value ("0.3.5").</p></td>
 </tr>
 <tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Configures the GraphiQL template path. Default <code>classpath:graphiql/index.html</code>.</td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphiql.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphiQL path. Default value ("/graphiql").</p></td>
 </tr>
 <tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Configures the GraphiQL template parameters. Default none.</td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphiql.template-path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphiQL template path. Default value ("classpath:graphiql/index.html").</p></td>
 </tr>
 <tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Configures the GraphiQL page title. Default <code>GraphiQL</code>.</td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphiql.template-parameters</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Map</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphiQL template parameters to be substituted in the template.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphiql.page-title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphiQL page title. Default value ("GraphiQL").</p></td>
+</tr>
+</tbody>
 </table>
-</div>
 <div class="paragraph">
 <p>The out of the box rendered Graph<em>i</em>QL page does not provide many customisations except the Graph<em>i</em>QL version, path and page title.
 It also takes into account the <code>graphql.path</code> application property,
