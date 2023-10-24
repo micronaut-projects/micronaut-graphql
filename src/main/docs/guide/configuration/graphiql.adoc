@@ -6,24 +6,7 @@ Graph__i__QL must be explicitly enabled via the `graphql.graphiql.enabled` appli
 
 The following configuration properties can be set:
 
-.src/main/resources/application.yml
-[source,yaml]
-----
-graphql:
-  graphiql:
-    enabled: true // <1>
-    version: 0.13.2 // <2>
-    path: /graphiql // <3>
-    template-path: classpath:graphiql/index.html // <4>
-    template-parameters: // <5>
-    page-title: GraphiQL // <6>
-----
-<1> Enables/disables GraphiQL. Default `false`.
-<2> Configures the GraphiQL version. Default `0.13.2`.
-<3> Configures the GraphiQL endpoint path. Default `/graphiql`.
-<4> Configures the GraphiQL template path. Default `classpath:graphiql/index.html`.
-<5> Configures the GraphiQL template parameters. Default none.
-<6> Configures the GraphiQL page title. Default `GraphiQL`.
+include::{includedir}configurationProperties/io.micronaut.configuration.graphql.GraphQLConfiguration$GraphiQLConfiguration.adoc[]
 
 The out of the box rendered Graph__i__QL page does not provide many customisations except the Graph__i__QL version, path and page title.
 It also takes into account the `graphql.path` application property,

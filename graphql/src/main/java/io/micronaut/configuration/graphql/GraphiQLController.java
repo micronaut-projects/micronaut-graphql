@@ -114,6 +114,7 @@ public class GraphiQLController {
     private String resolvedTemplate() {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("graphiqlVersion", graphiQLConfiguration.getVersion());
+        parameters.put("graphiqlExplorerPluginVersion", graphiQLConfiguration.getExplorerPluginVersion());
         parameters.put("graphqlPath", graphQLConfiguration.getPath());
         String graphQLWsPath = graphQLApolloWsConfiguration.isEnabled() ? graphQLApolloWsConfiguration.getPath() : "";
         parameters.put("graphqlWsPath", graphQLWsPath);

@@ -12,7 +12,7 @@ micronaut {
 
 dependencies {
     testImplementation mn.micronaut.http.client
-    testImplementation(mnSerde.micronaut.serde.jackson)
+    implementation(mnSerde.micronaut.serde.jackson)
 }
 
 mainClassName = "io.micronaut.graphql.docs.ApplicationKt"
