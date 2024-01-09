@@ -11,7 +11,7 @@ kotlin = '1.9.22'
 shadow = '8.0.0'
 micronaut-gradle-plugin = "4.2.1"
 micronaut-kotlin = "4.1.0"
-micronaut-security = "4.1.0"
+micronaut-security = "4.4.0"
 micronaut-serde = "2.2.6"
 micronaut-logging = "1.1.2"
 
