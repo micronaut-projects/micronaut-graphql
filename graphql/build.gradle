@@ -4,13 +4,15 @@ plugins {
 
 dependencies {
     annotationProcessor(mnSerde.micronaut.serde.processor)
-    api(mnSerde.micronaut.serde.jackson)
+
+    compileOnly(mnSerde.micronaut.serde.api)
+    compileOnly(mn.jackson.annotations)
     api(libs.managed.graphql.java)
 
     api(mn.micronaut.http.server)
     api(mn.reactor)
     api(mn.micronaut.websocket)
-
+    testImplementation(mnSerde.micronaut.serde.jackson)
     testImplementation(mn.micronaut.jackson.databind)
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.http.client)

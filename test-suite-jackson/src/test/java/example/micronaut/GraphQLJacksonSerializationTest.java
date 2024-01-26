@@ -1,6 +1,7 @@
 package example.micronaut;
 
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
+import io.micronaut.context.annotation.Property;
 import io.micronaut.json.JsonMapper;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Property(name = "jackson.serializationInclusion", value = "ALWAYS")
 @MicronautTest
 class GraphQLJacksonSerializationTest {
 
