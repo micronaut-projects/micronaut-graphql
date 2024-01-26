@@ -7,5 +7,6 @@ configuration:
   graphql-bean: Configuring the GraphQL Bean
   graphql-ws: Configuring GraphQL over websockets
   graphiql: Configuring GraphiQL
+  jackson: Notes on using Jackson serialization
 graphqlGuides: Guides
 repository: Repository
