@@ -16,7 +16,7 @@ class GraphQLJacksonSerializationTest {
 
     @Test
     void serializeGraphQLResponseBody(JsonMapper mapper) throws IOException {
-        Map<String, Object> specification = Collections.singletonMap("foo", "bar");
+        Map<String, Object> specification = Map.of("foo", "bar");
         var response = new GraphQLResponseBody(specification);
         var expected = """
             {"foo":"bar"}""";
@@ -25,7 +25,7 @@ class GraphQLJacksonSerializationTest {
 
     @Test
     void serializeEmptyGraphQLResponseBody(JsonMapper mapper) throws IOException {
-        Map<String, Object> specification = Collections.singletonMap("foo", Map.of("bar", Collections.emptyList()));
+        Map<String, Object> specification = Map.of("foo", Map.of("bar", Collections.emptyList()));
         var response = new GraphQLResponseBody(specification);
         var expected = """
             {"foo":{"bar":[]}}""";
