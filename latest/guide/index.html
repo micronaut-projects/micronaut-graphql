@@ -103,6 +103,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-graphiql"><a href="#graphiql"><strong>5.3</strong><span>Configuring GraphiQL</span></a></div>
         
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jackson"><a href="#jackson"><strong>5.4</strong><span>Notes on using Jackson serialization</span></a></div>
+        
         <div class="toc-item" style="margin-left:0px" id="toc-item-graphqlGuides"><a href="#graphqlGuides"><strong>6</strong><span>Guides</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>7</strong><span>Repository</span></a></div>
@@ -115,7 +117,7 @@
         <h1>Micronaut GraphQL Integration</h1>
         <p></p>
         <p>Extensions to integrate Micronaut and GraphQL</p>
-        <p><strong>Version:</strong> <select style='max-width: 200px' onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected value='https://micronaut-projects.github.io/micronaut-graphql/latest/guide/index.html'>LATEST</option><option value='https://micronaut-projects.github.io/micronaut-graphql/snapshot/guide/index.html'>SNAPSHOT</option><option value='https://micronaut-projects.github.io/micronaut-graphql/4.2.0/guide/index.html'>4.2.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/4.1.0/guide/index.html'>4.1.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/4.0.2/guide/index.html'>4.0.2</option><option value='https://micronaut-projects.github.io/micronaut-graphql/4.0.1/guide/index.html'>4.0.1</option><option value='https://micronaut-projects.github.io/micronaut-graphql/4.0.0/guide/index.html'>4.0.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/3.2.0/guide/index.html'>3.2.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/3.1.0/guide/index.html'>3.1.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/3.0.0/guide/index.html'>3.0.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/2.3.1/guide/index.html'>2.3.1</option><option value='https://micronaut-projects.github.io/micronaut-graphql/2.3.0/guide/index.html'>2.3.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/2.2.1/guide/index.html'>2.2.1</option><option value='https://micronaut-projects.github.io/micronaut-graphql/2.2.0/guide/index.html'>2.2.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/2.1.0/guide/index.html'>2.1.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/2.0.0/guide/index.html'>2.0.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/1.4.0/guide/index.html'>1.4.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/1.3.0/guide/index.html'>1.3.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/1.2.2/guide/index.html'>1.2.2</option><option value='https://micronaut-projects.github.io/micronaut-graphql/1.2.1/guide/index.html'>1.2.1</option><option value='https://micronaut-projects.github.io/micronaut-graphql/1.2.0/guide/index.html'>1.2.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/1.1.0/guide/index.html'>1.1.0</option><option value='https://micronaut-projects.github.io/micronaut-graphql/1.0.2/guide/index.html'>1.0.2</option><option value='https://micronaut-projects.github.io/micronaut-graphql/1.0.1/guide/index.html'>1.0.1</option><option value='https://micronaut-projects.github.io/micronaut-graphql/1.0.0/guide/index.html'>1.0.0</option></select> </p>
+        <p><strong>Version:</strong> <select style='max-width: 200px' onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option value='https://micronaut-projects.github.io/micronaut-graphql/snapshot/guide/index.html'>SNAPSHOT</option><option value='https://micronaut-projects.github.io/micronaut-graphql/latest/guide/index.html'>LATEST</option></select> </p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
@@ -923,6 +925,68 @@ can be provided. Either by providing the custom template at <code>src/main/resou
 application property pointing to a different template location.
 In that case it could also be useful to dynamically replace additional parameters in the template via the <code>graphql.graphiql.template-parameters</code>
 application property.</p>
+</div>
+
+<h2 id="jackson"><a class="anchor" href="#jackson"></a>5.4 Notes on using Jackson serialization</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/master/src/main/docs/guide/configuration/jackson.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>If you are using Jackson serialization instead of <a href="https://github.com/micronaut-projects/micronaut-serialization/">Micronaut Serialization</a>, you need to configure your application to keep empty and null values in the serialized JSON.</p>
+</div>
+<div class="paragraph">
+<p>This is done via:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">jackson.serialization-inclusion=ALWAYS</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">jackson:
+    serialization-inclusion: ALWAYS</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[jackson]
+  serialization-inclusion="ALWAYS"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">jackson {
+  serializationInclusion = "ALWAYS"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  jackson {
+    serialization-inclusion = "ALWAYS"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "jackson": {
+    "serialization-inclusion": "ALWAYS"
+  }
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 
 <h1 id="graphqlGuides"><a class="anchor" href="#graphqlGuides"></a>6 Guides</h1>
