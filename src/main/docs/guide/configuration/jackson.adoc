@@ -1,0 +1,9 @@
+If you are using Jackson serialization instead of https://github.com/micronaut-projects/micronaut-serialization/[Micronaut Serialization], you need to configure your application to keep empty and null values in the serialized JSON.
+
+This is done via:
+
+[configuration]
+----
+jackson:
+    serialization-inclusion: ALWAYS
+----

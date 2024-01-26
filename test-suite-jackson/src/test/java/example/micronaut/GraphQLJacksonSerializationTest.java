@@ -1,6 +1,7 @@
 package example.micronaut;
 
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
+import io.micronaut.context.annotation.Property;
 import io.micronaut.json.JsonMapper;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
@@ -11,14 +12,25 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Property(name = "jackson.serializationInclusion", value = "ALWAYS")
 @MicronautTest
 class GraphQLJacksonSerializationTest {
 
     @Test
     void serializeGraphQLResponseBody(JsonMapper mapper) throws IOException {
-        Map<String, Object> specification = Collections.singletonMap("foo", "bar");
+        Map<String, Object> specification = Map.of("foo", "bar");
         var response = new GraphQLResponseBody(specification);
-        var expected = "{\"foo\":\"bar\"}";
+        var expected = """
+            {"foo":"bar"}""";
+        assertEquals(expected, mapper.writeValueAsString(response));
+    }
+
+    @Test
+    void serializeEmptyGraphQLResponseBody(JsonMapper mapper) throws IOException {
+        Map<String, Object> specification = Map.of("foo", Map.of("bar", Collections.emptyList()));
+        var response = new GraphQLResponseBody(specification);
+        var expected = """
+            {"foo":{"bar":[]}}""";
         assertEquals(expected, mapper.writeValueAsString(response));
     }
 }

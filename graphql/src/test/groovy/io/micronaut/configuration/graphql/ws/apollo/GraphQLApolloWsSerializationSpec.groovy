@@ -4,6 +4,7 @@ import io.micronaut.configuration.graphql.GraphQLRequestBody
 import io.micronaut.configuration.graphql.GraphQLResponseBody
 import io.micronaut.jackson.databind.JacksonDatabindMapper
 import io.micronaut.json.JsonMapper
+import io.micronaut.serde.jackson.JacksonJsonMapper
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import spock.lang.Shared
@@ -14,7 +15,7 @@ class GraphQLApolloWsSerializationSpec extends Specification {
 
     @Shared
     @Inject
-    JsonMapper micronautMapper
+    JacksonJsonMapper micronautMapper
 
     @Shared
     JsonMapper jacksonMapper = new JacksonDatabindMapper();
