@@ -15,7 +15,7 @@ class GraphQLApolloWsSerializationSpec extends Specification {
 
     @Shared
     @Inject
-    JacksonJsonMapper micronautMapper
+    JsonMapper micronautMapper
 
     @Shared
     JsonMapper jacksonMapper = new JacksonDatabindMapper();
