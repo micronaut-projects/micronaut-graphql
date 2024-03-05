@@ -20,13 +20,13 @@ import graphql.ExecutionResult;
 import graphql.GraphQL;
 import io.micronaut.context.BeanProvider;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
 import jakarta.inject.Singleton;
 import org.dataloader.DataLoaderRegistry;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -81,11 +81,11 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
         ExecutionInput executionInput = executionInputBuilder.build();
         return Flux
                 .from(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
-                .flatMap(customizedExecutionInput -> Publishers.fromCompletableFuture(() -> {
+                .flatMap(customizedExecutionInput -> Mono.fromFuture(() -> {
                     try {
                         return graphQL.executeAsync(customizedExecutionInput);
                     } catch (Throwable e) {
-                        CompletableFuture future = new CompletableFuture();
+                        CompletableFuture<ExecutionResult> future = new CompletableFuture<>();
                         future.completeExceptionally(e);
                         return future;
                     }

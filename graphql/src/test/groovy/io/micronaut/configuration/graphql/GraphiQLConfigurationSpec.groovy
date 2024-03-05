@@ -16,11 +16,17 @@
 
 package io.micronaut.configuration.graphql
 
+import graphql.GraphQL
+import graphql.schema.GraphQLSchema
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
+import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import io.micronaut.context.env.PropertySource
 import io.micronaut.http.annotation.Controller
+import jakarta.inject.Singleton
 import spock.lang.Specification
 
 /**
@@ -32,6 +38,9 @@ class GraphiQLConfigurationSpec extends Specification {
     void "test graphiql disabled by default"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
+        context.environment.addPropertySource(PropertySource.of(
+                ["spec.name": GraphQLConfigurationSpec.simpleName]
+        ))
         context.start()
 
         expect:
@@ -45,7 +54,8 @@ class GraphiQLConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphiql.enabled": true]
+                ["spec.name": GraphQLConfigurationSpec.simpleName,
+                 "graphql.graphiql.enabled": true]
         ))
         context.start()
 
@@ -61,7 +71,8 @@ class GraphiQLConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphiql.enabled": true,
+                ["spec.name": GraphQLConfigurationSpec.simpleName,
+                 "graphql.graphiql.enabled": true,
                  "graphql.graphiql.version"   : "0.13.1"]
         ))
         context.start()
@@ -78,7 +89,8 @@ class GraphiQLConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphiql.enabled": true,
+                ["spec.name": GraphQLConfigurationSpec.simpleName,
+                 "graphql.graphiql.enabled": true,
                  "graphql.graphiql.path"   : "/custom-graphiql"]
         ))
         context.start()
@@ -96,7 +108,8 @@ class GraphiQLConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphiql.enabled": false]
+                ["spec.name": GraphQLConfigurationSpec.simpleName,
+                 "graphql.graphiql.enabled": false]
         ))
         context.start()
 
@@ -105,5 +118,17 @@ class GraphiQLConfigurationSpec extends Specification {
 
         cleanup:
         context.close()
+    }
+
+    @Factory
+    static class GraphQLFactory {
+
+        @Bean
+        @Singleton
+        @Requires(property = "spec.name", value = "GraphiQLConfigurationSpec")
+        GraphQL graphQL() {
+            def schema = GraphQLSchema.newSchema().build()
+            GraphQL.newGraphQL(schema).build()
+        }
     }
 }

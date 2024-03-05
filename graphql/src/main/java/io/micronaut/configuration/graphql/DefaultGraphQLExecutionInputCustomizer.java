@@ -18,11 +18,11 @@ package io.micronaut.configuration.graphql;
 import graphql.ExecutionInput;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Mono;
 
 /**
  * The default implementation for customizing GraphQL execution inputs.
@@ -42,6 +42,6 @@ public class DefaultGraphQLExecutionInputCustomizer implements GraphQLExecutionI
             ExecutionInput executionInput,
             HttpRequest httpRequest,
             @Nullable MutableHttpResponse<String> httpResponse) {
-        return Publishers.just(executionInput);
+        return Mono.just(executionInput);
     }
 }

@@ -1,10 +1,16 @@
 package io.micronaut.configuration.graphql.ws.apollo
 
+import graphql.GraphQL
+import graphql.schema.GraphQLSchema
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
+import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import io.micronaut.context.env.PropertySource
 import io.micronaut.websocket.annotation.ServerWebSocket
+import jakarta.inject.Singleton
 import spock.lang.Specification
 
 /**
@@ -16,6 +22,9 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
     void "test graphql websocket disabled by default"() {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
+        context.environment.addPropertySource(PropertySource.of(
+                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName]
+        ))
         context.start()
 
         expect:
@@ -29,7 +38,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-apollo-ws.enabled": true]
+                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                 "graphql.graphql-apollo-ws.enabled": true]
         ))
         context.start()
 
@@ -52,7 +62,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-apollo-ws.enabled": true,
+                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                 "graphql.graphql-apollo-ws.enabled": true,
                  "graphql.graphql-apollo-ws.path"   : "/custom-graphql-ws"]
         ))
         context.start()
@@ -70,7 +81,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-apollo-ws.enabled": false]
+                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                 "graphql.graphql-apollo-ws.enabled": false]
         ))
         context.start()
 
@@ -85,7 +97,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-apollo-ws.keep-alive-enabled": false]
+                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                 "graphql.graphql-apollo-ws.keep-alive-enabled": false]
         ))
         context.start()
 
@@ -100,7 +113,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-apollo-ws.keep-alive-enabled": false]
+                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                 "graphql.graphql-apollo-ws.keep-alive-enabled": false]
         ))
         context.start()
 
@@ -115,7 +129,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
         given:
         ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
         context.environment.addPropertySource(PropertySource.of(
-                ["graphql.graphql-apollo-ws.keep-alive-interval": "1s"]
+                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                 "graphql.graphql-apollo-ws.keep-alive-interval": "1s"]
         ))
         context.start()
 
@@ -124,5 +139,17 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
 
         cleanup:
         context.close()
+    }
+
+    @Factory
+    static class GraphQLFactory {
+
+        @Bean
+        @Singleton
+        @Requires(property = "spec.name", value = "GraphQLApolloWsConfigurationSpec")
+        GraphQL graphQL() {
+            def schema = GraphQLSchema.newSchema().build()
+            GraphQL.newGraphQL(schema).build()
+        }
     }
 }
