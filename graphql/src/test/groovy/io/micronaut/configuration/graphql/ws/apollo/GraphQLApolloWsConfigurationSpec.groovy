@@ -3,16 +3,13 @@ package io.micronaut.configuration.graphql.ws.apollo
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema
 import io.micronaut.context.ApplicationContext
-import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
-import io.micronaut.context.env.PropertySource
 import io.micronaut.websocket.annotation.ServerWebSocket
 import jakarta.inject.Singleton
 import spock.lang.Specification
-
 /**
  * @author Gerard Klijs
  * @since 1.3
@@ -21,11 +18,7 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
 
     void "test graphql websocket disabled by default"() {
         given:
-        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
-        context.environment.addPropertySource(PropertySource.of(
-                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName]
-        ))
-        context.start()
+        ApplicationContext context = ApplicationContext.run(["spec.name": GraphQLApolloWsConfigurationSpec.simpleName], Environment.TEST)
 
         expect:
         !context.containsBean(GraphQLApolloWsController)
@@ -36,12 +29,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
 
     void "test graphql websocket enabled"() {
         given:
-        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
-        context.environment.addPropertySource(PropertySource.of(
-                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
-                 "graphql.graphql-apollo-ws.enabled": true]
-        ))
-        context.start()
+        ApplicationContext context = ApplicationContext.run(["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                                                             "graphql.graphql-apollo-ws.enabled": true], Environment.TEST)
 
         expect:
         context.containsBean(GraphQLApolloWsController)
@@ -60,13 +49,9 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
 
     void "test custom path"() {
         given:
-        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
-        context.environment.addPropertySource(PropertySource.of(
-                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
-                 "graphql.graphql-apollo-ws.enabled": true,
-                 "graphql.graphql-apollo-ws.path"   : "/custom-graphql-ws"]
-        ))
-        context.start()
+        ApplicationContext context = ApplicationContext.run(["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                                                             "graphql.graphql-apollo-ws.enabled": true,
+                                                             "graphql.graphql-apollo-ws.path"   : "/custom-graphql-ws"], Environment.TEST)
 
         expect:
         context.containsBean(GraphQLApolloWsController)
@@ -79,12 +64,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
 
     void "test graphql websocket disabled"() {
         given:
-        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
-        context.environment.addPropertySource(PropertySource.of(
-                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
-                 "graphql.graphql-apollo-ws.enabled": false]
-        ))
-        context.start()
+        ApplicationContext context = ApplicationContext.run(["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                                                             "graphql.graphql-apollo-ws.enabled": false], Environment.TEST)
 
         expect:
         !context.containsBean(GraphQLApolloWsController)
@@ -95,12 +76,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
 
     void "test graphql websocket keepalive disabled"() {
         given:
-        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
-        context.environment.addPropertySource(PropertySource.of(
-                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
-                 "graphql.graphql-apollo-ws.keep-alive-enabled": false]
-        ))
-        context.start()
+        ApplicationContext context = ApplicationContext.run(["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                                                             "graphql.graphql-apollo-ws.keep-alive-enabled": false], Environment.TEST)
 
         expect:
         !context.getBean(GraphQLApolloWsConfiguration).enabled
@@ -111,12 +88,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
 
     void "test bean not created when graphql websocket keepalive disabled"() {
         given:
-        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
-        context.environment.addPropertySource(PropertySource.of(
-                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
-                 "graphql.graphql-apollo-ws.keep-alive-enabled": false]
-        ))
-        context.start()
+        ApplicationContext context = ApplicationContext.run(["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                                                             "graphql.graphql-apollo-ws.keep-alive-enabled": false], Environment.TEST)
 
         expect:
         !context.containsBean(GraphQLApolloWsKeepAlive)
@@ -127,12 +100,8 @@ class GraphQLApolloWsConfigurationSpec extends Specification {
 
     void "test graphql websocket keepalive different interval"() {
         given:
-        ApplicationContext context = new DefaultApplicationContext(Environment.TEST)
-        context.environment.addPropertySource(PropertySource.of(
-                ["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
-                 "graphql.graphql-apollo-ws.keep-alive-interval": "1s"]
-        ))
-        context.start()
+        ApplicationContext context = ApplicationContext.run(["spec.name": GraphQLApolloWsConfigurationSpec.simpleName,
+                                                             "graphql.graphql-apollo-ws.keep-alive-interval": "1s"], Environment.TEST)
 
         expect:
         context.getBean(GraphQLApolloWsConfiguration).keepAliveInterval == "1s"
