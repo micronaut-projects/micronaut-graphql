@@ -17,6 +17,8 @@ dependencies {
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.http.client)
     testRuntimeOnly(mn.snakeyaml)
+    testRuntimeOnly(mnReactor.micronaut.reactor)
+    testRuntimeOnly(mnReactor.micrometer.context.propagation)
 }
 
 micronautBuild {
