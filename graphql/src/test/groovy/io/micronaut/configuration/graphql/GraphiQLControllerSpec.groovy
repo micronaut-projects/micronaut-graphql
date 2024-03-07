@@ -16,13 +16,20 @@
 
 package io.micronaut.configuration.graphql
 
+import graphql.GraphQL
+import graphql.schema.GraphQLSchema
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
+import io.micronaut.core.util.StringUtils
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.runtime.server.EmbeddedServer
+import jakarta.inject.Singleton
 import spock.lang.Specification
 
 import static io.micronaut.http.MediaType.TEXT_HTML
@@ -74,5 +81,17 @@ class GraphiQLControllerSpec extends Specification {
 
         cleanup:
         embeddedServer.close()
+    }
+
+    @Factory
+    static class GraphQLFactory {
+
+        @Bean
+        @Singleton
+        @Requires(property = "spec.name", value = "GraphiQLControllerSpec")
+        GraphQL graphQL() {
+            def schema = GraphQLSchema.newSchema().build()
+            GraphQL.newGraphQL(schema).build()
+        }
     }
 }
