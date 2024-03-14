@@ -8,4 +8,785 @@
     "type": "io.micronaut.configuration.graphql.JacksonGraphQLJsonSerializer",
     "member": "Constructor io.micronaut.configuration.graphql.JacksonGraphQLJsonSerializer(com.fasterxml.jackson.databind.ObjectMapper)",
     "reason": "removed deprecated constructor for Micronaut 4.0.x"
-  }]
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.GraphiQLController",
+    "member": "Constructor io.micronaut.configuration.graphql.GraphiQLController(io.micronaut.configuration.graphql.GraphQLConfiguration,io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration,io.micronaut.core.io.ResourceResolver,io.micronaut.core.convert.ConversionService)",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$BeanConfiguration",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$BeanConfiguration",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$BeanConfiguration()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$BeanConfiguration",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$BeanConfiguration",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$BeanConfiguration",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$BeanConfiguration",
+    "member": "Implemented interface io.micronaut.inject.BeanConfiguration",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.beans.BeanInfo",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataDelegate",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadata",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.QualifiedBeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.type.ArgumentCoercible",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.beans.BeanInfo",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataDelegate",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadata",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.QualifiedBeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.type.ArgumentCoercible",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsController$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.beans.BeanInfo",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataDelegate",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadata",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.QualifiedBeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.type.ArgumentCoercible",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsKeepAlive$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.beans.BeanInfo",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataDelegate",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadata",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.QualifiedBeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.type.ArgumentCoercible",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsMessageHandler$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.beans.BeanInfo",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataDelegate",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadata",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.QualifiedBeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.type.ArgumentCoercible",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsOperations$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$ClientType$IntrospectionRef",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$ClientType$IntrospectionRef",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$ClientType$IntrospectionRef()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$ClientType$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$ClientType$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$ClientType$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$ClientType$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$IntrospectionRef",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$IntrospectionRef",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$IntrospectionRef()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsRequest$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$IntrospectionRef",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$IntrospectionRef",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$IntrospectionRef()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$ServerType$IntrospectionRef",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$ServerType$IntrospectionRef",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$ServerType$IntrospectionRef()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$ServerType$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$ServerType$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$ServerType$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsResponse$ServerType$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.beans.BeanInfo",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataDelegate",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadata",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.QualifiedBeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.type.ArgumentCoercible",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsSender$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.beans.BeanInfo",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataDelegate",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadata",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.QualifiedBeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.type.ArgumentCoercible",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.$GraphQLApolloWsState$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field keepAliveEnabled",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field DEFAULT_KEEP_ALIVE_INTERVAL",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field KEEP_ALIVE_ENABLED_CONFIG",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field DEFAULT_KEEP_ALIVE_ENABLED",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field enabled",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field keepAliveInterval",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field path",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field PREFIX",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field PATH_CONFIG",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field ENABLED_CONFIG",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field DEFAULT_ENABLED",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field KEEP_ALIVE_INTERVAL_CONFIG",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Field DEFAULT_PATH",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration",
+    "member": "Implemented interface io.micronaut.core.util.Toggleable",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsController",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsController(io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsMessageHandler,io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsState,io.micronaut.configuration.graphql.GraphQLJsonSerializer)",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsKeepAlive",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsKeepAlive(io.micronaut.websocket.WebSocketBroadcaster,io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsState,io.micronaut.configuration.graphql.GraphQLJsonSerializer)",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsMessageHandler",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsMessageHandler(io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration,io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsState,io.micronaut.configuration.graphql.GraphQLInvocation,io.micronaut.configuration.graphql.GraphQLExecutionResultHandler,io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsSender)",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest()",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest$ClientType",
+    "member": "Field GQL_STOP",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest$ClientType",
+    "member": "Field GQL_CONNECTION_TERMINATE",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest$ClientType",
+    "member": "Field GQL_CONNECTION_INIT",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest$ClientType",
+    "member": "Field GQL_START",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest$ClientType",
+    "member": "Implemented interface java.lang.constant.Constable",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest$ClientType",
+    "member": "Implemented interface java.lang.Comparable",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest$ClientType",
+    "member": "Implemented interface java.io.Serializable",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse(io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType,java.lang.String)",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse(io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType)",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse(io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType,java.lang.String,io.micronaut.configuration.graphql.GraphQLResponseBody)",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse(java.lang.String,java.lang.String,io.micronaut.configuration.graphql.GraphQLResponseBody)",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType",
+    "member": "Field GQL_DATA",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType",
+    "member": "Field GQL_CONNECTION_ERROR",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType",
+    "member": "Field GQL_CONNECTION_KEEP_ALIVE",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType",
+    "member": "Field GQL_CONNECTION_ACK",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType",
+    "member": "Field GQL_ERROR",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType",
+    "member": "Field GQL_COMPLETE",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType",
+    "member": "Implemented interface java.lang.constant.Constable",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType",
+    "member": "Implemented interface java.lang.Comparable",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType",
+    "member": "Implemented interface java.io.Serializable",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsSender",
+    "member": "Constructor io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsSender(io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsState,io.micronaut.configuration.graphql.GraphQLJsonSerializer)",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  },
+  {
+    "type": "io.micronaut.configuration.graphql.ws.apollo.RequiresGraphQLApolloWs",
+    "member": "Implemented interface java.lang.annotation.Annotation",
+    "reason": "Removed GraphQLApollo implementation for Micronaut Framework 5."
+  }
+]
