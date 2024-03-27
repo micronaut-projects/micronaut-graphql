@@ -1,4 +1,12 @@
-=== Version 4.0.0
+This section documents breaking changes between Micronaut GraphQL versions:
+
+=== Micronaut GraphQL 5.0.0
+
+- The Apollo Websocket protocol (subscriptions-transport-ws) classes and configuration deprecated previously have all been removed. Refer to the version 4.0.0 breaking changes notes for details.
+
+- The Controller class api:configuration.graphql.GraphiQLController[] was previously instantiated with the deprecated `GraphQLApolloWsConfiguration` type. That is changed to `GraphQLConfiguration`.
+
+=== Micronaut GraphQL 4.0.0
 
 The Apollo Websocket protocol (subscriptions-transport-ws) classes and configuration have been refactored  and deprecated to pave the way for a newer websocket protocol (graphql-ws). The subscriptions-transport-ws protocol will be removed in a future version and client code should be migrated to use the new protocol. To continue using the subscriptions-transport-ws protocol, the following must be considered when upgrading:
 
