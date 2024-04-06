@@ -13,7 +13,7 @@ micronaut-kotlin = "4.2.0"
 micronaut-security = "4.6.9"
 micronaut-serde = "2.8.2"
 micronaut-logging = "1.1.2"
-micronaut-reactor = "3.2.1"
+micronaut-reactor = "3.3.0"
 
 managed-graphql-java = "21.5"
 managed-graphql-java-extended-scalars = "2023-01-24T02-11-56-babda5f"
