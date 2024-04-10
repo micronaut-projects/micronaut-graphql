@@ -1,6 +1,6 @@
 [versions]
 micronaut-docs = "2.0.0"
-micronaut = "4.4.0"
+micronaut = "4.4.1"
 micronaut-platform = "4.1.2"
 micronaut-test = "4.0.0"
 groovy = "4.0.13"
@@ -8,12 +8,12 @@ spock = "2.3-groovy-4.0"
 graal-svm = "23.1.2"
 kotlin = '1.9.23'
 shadow = '8.0.0'
-micronaut-gradle-plugin = "4.3.5"
-micronaut-kotlin = "4.2.0"
-micronaut-security = "4.6.9"
-micronaut-serde = "2.8.2"
+micronaut-gradle-plugin = "4.3.6"
+micronaut-kotlin = "4.3.0"
+micronaut-security = "4.7.0"
+micronaut-serde = "2.9.0"
 micronaut-logging = "1.1.2"
-micronaut-reactor = "3.2.1"
+micronaut-reactor = "3.3.0"
 
 managed-graphql-java = "21.5"
 managed-graphql-java-extended-scalars = "2023-01-24T02-11-56-babda5f"
