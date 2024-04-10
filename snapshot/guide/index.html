@@ -117,7 +117,7 @@
         <h1>Micronaut GraphQL Integration</h1>
         <p></p>
         <p>Extensions to integrate Micronaut and GraphQL</p>
-        <p><strong>Version:</strong> 5.0.0-SNAPSHOT </p>
+        <p><strong>Version:</strong> 4.3.1-SNAPSHOT </p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
@@ -158,24 +158,8 @@
 </div>
 
 
-<div class="paragraph">
-<p>This section documents breaking changes between Micronaut GraphQL versions:</p>
-</div>
 <div class="sect2">
-<h3 id="_micronaut_graphql_5_0_0">Micronaut GraphQL 5.0.0</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>The Apollo Websocket protocol (subscriptions-transport-ws) classes and configuration deprecated previously have all been removed. Refer to the version 4.0.0 breaking changes notes for details.</p>
-</li>
-<li>
-<p>The Controller class <a href="../api/io/micronaut/configuration/graphql/GraphiQLController.html">GraphiQLController</a> was previously instantiated with the deprecated <code>GraphQLApolloWsConfiguration</code> type. That is changed to <code>GraphQLConfiguration</code>.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_micronaut_graphql_4_0_0">Micronaut GraphQL 4.0.0</h3>
+<h3 id="_version_4_0_0">Version 4.0.0</h3>
 <div class="paragraph">
 <p>The Apollo Websocket protocol (subscriptions-transport-ws) classes and configuration have been refactored  and deprecated to pave the way for a newer websocket protocol (graphql-ws). The subscriptions-transport-ws protocol will be removed in a future version and client code should be migrated to use the new protocol. To continue using the subscriptions-transport-ws protocol, the following must be considered when upgrading:</p>
 </div>
@@ -760,8 +744,7 @@ provided in the repository.</p>
 <p>The <code>micronaut-graphql</code> module comes bundled with support for GraphQL over web sockets.</p>
 </div>
 <div class="paragraph">
-<p>Support is provided for the graphql-ws protocol
-(<a href="https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md" class="bare">https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md</a>).</p>
+<p>Support is provided both for the both current graphql-ws protocol (<a href="https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md" class="bare">https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md</a>) and the now deprecated subscriptions-transport-ws protocol from Apollo (<a href="https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md" class="bare">https://github.com/apollographql/subscriptions-transport-ws/blob/master/PROTOCOL.md</a>).</p>
 </div>
 <div class="paragraph">
 <p>GraphQL over web sockets via the current graphql-ws protocol must be explicitly enabled via the <code>graphql.graphql-ws.enabled</code> application property.</p>
@@ -792,6 +775,59 @@ provided in the repository.</p>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>Configures the maximum time allowed for a client to initiate a graphql-ws connection after the WebSocket is initially opened. Default <code>15s</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The deprecated subscriptions-transport-ws support must be explicitly enabled via the <code>graphql.graphql-apollo-ws.enabled</code> application property.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Prior to version 4.0 of this module, the subscriptions-transport-ws protocol was the only supported implementation, and its configuration was set via the <code>graphql.graphql-ws</code> property path. This configuration must be migrated to the <code>graphql.graphql-apollo-ws</code> if you have existing client code that depends on this protocol.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>While the subscriptions-transport-ws implementation is capable of also handling queries and mutations over WebSocket it might not be supported in all clients.
+Some clients have a way of configuring a different endpoint for subscriptions and/or some filter to only use the websocket for subscriptions.</p>
+</div>
+<div class="paragraph">
+<p>The following configuration properties can be set for the subscriptions-transport-ws support:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
+  graphql-apollo-ws:
+    enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
+    path: /graphql-ws <i class="conum" data-value="2"></i><b>(2)</b>
+    keep-alive-enabled: true <i class="conum" data-value="3"></i><b>(3)</b>
+    keep-alive-interval: 15s <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables/disables GraphQL over web sockets. Default <code>false</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configures the GraphQLApolloWs endpoint path. Default <code>/graphql-ws</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Enables/disables keep alive, this might be needed to prevent clients reconnecting. Default <code>true</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Configures the keep alive interval, specific clients might need different values, or it could be set higher to reduce some load <code>15s</code>.</td>
 </tr>
 </table>
 </div>
