@@ -10,30 +10,5 @@
     "allDeclaredFields": true,
     "allPublicMethods": true,
     "allDeclaredConstructors": true
-  },
-  {
-    "name": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest",
-    "allDeclaredFields": true,
-    "allPublicMethods": true,
-    "allDeclaredConstructors": true
-  },
-  {
-    "name": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest$ClientType",
-    "allDeclaredFields": true,
-    "allDeclaredMethods": true,
-    "allPublicMethods": true
-  },
-  {
-    "name": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse",
-    "allDeclaredFields": true,
-    "allPublicMethods": true,
-    "allDeclaredConstructors": true
-  },
-  {
-    "name": "io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse$ServerType",
-    "allDeclaredFields": true,
-    "allDeclaredMethods": true,
-    "allPublicMethods": true
-
   }
 ]
