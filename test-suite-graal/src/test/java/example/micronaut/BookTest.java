@@ -1,24 +1,18 @@
 package example.micronaut;
 
-import example.micronaut.apollo.ws.GraphQLApolloWsClient;
-import io.micronaut.configuration.graphql.GraphQLRequestBody;
-import io.micronaut.configuration.graphql.GraphQLResponseBody;
-import io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsRequest;
-import io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsResponse;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.runtime.server.EmbeddedServer;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import io.micronaut.websocket.WebSocketClient;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @MicronautTest
 public class BookTest {
@@ -38,52 +32,6 @@ public class BookTest {
         Map result = client.toBlocking().retrieve(get, Map.class);
 
         verifyGraphQLResult(result);
-    }
-
-    @Test
-    void testGraphQLWebSocket() throws InterruptedException {
-        WebSocketClient wsClient = embeddedServer.getApplicationContext().createBean(WebSocketClient.class, embeddedServer.getURI());
-        GraphQLApolloWsClient graphQLWsClient = Flux.from(wsClient.connect(GraphQLApolloWsClient.class, "/graphql-ws")).blockFirst();
-
-        GraphQLApolloWsRequest request = new GraphQLApolloWsRequest();
-        request.setType(GraphQLApolloWsRequest.ClientType.GQL_CONNECTION_INIT.getType());
-
-        graphQLWsClient.send(request);
-
-        GraphQLApolloWsResponse response = graphQLWsClient.nextResponse();
-        assertEquals(GraphQLApolloWsResponse.ServerType.GQL_CONNECTION_ACK.getType(), response.getType());
-
-        request = new GraphQLApolloWsRequest();
-        request.setType(GraphQLApolloWsRequest.ClientType.GQL_START.getType());
-        request.setId("test-id");
-        GraphQLRequestBody body = new GraphQLRequestBody();
-        body.setQuery("{ bookById(id:\"book-1\") { name, pageCount, author { firstName, lastName} }  }");
-        request.setPayload(body);
-
-        graphQLWsClient.send(request);
-
-        response = graphQLWsClient.nextResponse();
-        assertEquals(GraphQLApolloWsResponse.ServerType.GQL_DATA.getType(), response.getType());
-
-        GraphQLResponseBody responseBody = response.getPayload();
-        assertNotNull(responseBody);
-        verifyGraphQLResult(responseBody.getSpecification());
-
-        request = new GraphQLApolloWsRequest();
-        request.setType(GraphQLApolloWsRequest.ClientType.GQL_STOP.getType());
-
-        graphQLWsClient.send(request);
-
-        response = graphQLWsClient.nextResponse();
-        assertEquals(GraphQLApolloWsResponse.ServerType.GQL_COMPLETE.getType(), response.getType());
-
-        request = new GraphQLApolloWsRequest();
-        request.setType(GraphQLApolloWsRequest.ClientType.GQL_CONNECTION_TERMINATE.getType());
-
-        graphQLWsClient.send(request);
-
-        response = graphQLWsClient.nextResponse();
-        assertNull(response);
     }
 
     private void verifyGraphQLResult(Map result) {
