@@ -15,7 +15,7 @@ micronaut-serde = "2.9.0"
 micronaut-logging = "1.1.2"
 micronaut-reactor = "3.3.0"
 
-managed-graphql-java = "21.5"
+managed-graphql-java = "22.1"
 managed-graphql-java-extended-scalars = "2023-01-24T02-11-56-babda5f"
 managed-graphql-java-tools = "13.1.1"
 managed-graphql-spqr = "0.12.4"
