@@ -51,9 +51,48 @@
             </div>
 <div class="sect2">
 <h3 id="_micronaut_graphql_config_properties">Micronaut Graphql Config Properties</h3>
+<a id="io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration" href="#io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/ws/apollo/GraphQLApolloWsConfiguration.html">GraphQLApolloWsConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-apollo-ws.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns whether GraphQL websocket is enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-apollo-ws.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphQL websocket path.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-apollo-ws.keep-alive-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns whether GraphQL websocket keep alive is enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-apollo-ws.keep-alive-interval</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphQL keep alive interval in seconds.</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.graphql.GraphQLConfiguration$GraphiQLConfiguration" href="#io.micronaut.configuration.graphql.GraphQLConfiguration$GraphiQLConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/GraphQLConfiguration.GraphiQLConfiguration.html">GraphQLConfiguration$GraphiQLConfiguration</a></caption>
+<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/GraphQLConfiguration.GraphiQLConfiguration.html">GraphQLConfiguration$GraphiQLConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -107,7 +146,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.configuration.graphql.GraphQLConfiguration" href="#io.micronaut.configuration.graphql.GraphQLConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/GraphQLConfiguration.html">GraphQLConfiguration</a></caption>
+<caption class="title">Table 3. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/GraphQLConfiguration.html">GraphQLConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -130,45 +169,6 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.path</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphQL path.</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration" href="#io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. Configuration Properties for <a href="../api/io/micronaut/configuration/graphql/ws/apollo/GraphQLApolloWsConfiguration.html">GraphQLApolloWsConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-apollo-ws.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Returns whether GraphQL websocket is enabled.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-apollo-ws.path</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphQL websocket path.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-apollo-ws.keep-alive-enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Returns whether GraphQL websocket keep alive is enabled.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>graphql.graphql-apollo-ws.keep-alive-interval</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the GraphQL keep alive interval in seconds.</p></td>
 </tr>
 </tbody>
 </table>
