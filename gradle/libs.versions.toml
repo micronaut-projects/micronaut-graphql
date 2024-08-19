@@ -2,7 +2,7 @@
 micronaut-docs = "2.0.0"
 micronaut = "4.6.1"
 micronaut-platform = "4.1.2"
-micronaut-test = "4.0.0"
+micronaut-test = "4.4.0"
 groovy = "4.0.13"
 spock = "2.3-groovy-4.0"
 graal-svm = "24.0.1"
