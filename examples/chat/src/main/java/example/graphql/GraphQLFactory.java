@@ -34,7 +34,6 @@ import java.io.InputStreamReader;
  * @author Gerard Klijs
  */
 @Factory
-@SuppressWarnings("Duplicates")
 public class GraphQLFactory {
 
     @Bean

@@ -81,7 +81,7 @@ class GraphQLControllerSpec extends Specification {
         1 * graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
             this.executionInput = executionInput
             if (executionInput.query == "{ testHeaders }") {
-                GraphQLContext graphQlContext = executionInput.getContext()
+                GraphQLContext graphQlContext = executionInput.getGraphQLContext()
 
                 MutableHttpResponse httpResponse = graphQlContext.get("httpResponse")
 
@@ -320,7 +320,7 @@ class SetRequestResponseInputCustomizer implements GraphQLExecutionInputCustomiz
     @Override
     Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
                                         MutableHttpResponse<String> httpResponse) {
-        GraphQLContext graphQLContext = (GraphQLContext) executionInput.getContext();
+        GraphQLContext graphQLContext = executionInput.getGraphQLContext();
         graphQLContext.put("httpRequest", httpRequest);
         graphQLContext.put("httpResponse", httpResponse);
         return Publishers.just(executionInput);

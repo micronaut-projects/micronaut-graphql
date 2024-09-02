@@ -18,7 +18,6 @@ package example.domain;
 /**
  * @author Alexey Zhokhov
  */
-@SuppressWarnings("Duplicates")
 public class Author {
 
     private final String id;

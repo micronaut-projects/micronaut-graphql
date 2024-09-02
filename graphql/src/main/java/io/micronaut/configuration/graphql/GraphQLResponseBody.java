@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * Represents the response body output data of an executed GraphQL query.
- *
+ * <p>
  * This class should be treated as Immutable.
  *
  * @author Marcel Overdijk

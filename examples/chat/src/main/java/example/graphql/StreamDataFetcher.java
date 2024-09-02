@@ -28,7 +28,7 @@ import org.reactivestreams.Publisher;
 @Singleton
 public class StreamDataFetcher implements DataFetcher<Publisher<ChatMessage>> {
 
-    private ChatRepository chatRepository;
+    private final ChatRepository chatRepository;
 
     public StreamDataFetcher(ChatRepository chatRepository) {
         this.chatRepository = chatRepository;

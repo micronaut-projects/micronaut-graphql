@@ -34,8 +34,8 @@ public class GraphQLFactory {
 
         // Create the executable schema.
         GraphQLSchema graphQLSchema = new GraphQLSchemaGenerator()
-                .withOperationsFromSingleton(toDoService)
-                .generate();
+            .withOperationsFromSingleton(toDoService)
+            .generate();
 
         // Return the GraphQL bean.
         return GraphQL.newGraphQL(graphQLSchema).build();

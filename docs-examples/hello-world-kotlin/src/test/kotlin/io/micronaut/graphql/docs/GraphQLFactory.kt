@@ -45,7 +45,7 @@ class GraphQLFactory {
         val schemaGenerator = SchemaGenerator()
 
         // Parse the schema.
-        val typeRegistry = TypeDefinitionRegistry();
+        val typeRegistry = TypeDefinitionRegistry()
         typeRegistry.merge(schemaParser.parse(BufferedReader(InputStreamReader(
                 resourceResolver.getResourceAsStream("classpath:schema.graphqls").get()))))
 

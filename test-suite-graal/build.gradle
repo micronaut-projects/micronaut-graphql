@@ -7,7 +7,7 @@ application {
 }
 
 dependencies {
-    implementation(project(":micronaut-graphql"))
+    implementation(projects.micronautGraphql)
 
     runtimeOnly(mnLogging.logback.classic)
     runtimeOnly(mn.snakeyaml)

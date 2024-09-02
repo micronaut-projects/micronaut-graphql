@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * Represents the data to execute a GraphQL query.
- *
+ * <p>
  * This class should be treated as Immutable.
  *
  * @author Marcel Overdijk

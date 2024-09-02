@@ -15,4 +15,6 @@ dependencies {
     implementation(mnSerde.micronaut.serde.jackson)
 }
 
-mainClassName = "io.micronaut.graphql.docs.Application"
+application {
+    mainClass = "io.micronaut.graphql.docs.Application"
+}

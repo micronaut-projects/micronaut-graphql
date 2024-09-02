@@ -21,15 +21,11 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 /**
  * @author Marcel Overdijk
  */
-@SuppressWarnings("Duplicates")
 public class ToDo {
 
     private String id;
     private String title;
     private boolean completed;
-
-    public ToDo() {
-    }
 
     public ToDo(String title) {
         this.title = title;
