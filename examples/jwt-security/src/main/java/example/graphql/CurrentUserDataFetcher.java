@@ -23,8 +23,6 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.security.utils.SecurityService;
 import jakarta.inject.Singleton;
 
-import java.util.Optional;
-
 /**
  * @author Alexey Zhokhov
  */
@@ -43,10 +41,10 @@ public class CurrentUserDataFetcher implements DataFetcher<User> {
 
     @Nullable
     @Override
-    public User get(DataFetchingEnvironment environment) throws Exception {
-        Optional<String> username = securityService.username();
-
-        return username.flatMap(userRepository::findByUsername).orElse(null);
+    public User get(DataFetchingEnvironment environment) {
+        return securityService.username()
+            .flatMap(userRepository::findByUsername)
+            .orElse(null);
     }
 
 }

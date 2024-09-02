@@ -26,7 +26,6 @@ import jakarta.inject.Singleton;
  * @author Marcel Overdijk
  */
 @Singleton
-@SuppressWarnings("Duplicates")
 public class ToDoMutationResolver implements GraphQLMutationResolver {
 
     private final ToDoRepository toDoRepository;

@@ -35,7 +35,6 @@ import static java.util.stream.Collectors.toMap;
  * @author Alexey Zhokhov
  */
 @Singleton
-@SuppressWarnings("Duplicates")
 public class AuthorDataLoader implements MappedBatchLoader<String, Author> {
 
     private final AuthorRepository authorRepository;
@@ -50,10 +49,10 @@ public class AuthorDataLoader implements MappedBatchLoader<String, Author> {
     @Override
     public CompletionStage<Map<String, Author>> load(Set<String> keys) {
         return CompletableFuture.supplyAsync(() ->
-                authorRepository
-                        .findAllById(keys)
-                        .stream()
-                        .collect(toMap(Author::getId, Function.identity())), executor);
+            authorRepository
+                .findAllById(keys)
+                .stream()
+                .collect(toMap(Author::getId, Function.identity())), executor);
     }
 
 }

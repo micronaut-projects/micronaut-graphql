@@ -43,7 +43,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
- * WebSocket request handler for the graphql-ws protocol. Supports the 'graphql-transport-ws' WebSocket subprotocol.
+ * WebSocket request handler for the graphql-ws protocol. Supports the 'graphql-transport-ws' WebSocket sub-protocol.
  *
  * @author Jeremy Grelle
  * @since 4.0
@@ -152,11 +152,7 @@ public class GraphQLWsHandler {
             subscribeMessage.getSubscribePayload().getOperationName(), subscribeMessage.getSubscribePayload().getVariables());
 
         Optional<HttpRequest> httpRequest = session.get(HTTP_REQUEST_KEY, HttpRequest.class);
-        if (httpRequest.isEmpty()) {
-            return Mono.error(new IllegalStateException("The HTTP request from the original WebSocket connection could not be retrieved."));
-        }
-
-        return Flux.from(graphQLInvocation.invoke(invocationData, httpRequest.get(), null))
+        return httpRequest.<Mono<Message>>map(request -> Flux.from(graphQLInvocation.invoke(invocationData, request, null))
             .flatMap(executionResult -> {
                 if (executionResult.isDataPresent() && executionResult.getData() != null && executionResult.getData() instanceof Publisher<?> p) {
                     return handleExecutionResultPublisher(p);
@@ -167,7 +163,9 @@ public class GraphQLWsHandler {
             .flatMap(executionResult -> handleExecutionResult(subscribeMessage, session, executionResult))
             .last()
             .filter(NextMessage.class::isInstance)
-            .flatMap(m -> completeSubscription(subscribeMessage, session));
+            .flatMap(m -> completeSubscription(subscribeMessage, session)))
+            .orElseGet(() -> Mono.error(new IllegalStateException("The HTTP request from the original WebSocket connection could not be retrieved.")));
+
     }
 
     private Flux<ExecutionResult> handleExecutionResultPublisher(Publisher<?> p) {

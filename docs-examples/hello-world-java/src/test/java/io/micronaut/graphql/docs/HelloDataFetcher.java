@@ -31,7 +31,7 @@ public class HelloDataFetcher implements DataFetcher<String> {
     @Override
     public String get(DataFetchingEnvironment env) {
         String name = env.getArgument("name");
-        if (name == null || name.trim().length() == 0) {
+        if (name == null || name.trim().isEmpty()) {
             name = "World";
         }
         return String.format("Hello %s!", name);

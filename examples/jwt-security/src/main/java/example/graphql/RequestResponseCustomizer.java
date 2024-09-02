@@ -16,7 +16,6 @@
 package example.graphql;
 
 import graphql.ExecutionInput;
-import graphql.GraphQLContext;
 import io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.core.annotation.Nullable;
@@ -33,9 +32,10 @@ public class RequestResponseCustomizer implements GraphQLExecutionInputCustomize
     @Override
     public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
                                                @Nullable MutableHttpResponse<String> httpResponse) {
-        GraphQLContext graphQLContext = (GraphQLContext) executionInput.getContext();
-        graphQLContext.put("httpRequest", httpRequest);
-        graphQLContext.put("httpResponse", httpResponse);
+        executionInput.getGraphQLContext()
+            .put("httpRequest", httpRequest)
+            .put("httpResponse", httpResponse);
+
         return Publishers.just(executionInput);
     }
 

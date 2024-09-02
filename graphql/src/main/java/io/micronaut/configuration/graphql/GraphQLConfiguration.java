@@ -161,7 +161,7 @@ public class GraphQLConfiguration implements Toggleable {
         /**
          * The default GraphiQL template parameters.
          */
-        public static final Map<String, String> DEFAULT_TEMPLATE_PARAMETERS = Collections.EMPTY_MAP;
+        public static final Map<String, String> DEFAULT_TEMPLATE_PARAMETERS = Collections.emptyMap();
 
         /**
          * The configuration name of the GraphiQL page title.

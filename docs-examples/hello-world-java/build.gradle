@@ -16,4 +16,6 @@ micronaut {
     coreVersion.set(libs.versions.micronaut.asProvider().get())
 }
 
-mainClassName = "io.micronaut.graphql.docs.Application"
+application {
+    mainClass = "io.micronaut.graphql.docs.Application"
+}

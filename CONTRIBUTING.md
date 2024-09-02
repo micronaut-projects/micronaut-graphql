@@ -77,6 +77,6 @@ In this case, to fix the issues, we need to:
 
 - Add one empty line before `package` in line 16
 - Add the Javadoc for the constructor in line 27
-- Add an space after `if` in line 34
+- Add a space after `if` in line 34
 
 The plugin also adds a new tab in the bottom of the IDE to run Checkstyle and show errors and warnings. We recommend that you run the report and fix all issues before submitting a pull request.

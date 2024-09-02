@@ -2,10 +2,6 @@ plugins {
     id("micronaut-graphql.example-conventions")
 }
 
-micronaut {
-    version '4.5.1'
-}
-
 dependencies {
     implementation libs.managed.graphql.spqr
 }

@@ -1,10 +1,11 @@
 plugins {
     id 'io.micronaut.build.internal.graphql-base'
-    id('io.micronaut.minimal.application')
+    id 'io.micronaut.minimal.application'
 }
 
 micronaut {
     version = libs.versions.micronaut.asProvider().get()
+    coreVersion.set(libs.versions.micronaut.asProvider().get())
     runtime "netty"
 }
 

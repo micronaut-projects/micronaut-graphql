@@ -26,11 +26,11 @@ import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.CookieConfiguration;
 import io.micronaut.security.authentication.Authentication;
-import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.Authenticator;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.event.LoginFailedEvent;
 import io.micronaut.security.event.LoginSuccessfulEvent;
+import io.micronaut.security.event.SecurityEvent;
 import io.micronaut.security.token.generator.AccessRefreshTokenGenerator;
 import io.micronaut.security.token.generator.AccessTokenConfiguration;
 import io.micronaut.security.token.render.AccessRefreshToken;
@@ -38,6 +38,7 @@ import jakarta.inject.Singleton;
 import reactor.core.publisher.Flux;
 
 import java.time.temporal.TemporalAmount;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Random;
 
@@ -50,16 +51,17 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
     private static final int LOGIN_RATE_LIMIT = 10;
     private static int LOGIN_RATE_LIMIT_REMAINING = LOGIN_RATE_LIMIT;
 
-    private final Authenticator authenticator;
-    private final ApplicationEventPublisher eventPublisher;
+    private final Authenticator<HttpRequest<?>> authenticator;
+    private final ApplicationEventPublisher<SecurityEvent> eventPublisher;
     private final CookieConfiguration cookieConfiguration;
     private final AccessRefreshTokenGenerator accessRefreshTokenGenerator;
     private final AccessTokenConfiguration accessTokenConfiguration;
-
     private final UserRepository userRepository;
 
-    public LoginDataFetcher(Authenticator authenticator,
-                            ApplicationEventPublisher eventPublisher,
+    private final Random random = new Random();
+
+    public LoginDataFetcher(Authenticator<HttpRequest<?>> authenticator,
+                            ApplicationEventPublisher<SecurityEvent> eventPublisher,
                             CookieConfiguration cookieConfiguration,
                             AccessRefreshTokenGenerator accessRefreshTokenGenerator,
                             AccessTokenConfiguration accessTokenConfiguration, UserRepository userRepository) {
@@ -72,8 +74,8 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
     }
 
     @Override
-    public LoginPayload get(DataFetchingEnvironment environment) throws Exception {
-        GraphQLContext graphQLContext = environment.getContext();
+    public LoginPayload get(DataFetchingEnvironment environment) {
+        GraphQLContext graphQLContext = environment.getGraphQlContext();
 
         if (LOGIN_RATE_LIMIT_REMAINING <= 0) {
             addRateLimitHeaders(graphQLContext);
@@ -83,43 +85,42 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
             return LoginPayload.ofError("Rate Limit Exceeded");
         }
 
-        HttpRequest httpRequest = graphQLContext.get("httpRequest");
+        HttpRequest<?> httpRequest = graphQLContext.get("httpRequest");
         MutableHttpResponse<String> httpResponse = graphQLContext.get("httpResponse");
 
         String username = environment.getArgument("username");
         String password = environment.getArgument("password");
 
-        UsernamePasswordCredentials usernamePasswordCredentials = new UsernamePasswordCredentials(username, password);
+        var usernamePasswordCredentials = new UsernamePasswordCredentials(username, password);
 
         LOGIN_RATE_LIMIT_REMAINING--;
 
-        Flux<AuthenticationResponse> authenticationResponseFlowable =
-                Flux.from(authenticator.authenticate(httpRequest, usernamePasswordCredentials));
+        var authenticationResponseFlowable =
+            Flux.from(authenticator.authenticate(httpRequest, usernamePasswordCredentials));
 
         return authenticationResponseFlowable.map(authenticationResponse -> {
             addRateLimitHeaders(graphQLContext);
 
             if (authenticationResponse.isAuthenticated()) {
-                eventPublisher.publishEvent(new LoginSuccessfulEvent(authenticationResponse));
+                eventPublisher.publishEvent(new LoginSuccessfulEvent(authenticationResponse, null, Locale.getDefault()));
 
-                Optional<Cookie> jwtCookie = accessTokenCookie(Authentication.build(username), httpRequest);
-                jwtCookie.ifPresent(httpResponse::cookie);
+                accessTokenCookie(Authentication.build(username), httpRequest)
+                    .ifPresent(httpResponse::cookie);
 
                 User user = userRepository.findByUsername(username).orElse(null);
 
                 return LoginPayload.ofUser(user);
-            } else {
-                eventPublisher.publishEvent(new LoginFailedEvent(authenticationResponse));
-
-                return LoginPayload.ofError(authenticationResponse.getMessage().orElse(null));
             }
+            eventPublisher.publishEvent(new LoginFailedEvent(authenticationResponse, null, null, Locale.getDefault()));
+
+            return LoginPayload.ofError(authenticationResponse.getMessage().orElse(null));
         }).blockFirst();
     }
 
     private Optional<Cookie> accessTokenCookie(Authentication authentication, HttpRequest<?> request) {
         Optional<AccessRefreshToken> accessRefreshTokenOptional = accessRefreshTokenGenerator.generate(authentication);
         if (accessRefreshTokenOptional.isPresent()) {
-            Cookie cookie = Cookie.of(cookieConfiguration.getCookieName(), accessRefreshTokenOptional.get().getAccessToken());
+            var cookie = Cookie.of(cookieConfiguration.getCookieName(), accessRefreshTokenOptional.get().getAccessToken());
             cookie.configure(cookieConfiguration, request.isSecure());
             Optional<TemporalAmount> cookieMaxAge = cookieConfiguration.getCookieMaxAge();
             if (cookieMaxAge.isPresent()) {
@@ -135,13 +136,13 @@ public class LoginDataFetcher implements DataFetcher<LoginPayload> {
     private void addRateLimitHeaders(GraphQLContext graphQLContext) {
         MutableHttpResponse<String> httpResponse = graphQLContext.get("httpResponse");
 
-        httpResponse.header("X-Login-RateLimit", String.valueOf(LOGIN_RATE_LIMIT));
-        httpResponse.header("X-Login-RateLimit-Remaining", String.valueOf(LOGIN_RATE_LIMIT_REMAINING));
+        httpResponse.header("X-Login-RateLimit", Integer.toString(LOGIN_RATE_LIMIT))
+            .header("X-Login-RateLimit-Remaining", Integer.toString(LOGIN_RATE_LIMIT_REMAINING));
     }
 
     private void resetRateLimit() {
-        int random = new Random().nextInt(5);
-        if (random == 3) {
+        int i = random.nextInt(5);
+        if (i == 3) {
             LOGIN_RATE_LIMIT_REMAINING = LOGIN_RATE_LIMIT;
         }
     }

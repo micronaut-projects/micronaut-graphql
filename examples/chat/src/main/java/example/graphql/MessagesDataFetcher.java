@@ -30,7 +30,7 @@ import java.util.Optional;
 @Singleton
 public class MessagesDataFetcher implements DataFetcher<Iterable<ChatMessage>> {
 
-    private ChatRepository chatRepository;
+    private final ChatRepository chatRepository;
 
     public MessagesDataFetcher(ChatRepository chatRepository) {
         this.chatRepository = chatRepository;
@@ -39,8 +39,8 @@ public class MessagesDataFetcher implements DataFetcher<Iterable<ChatMessage>> {
     @Override
     public Iterable<ChatMessage> get(DataFetchingEnvironment env) {
         return Optional
-                .ofNullable((OffsetDateTime) env.getArgument("after"))
-                .map(after -> chatRepository.findAfter(after.toZonedDateTime()))
-                .orElseGet(() -> chatRepository.findAll());
+            .ofNullable((OffsetDateTime) env.getArgument("after"))
+            .map(after -> chatRepository.findAfter(after.toZonedDateTime()))
+            .orElseGet(chatRepository::findAll);
     }
 }

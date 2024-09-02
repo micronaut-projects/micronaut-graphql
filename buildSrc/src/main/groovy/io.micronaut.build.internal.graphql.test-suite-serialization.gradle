@@ -1,5 +1,5 @@
 plugins {
-    id("io.micronaut.application")
+    id "io.micronaut.application"
 }
 
 micronaut {
@@ -8,7 +8,7 @@ micronaut {
     testRuntime("junit5")
 }
 
-configurations.all {
+configurations.configureEach {
     resolutionStrategy {
         preferProjectModules()
     }

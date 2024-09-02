@@ -119,7 +119,7 @@ We have a [template repo](https://github.com/micronaut-projects/micronaut-projec
 source of truth for certain files. It is used as a template to create new repos, and changes to certain files in the
 template repo will get propagated automatically. The files propagated are:
 
-* Workflow files (`.github/workflows/*`). They are copied using rsync"
+* Workflow files (`.github/workflows/*`). They are copied using rsync
   * `central-sync.yml`.
   * `dependency-update.yml`.
   * `graalvm.yml`.
