@@ -9,12 +9,12 @@ kotlin = '1.9.25'
 shadow = '8.1.1'
 
 micronaut = "4.6.3"
-micronaut-platform = "4.6.0"
+micronaut-platform = "4.6.1"
 micronaut-test = "4.5.0"
 micronaut-gradle-plugin = "4.4.2"
 micronaut-kotlin = "4.4.0"
 micronaut-security = "4.10.0"
-micronaut-serde = "2.11.0"
+micronaut-serde = "2.12.0"
 micronaut-logging = "1.4.0"
 micronaut-reactor = "3.5.0"
 micronaut-docs = "2.0.0"
