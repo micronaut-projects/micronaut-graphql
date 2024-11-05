@@ -302,8 +302,8 @@ final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>>
     /**
      * Constructor for a graphql-ws 'subscribe' message.
      *
-     * @param id
-     * @param payload
+     * @param id message id
+     * @param payload message payload
      */
     @JsonCreator
     public SubscribeMessage(@NonNull @JsonProperty("id") String id, @NonNull @JsonProperty("payload") SubscribePayload payload) {

@@ -26,10 +26,9 @@ import java.util.UUID;
  * @author Marcel Overdijk
  */
 @Singleton
-@SuppressWarnings("Duplicates")
 public class ToDoRepository {
 
-    private Map<String, ToDo> toDos = new LinkedHashMap<>();
+    private final Map<String, ToDo> toDos = new LinkedHashMap<>();
 
     public ToDoRepository() {
         save(new ToDo("Book flights to Gran Canaria"));

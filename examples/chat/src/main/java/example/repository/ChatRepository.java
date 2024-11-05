@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * @author Gerard Klijs
@@ -35,9 +34,9 @@ import java.util.stream.Collectors;
 @Singleton
 public class ChatRepository {
 
-    private List<ChatMessage> chats = new ArrayList<>();
-    private BlockingQueue<ChatMessage> blockingQueue = new ArrayBlockingQueue<>(10);
-    private Flux<ChatMessage> stream = Flux.create((Consumer<FluxSink<ChatMessage>>) sink -> {
+    private final List<ChatMessage> chats = new ArrayList<>();
+    private final BlockingQueue<ChatMessage> blockingQueue = new ArrayBlockingQueue<>(10);
+    private final Flux<ChatMessage> stream = Flux.create((Consumer<FluxSink<ChatMessage>>) sink -> {
         while (!sink.isCancelled()) {
             try {
                 sink.next(blockingQueue.take());
@@ -54,12 +53,12 @@ public class ChatRepository {
 
     public Iterable<ChatMessage> findAfter(ZonedDateTime after) {
         return chats.stream()
-                .filter(chat -> chat.getTime().isAfter(after))
-                .collect(Collectors.toList());
+            .filter(chat -> chat.getTime().isAfter(after))
+            .toList();
     }
 
     public ChatMessage save(String text, String from) {
-        ChatMessage chatMessage = new ChatMessage(text, from);
+        var chatMessage = new ChatMessage(text, from);
         chats.add(chatMessage);
         blockingQueue.add(chatMessage);
         return chatMessage;

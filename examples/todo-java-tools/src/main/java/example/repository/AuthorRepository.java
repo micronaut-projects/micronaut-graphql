@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * @author Alexey Zhokhov
@@ -41,9 +40,9 @@ public class AuthorRepository {
         LOG.debug("Batch loading authors: {}", ids);
 
         return authors.values()
-                .stream()
-                .filter(it -> ids.contains(it.getId()))
-                .collect(Collectors.toList());
+            .stream()
+            .filter(it -> ids.contains(it.getId()))
+            .toList();
     }
 
     public Author findOrCreate(String username) {

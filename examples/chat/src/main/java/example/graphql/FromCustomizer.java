@@ -25,6 +25,8 @@ import io.micronaut.http.MutableHttpResponse;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 
+import java.util.Map;
+
 @Singleton
 @Primary
 public class FromCustomizer implements GraphQLExecutionInputCustomizer {
@@ -33,8 +35,7 @@ public class FromCustomizer implements GraphQLExecutionInputCustomizer {
     @Override
     public Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
                                                @Nullable MutableHttpResponse<String> httpResponse) {
-        return Publishers.just(executionInput.transform(
-                builder -> builder.context(httpRequest.getRemoteAddress().toString())
-        ));
+        return Publishers.just(executionInput.transform(builder ->
+            builder.graphQLContext(Map.of("from", httpRequest.getRemoteAddress().toString()))));
     }
 }

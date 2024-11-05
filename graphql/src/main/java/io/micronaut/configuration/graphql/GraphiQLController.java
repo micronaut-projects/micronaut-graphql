@@ -18,7 +18,6 @@ package io.micronaut.configuration.graphql;
 import io.micronaut.configuration.graphql.ws.apollo.GraphQLApolloWsConfiguration;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.DefaultPropertyPlaceholderResolver;
-import io.micronaut.context.env.PropertyPlaceholderResolver;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.io.IOUtils;
@@ -27,7 +26,6 @@ import io.micronaut.core.naming.NameUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.SupplierUtil;
 import io.micronaut.core.value.MapPropertyResolver;
-import io.micronaut.core.value.PropertyResolver;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 
@@ -123,7 +121,7 @@ public class GraphiQLController {
         if (graphiQLConfiguration.getTemplateParameters() != null) {
             graphiQLConfiguration.getTemplateParameters().forEach((name, value) ->
                     // De-capitalize and de-hyphenate the parameter names.
-                    // Otherwise `graphiql.template-parameters.magicWord` would be put as `magic-word` in the
+                    // Otherwise, `graphiql.template-parameters.magicWord` would be put as `magic-word` in the
                     // parameters map as Micronaut normalises properties and stores them lowercase hyphen separated.
                     parameters.put(NameUtils.decapitalize(NameUtils.dehyphenate(name)), value));
         }
@@ -131,11 +129,9 @@ public class GraphiQLController {
     }
 
     private String replaceParameters(final String str, final Map<String, String> parameters) {
-        Map<String, Object> map = new HashMap<>();
-        map.putAll(parameters);
-        PropertyResolver propertyResolver = new MapPropertyResolver(map);
-        PropertyPlaceholderResolver propertyPlaceholderResolver =
-                new DefaultPropertyPlaceholderResolver(propertyResolver, conversionService);
+        var map = new HashMap<String, Object>(parameters);
+        var propertyResolver = new MapPropertyResolver(map);
+        var propertyPlaceholderResolver = new DefaultPropertyPlaceholderResolver(propertyResolver, conversionService);
         return propertyPlaceholderResolver.resolvePlaceholders(str).get();
     }
 }

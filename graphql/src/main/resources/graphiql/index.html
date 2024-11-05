@@ -72,7 +72,7 @@
             ? graphiqlPathLength + 1
             : graphiqlPathLength;
 
-        return window.location.pathname.substr(0, window.location.pathname.length - removePathLength);
+        return window.location.pathname.substring(0, window.location.pathname.length - removePathLength);
     }
 
     const root = ReactDOM.createRoot(document.getElementById('graphiql'));

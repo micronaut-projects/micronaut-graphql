@@ -15,16 +15,15 @@
  */
 package example.graphql;
 
-import graphql.kickstart.tools.GraphQLQueryResolver;
 import example.domain.ToDo;
 import example.repository.ToDoRepository;
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import jakarta.inject.Singleton;
 
 /**
  * @author Marcel Overdijk
  */
 @Singleton
-@SuppressWarnings("Duplicates")
 public class ToDoQueryResolver implements GraphQLQueryResolver {
 
     private final ToDoRepository toDoRepository;

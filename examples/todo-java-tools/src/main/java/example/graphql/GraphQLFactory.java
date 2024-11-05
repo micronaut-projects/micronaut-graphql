@@ -27,7 +27,6 @@ import jakarta.inject.Singleton;
  * @author Marcel Overdijk
  */
 @Factory
-@SuppressWarnings("Duplicates")
 public class GraphQLFactory {
 
     @Bean
@@ -37,8 +36,8 @@ public class GraphQLFactory {
 
         // Parse the schema.
         SchemaParserBuilder builder = SchemaParser.newParser()
-                .file("schema.graphqls")
-                .resolvers(toDoQueryResolver, toDoMutationResolver, toDoResolver);
+            .file("schema.graphqls")
+            .resolvers(toDoQueryResolver, toDoMutationResolver, toDoResolver);
 
         // Create the executable schema.
         GraphQLSchema graphQLSchema = builder.build().makeExecutableSchema();
