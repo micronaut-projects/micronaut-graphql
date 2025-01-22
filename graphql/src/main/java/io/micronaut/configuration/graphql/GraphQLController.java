@@ -29,9 +29,16 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.exceptions.HttpStatusException;
+import io.micronaut.http.multipart.CompletedPart;
+import io.micronaut.http.server.multipart.MultipartBody;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -40,6 +47,7 @@ import static io.micronaut.http.MediaType.ALL;
 import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL_TYPE;
 import static io.micronaut.http.MediaType.APPLICATION_JSON;
 import static io.micronaut.http.MediaType.APPLICATION_JSON_TYPE;
+import static io.micronaut.http.MediaType.MULTIPART_FORM_DATA;
 
 /**
  * The GraphQL controller handling GraphQL requests.
@@ -171,6 +179,57 @@ public class GraphQLController {
         }
 
         throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Could not process GraphQL request");
+    }
+
+    /**
+     * Handles GraphQL {@code POST} requests with multipart form data.
+     *
+     * @param body          the GraphQL request body (multipart)
+     *
+     * @return the GraphQL response
+     */
+    @Post(consumes = MULTIPART_FORM_DATA, produces = APPLICATION_JSON, single = true)
+    public Publisher<MutableHttpResponse<String>> post(@Body MultipartBody body) {
+        return Flux.from(body)
+            .collectMap(CompletedPart::getName, part -> part)
+            .flatMap(parts -> {
+                try {
+                    CompletedPart operationsPart = parts.get("operations");
+                    if (operationsPart == null) {
+                        throw new HttpStatusException(UNPROCESSABLE_ENTITY, "The 'operations' part of the request is required.");
+                    }
+                    CompletedPart mapPart = parts.get("map");
+                    if (mapPart == null) {
+                        throw new HttpStatusException(UNPROCESSABLE_ENTITY, "The 'map' part of the request is required.");
+                    }
+                    GraphQLRequestBody request = graphQLJsonSerializer.deserialize(partToString(operationsPart), GraphQLRequestBody.class);
+                    if (request.getQuery() == null) {
+                        request.setQuery("");
+                    }
+                    Map<String, Object> variables = request.getVariables();
+                    Map<String, Object> map = convertVariablesJson(partToString(mapPart));
+                    for (Map.Entry<String, Object> entry : map.entrySet()) {
+                        if (entry.getValue() instanceof List<?> list) {
+                            for (Object o : list) {
+                                if (o instanceof String s && s.contains(".")) {
+                                    variables.putIfAbsent(s.substring(s.indexOf(".") + 1), parts.get(entry.getKey()));
+                                }
+                            }
+                        }
+                    }
+                    return Mono.from(executeRequest(request.getQuery(), request.getOperationName(), variables, null));
+                } catch (HttpStatusException ex) {
+                    return Mono.error(ex);
+                }
+            });
+    }
+
+    private static String partToString(CompletedPart completedPart) {
+        try {
+            return new String(completedPart.getBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Failed to deserialize the '%s' part.".formatted(completedPart.getName()));
+        }
     }
 
     private Map<String, Object> convertVariablesJson(String jsonMap) {
