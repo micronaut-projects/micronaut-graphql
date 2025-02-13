@@ -4,7 +4,7 @@ managed-graphql-java-extended-scalars = "22.0"
 managed-graphql-java-tools = "14.0.0"
 managed-graphql-spqr = "0.12.4"
 
-graal-svm = "24.1.1"
+graal-svm = "24.1.2"
 kotlin = '1.9.25'
 shadow = '8.1.1'
 
