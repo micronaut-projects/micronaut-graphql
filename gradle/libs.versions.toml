@@ -8,15 +8,15 @@ graal-svm = "24.1.2"
 kotlin = '1.9.25'
 shadow = '8.1.1'
 
-micronaut = "4.7.11"
+micronaut = "4.8.2"
 micronaut-platform = "4.6.1"
 micronaut-test = "4.5.0"
 micronaut-gradle-plugin = "4.4.5"
 micronaut-kotlin = "4.5.0"
-micronaut-security = "4.11.2"
+micronaut-security = "4.12.0"
 micronaut-serde = "2.14.0"
 micronaut-logging = "1.4.0"
-micronaut-reactor = "3.6.0"
+micronaut-reactor = "3.7.0"
 micronaut-docs = "2.0.0"
 sonatype-scan = "3.0.0"
 
