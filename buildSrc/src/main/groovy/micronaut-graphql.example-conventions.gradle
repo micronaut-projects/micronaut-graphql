@@ -1,6 +1,6 @@
 plugins {
     id "com.github.johnrengelman.shadow"
-    id("io.micronaut.application")
+    id "io.micronaut.application"
     id 'io.micronaut.build.internal.graphql-base'
 }
 
@@ -9,19 +9,24 @@ version project.projectVersion
 
 dependencies {
     compileOnly libs.graal.svm
+
     implementation projects.micronautGraphql
-
-
     implementation mn.micronaut.http.client
     implementation mn.micronaut.jackson.databind
     implementation mn.micronaut.runtime
+
     runtimeOnly mnLogging.logback.classic
     runtimeOnly mn.snakeyaml
+
     testRuntimeOnly mn.snakeyaml
 }
 
-mainClassName = "example.Application"
+application {
+    mainClass = "example.Application"
+}
 
 micronaut {
+    version.set(libs.versions.micronaut.platform.get())
+    coreVersion.set(libs.versions.micronaut.asProvider().get())
     runtime("netty")
 }

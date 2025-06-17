@@ -17,16 +17,15 @@ package example.security;
 
 import example.domain.User;
 import example.repository.UserRepository;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.AuthenticationFailed;
 import io.micronaut.security.authentication.AuthenticationFailureReason;
-import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;
 import io.micronaut.security.authentication.AuthenticationResponse;
+import io.micronaut.security.authentication.provider.AuthenticationProvider;
 import jakarta.inject.Singleton;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
 
 import java.util.Optional;
 
@@ -34,7 +33,7 @@ import java.util.Optional;
  * @author Alexey Zhokhov
  */
 @Singleton
-public class AuthenticationProviderUserPassword implements AuthenticationProvider<HttpRequest<?>> {
+public class AuthenticationProviderUserPassword implements AuthenticationProvider<HttpRequest<?>, String, String> {
 
     private final UserRepository userRepository;
 
@@ -43,19 +42,17 @@ public class AuthenticationProviderUserPassword implements AuthenticationProvide
     }
 
     @Override
-    public Publisher<AuthenticationResponse> authenticate(@Nullable HttpRequest<?> httpRequest,
-                                                          AuthenticationRequest<?, ?> authenticationRequest) {
-        Optional<User> user = userRepository.findByUsername((String) authenticationRequest.getIdentity());
+    public @NonNull AuthenticationResponse authenticate(@Nullable HttpRequest<?> requestContext, @NonNull AuthenticationRequest<String, String> authRequest) {
+        Optional<User> user = userRepository.findByUsername(authRequest.getIdentity());
 
-        if (!user.isPresent()) {
-            return Flux.just(new AuthenticationFailed(AuthenticationFailureReason.USER_NOT_FOUND));
+        if (user.isEmpty()) {
+            return new AuthenticationFailed(AuthenticationFailureReason.USER_NOT_FOUND);
         }
 
-        if (authenticationRequest.getSecret().equals(user.get().getPassword())) {
-            return Flux.just(AuthenticationResponse.success(user.get().getUsername(), user.get().getRoles()));
+        if (authRequest.getSecret().equals(user.get().getPassword())) {
+            return AuthenticationResponse.success(user.get().getUsername(), user.get().getRoles());
         }
 
-        return Flux.just(new AuthenticationFailed(AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH));
+        return new AuthenticationFailed(AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH);
     }
-
 }

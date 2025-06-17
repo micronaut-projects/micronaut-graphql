@@ -18,8 +18,7 @@ package example.repository;
 import example.domain.User;
 import jakarta.inject.Singleton;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,12 +28,10 @@ import java.util.Optional;
 @Singleton
 public class UserRepository {
 
-    private static final Map<String, User> USERS = new HashMap<>();
-
-    static {
-        USERS.put("test", new User("test", "test", "Test", "Test", Arrays.asList("ROLE_USER")));
-        USERS.put("admin", new User("admin", "password", "Admin", "Adminovich", Arrays.asList("ROLE_ADMIN")));
-    }
+    private static final Map<String, User> USERS = Map.of(
+        "test", new User("test", "test", "Test", "Test", List.of("ROLE_USER")),
+        "admin", new User("admin", "password", "Admin", "Adminovich", List.of("ROLE_ADMIN"))
+    );
 
     public Optional<User> findByUsername(String username) {
         return Optional.ofNullable(USERS.get(username));

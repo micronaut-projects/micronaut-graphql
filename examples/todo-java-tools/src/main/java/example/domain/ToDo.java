@@ -18,7 +18,6 @@ package example.domain;
 /**
  * @author Marcel Overdijk
  */
-@SuppressWarnings("Duplicates")
 public class ToDo {
 
     private String id;

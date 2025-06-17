@@ -27,7 +27,7 @@ import jakarta.inject.Singleton;
 @Singleton
 public class ChatDataFetcher implements DataFetcher<ChatMessage> {
 
-    private ChatRepository chatRepository;
+    private final ChatRepository chatRepository;
 
     public ChatDataFetcher(ChatRepository chatRepository) {
         this.chatRepository = chatRepository;
@@ -36,7 +36,7 @@ public class ChatDataFetcher implements DataFetcher<ChatMessage> {
     @Override
     public ChatMessage get(DataFetchingEnvironment env) {
         String text = env.getArgument("text");
-        String from = env.getContext();
+        String from = env.getGraphQlContext().get("from");
         return chatRepository.save(text, from);
     }
 }

@@ -40,11 +40,11 @@ public class GraphQLFactory {
     public GraphQL graphQL(ResourceResolver resourceResolver,
                            CurrentUserDataFetcher currentUserDataFetcher,
                            LoginDataFetcher loginDataFetcher) {
-        SchemaParser schemaParser = new SchemaParser();
-        SchemaGenerator schemaGenerator = new SchemaGenerator();
+        var schemaParser = new SchemaParser();
+        var schemaGenerator = new SchemaGenerator();
 
         // Parse the schema.
-        TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
+        var typeRegistry = new TypeDefinitionRegistry();
         typeRegistry.merge(schemaParser.parse(new BufferedReader(new InputStreamReader(
                 resourceResolver.getResourceAsStream("classpath:schema.graphqls").get()))));
 

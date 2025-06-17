@@ -105,18 +105,18 @@ public class GraphQLWsConfiguration implements Toggleable {
     }
 
     /**
-     * Returns the connection intialisation wait timeout.
+     * Returns the connection initialisation wait timeout.
      *
-     * @return the connection intialisation wait timeout
+     * @return the connection initialisation wait timeout
      */
     public Duration getConnectionInitWaitTimeout() {
         return connectionInitWaitTimeout;
     }
 
     /**
-     * Sets the connection intialisation wait timeout.
+     * Sets the connection initialisation wait timeout.
      *
-     * @param connectionInitWaitTimeout the connection intialisation wait timeout
+     * @param connectionInitWaitTimeout the connection initialisation wait timeout
      */
     public void setConnectionInitWaitTimeout(Duration connectionInitWaitTimeout) {
         this.connectionInitWaitTimeout = connectionInitWaitTimeout;

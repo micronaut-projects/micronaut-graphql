@@ -1,4 +1,4 @@
-Micronaut 1.0.3 or above is required and you must have the `micronaut-graphql` dependency on your classpath:
+Micronaut 1.0.3 or above is required, and you must have the `micronaut-graphql` dependency on your classpath:
 
 dependency:micronaut-graphql[groupId="io.micronaut.graphql"]
 
@@ -12,7 +12,7 @@ As outlined in https://graphql.org/learn/serving-over-http the following HTTP re
 
 Both produce a `application/json` response.
 
-By default the GraphQL endpoint is exposed on `/graphql` but this can be changed via the `graphql.path` application property.
+By default, the GraphQL endpoint is exposed on `/graphql` but this can be changed via the `graphql.path` application property.
 
 .src/main/resources/application.yml
 [source,yaml]

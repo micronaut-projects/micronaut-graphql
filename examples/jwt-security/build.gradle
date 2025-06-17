@@ -2,11 +2,7 @@ plugins {
     id("micronaut-graphql.example-conventions")
 }
 
-micronaut {
-    version '4.0.0-M2'
-}
-
-configurations.all {
+configurations.configureEach {
     resolutionStrategy {
         preferProjectModules()
     }

@@ -27,10 +27,9 @@ import jakarta.inject.Singleton;
  * @author Marcel Overdijk
  */
 @Singleton
-@SuppressWarnings("Duplicates")
 public class ToDoService {
 
-    private ToDoRepository toDoRepository;
+    private final ToDoRepository toDoRepository;
 
     public ToDoService(ToDoRepository toDoRepository) {
         this.toDoRepository = toDoRepository;

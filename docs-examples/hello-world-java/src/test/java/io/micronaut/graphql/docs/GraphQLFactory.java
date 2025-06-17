@@ -34,7 +34,6 @@ import java.io.InputStreamReader;
 /**
  * @author Marcel Overdijk
  */
-@SuppressWarnings("Duplicates")
 // tag::clazz[]
 @Factory // <1>
 public class GraphQLFactory {
