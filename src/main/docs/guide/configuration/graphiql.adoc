@@ -14,7 +14,7 @@ to provide a seamless integration with the configured GraphQL endpoint path.
 
 If further customisations are required, a custom Graph__i__QL
 https://github.com/micronaut-projects/micronaut-graphql/blob/serving-over-http/graphql/src/main/resources/graphiql/index.html[template]
-can be provided. Either by providing the custom template at `src/main/resources/graphiq/index.html` or via the `graphiql.template-path`
+can be provided. Either by providing the custom template at `src/main/resources/graphiql/index.html` or via the `graphiql.template-path`
 application property pointing to a different template location.
 In that case it could also be useful to dynamically replace additional parameters in the template via the `graphql.graphiql.template-parameters`
 application property.
