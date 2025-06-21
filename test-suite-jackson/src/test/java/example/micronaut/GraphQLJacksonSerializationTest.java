@@ -1,6 +1,9 @@
 package example.micronaut;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.json.JsonMapper;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
@@ -13,7 +16,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Property(name = "jackson.serializationInclusion", value = "ALWAYS")
-@MicronautTest
+@MicronautTest(startApplication = false)
 class GraphQLJacksonSerializationTest {
 
     @Test
@@ -32,5 +35,25 @@ class GraphQLJacksonSerializationTest {
         var expected = """
             {"foo":{"bar":[]}}""";
         assertEquals(expected, mapper.writeValueAsString(response));
+    }
+
+    @Test
+    void testRawJackson() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(
+            new GraphQLResponseBody(Map.of("data", "test")));
+        assertEquals("""
+            {"data":"test"}""", result);
+    }
+
+    @Test
+    void testInjectedJackson() throws JsonProcessingException {
+        try (ApplicationContext ctx = ApplicationContext.run()) {
+            ObjectMapper objectMapper = ctx.getBean(ObjectMapper.class);
+            String result = objectMapper.writeValueAsString(
+                new GraphQLResponseBody(Map.of("data", "test")));
+            assertEquals("""
+            {"data":"test"}""", result);
+        }
     }
 }
