@@ -6,19 +6,18 @@ managed-graphql-spqr = "0.12.4"
 
 graal-svm = "24.2.1"
 kotlin = '1.9.25'
-shadow = '8.1.1'
+shadow = '8.3.7'
 
-micronaut = "4.9.2"
-micronaut-platform = "4.7.6"
-micronaut-test = "4.5.0"
-micronaut-gradle-plugin = "4.5.3"
+micronaut = "4.10.4"
+micronaut-platform = "4.9.4"
+micronaut-test = "4.9.0"
+micronaut-gradle-plugin = "4.5.5"
 micronaut-kotlin = "4.7.0"
-micronaut-security = "4.13.0"
-micronaut-serde = "2.15.0"
-micronaut-logging = "1.4.0"
-micronaut-reactor = "3.7.0"
-micronaut-docs = "2.0.0"
-sonatype-scan = "3.1.1"
+micronaut-security = "4.15.0"
+micronaut-serde = "2.15.5"
+micronaut-logging = "1.7.1"
+micronaut-reactor = "3.9.0"
+micronaut-docs = "3.0.0"
 
 [libraries]
 # Managed
@@ -40,6 +39,5 @@ graal-svm = { module = "org.graalvm.nativeimage:svm", version.ref = "graal-svm" 
 # Gradle plugins
 kotlin-gradle-plugin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version.ref = 'kotlin' }
 kotlin-gradle-allopen = { module = 'org.jetbrains.kotlin:kotlin-allopen', version.ref = 'kotlin' }
-shadow-plugin = { module = "com.github.johnrengelman:shadow", version.ref = "shadow" }
+shadow-plugin = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version.ref = "shadow" }
 micronaut-gradle-plugin = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref="micronaut-gradle-plugin" }
-sonatype-scan = { module = "org.sonatype.gradle.plugins:scan-gradle-plugin", version.ref = "sonatype-scan" }
