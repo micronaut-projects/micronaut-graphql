@@ -16,7 +16,7 @@ micronaut-kotlin = "4.7.0"
 micronaut-security = "4.13.0"
 micronaut-serde = "2.15.5"
 micronaut-logging = "1.4.0"
-micronaut-reactor = "3.7.0"
+micronaut-reactor = "3.9.0"
 micronaut-docs = "3.0.0"
 sonatype-scan = "3.1.1"
 
