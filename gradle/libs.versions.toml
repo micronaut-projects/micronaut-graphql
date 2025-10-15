@@ -18,7 +18,6 @@ micronaut-serde = "2.15.5"
 micronaut-logging = "1.4.0"
 micronaut-reactor = "3.9.0"
 micronaut-docs = "3.0.0"
-sonatype-scan = "3.1.1"
 
 [libraries]
 # Managed
@@ -42,4 +41,3 @@ kotlin-gradle-plugin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', v
 kotlin-gradle-allopen = { module = 'org.jetbrains.kotlin:kotlin-allopen', version.ref = 'kotlin' }
 shadow-plugin = { module = "com.github.johnrengelman:shadow", version.ref = "shadow" }
 micronaut-gradle-plugin = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref="micronaut-gradle-plugin" }
-sonatype-scan = { module = "org.sonatype.gradle.plugins:scan-gradle-plugin", version.ref = "sonatype-scan" }
