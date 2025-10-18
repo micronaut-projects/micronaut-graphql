@@ -16,7 +16,7 @@ micronaut-kotlin = "4.7.0"
 micronaut-security = "4.15.0"
 micronaut-serde = "2.15.5"
 micronaut-logging = "1.7.1"
-micronaut-reactor = "3.9.0"
+micronaut-reactor = "3.9.1"
 micronaut-docs = "3.0.0"
 
 [libraries]
