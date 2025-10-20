@@ -19,6 +19,7 @@ dependencies {
     testRuntimeOnly(mn.snakeyaml)
     testRuntimeOnly(mnReactor.micronaut.reactor)
     testRuntimeOnly(mnReactor.micrometer.context.propagation)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 micronautBuild {
