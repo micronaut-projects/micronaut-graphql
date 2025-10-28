@@ -8,7 +8,6 @@ compileTestJava.options.compilerArgs += '-parameters'
 dependencies {
     implementation(mnSerde.micronaut.serde.jackson)
     testImplementation mn.micronaut.http.client
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 micronaut {

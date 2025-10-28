@@ -9,5 +9,4 @@ application {
 dependencies {
     annotationProcessor(mnSerde.micronaut.serde.processor)
     testImplementation(mnSerde.micronaut.serde.jackson)
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

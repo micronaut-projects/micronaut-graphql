@@ -14,7 +14,6 @@ micronaut {
 dependencies {
     testImplementation mn.micronaut.http.client
     implementation(mnSerde.micronaut.serde.jackson)
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 application {

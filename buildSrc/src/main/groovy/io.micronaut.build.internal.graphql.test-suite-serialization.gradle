@@ -19,4 +19,6 @@ dependencies {
     runtimeOnly(mnLogging.logback.classic)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mnTest.micronaut.test.junit5)
+    testRuntimeOnly(mnTest.junit.platform.launcher)
+    testRuntimeOnly(mnTest.junit.jupiter.engine)
 }
