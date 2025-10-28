@@ -2,6 +2,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm"
     id "org.jetbrains.kotlin.kapt"
     id("micronaut-graphql.docs-examples-conventions")
+    id "io.micronaut.build.internal.kotlin-base"
 }
 
 micronaut {
@@ -20,8 +21,3 @@ application {
     mainClass = "io.micronaut.graphql.docs.ApplicationKt"
 }
 
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
-}
