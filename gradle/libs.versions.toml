@@ -8,7 +8,7 @@ graal-svm = "24.2.1"
 kotlin = '1.9.25'
 shadow = '8.3.7'
 
-micronaut = "4.10.4"
+micronaut = "4.10.9"
 micronaut-platform = "4.9.4"
 micronaut-test = "4.9.0"
 micronaut-gradle-plugin = "4.5.5"
