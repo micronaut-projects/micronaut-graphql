@@ -16,7 +16,7 @@
 package io.micronaut.configuration.graphql;
 
 import graphql.ExecutionResult;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;

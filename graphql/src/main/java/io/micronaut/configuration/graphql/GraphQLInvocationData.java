@@ -15,7 +15,7 @@
  */
 package io.micronaut.configuration.graphql;
 
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;

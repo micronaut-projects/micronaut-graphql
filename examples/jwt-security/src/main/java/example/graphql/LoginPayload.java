@@ -16,7 +16,7 @@
 package example.graphql;
 
 import example.domain.User;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Alexey Zhokhov
