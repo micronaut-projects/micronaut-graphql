@@ -19,7 +19,7 @@ import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 import io.micronaut.context.BeanProvider;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
 import jakarta.inject.Singleton;

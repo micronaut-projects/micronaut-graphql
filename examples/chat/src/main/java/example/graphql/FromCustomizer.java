@@ -18,7 +18,7 @@ package example.graphql;
 import graphql.ExecutionInput;
 import io.micronaut.configuration.graphql.GraphQLExecutionInputCustomizer;
 import io.micronaut.context.annotation.Primary;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
