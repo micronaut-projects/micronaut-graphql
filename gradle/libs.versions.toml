@@ -6,7 +6,7 @@ managed-graphql-spqr = "0.12.4"
 
 graal-svm = "25.0.1"
 kotlin = '1.9.25'
-shadow = '8.3.9'
+shadow = '9.3.0'
 
 micronaut = "4.10.4"
 micronaut-platform = "4.9.4"
