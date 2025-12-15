@@ -17,7 +17,6 @@ import spock.lang.AutoCleanup
 import spock.lang.Ignore
 import spock.lang.Specification
 
-@Ignore("InstantiationError during WebSocket message binding to the abstract Message class")
 class GraphQLWsHandlerSpec extends Specification {
 
     @AutoCleanup
