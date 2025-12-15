@@ -1,6 +1,5 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm"
-    id "org.jetbrains.kotlin.kapt"
+    id("io.micronaut.build.internal.kotlin-kapt")
     id("micronaut-graphql.docs-examples-conventions")
 }
 
@@ -17,10 +16,4 @@ dependencies {
 
 application {
     mainClass = "io.micronaut.graphql.docs.ApplicationKt"
-}
-
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
 }

@@ -5,19 +5,15 @@ managed-graphql-java-tools = "14.0.1"
 managed-graphql-spqr = "0.12.4"
 
 graal-svm = "25.0.1"
-kotlin = '1.9.25'
 shadow = '9.3.0'
 
-micronaut = "4.10.9"
+micronaut = "5.0.0-M2"
 micronaut-platform = "4.9.4"
-micronaut-test = "4.9.0"
 micronaut-gradle-plugin = "4.6.1"
 micronaut-kotlin = "4.7.0"
 micronaut-security = "4.16.0"
-micronaut-serde = "2.16.2"
-micronaut-logging = "1.7.1"
-micronaut-reactor = "3.9.1"
-micronaut-docs = "3.0.0"
+micronaut-serde = "3.0.0-M1"
+micronaut-reactor = "4.0.0-M1"
 
 [libraries]
 # Managed
@@ -37,7 +33,5 @@ micronaut-reactor = { module = "io.micronaut.reactor:micronaut-reactor-bom", ver
 graal-svm = { module = "org.graalvm.nativeimage:svm", version.ref = "graal-svm" }
 
 # Gradle plugins
-kotlin-gradle-plugin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version.ref = 'kotlin' }
-kotlin-gradle-allopen = { module = 'org.jetbrains.kotlin:kotlin-allopen', version.ref = 'kotlin' }
 shadow-plugin = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version.ref = "shadow" }
 micronaut-gradle-plugin = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref="micronaut-gradle-plugin" }
