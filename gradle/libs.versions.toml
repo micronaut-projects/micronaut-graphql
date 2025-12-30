@@ -12,8 +12,10 @@ micronaut-platform = "4.10.6"
 micronaut-gradle-plugin = "4.6.1"
 micronaut-kotlin = "4.7.0"
 micronaut-security = "4.16.0"
-micronaut-serde = "3.0.0-M1"
-micronaut-reactor = "4.0.0-M1"
+micronaut-serde = "2.16.2"
+micronaut-logging = "1.7.1"
+micronaut-reactor = "3.9.1"
+micronaut-docs = "3.0.0"
 
 [libraries]
 # Managed
