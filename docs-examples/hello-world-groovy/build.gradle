@@ -4,7 +4,6 @@ plugins {
 }
 
 micronaut {
-    testRuntime "spock"
     version.set(libs.versions.micronaut.platform.get())
     coreVersion.set(libs.versions.micronaut.asProvider().get())
 }
@@ -12,9 +11,15 @@ micronaut {
 dependencies {
     implementation mn.groovy
     testImplementation mn.micronaut.http.client
+    testImplementation(mnTest.micronaut.test.spock)
+    testRuntimeOnly(mnTest.junit.platform.suite)
     implementation(mnSerde.micronaut.serde.jackson)
 }
 
 application {
     mainClass = "io.micronaut.graphql.docs.Application"
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
 }
