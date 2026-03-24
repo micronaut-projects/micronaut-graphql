@@ -20,6 +20,7 @@ import io.micronaut.configuration.graphql.GraphQLConfiguration;
 import io.micronaut.configuration.graphql.GraphQLInvocation;
 import io.micronaut.configuration.graphql.GraphQLInvocationData;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.util.clhm.ConcurrentLinkedHashMap;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.codec.CodecException;
@@ -38,7 +39,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -57,6 +57,8 @@ public class GraphQLWsHandler {
 
     static final String HTTP_REQUEST_KEY = "httpRequest";
 
+    private static final int MAX_SUBSCRIPTIONS = 100;
+
     private static final Logger LOG = LoggerFactory.getLogger(GraphQLWsHandler.class);
 
     private final ScheduledExecutorTaskScheduler scheduler;
@@ -67,7 +69,9 @@ public class GraphQLWsHandler {
 
     private final ConcurrentSkipListSet<String> connections = new ConcurrentSkipListSet<>();
 
-    private final ConcurrentMap<String, Publisher<? extends Message>> subscriptions = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, Publisher<? extends Message>> subscriptions = new ConcurrentLinkedHashMap.Builder<String, Publisher<? extends Message>>()
+        .maximumWeightedCapacity(MAX_SUBSCRIPTIONS)
+        .build();
 
     /**
      * Constructor for the graphql-ws WebSocket handler.
