@@ -54,7 +54,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
     /**
      * Default constructor.
      *
-     * @param graphQL                         the {@link GraphQL} instance
+     * @param beanContext                     the bean context used to resolve the current {@link GraphQL} bean
      * @param graphQLExecutionInputCustomizer the {@link GraphQLExecutionInputCustomizer} instance
      * @param dataLoaderRegistry              the {@link DataLoaderRegistry} instance
      */
