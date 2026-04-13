@@ -16,6 +16,7 @@ dependencies {
     testImplementation(mn.micronaut.jackson.databind)
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.http.client)
+    testImplementation(libs.managed.apollo.federation.graphql.java.support)
     testRuntimeOnly(mn.snakeyaml)
     testRuntimeOnly(mnReactor.micronaut.reactor)
     testRuntimeOnly(mnReactor.micrometer.context.propagation)
