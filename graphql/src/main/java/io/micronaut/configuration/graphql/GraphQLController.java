@@ -81,7 +81,7 @@ public class GraphQLController {
      * @param httpRequest   the HTTP request
      * @return the GraphQL response
      */
-    @Get(produces = APPLICATION_JSON, single = true)
+    @Get(produces = {APPLICATION_JSON, ALL}, single = true)
     public Publisher<MutableHttpResponse<String>> get(
             @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
@@ -120,7 +120,7 @@ public class GraphQLController {
      * @param httpRequest   the HTTP request
      * @return the GraphQL response
      */
-    @Post(consumes = ALL, produces = APPLICATION_JSON, single = true)
+    @Post(consumes = ALL, produces = {APPLICATION_JSON, ALL}, single = true)
     public Publisher<MutableHttpResponse<String>> post(
             @Nullable @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
