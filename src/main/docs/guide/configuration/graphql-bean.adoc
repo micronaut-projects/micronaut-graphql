@@ -14,3 +14,6 @@ snippet::io.micronaut.graphql.docs.GraphQLFactory[tags="imports,clazz", project-
 
 There are various https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples[examples] using different technologies
 provided in the repository.
+
+For an example that combines GraphQL Java Tools with a request-scoped `DataLoaderRegistry`, see the xref:dataLoaders.adoc[Using DataLoaders]
+section and the `todo-java-tools` example in this repository.

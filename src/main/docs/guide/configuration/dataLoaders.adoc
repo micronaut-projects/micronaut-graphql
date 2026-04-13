@@ -1,0 +1,25 @@
+A Micronaut application can expose https://github.com/graphql-java/java-dataloader[java-dataloader] instances to GraphQL
+by defining a request-scoped `org.dataloader.DataLoaderRegistry` bean.
+
+The `todo-java-tools` example in this repository shows the full flow when using
+https://github.com/graphql-java-kickstart/graphql-java-tools[GraphQL Java Tools]:
+
+* `example.graphql.DataLoaderRegistryFactory` creates a new `DataLoaderRegistry` for each request and registers the
+  `author` loader.
+* `example.graphql.AuthorDataLoader` implements `MappedBatchLoader<String, Author>` and batches the author lookups by
+  delegating to `AuthorRepository#findAllById`.
+* `example.graphql.ToDoResolver` gets the loader from `graphql.schema.DataFetchingEnvironment` and calls
+  `load(todo.getAuthorId())` when the `author` field is resolved.
+
+This pattern matters for two reasons:
+
+* The registry should be `@RequestScope` so every GraphQL request gets a fresh loader cache.
+* GraphQL does not invoke Micronaut `DataLoader`s automatically. A resolver or `DataFetcher` must obtain the loader
+  from the `DataFetchingEnvironment` and call it for the field that should be batched.
+
+You can explore the example here:
+
+* https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples/todo-java-tools[`examples/todo-java-tools`]
+* https://github.com/micronaut-projects/micronaut-graphql/blob/master/examples/todo-java-tools/src/main/java/example/graphql/DataLoaderRegistryFactory.java[`DataLoaderRegistryFactory`]
+* https://github.com/micronaut-projects/micronaut-graphql/blob/master/examples/todo-java-tools/src/main/java/example/graphql/AuthorDataLoader.java[`AuthorDataLoader`]
+* https://github.com/micronaut-projects/micronaut-graphql/blob/master/examples/todo-java-tools/src/main/java/example/graphql/ToDoResolver.java[`ToDoResolver`]

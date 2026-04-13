@@ -5,6 +5,7 @@ quickStart: Quick Start
 configuration:
   title: Configuration
   graphql-bean: Configuring the GraphQL Bean
+  dataLoaders: Using DataLoaders
   graphql-ws: Configuring GraphQL over websockets
   graphiql: Configuring GraphiQL
   jackson: Notes on using Jackson serialization
