@@ -29,6 +29,7 @@ import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import io.micronaut.core.annotation.Nullable
 import io.micronaut.core.async.publisher.Publishers
+import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
@@ -38,6 +39,7 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
+import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.cookie.Cookie
 import io.micronaut.runtime.server.EmbeddedServer
@@ -62,8 +64,10 @@ class GraphQLControllerSpec extends Specification {
 
     GraphQL graphQL
     GraphQLClient graphQLClient
+    HttpClient httpClient
 
     ExecutionInput executionInput
+    List<ExecutionInput> executionInputs
 
     CompletableFuture<ExecutionResult> executionResult = CompletableFuture.completedFuture(
             ExecutionResultImpl.newExecutionResult()
@@ -78,9 +82,12 @@ class GraphQLControllerSpec extends Specification {
                 Environment.TEST)
         embeddedServer.applicationContext.registerSingleton(GraphQL, graphQL)
         graphQLClient = embeddedServer.applicationContext.getBean(GraphQLClient)
+        httpClient = embeddedServer.applicationContext.createBean(HttpClient, embeddedServer.getURL())
         executionInput = null
-        graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
+        executionInputs = []
+        _ * graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
             this.executionInput = executionInput
+            this.executionInputs << executionInput
             if (executionInput.query == "{ testHeaders }") {
                 GraphQLContext graphQlContext = executionInput.getGraphQLContext()
 
@@ -249,6 +256,31 @@ class GraphQLControllerSpec extends Specification {
         executionInput.query == body.query
         executionInput.operationName == body.operationName
         executionInput.variables == body.variables
+    }
+
+    void "test post with application/json batch body"() {
+        given:
+        String body = '''
+[
+  {"query":"{ foo }"},
+  {"query":"query myQuery { foo }","operationName":"myQuery","variables":{"variable":"variableValue"}}
+]
+'''
+
+        when:
+        HttpResponse<List<GraphQLResponseBody>> response = httpClient.toBlocking().exchange(
+                io.micronaut.http.HttpRequest.POST("/graphql", body).contentType(APPLICATION_JSON),
+                Argument.listOf(GraphQLResponseBody))
+        List<GraphQLResponseBody> batchResponse = response.body()
+
+        then:
+        response.status() == HttpStatus.OK
+        batchResponse*.specification*.data == ["bar", "bar"]
+
+        and:
+        executionInputs*.query == ["{ foo }", "query myQuery { foo }"]
+        executionInputs*.operationName == [null, "myQuery"]
+        executionInputs*.variables == [[:], ["variable": "variableValue"]]
     }
 
     void "test post with application/graphql body"() {
