@@ -7,12 +7,12 @@ managed-graphql-spqr = "0.12.4"
 graal-svm = "25.0.2"
 shadow = '9.3.1'
 
-micronaut = "5.0.0-M17"
-micronaut-platform = "4.9.4"
+micronaut = "5.0.0-M21"
+micronaut-platform = "4.10.11"
 micronaut-gradle-plugin = "4.6.2"
-micronaut-kotlin = "4.7.0"
-micronaut-security = "4.16.1"
-micronaut-serde = "3.0.0-M2"
+micronaut-kotlin = "5.0.0-M1"
+micronaut-security = "5.0.0-M1"
+micronaut-serde = "3.0.0-M6"
 micronaut-reactor = "4.0.0-M1"
 
 [libraries]
