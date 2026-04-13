@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
+import static io.micronaut.http.HttpStatus.BAD_REQUEST;
 import static io.micronaut.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static io.micronaut.http.MediaType.ALL;
 import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL_TYPE;
@@ -147,7 +148,12 @@ public class GraphQLController {
         // }
 
         if (APPLICATION_JSON_TYPE.equals(contentType)) {
-            GraphQLRequestBody request = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody.class);
+            GraphQLRequestBody request;
+            try {
+                request = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody.class);
+            } catch (RuntimeException e) {
+                throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL request body");
+            }
             if (request.getQuery() == null) {
                 request.setQuery("");
             }
@@ -177,7 +183,11 @@ public class GraphQLController {
         if (jsonMap == null) {
             return Collections.emptyMap();
         }
-        return graphQLJsonSerializer.deserialize(jsonMap, Map.class);
+        try {
+            return graphQLJsonSerializer.deserialize(jsonMap, Map.class);
+        } catch (RuntimeException e) {
+            throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL variables");
+        }
     }
 
     /**
