@@ -64,7 +64,7 @@ class GraphQLFederationSpec extends Specification {
         then:
         String sdl = response.specification.data._service.sdl
         sdl.contains('https://specs.apollo.dev/federation/v2.0')
-        sdl.contains('type Product @key(fields : "upc"')
+        sdl =~ /type\s+Product\s+@key\s*\(\s*fields\s*:\s*"upc"/
     }
 
     void "apollo federation resolves _entities representations"() {

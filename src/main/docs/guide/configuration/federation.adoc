@@ -13,17 +13,39 @@ import com.apollographql.federation.graphqljava.Federation;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
+import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import jakarta.inject.Singleton;
+import java.util.List;
 
 @Factory
 class GraphQLFactory {
 
     @Bean
     @Singleton
-    GraphQL graphQL(TypeDefinitionRegistry typeRegistry, RuntimeWiring runtimeWiring) {
+    GraphQL graphQL() {
+        TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry();
+        typeRegistry.merge(new SchemaParser().parse("""
+            extend schema
+                @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key"])
+
+            type Query {
+                topProduct: Product
+            }
+
+            type Product @key(fields: "upc") {
+                upc: ID!
+                name: String
+            }
+            """));
+
+        RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
+            .type("Query", typeWiring ->
+                typeWiring.dataFetcher("topProduct", env -> null))
+            .build();
+
         GraphQLSchema schema = Federation.transform(typeRegistry, runtimeWiring)
             .fetchEntities(env -> {
                 // Resolve representations from env.getArgument("representations")
