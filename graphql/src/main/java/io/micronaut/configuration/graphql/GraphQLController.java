@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import static io.micronaut.http.HttpStatus.BAD_REQUEST;
@@ -207,9 +208,8 @@ public class GraphQLController {
         List<GraphQLRequestBody> batchRequests = requests == null ? Collections.emptyList() : Arrays.asList(requests);
         return Flux.fromIterable(batchRequests)
                 .concatMap(request -> {
-                    GraphQLRequestBody batchRequest = request == null
-                            ? newRequestBody(null, null, Collections.emptyMap())
-                            : request;
+                    GraphQLRequestBody batchRequest = Objects.requireNonNullElseGet(
+                            request, () -> newRequestBody(null, null, Collections.emptyMap()));
                     MutableHttpResponse<String> operationHttpResponse = HttpResponse.status(HttpStatus.OK);
                     return Flux.from(executeGraphQLRequest(batchRequest, httpRequest, operationHttpResponse));
                 })
