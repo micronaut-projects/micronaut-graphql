@@ -18,7 +18,10 @@ package io.micronaut.configuration.graphql;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import io.micronaut.aop.InterceptedProxy;
+import io.micronaut.context.BeanContext;
 import io.micronaut.context.BeanProvider;
+import io.micronaut.core.annotation.Creator;
 import org.jspecify.annotations.Nullable;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
@@ -43,6 +46,7 @@ import java.util.concurrent.CompletableFuture;
 @Singleton
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
+    private final BeanContext beanContext;
     private final GraphQL graphQL;
     private final GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer;
     private final BeanProvider<DataLoaderRegistry> dataLoaderRegistry;
@@ -54,10 +58,31 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      * @param graphQLExecutionInputCustomizer the {@link GraphQLExecutionInputCustomizer} instance
      * @param dataLoaderRegistry              the {@link DataLoaderRegistry} instance
      */
+    @Creator
+    public DefaultGraphQLInvocation(
+            BeanContext beanContext,
+            GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
+            @Nullable BeanProvider<DataLoaderRegistry> dataLoaderRegistry) {
+        this.beanContext = beanContext;
+        this.graphQL = null;
+        this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
+        this.dataLoaderRegistry = dataLoaderRegistry;
+    }
+
+    /**
+     * Compatibility constructor for direct instantiation.
+     *
+     * @param graphQL                         the {@link GraphQL} instance
+     * @param graphQLExecutionInputCustomizer the {@link GraphQLExecutionInputCustomizer} instance
+     * @param dataLoaderRegistry              the {@link DataLoaderRegistry} instance
+     * @deprecated Prefer dependency injection to allow refreshable {@link GraphQL} beans.
+     */
+    @Deprecated
     public DefaultGraphQLInvocation(
             GraphQL graphQL,
             GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
             @Nullable BeanProvider<DataLoaderRegistry> dataLoaderRegistry) {
+        this.beanContext = null;
         this.graphQL = graphQL;
         this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
         this.dataLoaderRegistry = dataLoaderRegistry;
@@ -83,12 +108,24 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
                 .from(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
                 .flatMap(customizedExecutionInput -> Mono.fromFuture(() -> {
                     try {
-                        return graphQL.executeAsync(customizedExecutionInput);
+                        return resolveGraphQL().executeAsync(customizedExecutionInput);
                     } catch (Throwable e) {
                         CompletableFuture<ExecutionResult> future = new CompletableFuture<>();
                         future.completeExceptionally(e);
                         return future;
                     }
                 }));
+    }
+
+    private GraphQL resolveGraphQL() {
+        if (beanContext != null) {
+            return beanContext.findProxyTargetBeanDefinition(GraphQL.class, null).isPresent()
+                    ? beanContext.getProxyTargetBean(GraphQL.class, null)
+                    : beanContext.getBean(GraphQL.class);
+        }
+        if (graphQL instanceof InterceptedProxy<?> interceptedProxy) {
+            return (GraphQL) interceptedProxy.interceptedTarget();
+        }
+        return graphQL;
     }
 }
