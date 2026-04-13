@@ -17,7 +17,6 @@ package io.micronaut.configuration.graphql;
 
 import graphql.ExecutionResult;
 import org.jspecify.annotations.Nullable;
-import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -30,8 +29,12 @@ import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.exceptions.HttpStatusException;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -147,11 +150,12 @@ public class GraphQLController {
         // }
 
         if (APPLICATION_JSON_TYPE.equals(contentType)) {
-            GraphQLRequestBody request = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody.class);
-            if (request.getQuery() == null) {
-                request.setQuery("");
+            if (body.trim().startsWith("[")) {
+                GraphQLRequestBody[] requests = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody[].class);
+                return executeBatchRequests(requests, httpRequest);
             }
-            return executeRequest(request.getQuery(), request.getOperationName(), request.getVariables(), httpRequest);
+            GraphQLRequestBody request = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody.class);
+            return executeRequest(request, httpRequest);
         }
 
         // In addition to the above, we recommend supporting two additional cases:
@@ -180,6 +184,21 @@ public class GraphQLController {
         return graphQLJsonSerializer.deserialize(jsonMap, Map.class);
     }
 
+    private Publisher<MutableHttpResponse<String>> executeBatchRequests(GraphQLRequestBody[] requests, HttpRequest httpRequest) {
+        MutableHttpResponse<String> httpResponse = HttpResponse.status(HttpStatus.OK);
+        List<GraphQLRequestBody> batchRequests = requests == null ? Collections.emptyList() : Arrays.asList(requests);
+        return Flux.fromIterable(batchRequests)
+                .concatMap(request -> Flux.from(executeGraphQLRequest(request, httpRequest, httpResponse)))
+                .collectList()
+                .map(graphQLResponseBodies -> httpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBodies)));
+    }
+
+    private Publisher<MutableHttpResponse<String>> executeRequest(GraphQLRequestBody request, HttpRequest httpRequest) {
+        MutableHttpResponse<String> httpResponse = HttpResponse.status(HttpStatus.OK);
+        return Mono.from(executeGraphQLRequest(request, httpRequest, httpResponse))
+                .map(graphQLResponseBody -> httpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBody)));
+    }
+
     /**
      * Executes the GraphQL request and returns the serialized {@link GraphQLResponseBody}.
      *
@@ -194,11 +213,34 @@ public class GraphQLController {
             String operationName,
             Map<String, Object> variables,
             HttpRequest httpRequest) {
-        GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
+        return executeRequest(newRequestBody(query, operationName, variables), httpRequest);
+    }
+
+    private Publisher<GraphQLResponseBody> executeGraphQLRequest(
+            GraphQLRequestBody request,
+            HttpRequest httpRequest,
+            MutableHttpResponse<String> httpResponse) {
+        GraphQLInvocationData invocationData = new GraphQLInvocationData(
+                normalizeQuery(request.getQuery()),
+                request.getOperationName(),
+                request.getVariables());
         // create empty response entity first and pass it to GraphQLInvocation
-        MutableHttpResponse<String> httpResponse = HttpResponse.status(HttpStatus.OK);
         Publisher<ExecutionResult> executionResult = graphQLInvocation.invoke(invocationData, httpRequest, httpResponse);
-        Publisher<GraphQLResponseBody> responseBody = graphQLExecutionResultHandler.handleExecutionResult(executionResult);
-        return Publishers.map(responseBody, graphQLResponseBody -> httpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBody)));
+        return graphQLExecutionResultHandler.handleExecutionResult(executionResult);
+    }
+
+    private GraphQLRequestBody newRequestBody(String query, String operationName, Map<String, Object> variables) {
+        GraphQLRequestBody request = new GraphQLRequestBody();
+        request.setQuery(query);
+        request.setOperationName(operationName);
+        request.setVariables(variables);
+        return request;
+    }
+
+    private String normalizeQuery(String query) {
+        if (query == null) {
+            return "";
+        }
+        return query;
     }
 }
