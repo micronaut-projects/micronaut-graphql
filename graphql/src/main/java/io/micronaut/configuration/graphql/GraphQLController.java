@@ -203,12 +203,18 @@ public class GraphQLController {
     }
 
     private Publisher<MutableHttpResponse<String>> executeBatchRequests(GraphQLRequestBody[] requests, HttpRequest httpRequest) {
-        MutableHttpResponse<String> httpResponse = HttpResponse.status(HttpStatus.OK);
+        MutableHttpResponse<String> batchHttpResponse = HttpResponse.status(HttpStatus.OK);
         List<GraphQLRequestBody> batchRequests = requests == null ? Collections.emptyList() : Arrays.asList(requests);
         return Flux.fromIterable(batchRequests)
-                .concatMap(request -> Flux.from(executeGraphQLRequest(request, httpRequest, httpResponse)))
+                .concatMap(request -> {
+                    GraphQLRequestBody batchRequest = request == null
+                            ? newRequestBody(null, null, Collections.emptyMap())
+                            : request;
+                    MutableHttpResponse<String> operationHttpResponse = HttpResponse.status(HttpStatus.OK);
+                    return Flux.from(executeGraphQLRequest(batchRequest, httpRequest, operationHttpResponse));
+                })
                 .collectList()
-                .map(graphQLResponseBodies -> httpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBodies)));
+                .map(graphQLResponseBodies -> batchHttpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBodies)));
     }
 
     private Publisher<MutableHttpResponse<String>> executeRequest(GraphQLRequestBody request, HttpRequest httpRequest) {

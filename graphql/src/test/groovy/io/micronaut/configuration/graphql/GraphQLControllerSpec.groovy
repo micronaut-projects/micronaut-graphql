@@ -64,6 +64,7 @@ class GraphQLControllerSpec extends Specification {
 
     GraphQL graphQL
     GraphQLClient graphQLClient
+    @AutoCleanup
     HttpClient httpClient
 
     ExecutionInput executionInput
@@ -113,6 +114,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == null
         executionInput.variables == [:]
@@ -130,6 +132,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == operationName
         executionInput.variables == [:]
@@ -148,6 +151,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == operationName
         executionInput.variables == ["variable": "variableValue"]
@@ -164,6 +168,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == null
         executionInput.variables == [:]
@@ -181,6 +186,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == operationName
         executionInput.variables == [:]
@@ -199,6 +205,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == operationName
         executionInput.variables == ["variable": "variableValue"]
@@ -216,6 +223,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == body.query
         executionInput.operationName == null
         executionInput.variables == [:]
@@ -234,6 +242,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == body.query
         executionInput.operationName == body.operationName
         executionInput.variables == [:]
@@ -253,6 +262,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == body.query
         executionInput.operationName == body.operationName
         executionInput.variables == body.variables
@@ -278,6 +288,7 @@ class GraphQLControllerSpec extends Specification {
         batchResponse*.specification*.data == ["bar", "bar"]
 
         and:
+        executionInputs.size() == 2
         executionInputs*.query == ["{ foo }", "query myQuery { foo }"]
         executionInputs*.operationName == [null, "myQuery"]
         executionInputs*.variables == [[:], ["variable": "variableValue"]]
@@ -294,6 +305,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == body
         executionInput.operationName == null
         executionInput.variables == [:]
@@ -311,6 +323,9 @@ class GraphQLControllerSpec extends Specification {
         httpResponse.body().getSpecification()["data"] == "bar"
         httpResponse.header("X-Foo") == "bar"
         httpResponse.header("set-cookie") == "foo=bar"
+
+        and:
+        executionInputs.size() == 1
     }
 
     void "test post with malformed application json body returns bad request"() {
