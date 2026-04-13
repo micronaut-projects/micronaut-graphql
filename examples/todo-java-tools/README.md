@@ -14,13 +14,13 @@ Open the embedded [Graph<i>i</i>QL](http://localhost:8080/graphiql) IDE to inter
 
 ## DataLoader flow
 
-The `todo-java-tools` example wires the `author` field through a request-scoped data loader:
+The `todo-java-tools` example wires the `author` field through a request-scoped `DataLoaderRegistry` (and loader cache):
 
 * `DataLoaderRegistryFactory` creates a new `DataLoaderRegistry` for each request and registers the `author` data loader.
 * `AuthorDataLoader` implements `MappedBatchLoader<String, Author>` and batches author lookups through `AuthorRepository`.
 * `ToDoResolver` manually retrieves the loader from `DataFetchingEnvironment` and calls `load(todo.getAuthorId())`.
 
-The `@RequestScope` on `DataLoaderRegistryFactory` is important. It ensures every GraphQL request gets a fresh loader registry and cache.
+The `@RequestScope` on the `dataLoaderRegistry()` bean method inside `DataLoaderRegistryFactory` is important. It ensures every GraphQL request gets a fresh loader registry and cache.
 
 GraphQL does not invoke the data loader automatically. The resolver must call it for the field that should be batched.
 

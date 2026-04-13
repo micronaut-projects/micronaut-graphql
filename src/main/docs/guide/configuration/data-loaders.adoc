@@ -14,12 +14,13 @@ https://github.com/graphql-java-kickstart/graphql-java-tools[GraphQL Java Tools]
 This pattern matters for two reasons:
 
 * The registry should be `@RequestScope` so every GraphQL request gets a fresh loader cache.
-* GraphQL does not invoke Micronaut `DataLoader`s automatically. A resolver or `DataFetcher` must obtain the loader
-  from the `DataFetchingEnvironment` and call it for the field that should be batched.
+* GraphQL does not invoke https://github.com/graphql-java/java-dataloader[java-dataloader] `DataLoader`s automatically.
+  A resolver or `DataFetcher` must obtain the loader from the `DataFetchingEnvironment` and call `load(...)` for the
+  field that should be batched.
 
 You can explore the example here:
 
-* https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples/todo-java-tools[`examples/todo-java-tools`]
-* https://github.com/micronaut-projects/micronaut-graphql/blob/master/examples/todo-java-tools/src/main/java/example/graphql/DataLoaderRegistryFactory.java[`DataLoaderRegistryFactory`]
-* https://github.com/micronaut-projects/micronaut-graphql/blob/master/examples/todo-java-tools/src/main/java/example/graphql/AuthorDataLoader.java[`AuthorDataLoader`]
-* https://github.com/micronaut-projects/micronaut-graphql/blob/master/examples/todo-java-tools/src/main/java/example/graphql/ToDoResolver.java[`ToDoResolver`]
+* https://github.com/{githubSlug}/tree/master/examples/todo-java-tools[`examples/todo-java-tools`]
+* https://github.com/{githubSlug}/blob/master/examples/todo-java-tools/src/main/java/example/graphql/DataLoaderRegistryFactory.java[`DataLoaderRegistryFactory`]
+* https://github.com/{githubSlug}/blob/master/examples/todo-java-tools/src/main/java/example/graphql/AuthorDataLoader.java[`AuthorDataLoader`]
+* https://github.com/{githubSlug}/blob/master/examples/todo-java-tools/src/main/java/example/graphql/ToDoResolver.java[`ToDoResolver`]
