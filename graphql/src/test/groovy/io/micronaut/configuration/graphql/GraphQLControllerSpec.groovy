@@ -448,6 +448,63 @@ class GraphQLControllerSpec extends Specification {
         executionInput == null
     }
 
+    void "test post with multipart form data body requires map part"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{}}')
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Missing multipart field: map")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects non-file upload parts"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":null}}')
+                .addPart("map", '{"operations":["variables.input"]}')
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Multipart field is not a file upload: operations")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects non-null variable target"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":"existing"}}')
+                .addPart("map", '{"0":["variables.input"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Invalid multipart variable path: variables.input")
+        executionInput == null
+    }
+
     void "test additional headers and cookies"() {
         given:
         String body = "{ testHeaders }"

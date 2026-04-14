@@ -29,6 +29,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.exceptions.HttpStatusException;
+import io.micronaut.http.multipart.CompletedFileUpload;
 import io.micronaut.http.multipart.CompletedPart;
 import io.micronaut.http.server.multipart.MultipartBody;
 import io.micronaut.scheduling.TaskExecutors;
@@ -147,7 +148,10 @@ public class GraphQLController {
                     }
                     Map<String, Object> multipartMapping = convertVariablesJson(partToString(getRequiredPart(parts, "map")));
                     for (Map.Entry<String, Object> entry : multipartMapping.entrySet()) {
-                        CompletedPart uploadedPart = getRequiredPart(parts, entry.getKey());
+                        CompletedPart rawPart = getRequiredPart(parts, entry.getKey());
+                        if (!(rawPart instanceof CompletedFileUpload uploadedPart)) {
+                            throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Multipart field is not a file upload: " + entry.getKey());
+                        }
                         for (String variablePath : asVariablePaths(entry.getValue())) {
                             injectMultipartVariable(requestBody.getVariables(), variablePath, uploadedPart);
                         }
@@ -292,14 +296,29 @@ public class GraphQLController {
 
         String leafSegment = pathSegments[pathSegments.length - 1];
         if (current instanceof Map<?, ?> currentMap) {
-            ((Map<String, Object>) currentMap).put(leafSegment, part);
+            replaceMultipartMapLeaf((Map<String, Object>) currentMap, leafSegment, variablePath, part);
             return;
         }
         if (current instanceof List<?> currentList) {
-            ((List<Object>) currentList).set(parsePathIndex(leafSegment, currentList.size(), variablePath), part);
+            replaceMultipartListLeaf((List<Object>) currentList, leafSegment, variablePath, part);
             return;
         }
         throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
+    }
+
+    private void replaceMultipartMapLeaf(Map<String, Object> currentMap, String leafSegment, String variablePath, CompletedPart part) {
+        if (!currentMap.containsKey(leafSegment) || currentMap.get(leafSegment) != null) {
+            throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Invalid multipart variable path: " + variablePath);
+        }
+        currentMap.put(leafSegment, part);
+    }
+
+    private void replaceMultipartListLeaf(List<Object> currentList, String leafSegment, String variablePath, CompletedPart part) {
+        int index = parsePathIndex(leafSegment, currentList.size(), variablePath);
+        if (currentList.get(index) != null) {
+            throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Invalid multipart variable path: " + variablePath);
+        }
+        currentList.set(index, part);
     }
 
     private int parsePathIndex(String segment, int size, String variablePath) {
