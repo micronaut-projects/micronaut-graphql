@@ -46,10 +46,10 @@ import java.util.concurrent.CompletableFuture;
 @Singleton
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
-    private final BeanContext beanContext;
-    private final GraphQL graphQL;
+    private final @Nullable BeanContext beanContext;
+    private final @Nullable GraphQL graphQL;
     private final GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer;
-    private final BeanProvider<DataLoaderRegistry> dataLoaderRegistry;
+    private final @Nullable BeanProvider<DataLoaderRegistry> dataLoaderRegistry;
 
     /**
      * Default constructor.

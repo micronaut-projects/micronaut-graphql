@@ -16,7 +16,6 @@
 
 package io.micronaut.configuration.graphql
 
-import graphql.ExecutionInput
 import graphql.GraphQL
 import graphql.Scalars
 import graphql.schema.GraphQLObjectType
@@ -26,7 +25,6 @@ import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
-import io.micronaut.core.annotation.Nullable
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.client.annotation.Client
