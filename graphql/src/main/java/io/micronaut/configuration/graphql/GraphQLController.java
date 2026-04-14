@@ -29,9 +29,19 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.exceptions.HttpStatusException;
+import io.micronaut.http.multipart.CompletedPart;
+import io.micronaut.http.server.multipart.MultipartBody;
+import io.micronaut.scheduling.TaskExecutors;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -41,6 +51,7 @@ import static io.micronaut.http.MediaType.ALL;
 import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL_TYPE;
 import static io.micronaut.http.MediaType.APPLICATION_JSON;
 import static io.micronaut.http.MediaType.APPLICATION_JSON_TYPE;
+import static io.micronaut.http.MediaType.MULTIPART_FORM_DATA;
 
 /**
  * The GraphQL controller handling GraphQL requests.
@@ -109,6 +120,45 @@ public class GraphQLController {
         // an "operationName" query parameter can be used to control which one should be executed.
 
         return executeRequest(query, operationName, convertVariablesJson(variables), httpRequest);
+    }
+
+    /**
+     * Handles GraphQL {@code POST} multipart requests.
+     *
+     * @param body        the multipart request body
+     * @param httpRequest the HTTP request
+     * @return the GraphQL response
+     */
+    @ExecuteOn(TaskExecutors.BLOCKING)
+    @Post(consumes = MULTIPART_FORM_DATA, produces = APPLICATION_JSON, single = true)
+    public Publisher<MutableHttpResponse<String>> postMultipart(@Body MultipartBody body, HttpRequest httpRequest) {
+        return Flux.from(body)
+                .collectMap(CompletedPart::getName, part -> part)
+                .flatMapMany(parts -> {
+                    GraphQLRequestBody requestBody = graphQLJsonSerializer.deserialize(
+                            partToString(getRequiredPart(parts, "operations")),
+                            GraphQLRequestBody.class
+                    );
+                    if (requestBody.getQuery() == null) {
+                        requestBody.setQuery("");
+                    }
+                    if (requestBody.getVariables() == null) {
+                        requestBody.setVariables(new LinkedHashMap<>());
+                    }
+                    Map<String, Object> multipartMapping = convertVariablesJson(partToString(getRequiredPart(parts, "map")));
+                    for (Map.Entry<String, Object> entry : multipartMapping.entrySet()) {
+                        CompletedPart uploadedPart = getRequiredPart(parts, entry.getKey());
+                        for (String variablePath : asVariablePaths(entry.getValue())) {
+                            injectMultipartVariable(requestBody.getVariables(), variablePath, uploadedPart);
+                        }
+                    }
+                    return Flux.from(executeRequest(
+                            requestBody.getQuery(),
+                            requestBody.getOperationName(),
+                            requestBody.getVariables(),
+                            httpRequest
+                    ));
+                });
     }
 
     /**
@@ -187,6 +237,88 @@ public class GraphQLController {
             return graphQLJsonSerializer.deserialize(jsonMap, Map.class);
         } catch (RuntimeException e) {
             throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL variables");
+        }
+    }
+
+    private CompletedPart getRequiredPart(Map<String, CompletedPart> parts, String name) {
+        CompletedPart part = parts.get(name);
+        if (part == null) {
+            throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Missing multipart field: " + name);
+        }
+        return part;
+    }
+
+    private List<String> asVariablePaths(Object mappingValue) {
+        if (mappingValue instanceof String mappingPath) {
+            return List.of(mappingPath);
+        }
+        if (mappingValue instanceof List<?> mappingPaths) {
+            List<String> variablePaths = new ArrayList<>(mappingPaths.size());
+            for (Object mappingPath : mappingPaths) {
+                if (mappingPath instanceof String stringPath) {
+                    variablePaths.add(stringPath);
+                    continue;
+                }
+                throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Invalid multipart mapping payload");
+            }
+            return variablePaths;
+        }
+        throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Invalid multipart mapping payload");
+    }
+
+    @SuppressWarnings("unchecked")
+    private void injectMultipartVariable(Map<String, Object> variables, String variablePath, CompletedPart part) {
+        String[] pathSegments = variablePath.split("\\.");
+        if (pathSegments.length < 2 || !"variables".equals(pathSegments[0])) {
+            throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unsupported multipart variable path: " + variablePath);
+        }
+
+        Object current = variables;
+        for (int i = 1; i < pathSegments.length - 1; i++) {
+            String segment = pathSegments[i];
+            if (current instanceof Map<?, ?> currentMap) {
+                if (!currentMap.containsKey(segment)) {
+                    throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
+                }
+                current = ((Map<String, Object>) currentMap).get(segment);
+                continue;
+            }
+            if (current instanceof List<?> currentList) {
+                current = currentList.get(parsePathIndex(segment, currentList.size(), variablePath));
+                continue;
+            }
+            throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
+        }
+
+        String leafSegment = pathSegments[pathSegments.length - 1];
+        if (current instanceof Map<?, ?> currentMap) {
+            ((Map<String, Object>) currentMap).put(leafSegment, part);
+            return;
+        }
+        if (current instanceof List<?> currentList) {
+            ((List<Object>) currentList).set(parsePathIndex(leafSegment, currentList.size(), variablePath), part);
+            return;
+        }
+        throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
+    }
+
+    private int parsePathIndex(String segment, int size, String variablePath) {
+        try {
+            int index = Integer.parseInt(segment);
+            if (index < 0 || index >= size) {
+                throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
+            }
+            return index;
+        } catch (NumberFormatException e) {
+            throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
+        }
+    }
+
+    private String partToString(CompletedPart part) {
+        try {
+            return new String(part.getBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Could not process multipart field: " + part.getName());
         }
     }
 

@@ -9,6 +9,7 @@ As outlined in https://graphql.org/learn/serving-over-http the following HTTP re
 
 * `GET` request with `query`, `operationName` and `variables` query parameters. The `variables` query parameter must be json encoded.
 * `POST` request with `application/json` body and keys `query` (String), `operationName` (String) and `variables` (Map).
+* `POST` request with `multipart/form-data` body using the https://github.com/jaydenseric/graphql-multipart-request-spec[GraphQL multipart request specification].
 
 Both produce a `application/json` response.
 

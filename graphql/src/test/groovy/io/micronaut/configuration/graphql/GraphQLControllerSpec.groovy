@@ -33,13 +33,17 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.exceptions.HttpClientResponseException
+import io.micronaut.http.MediaType
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
+import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.multipart.MultipartBody
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.cookie.Cookie
+import io.micronaut.http.multipart.CompletedFileUpload
 import io.micronaut.runtime.server.EmbeddedServer
 import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
@@ -60,10 +64,16 @@ class GraphQLControllerSpec extends Specification {
     @AutoCleanup
     EmbeddedServer embeddedServer
 
+    @AutoCleanup
+    HttpClient httpClient
+
     GraphQL graphQL
     GraphQLClient graphQLClient
 
     ExecutionInput executionInput
+    String uploadedPartName
+    String uploadedFilename
+    byte[] uploadedBytes
 
     CompletableFuture<ExecutionResult> executionResult = CompletableFuture.completedFuture(
             ExecutionResultImpl.newExecutionResult()
@@ -77,10 +87,22 @@ class GraphQLControllerSpec extends Specification {
                 ["spec.name": GraphQLControllerSpec.simpleName],
                 Environment.TEST)
         embeddedServer.applicationContext.registerSingleton(GraphQL, graphQL)
+        httpClient = embeddedServer.applicationContext.createBean(HttpClient, embeddedServer.getURL())
         graphQLClient = embeddedServer.applicationContext.getBean(GraphQLClient)
         executionInput = null
         graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
+        uploadedPartName = null
+        uploadedFilename = null
+        uploadedBytes = null
+        graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
             this.executionInput = executionInput
+            def uploadedFiles = executionInput.variables?.input?.files
+            if (uploadedFiles instanceof List && uploadedFiles[0] instanceof CompletedFileUpload) {
+                CompletedFileUpload file = uploadedFiles[0] as CompletedFileUpload
+                uploadedPartName = file.name
+                uploadedFilename = file.filename
+                uploadedBytes = file.bytes
+            }
             if (executionInput.query == "{ testHeaders }") {
                 GraphQLContext graphQlContext = executionInput.getGraphQLContext()
 
@@ -265,6 +287,65 @@ class GraphQLControllerSpec extends Specification {
         executionInput.query == body
         executionInput.operationName == null
         executionInput.variables == [:]
+    }
+
+    void "test post with multipart form data body"() {
+        given:
+        String query = "mutation (\$input: UploadInput!) { upload(input: \$input) }"
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", """{"query":"${query}","variables":{"input":{"files":[null]}}}""")
+                .addPart("map", '{"0":["variables.input.files.0"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        GraphQLResponseBody response = httpClient.toBlocking().retrieve(request, GraphQLResponseBody)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == query
+        executionInput.operationName == null
+        executionInput.variables.input.files[0] instanceof CompletedFileUpload
+
+        and:
+        uploadedPartName == "0"
+        uploadedFilename == "upload.txt"
+        uploadedBytes == "file-body".bytes
+    }
+
+    void "test post with multipart form data body can map one upload to multiple variables"() {
+        given:
+        String query = "mutation (\$input: UploadInput!) { upload(input: \$input) }"
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", """{"query":"${query}","variables":{"input":{"files":[null,null]}}}""")
+                .addPart("map", '{"0":["variables.input.files.0","variables.input.files.1"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        GraphQLResponseBody response = httpClient.toBlocking().retrieve(request, GraphQLResponseBody)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == query
+        executionInput.operationName == null
+        executionInput.variables.input.files[0] instanceof CompletedFileUpload
+        executionInput.variables.input.files[1] instanceof CompletedFileUpload
+        executionInput.variables.input.files[0].filename == "upload.txt"
+        executionInput.variables.input.files[1].filename == "upload.txt"
+
+        and:
+        uploadedPartName == "0"
+        uploadedFilename == "upload.txt"
+        uploadedBytes == "file-body".bytes
     }
 
     void "test additional headers and cookies"() {
