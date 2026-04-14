@@ -470,7 +470,8 @@ class GraphQLControllerSpec extends Specification {
         given:
         MultipartBody body = MultipartBody.builder()
                 .addPart("operations", '{"query":"","variables":{"input":null}}')
-                .addPart("map", '{"operations":["variables.input"]}')
+                .addPart("map", '{"textField":["variables.input"]}')
+                .addPart("textField", "not a file")
                 .build()
         HttpRequest<?> request = HttpRequest.POST("/graphql", body)
                 .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
@@ -481,7 +482,7 @@ class GraphQLControllerSpec extends Specification {
         then:
         HttpClientResponseException e = thrown()
         e.status == HttpStatus.UNPROCESSABLE_ENTITY
-        e.response.getBody(String).orElse("").contains("Multipart field is not a file upload: operations")
+        e.response.getBody(String).orElse("").contains("Multipart field is not a file upload: textField")
         executionInput == null
     }
 

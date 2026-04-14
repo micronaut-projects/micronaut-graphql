@@ -307,7 +307,8 @@ public class GraphQLController {
     }
 
     private void replaceMultipartMapLeaf(Map<String, Object> currentMap, String leafSegment, String variablePath, CompletedPart part) {
-        if (!currentMap.containsKey(leafSegment) || currentMap.get(leafSegment) != null) {
+        Object existing = currentMap.get(leafSegment);
+        if (existing != null || !currentMap.containsKey(leafSegment)) {
             throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Invalid multipart variable path: " + variablePath);
         }
         currentMap.put(leafSegment, part);
