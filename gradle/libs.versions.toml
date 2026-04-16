@@ -11,7 +11,7 @@ micronaut = "5.0.0-M17"
 micronaut-platform = "4.9.4"
 micronaut-gradle-plugin = "4.6.2"
 micronaut-kotlin = "4.7.0"
-micronaut-security = "4.16.1"
+micronaut-security = "4.18.0"
 micronaut-serde = "3.0.0-M2"
 micronaut-reactor = "4.0.0-M1"
 
