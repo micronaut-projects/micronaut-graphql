@@ -4,7 +4,6 @@ plugins {
 }
 
 micronaut {
-    testRuntime "spock"
     version.set(libs.versions.micronaut.platform.get())
     coreVersion.set(libs.versions.micronaut.asProvider().get())
 }
@@ -12,6 +11,8 @@ micronaut {
 dependencies {
     implementation mn.groovy
     testImplementation mn.micronaut.http.client
+    testImplementation(mnTest.micronaut.test.spock)
+    testRuntimeOnly(mnTest.junit.platform.suite)
     implementation(mnSerde.micronaut.serde.jackson)
 }
 
@@ -19,9 +20,6 @@ application {
     mainClass = "io.micronaut.graphql.docs.Application"
 }
 
-//TODO remove once Micronaut Test ships Spock version compatible with Groovy 5
-configurations.all {
-    resolutionStrategy {
-        force("org.spockframework:spock-core:2.4-groovy-5.0")
-    }
+tasks.withType(Test) {
+    useJUnitPlatform()
 }
