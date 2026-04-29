@@ -39,9 +39,8 @@ final class GraphQLBeanCreatedEventListener implements BeanCreatedEventListener<
         if (!usesSingletonPropertyDataFetcher(graphQLSchema.getCodeRegistry())) {
             return graphQL;
         }
-        GraphQLCodeRegistry codeRegistry = graphQLSchema.getCodeRegistry().transform(builder -> {
-            builder.defaultDataFetcher(MicronautBeanPropertyDataFetcher.factory());
-        });
+        GraphQLCodeRegistry codeRegistry = graphQLSchema.getCodeRegistry().transform(builder ->
+                builder.defaultDataFetcher(MicronautBeanPropertyDataFetcher.factory()));
         GraphQLSchema updatedSchema = graphQLSchema.transform(builder -> builder.codeRegistry(codeRegistry));
         return graphQL.transform(builder -> builder.schema(updatedSchema));
     }

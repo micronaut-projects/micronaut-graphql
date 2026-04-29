@@ -15,7 +15,6 @@
  */
 package io.micronaut.configuration.graphql;
 
-import graphql.schema.DataFetcher;
 import graphql.schema.DataFetcherFactory;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLFieldDefinition;
@@ -38,12 +37,12 @@ import java.util.function.Supplier;
 final class MicronautBeanPropertyDataFetcher<T> implements LightDataFetcher<T> {
 
     private static final MicronautBeanPropertyDataFetcher<Object> INSTANCE = new MicronautBeanPropertyDataFetcher<>();
-    private static final DataFetcherFactory<?> FACTORY = environment -> INSTANCE;
+    private static final DataFetcherFactory<Object> FACTORY = environment -> INSTANCE;
 
     private MicronautBeanPropertyDataFetcher() {
     }
 
-    static DataFetcherFactory<?> factory() {
+    static DataFetcherFactory<Object> factory() {
         return FACTORY;
     }
 

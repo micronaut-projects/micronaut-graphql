@@ -15,8 +15,12 @@
  */
 package io.micronaut.configuration.graphql
 
+import graphql.Scalars
 import graphql.GraphQL
 import graphql.schema.DataFetcher
+import graphql.schema.DataFetchingEnvironment
+import graphql.schema.DataFetcherFactoryEnvironment
+import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLSchema
 import graphql.schema.idl.RuntimeWiring
 import graphql.schema.idl.SchemaGenerator
@@ -75,6 +79,55 @@ class GraphQLIntrospectionPropertyDataFetcherSpec extends Specification {
         graphQL.graphQLSchema.codeRegistry.getDataFetcher(bookType, nameField) instanceof MicronautBeanPropertyDataFetcher
     }
 
+    void "null sources return null"() {
+        given:
+        def dataFetcher = dataFetcher()
+
+        expect:
+        dataFetcher.get(fieldDefinition("name"), null, { null }) == null
+    }
+
+    void "map sources preserve null values and missing keys return null"() {
+        given:
+        def dataFetcher = dataFetcher()
+
+        expect:
+        dataFetcher.get(fieldDefinition("name"), [name: null], { null }) == null
+        dataFetcher.get(fieldDefinition("name"), [:], { null }) == null
+    }
+
+    void "data fetching environment overload falls back to reflective property lookup"() {
+        given:
+        def dataFetcher = dataFetcher()
+        def environment = Stub(DataFetchingEnvironment) {
+            getFieldDefinition() >> fieldDefinition("name")
+            getSource() >> new LegacyBook("Micronaut GraphQL")
+        }
+
+        expect:
+        dataFetcher.get(environment) == "Micronaut GraphQL"
+    }
+
+    void "missing introspected properties return null"() {
+        given:
+        def dataFetcher = dataFetcher()
+
+        expect:
+        dataFetcher.get(fieldDefinition("name"), new TitleOnlyBook("Micronaut GraphQL"), { null }) == null
+    }
+
+    private static GraphQLFieldDefinition fieldDefinition(String name) {
+        GraphQLFieldDefinition.newFieldDefinition()
+                .name(name)
+                .type(Scalars.GraphQLString)
+                .build()
+    }
+
+    private static MicronautBeanPropertyDataFetcher<Object> dataFetcher() {
+        (MicronautBeanPropertyDataFetcher<Object>) MicronautBeanPropertyDataFetcher.factory()
+                .get((DataFetcherFactoryEnvironment) null)
+    }
+
     @Client("/graphql")
     static interface GraphQLClient {
 
@@ -127,6 +180,27 @@ class GraphQLIntrospectionPropertyDataFetcherSpec extends Specification {
 
         Book(String name) {
             this.name = name
+        }
+    }
+
+    static class LegacyBook {
+        private final String name
+
+        LegacyBook(String name) {
+            this.name = name
+        }
+
+        String getName() {
+            return name
+        }
+    }
+
+    @Introspected(accessKind = Introspected.AccessKind.FIELD)
+    static class TitleOnlyBook {
+        private final String title
+
+        TitleOnlyBook(String title) {
+            this.title = title
         }
     }
 }
