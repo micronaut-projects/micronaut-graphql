@@ -224,7 +224,8 @@ class MessageSpec extends Specification {
             query == "subscription TickerForTradeSubscription(\$marketId: String!) { ticker(symbol: \$marketId) { symbol } }"
             operationName == "TickerForTradeSubscription"
             variables == [marketId: "BTCUSD"]
-            extensions == [persistedQuery: [version: 1, sha256Hash: "abc123"]]
+            extensions.persistedQuery.sha256Hash == "abc123"
+            (extensions.persistedQuery.version as Number).intValue() == 1
         }
     }
 }
