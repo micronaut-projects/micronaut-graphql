@@ -22,7 +22,6 @@ import graphql.schema.LightDataFetcher;
 import graphql.schema.PropertyDataFetcher;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
-import io.micronaut.core.beans.BeanProperty;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -73,13 +72,10 @@ final class MicronautBeanPropertyDataFetcher<T> implements LightDataFetcher<T> {
                 .orElse(PropertyLookup.unresolved());
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private PropertyLookup readIntrospectedProperty(BeanIntrospection introspection, Object source, String propertyName) {
-        Object property = introspection.getProperty(propertyName).orElse(null);
-        if (property == null) {
-            return PropertyLookup.unresolved();
-        }
-        return PropertyLookup.resolved(((BeanProperty) property).get(source));
+    private <B> PropertyLookup readIntrospectedProperty(BeanIntrospection<B> introspection, Object source, String propertyName) {
+        return introspection.getProperty(propertyName)
+                .map(property -> PropertyLookup.resolved(property.get(introspection.getBeanType().cast(source))))
+                .orElseGet(PropertyLookup::unresolved);
     }
 
     private record PropertyLookup(boolean resolved, Object value) {

@@ -46,9 +46,7 @@ final class GraphQLBeanCreatedEventListener implements BeanCreatedEventListener<
     }
 
     private boolean usesSingletonPropertyDataFetcher(GraphQLCodeRegistry codeRegistry) {
-        final boolean[] usesSingleton = new boolean[1];
-        codeRegistry.transform(builder -> usesSingleton[0] =
-                builder.getDefaultDataFetcherFactory() == SingletonPropertyDataFetcher.singletonFactory());
-        return usesSingleton[0];
+        return GraphQLCodeRegistry.newCodeRegistry(codeRegistry).getDefaultDataFetcherFactory()
+                == SingletonPropertyDataFetcher.singletonFactory();
     }
 }
