@@ -69,7 +69,7 @@ class GraphQLControllerSpec extends Specification {
     HttpClient httpClient
 
     GraphQL graphQL
-    GraphQLClient graphQLClient
+    GraphQLControllerClient graphQLClient
 
     ExecutionInput executionInput
     String uploadedPartName
@@ -83,15 +83,14 @@ class GraphQLControllerSpec extends Specification {
 
     def setup() {
         graphQL = Mock()
+        GraphQLControllerSpecFactory.graphQL = graphQL
         embeddedServer = ApplicationContext.run(
                 EmbeddedServer,
                 ["spec.name": GraphQLControllerSpec.simpleName],
                 Environment.TEST)
-        embeddedServer.applicationContext.registerSingleton(GraphQL, graphQL)
         httpClient = embeddedServer.applicationContext.createBean(HttpClient, embeddedServer.getURL())
-        graphQLClient = embeddedServer.applicationContext.getBean(GraphQLClient)
+        graphQLClient = embeddedServer.applicationContext.getBean(GraphQLControllerClient)
         executionInput = null
-        graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
         uploadedPartName = null
         uploadedFilename = null
         uploadedBytes = null
@@ -547,52 +546,4 @@ class GraphQLControllerSpec extends Specification {
         e.status == HttpStatus.BAD_REQUEST
     }
 
-    @Client("/graphql")
-    static interface GraphQLClient {
-
-        @Get("{?query,operationName,variables}")
-        GraphQLResponseBody get(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
-
-        @Post(value = "{?query,operationName,variables}")
-        GraphQLResponseBody post(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
-
-        @Post(produces = APPLICATION_JSON)
-        GraphQLResponseBody post(@Body GraphQLRequestBody body)
-
-        @Post(produces = APPLICATION_GRAPHQL)
-        GraphQLResponseBody post(@Body String body)
-
-        @Post(produces = APPLICATION_GRAPHQL)
-        HttpResponse<GraphQLResponseBody> postWithResponse(@Body String body)
-
-        @Post(consumes = APPLICATION_JSON)
-        GraphQLResponseBody postMalformedJson(@Body String body)
-
-    }
-
-    @Factory
-    static class GraphQLFactory {
-
-        @Bean
-        @Singleton
-        @Requires(property = "spec.name", value = "GraphQLControllerSpec")
-        GraphQL graphQL() {
-            graphQL
-        }
-    }
-}
-
-@Singleton
-@Primary
-@Requires(property = "spec.name", value = "GraphQLControllerSpec")
-class SetRequestResponseInputCustomizer implements GraphQLExecutionInputCustomizer {
-
-    @Override
-    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
-                                        MutableHttpResponse<String> httpResponse) {
-        GraphQLContext graphQLContext = executionInput.getGraphQLContext();
-        graphQLContext.put("httpRequest", httpRequest);
-        graphQLContext.put("httpResponse", httpResponse);
-        return Publishers.just(executionInput);
-    }
 }
