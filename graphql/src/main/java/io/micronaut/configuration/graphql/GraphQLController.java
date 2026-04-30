@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2026 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static io.micronaut.http.HttpStatus.BAD_REQUEST;
 import static io.micronaut.http.HttpStatus.UNPROCESSABLE_ENTITY;
@@ -132,14 +133,17 @@ public class GraphQLController {
      */
     @ExecuteOn(TaskExecutors.BLOCKING)
     @Post(consumes = MULTIPART_FORM_DATA, produces = APPLICATION_JSON, single = true)
-    public Publisher<MutableHttpResponse<String>> postMultipart(@Body MultipartBody body, HttpRequest httpRequest) {
+    public Publisher<MutableHttpResponse<String>> postMultipart(@Body MultipartBody body, HttpRequest<?> httpRequest) {
         return Flux.from(body)
-                .collectMap(CompletedPart::getName, part -> part)
+                .collectMap(CompletedPart::getName, Function.<CompletedPart>identity())
                 .flatMapMany(parts -> {
-                    GraphQLRequestBody requestBody = graphQLJsonSerializer.deserialize(
-                            partToString(getRequiredPart(parts, "operations")),
-                            GraphQLRequestBody.class
-                    );
+                    String operationsJson = partToString(getRequiredPart(parts, "operations"));
+                    GraphQLRequestBody requestBody;
+                    try {
+                        requestBody = graphQLJsonSerializer.deserialize(operationsJson, GraphQLRequestBody.class);
+                    } catch (RuntimeException _) {
+                        throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL request body");
+                    }
                     if (requestBody.getQuery() == null) {
                         requestBody.setQuery("");
                     }
@@ -285,13 +289,11 @@ public class GraphQLController {
                     throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
                 }
                 current = ((Map<String, Object>) currentMap).get(segment);
-                continue;
-            }
-            if (current instanceof List<?> currentList) {
+            } else if (current instanceof List<?> currentList) {
                 current = currentList.get(parsePathIndex(segment, currentList.size(), variablePath));
-                continue;
+            } else {
+                throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
             }
-            throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
         }
 
         String leafSegment = pathSegments[pathSegments.length - 1];
@@ -329,7 +331,7 @@ public class GraphQLController {
                 throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
             }
             return index;
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException _) {
             throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Unknown multipart variable path: " + variablePath);
         }
     }
@@ -337,7 +339,7 @@ public class GraphQLController {
     private String partToString(CompletedPart part) {
         try {
             return new String(part.getBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
+        } catch (IOException _) {
             throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Could not process multipart field: " + part.getName());
         }
     }
