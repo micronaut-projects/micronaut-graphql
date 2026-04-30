@@ -15,9 +15,12 @@ dependencies {
     implementation mn.micronaut.jackson.databind
     implementation mn.micronaut.runtime
 
+    testImplementation mnTest.micronaut.test.junit5
     runtimeOnly mnLogging.logback.classic
     runtimeOnly mn.snakeyaml
 
+    testRuntimeOnly mnTest.junit.jupiter.engine
+    testRuntimeOnly mnTest.junit.platform.launcher
     testRuntimeOnly mn.snakeyaml
 }
 
@@ -29,4 +32,8 @@ micronaut {
     version.set(libs.versions.micronaut.platform.get())
     coreVersion.set(libs.versions.micronaut.asProvider().get())
     runtime("netty")
+}
+
+tasks.named("test") {
+    useJUnitPlatform()
 }
