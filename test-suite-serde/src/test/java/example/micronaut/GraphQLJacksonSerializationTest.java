@@ -1,6 +1,7 @@
 package example.micronaut;
 
 import io.micronaut.configuration.graphql.GraphQLResponseBody;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.json.JsonMapper;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@MicronautTest
+@MicronautTest(startApplication = false)
 class GraphQLJacksonSerializationTest {
 
     @Test
@@ -30,5 +31,16 @@ class GraphQLJacksonSerializationTest {
         var expected = """
             {"foo":{"bar":[]}}""";
         assertEquals(expected, mapper.writeValueAsString(response));
+    }
+
+    @Test
+    void testInjectedJackson() throws IOException {
+        try (ApplicationContext ctx = ApplicationContext.run()) {
+            JsonMapper objectMapper = ctx.getBean(JsonMapper.class);
+            String result = objectMapper.writeValueAsString(
+                new GraphQLResponseBody(Map.of("data", "test")));
+            assertEquals("""
+            {"data":"test"}""", result);
+        }
     }
 }
