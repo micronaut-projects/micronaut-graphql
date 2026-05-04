@@ -8,6 +8,7 @@ import io.micronaut.context.annotation.Requires
 import io.micronaut.core.async.publisher.Publishers
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.MutableHttpResponse
+import io.micronaut.json.JsonMapper
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.websocket.WebSocketClient
 import jakarta.inject.Singleton
@@ -17,16 +18,17 @@ import spock.lang.AutoCleanup
 import spock.lang.Ignore
 import spock.lang.Specification
 
-@Ignore("InstantiationError during WebSocket message binding to the abstract Message class")
 class GraphQLWsHandlerSpec extends Specification {
 
     @AutoCleanup
     EmbeddedServer embeddedServer
 
     GraphQLWsClient graphQLWsClient
+    JsonMapper jsonMapper
 
     def setup() {
         embeddedServer = ApplicationContext.run(EmbeddedServer, ["spec.name": GraphQLWsHandlerSpec.simpleName], "websocket") as EmbeddedServer
+        jsonMapper = embeddedServer.applicationContext.getBean(JsonMapper)
         WebSocketClient wsClient = embeddedServer.applicationContext.createBean(WebSocketClient, embeddedServer.getURI())
         graphQLWsClient = Flux.from(wsClient.connect(GraphQLWsClient, "/graphql-ws")).blockFirst()
     }
@@ -269,6 +271,20 @@ class GraphQLWsHandlerSpec extends Specification {
         graphQLWsClient.closeReason.getCode() == 4400
         graphQLWsClient.closeReason.getReason() == "Invalid message."
 
+    }
+
+    void "messages can be deserialized polymorphically from raw json"() {
+        when:
+        Message initMessage = jsonMapper.readValue('{"type":"connection_init"}', Message)
+        Message pingMessage = jsonMapper.readValue('{"type":"ping"}', Message)
+        Message subscribeMessage = jsonMapper.readValue('{"type":"subscribe","id":"query_id","payload":{"query":"query{ foo }"}}', Message)
+        Message completeMessage = jsonMapper.readValue('{"type":"complete","id":"query_id"}', Message)
+
+        then:
+        initMessage instanceof ConnectionInitMessage
+        pingMessage instanceof PingMessage
+        subscribeMessage instanceof SubscribeMessage
+        completeMessage instanceof CompleteMessage
     }
 
 }
