@@ -31,6 +31,7 @@ import java.util.Map;
 public class GraphQLInvocationData {
 
     private final String query;
+    @Nullable
     private final String operationName;
     private final Map<String, Object> variables;
 
@@ -61,6 +62,7 @@ public class GraphQLInvocationData {
      *
      * @return the operation name
      */
+    @Nullable
     public String getOperationName() {
         return operationName;
     }
