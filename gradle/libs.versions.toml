@@ -8,7 +8,7 @@ graal-svm = "25.0.3"
 shadow = '9.4.1'
 
 micronaut = "5.0.0"
-micronaut-platform = "5.0.0-RC1"
+micronaut-platform = "5.0.0"
 micronaut-gradle-plugin = "5.0.0-M1"
 micronaut-kotlin = "5.0.0"
 micronaut-security = "5.0.0"
