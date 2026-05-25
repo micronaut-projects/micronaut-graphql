@@ -36,6 +36,7 @@ import io.micronaut.core.async.publisher.Publishers
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
+import io.micronaut.http.MediaType
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.http.MediaType
 import io.micronaut.http.MutableHttpResponse
@@ -736,6 +737,33 @@ class GraphQLControllerSpec extends Specification {
         httpResponse.body().getSpecification()["data"] == "bar"
         httpResponse.header("X-Foo") == "bar"
         httpResponse.header("set-cookie") == "foo=bar"
+    }
+
+    void "test get accepts application wildcard accept header"() {
+        given:
+        String query = "{ foo }"
+
+        when:
+        HttpResponse<GraphQLResponseBody> response = graphQLClient.getWithResponse(query, null, null, 'application/*')
+
+        then:
+        response.status() == HttpStatus.OK
+        response.contentType.get() == MediaType.APPLICATION_JSON_TYPE
+        response.body().getSpecification()["data"] == "bar"
+    }
+
+    void "test post accepts application wildcard accept header"() {
+        given:
+        GraphQLRequestBody body = new GraphQLRequestBody()
+        body.query = "{ foo }"
+
+        when:
+        HttpResponse<GraphQLResponseBody> response = graphQLClient.postJsonWithAccept(body, 'application/*')
+
+        then:
+        response.status() == HttpStatus.OK
+        response.contentType.get() == MediaType.APPLICATION_JSON_TYPE
+        response.body().getSpecification()["data"] == "bar"
     }
 
     void "test post with malformed application json body returns bad request"() {
