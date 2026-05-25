@@ -21,6 +21,7 @@ import jakarta.inject.Singleton;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * The Jackson implementation for serializing and deserializing GraphQL objects.
@@ -61,7 +62,7 @@ public class JacksonGraphQLJsonSerializer implements GraphQLJsonSerializer {
     @Override
     public <T> T deserialize(String json, Class<T> requiredType) {
         try {
-            return jsonMapper.readValue(json, Argument.of(requiredType));
+            return Objects.requireNonNull(jsonMapper.readValue(json, Argument.of(requiredType)), "GraphQL JSON value cannot be null");
         } catch (IOException e) {
             throw new RuntimeException("Error deserializing object from JSON: " + e.getMessage(), e);
         }

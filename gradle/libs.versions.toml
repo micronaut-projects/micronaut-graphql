@@ -1,19 +1,19 @@
 [versions]
-managed-graphql-java = "25.0"
+managed-graphql-java = "26.0"
 managed-graphql-java-extended-scalars = "24.0"
 managed-graphql-java-tools = "14.0.1"
 managed-graphql-spqr = "0.12.4"
 
-graal-svm = "25.0.2"
-shadow = '9.3.1'
+graal-svm = "25.0.3"
+shadow = '9.4.1'
 
-micronaut = "5.0.0-M17"
-micronaut-platform = "4.9.4"
-micronaut-gradle-plugin = "4.6.2"
-micronaut-kotlin = "4.7.0"
-micronaut-security = "4.16.1"
-micronaut-serde = "3.0.0-M2"
-micronaut-reactor = "4.0.0-M1"
+micronaut = "5.0.0"
+micronaut-platform = "5.0.0"
+micronaut-gradle-plugin = "5.0.0"
+micronaut-kotlin = "5.0.0"
+micronaut-security = "5.0.0"
+micronaut-serde = "3.0.0"
+micronaut-reactor = "4.0.0"
 
 [libraries]
 # Managed

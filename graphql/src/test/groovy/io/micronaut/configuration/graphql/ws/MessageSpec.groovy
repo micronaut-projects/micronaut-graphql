@@ -1,5 +1,6 @@
 package io.micronaut.configuration.graphql.ws
 
+import io.micronaut.configuration.graphql.GraphQLJsonSerializer
 import io.micronaut.context.BeanContext
 import io.micronaut.core.type.Argument
 import io.micronaut.serde.SerdeIntrospections
@@ -11,6 +12,9 @@ import spock.lang.Specification
 class MessageSpec extends Specification {
     @Inject
     BeanContext beanContext
+
+    @Inject
+    GraphQLJsonSerializer graphQLJsonSerializer
 
     void "ConnectionInitMessage is annotated with @Serdeable.Deserializable"() {
         given:
@@ -186,5 +190,42 @@ class MessageSpec extends Specification {
 
         then:
         noExceptionThrown()
+    }
+
+    void "SubscribeMessage deserializes Apollo-style payload with extensions field"() {
+        given:
+        String json = '''
+{
+  "id": "1",
+  "type": "subscribe",
+  "payload": {
+    "variables": {
+      "marketId": "BTCUSD"
+    },
+    "extensions": {
+      "persistedQuery": {
+        "version": 1,
+        "sha256Hash": "abc123"
+      }
+    },
+    "operationName": "TickerForTradeSubscription",
+    "query": "subscription TickerForTradeSubscription($marketId: String!) { ticker(symbol: $marketId) { symbol } }"
+  }
+}
+'''
+
+        when:
+        Message message = graphQLJsonSerializer.deserialize(json, Message)
+
+        then:
+        message instanceof SubscribeMessage
+
+        with((message as SubscribeMessage).subscribePayload) {
+            query == "subscription TickerForTradeSubscription(\$marketId: String!) { ticker(symbol: \$marketId) { symbol } }"
+            operationName == "TickerForTradeSubscription"
+            variables == [marketId: "BTCUSD"]
+            extensions.persistedQuery.sha256Hash == "abc123"
+            (extensions.persistedQuery.version as Number).intValue() == 1
+        }
     }
 }

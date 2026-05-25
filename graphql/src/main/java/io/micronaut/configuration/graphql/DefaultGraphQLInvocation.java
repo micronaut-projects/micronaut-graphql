@@ -45,6 +45,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
     private final GraphQL graphQL;
     private final GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer;
+    @Nullable
     private final BeanProvider<DataLoaderRegistry> dataLoaderRegistry;
 
     /**

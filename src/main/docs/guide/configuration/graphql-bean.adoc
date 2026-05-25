@@ -12,5 +12,10 @@ snippet::io.micronaut.graphql.docs.GraphQLFactory[tags="imports,clazz", project-
 <1> Define the `Factory` annotation to create the bean.
 <2> Define the `GraphQL` bean which contains the runtime wiring and the executable schema.
 
+If a schema field relies on GraphQL Java's default property resolution instead of an explicit `DataFetcher`, Micronaut GraphQL uses Micronaut bean introspection before falling back to GraphQL Java's default property fetcher. For native image applications, annotate returned domain types with `@Introspected` so nested properties can be resolved without additional reflection metadata. If you have configured a custom GraphQL Java default data fetcher, Micronaut GraphQL preserves that custom configuration.
+
 There are various https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples[examples] using different technologies
 provided in the repository.
+
+For an example that combines GraphQL Java Tools with a request-scoped `DataLoaderRegistry`, see the <<data-loaders, Using DataLoaders>>
+section and the `todo-java-tools` example in this repository.

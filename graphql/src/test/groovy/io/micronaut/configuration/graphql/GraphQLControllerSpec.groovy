@@ -33,6 +33,7 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
+import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Get
@@ -79,7 +80,7 @@ class GraphQLControllerSpec extends Specification {
         embeddedServer.applicationContext.registerSingleton(GraphQL, graphQL)
         graphQLClient = embeddedServer.applicationContext.getBean(GraphQLClient)
         executionInput = null
-        1 * graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
+        graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
             this.executionInput = executionInput
             if (executionInput.query == "{ testHeaders }") {
                 GraphQLContext graphQlContext = executionInput.getGraphQLContext()
@@ -308,6 +309,33 @@ class GraphQLControllerSpec extends Specification {
         response.body().getSpecification()["data"] == "bar"
     }
 
+    void "test post with malformed application json body returns bad request"() {
+        when:
+        graphQLClient.postMalformedJson('Bad request')
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.BAD_REQUEST
+    }
+
+    void "test get with malformed variables returns bad request"() {
+        when:
+        graphQLClient.get('{ foo }', null, '{invalid json}')
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.BAD_REQUEST
+    }
+
+    void "test post with malformed variables returns bad request"() {
+        when:
+        graphQLClient.post('{ foo }', null, '{invalid json}')
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.BAD_REQUEST
+    }
+
     @Client("/graphql")
     static interface GraphQLClient {
 
@@ -331,6 +359,9 @@ class GraphQLControllerSpec extends Specification {
 
         @Post(produces = APPLICATION_GRAPHQL)
         HttpResponse<GraphQLResponseBody> postWithResponse(@Body String body)
+
+        @Post(consumes = APPLICATION_JSON)
+        GraphQLResponseBody postMalformedJson(@Body String body)
 
     }
 

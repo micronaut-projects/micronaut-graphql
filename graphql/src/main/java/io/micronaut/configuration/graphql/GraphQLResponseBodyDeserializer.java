@@ -15,12 +15,11 @@
  */
 package io.micronaut.configuration.graphql;
 
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 import io.micronaut.core.type.Argument;
 import io.micronaut.serde.Decoder;
 import io.micronaut.serde.Deserializer;
 import jakarta.inject.Singleton;
+import org.jspecify.annotations.NonNull;
 
 import java.io.IOException;
 import java.util.Map;
@@ -32,11 +31,16 @@ import java.util.Map;
 public class GraphQLResponseBodyDeserializer implements Deserializer<GraphQLResponseBody> {
 
     @Override
-    public @Nullable GraphQLResponseBody deserialize(
+    @SuppressWarnings("unchecked")
+    public GraphQLResponseBody deserialize(
         @NonNull Decoder decoder,
         @NonNull DecoderContext context,
         @NonNull Argument<? super GraphQLResponseBody> type
     ) throws IOException {
-        return new GraphQLResponseBody((Map<String, Object>) decoder.decodeArbitrary());
+        Object decoded = decoder.decodeArbitrary();
+        if (decoded == null) {
+            throw new IOException("GraphQL response body cannot be null");
+        }
+        return new GraphQLResponseBody((Map<String, Object>) decoded);
     }
 }
