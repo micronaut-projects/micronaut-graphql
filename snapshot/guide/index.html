@@ -101,13 +101,15 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-graphql-bean"><a href="#graphql-bean"><strong>5.1</strong><span>Configuring the GraphQL Bean</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-data-loaders"><a href="#data-loaders"><strong>5.2</strong><span>Using DataLoaders</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-multipart"><a href="#multipart"><strong>5.2</strong><span>GraphQL Multipart Requests</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-graphql-ws"><a href="#graphql-ws"><strong>5.3</strong><span>Configuring GraphQL over websockets</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-data-loaders"><a href="#data-loaders"><strong>5.3</strong><span>Using DataLoaders</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-graphiql"><a href="#graphiql"><strong>5.4</strong><span>Configuring GraphiQL</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-graphql-ws"><a href="#graphql-ws"><strong>5.4</strong><span>Configuring GraphQL over websockets</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-jackson"><a href="#jackson"><strong>5.5</strong><span>Notes on using Jackson serialization</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-graphiql"><a href="#graphiql"><strong>5.5</strong><span>Configuring GraphiQL</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-jackson"><a href="#jackson"><strong>5.6</strong><span>Notes on using Jackson serialization</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-graphqlGuides"><a href="#graphqlGuides"><strong>6</strong><span>Guides</span></a></div>
         
@@ -121,7 +123,7 @@
         <h1>Micronaut GraphQL Integration</h1>
         <p></p>
         <p>Extensions to integrate Micronaut and GraphQL</p>
-        <p><strong>Version:</strong> 5.0.1 </p>
+        <p><strong>Version:</strong> 5.1.0-SNAPSHOT </p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
@@ -550,6 +552,9 @@ Start your application by running <code>./gradlew run</code>, open your browser 
 <li>
 <p><code>POST</code> request with <code>application/json</code> body and keys <code>query</code> (String), <code>operationName</code> (String) and <code>variables</code> (Map).</p>
 </li>
+<li>
+<p><code>POST</code> request with <code>multipart/form-data</code> body using the <a href="https://github.com/jaydenseric/graphql-multipart-request-spec">GraphQL multipart request specification</a>.</p>
+</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -763,7 +768,70 @@ provided in the repository.</p>
 section and the <code>todo-java-tools</code> example in this repository.</p>
 </div>
 
-<h2 id="data-loaders"><a class="anchor" href="#data-loaders"></a>5.2 Using DataLoaders</h2>
+<h2 id="multipart"><a class="anchor" href="#multipart"></a>5.2 GraphQL Multipart Requests</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/5.1.x/src/main/docs/guide/configuration/multipart.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>GraphQL multipart requests can be sent to the configured GraphQL endpoint using <code>multipart/form-data</code>
+following the <a href="https://github.com/jaydenseric/graphql-multipart-request-spec">GraphQL multipart request specification</a>.</p>
+</div>
+<div class="paragraph">
+<p>Micronaut GraphQL expects the multipart request to contain:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>an <code>operations</code> part with the GraphQL request payload as JSON</p>
+</li>
+<li>
+<p>a <code>map</code> part describing which uploaded file part is injected into which GraphQL variables path</p>
+</li>
+<li>
+<p>one or more file parts referenced by the <code>map</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Uploaded files are exposed to GraphQL as Micronaut
+<a href="https://docs.micronaut.io/latest/api/io/micronaut/http/multipart/CompletedFileUpload.html">CompletedFileUpload</a>
+instances, so your GraphQL schema and runtime wiring must provide a compatible <code>Upload</code> scalar that accepts
+<code>CompletedFileUpload</code> values.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-graphql hljs" data-lang="graphql">scalar Upload
+
+input UploadInput {
+  files: [Upload!]!
+}
+
+type Mutation {
+  upload(input: UploadInput!): Boolean!
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After registering an <code>Upload</code> scalar, a multipart upload can be sent like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl "$MICRONAUT_URL/graphql" \
+  -F 'operations={"query":"mutation ($input: UploadInput!) { upload(input: $input) }","variables":{"input":{"files":[null]}}}' \
+  -F 'map={"0":["variables.input.files.0"]}' \
+  -F '0=@upload.txt;type=text/plain'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The GraphQL data fetcher can then read the injected upload from the variables as a <code>CompletedFileUpload</code>.</p>
+</div>
+
+<h2 id="data-loaders"><a class="anchor" href="#data-loaders"></a>5.3 Using DataLoaders</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/5.1.x/src/main/docs/guide/configuration/data-loaders.adoc"'>
@@ -831,7 +899,7 @@ field that should be batched.</p>
 </ul>
 </div>
 
-<h2 id="graphql-ws"><a class="anchor" href="#graphql-ws"></a>5.3 Configuring GraphQL over websockets</h2>
+<h2 id="graphql-ws"><a class="anchor" href="#graphql-ws"></a>5.4 Configuring GraphQL over websockets</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/5.1.x/src/main/docs/guide/configuration/graphql-ws.adoc"'>
@@ -885,7 +953,7 @@ For real applications the subscriptions are usually based on some pub/sub soluti
 An example using subscriptions with kafka can be found here, <a href="https://github.com/openweb-nl/kafka-graphql-examples/tree/ge-micronaut/graphql-endpoint">graphql-endpoint using micronaut</a>.</p>
 </div>
 
-<h2 id="graphiql"><a class="anchor" href="#graphiql"></a>5.4 Configuring GraphiQL</h2>
+<h2 id="graphiql"><a class="anchor" href="#graphiql"></a>5.5 Configuring GraphiQL</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/5.1.x/src/main/docs/guide/configuration/graphiql.adoc"'>
@@ -984,7 +1052,7 @@ In that case it could also be useful to dynamically replace additional parameter
 application property.</p>
 </div>
 
-<h2 id="jackson"><a class="anchor" href="#jackson"></a>5.5 Notes on using Jackson serialization</h2>
+<h2 id="jackson"><a class="anchor" href="#jackson"></a>5.6 Notes on using Jackson serialization</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-graphql/edit/5.1.x/src/main/docs/guide/configuration/jackson.adoc"'>
