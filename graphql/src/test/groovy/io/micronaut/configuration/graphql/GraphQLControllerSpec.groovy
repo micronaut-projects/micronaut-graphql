@@ -36,7 +36,6 @@ import io.micronaut.core.async.publisher.Publishers
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
-import io.micronaut.http.MediaType
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.http.MediaType
 import io.micronaut.http.MutableHttpResponse
