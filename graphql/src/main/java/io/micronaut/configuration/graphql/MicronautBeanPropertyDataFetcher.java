@@ -22,6 +22,7 @@ import graphql.schema.LightDataFetcher;
 import graphql.schema.PropertyDataFetcher;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -46,7 +47,7 @@ final class MicronautBeanPropertyDataFetcher<T> implements LightDataFetcher<T> {
     }
 
     @Override
-    public T get(GraphQLFieldDefinition fieldDefinition, Object source, Supplier<DataFetchingEnvironment> environmentSupplier) throws Exception {
+    public @Nullable T get(GraphQLFieldDefinition fieldDefinition, @Nullable Object source, Supplier<DataFetchingEnvironment> environmentSupplier) throws Exception {
         if (source == null) {
             return null;
         }
@@ -59,7 +60,7 @@ final class MicronautBeanPropertyDataFetcher<T> implements LightDataFetcher<T> {
     }
 
     @Override
-    public T get(DataFetchingEnvironment environment) throws Exception {
+    public @Nullable T get(DataFetchingEnvironment environment) throws Exception {
         return get(environment.getFieldDefinition(), environment.getSource(), () -> environment);
     }
 
@@ -78,9 +79,9 @@ final class MicronautBeanPropertyDataFetcher<T> implements LightDataFetcher<T> {
                 .orElseGet(PropertyLookup::unresolved);
     }
 
-    private record PropertyLookup(boolean resolved, Object value) {
+    private record PropertyLookup(boolean resolved, @Nullable Object value) {
 
-        private static PropertyLookup resolved(Object value) {
+        private static PropertyLookup resolved(@Nullable Object value) {
             return new PropertyLookup(true, value);
         }
 
