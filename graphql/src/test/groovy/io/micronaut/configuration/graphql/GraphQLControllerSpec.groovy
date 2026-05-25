@@ -33,6 +33,7 @@ import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
+import io.micronaut.http.MediaType
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.Body
@@ -328,6 +329,33 @@ class GraphQLControllerSpec extends Specification {
         executionInputs.size() == 1
     }
 
+    void "test get accepts application wildcard accept header"() {
+        given:
+        String query = "{ foo }"
+
+        when:
+        HttpResponse<GraphQLResponseBody> response = graphQLClient.getWithResponse(query, null, null, 'application/*')
+
+        then:
+        response.status() == HttpStatus.OK
+        response.contentType.get() == MediaType.APPLICATION_JSON_TYPE
+        response.body().getSpecification()["data"] == "bar"
+    }
+
+    void "test post accepts application wildcard accept header"() {
+        given:
+        GraphQLRequestBody body = new GraphQLRequestBody()
+        body.query = "{ foo }"
+
+        when:
+        HttpResponse<GraphQLResponseBody> response = graphQLClient.postJsonWithAccept(body, 'application/*')
+
+        then:
+        response.status() == HttpStatus.OK
+        response.contentType.get() == MediaType.APPLICATION_JSON_TYPE
+        response.body().getSpecification()["data"] == "bar"
+    }
+
     void "test post with malformed application json body returns bad request"() {
         when:
         graphQLClient.postMalformedJson('Bad request')
@@ -361,11 +389,17 @@ class GraphQLControllerSpec extends Specification {
         @Get("{?query,operationName,variables}")
         GraphQLResponseBody get(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
 
+        @Get(value = "{?query,operationName,variables}", processes = 'application/*')
+        HttpResponse<GraphQLResponseBody> getWithResponse(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables, @io.micronaut.http.annotation.Header String accept)
+
         @Post(value = "{?query,operationName,variables}")
         GraphQLResponseBody post(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
 
         @Post(produces = APPLICATION_JSON)
         GraphQLResponseBody post(@Body GraphQLRequestBody body)
+
+        @Post(produces = APPLICATION_JSON, processes = 'application/*')
+        HttpResponse<GraphQLResponseBody> postJsonWithAccept(@Body GraphQLRequestBody body, @io.micronaut.http.annotation.Header String accept)
 
         @Post(produces = APPLICATION_GRAPHQL)
         GraphQLResponseBody post(@Body String body)

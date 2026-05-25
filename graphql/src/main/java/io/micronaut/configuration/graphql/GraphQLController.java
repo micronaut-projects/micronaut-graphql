@@ -86,7 +86,7 @@ public class GraphQLController {
      * @param httpRequest   the HTTP request
      * @return the GraphQL response
      */
-    @Get(produces = APPLICATION_JSON, single = true)
+    @Get(produces = {APPLICATION_JSON, ALL}, single = true)
     public Publisher<MutableHttpResponse<String>> get(
             @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
@@ -125,7 +125,7 @@ public class GraphQLController {
      * @param httpRequest   the HTTP request
      * @return the GraphQL response
      */
-    @Post(consumes = ALL, produces = APPLICATION_JSON, single = true)
+    @Post(consumes = ALL, produces = {APPLICATION_JSON, ALL}, single = true)
     public Publisher<MutableHttpResponse<String>> post(
             @Nullable @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
@@ -133,8 +133,7 @@ public class GraphQLController {
             @Nullable @Body String body,
             HttpRequest httpRequest) {
 
-        Optional<MediaType> opt = httpRequest.getContentType();
-        MediaType contentType = opt.orElse(null);
+        Optional<MediaType> contentType = httpRequest.getContentType();
 
         if (body == null) {
             body = "";
@@ -151,7 +150,7 @@ public class GraphQLController {
         //   "variables": { "myVariable": "someValue", ... }
         // }
 
-        if (APPLICATION_JSON_TYPE.equals(contentType)) {
+        if (contentType.filter(APPLICATION_JSON_TYPE::equals).isPresent()) {
             if (body.trim().startsWith("[")) {
                 try {
                     GraphQLRequestBody[] requests = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody[].class);
@@ -167,8 +166,9 @@ public class GraphQLController {
             } catch (RuntimeException e) {
                 throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL request body");
             }
-            if (request.getQuery() == null) {
-                request.setQuery("");
+            String requestQuery = request.getQuery();
+            if (requestQuery == null) {
+                requestQuery = "";
             }
             return executeRequest(request, httpRequest);
         }
@@ -185,14 +185,14 @@ public class GraphQLController {
         // * If the "application/graphql" Content-Type header is present,
         //   treat the HTTP POST body contents as the GraphQL query string.
 
-        if (APPLICATION_GRAPHQL_TYPE.equals(contentType)) {
+        if (contentType.filter(APPLICATION_GRAPHQL_TYPE::equals).isPresent()) {
             return executeRequest(body, null, null, httpRequest);
         }
 
         throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Could not process GraphQL request");
     }
 
-    private Map<String, Object> convertVariablesJson(String jsonMap) {
+    private Map<String, Object> convertVariablesJson(@Nullable String jsonMap) {
         if (jsonMap == null) {
             return Collections.emptyMap();
         }
@@ -234,8 +234,8 @@ public class GraphQLController {
      */
     private Publisher<MutableHttpResponse<String>> executeRequest(
             String query,
-            String operationName,
-            Map<String, Object> variables,
+            @Nullable String operationName,
+            @Nullable Map<String, Object> variables,
             HttpRequest httpRequest) {
         return executeRequest(newRequestBody(query, operationName, variables), httpRequest);
     }
@@ -253,7 +253,10 @@ public class GraphQLController {
         return graphQLExecutionResultHandler.handleExecutionResult(executionResult);
     }
 
-    private GraphQLRequestBody newRequestBody(String query, String operationName, Map<String, Object> variables) {
+    private GraphQLRequestBody newRequestBody(
+            @Nullable String query,
+            @Nullable String operationName,
+            @Nullable Map<String, Object> variables) {
         GraphQLRequestBody request = new GraphQLRequestBody();
         request.setQuery(query);
         request.setOperationName(operationName);
@@ -261,7 +264,7 @@ public class GraphQLController {
         return request;
     }
 
-    private String normalizeQuery(String query) {
+    private String normalizeQuery(@Nullable String query) {
         if (query == null) {
             return "";
         }
