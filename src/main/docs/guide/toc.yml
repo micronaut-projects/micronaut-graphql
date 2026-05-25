@@ -6,6 +6,7 @@ configuration:
   title: Configuration
   graphql-bean: Configuring the GraphQL Bean
   federation: Apollo Federation
+  data-loaders: Using DataLoaders
   graphql-ws: Configuring GraphQL over websockets
   graphiql: Configuring GraphiQL
   jackson: Notes on using Jackson serialization

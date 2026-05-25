@@ -374,7 +374,7 @@ final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>>
         }
 
         private SubscribePayload(@NonNull String query, @Nullable String operationName, @Nullable Map<String, Object> variables, @Nullable Map<String, Object> extensions) {
-            this.query = query;
+            this(query);
             this.operationName = operationName;
             this.variables = variables;
             this.extensions = extensions;
@@ -458,8 +458,12 @@ final class SubscribeMessage extends RequiredPayloadMessage<Map<String, Object>>
 
         @SuppressWarnings("unchecked")
         public static SubscribePayload fromMap(Map<String, Object> payload) {
+            Object query = payload.get("query");
+            if (!(query instanceof String queryString)) {
+                throw new IllegalArgumentException("The 'query' field is required in the payload of message type '" + Types.SUBSCRIBE + "'");
+            }
             return new SubscribePayload(
-                (String) payload.get("query"),
+                queryString,
                 (String) payload.get("operationName"),
                 (Map<String, Object>) payload.get("variables"),
                 (Map<String, Object>) payload.get("extensions"));

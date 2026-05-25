@@ -32,6 +32,8 @@ import io.micronaut.core.async.publisher.Publishers
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
+import io.micronaut.http.MediaType
+import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Get
@@ -78,7 +80,7 @@ class GraphQLControllerSpec extends Specification {
         embeddedServer.applicationContext.registerSingleton(GraphQL, graphQL)
         graphQLClient = embeddedServer.applicationContext.getBean(GraphQLClient)
         executionInput = null
-        1 * graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
+        graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
             this.executionInput = executionInput
             if (executionInput.query == "{ testHeaders }") {
                 GraphQLContext graphQlContext = executionInput.getGraphQLContext()
@@ -280,11 +282,68 @@ class GraphQLControllerSpec extends Specification {
         httpResponse.header("set-cookie") == "foo=bar"
     }
 
+    void "test get accepts application wildcard accept header"() {
+        given:
+        String query = "{ foo }"
+
+        when:
+        HttpResponse<GraphQLResponseBody> response = graphQLClient.getWithResponse(query, null, null, 'application/*')
+
+        then:
+        response.status() == HttpStatus.OK
+        response.contentType.get() == MediaType.APPLICATION_JSON_TYPE
+        response.body().getSpecification()["data"] == "bar"
+    }
+
+    void "test post accepts application wildcard accept header"() {
+        given:
+        GraphQLRequestBody body = new GraphQLRequestBody()
+        body.query = "{ foo }"
+
+        when:
+        HttpResponse<GraphQLResponseBody> response = graphQLClient.postJsonWithAccept(body, 'application/*')
+
+        then:
+        response.status() == HttpStatus.OK
+        response.contentType.get() == MediaType.APPLICATION_JSON_TYPE
+        response.body().getSpecification()["data"] == "bar"
+    }
+
+    void "test post with malformed application json body returns bad request"() {
+        when:
+        graphQLClient.postMalformedJson('Bad request')
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.BAD_REQUEST
+    }
+
+    void "test get with malformed variables returns bad request"() {
+        when:
+        graphQLClient.get('{ foo }', null, '{invalid json}')
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.BAD_REQUEST
+    }
+
+    void "test post with malformed variables returns bad request"() {
+        when:
+        graphQLClient.post('{ foo }', null, '{invalid json}')
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.BAD_REQUEST
+    }
+
     @Client("/graphql")
     static interface GraphQLClient {
 
         @Get("{?query,operationName,variables}")
         GraphQLResponseBody get(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
+
+        @Get(value = "{?query,operationName,variables}", processes = 'application/*')
+        HttpResponse<GraphQLResponseBody> getWithResponse(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables, @io.micronaut.http.annotation.Header String accept)
 
         @Post(value = "{?query,operationName,variables}")
         GraphQLResponseBody post(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
@@ -292,11 +351,17 @@ class GraphQLControllerSpec extends Specification {
         @Post(produces = APPLICATION_JSON)
         GraphQLResponseBody post(@Body GraphQLRequestBody body)
 
+        @Post(produces = APPLICATION_JSON, processes = 'application/*')
+        HttpResponse<GraphQLResponseBody> postJsonWithAccept(@Body GraphQLRequestBody body, @io.micronaut.http.annotation.Header String accept)
+
         @Post(produces = APPLICATION_GRAPHQL)
         GraphQLResponseBody post(@Body String body)
 
         @Post(produces = APPLICATION_GRAPHQL)
         HttpResponse<GraphQLResponseBody> postWithResponse(@Body String body)
+
+        @Post(consumes = APPLICATION_JSON)
+        GraphQLResponseBody postMalformedJson(@Body String body)
 
     }
 

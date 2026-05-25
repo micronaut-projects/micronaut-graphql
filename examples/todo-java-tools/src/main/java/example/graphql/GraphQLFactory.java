@@ -15,18 +15,31 @@
  */
 package example.graphql;
 
+import example.domain.Author;
+import example.domain.ToDo;
 import graphql.GraphQL;
 import graphql.kickstart.tools.SchemaParser;
 import graphql.kickstart.tools.SchemaParserBuilder;
 import graphql.schema.GraphQLSchema;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.core.annotation.TypeHint;
 import jakarta.inject.Singleton;
 
 /**
  * @author Marcel Overdijk
  */
 @Factory
+@TypeHint(
+    value = {
+        Author.class,
+        ToDo.class,
+        ToDoMutationResolver.class,
+        ToDoQueryResolver.class,
+        ToDoResolver.class
+    },
+    accessType = TypeHint.AccessType.ALL_DECLARED_METHODS
+)
 public class GraphQLFactory {
 
     @Bean
