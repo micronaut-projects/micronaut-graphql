@@ -16,6 +16,7 @@
 package io.micronaut.configuration.graphql;
 
 import io.micronaut.serde.annotation.Serdeable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 
@@ -28,8 +29,11 @@ import java.util.Map;
 @Serdeable
 public class GraphQLRequestBody {
 
+    @Nullable
     private String query;
+    @Nullable
     private String operationName;
+    @Nullable
     private Map<String, Object> variables;
 
     /**
@@ -37,6 +41,7 @@ public class GraphQLRequestBody {
      *
      * @return the query
      */
+    @Nullable
     public String getQuery() {
         return query;
     }
@@ -46,7 +51,7 @@ public class GraphQLRequestBody {
      *
      * @param query the query
      */
-    public void setQuery(final String query) {
+    public void setQuery(@Nullable final String query) {
         this.query = query;
     }
 
@@ -55,6 +60,7 @@ public class GraphQLRequestBody {
      *
      * @return the operation name
      */
+    @Nullable
     public String getOperationName() {
         return operationName;
     }
@@ -64,7 +70,7 @@ public class GraphQLRequestBody {
      *
      * @param operationName the operation name
      */
-    public void setOperationName(final String operationName) {
+    public void setOperationName(@Nullable final String operationName) {
         this.operationName = operationName;
     }
 
@@ -73,6 +79,7 @@ public class GraphQLRequestBody {
      *
      * @return the variables
      */
+    @Nullable
     public Map<String, Object> getVariables() {
         return variables;
     }
@@ -82,7 +89,7 @@ public class GraphQLRequestBody {
      *
      * @param variables the variables
      */
-    public void setVariables(final Map<String, Object> variables) {
+    public void setVariables(@Nullable final Map<String, Object> variables) {
         this.variables = variables;
     }
 }

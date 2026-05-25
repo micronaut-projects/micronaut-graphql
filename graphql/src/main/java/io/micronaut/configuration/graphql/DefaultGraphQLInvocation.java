@@ -123,9 +123,17 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
                     ? beanContext.getProxyTargetBean(GraphQL.class, null)
                     : beanContext.getBean(GraphQL.class);
         }
-        if (graphQL instanceof InterceptedProxy<?> interceptedProxy) {
-            return (GraphQL) interceptedProxy.interceptedTarget();
+        GraphQL resolvedGraphQL = graphQL;
+        if (resolvedGraphQL == null) {
+            throw new IllegalStateException("GraphQL instance is not available");
         }
-        return graphQL;
+        if (resolvedGraphQL instanceof InterceptedProxy<?> interceptedProxy) {
+            Object interceptedTarget = interceptedProxy.interceptedTarget();
+            if (interceptedTarget instanceof GraphQL target) {
+                return target;
+            }
+            throw new IllegalStateException("GraphQL proxy target is not available");
+        }
+        return resolvedGraphQL;
     }
 }

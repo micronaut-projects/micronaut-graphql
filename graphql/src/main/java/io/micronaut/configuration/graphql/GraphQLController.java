@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
+import static io.micronaut.http.HttpStatus.BAD_REQUEST;
 import static io.micronaut.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static io.micronaut.http.MediaType.ALL;
 import static io.micronaut.http.MediaType.APPLICATION_GRAPHQL_TYPE;
@@ -81,7 +82,7 @@ public class GraphQLController {
      * @param httpRequest   the HTTP request
      * @return the GraphQL response
      */
-    @Get(produces = APPLICATION_JSON, single = true)
+    @Get(produces = {APPLICATION_JSON, ALL}, single = true)
     public Publisher<MutableHttpResponse<String>> get(
             @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
@@ -120,7 +121,7 @@ public class GraphQLController {
      * @param httpRequest   the HTTP request
      * @return the GraphQL response
      */
-    @Post(consumes = ALL, produces = APPLICATION_JSON, single = true)
+    @Post(consumes = ALL, produces = {APPLICATION_JSON, ALL}, single = true)
     public Publisher<MutableHttpResponse<String>> post(
             @Nullable @QueryValue("query") String query,
             @Nullable @QueryValue("operationName") String operationName,
@@ -128,8 +129,7 @@ public class GraphQLController {
             @Nullable @Body String body,
             HttpRequest httpRequest) {
 
-        Optional<MediaType> opt = httpRequest.getContentType();
-        MediaType contentType = opt.orElse(null);
+        Optional<MediaType> contentType = httpRequest.getContentType();
 
         if (body == null) {
             body = "";
@@ -146,12 +146,18 @@ public class GraphQLController {
         //   "variables": { "myVariable": "someValue", ... }
         // }
 
-        if (APPLICATION_JSON_TYPE.equals(contentType)) {
-            GraphQLRequestBody request = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody.class);
-            if (request.getQuery() == null) {
-                request.setQuery("");
+        if (contentType.filter(APPLICATION_JSON_TYPE::equals).isPresent()) {
+            GraphQLRequestBody request;
+            try {
+                request = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody.class);
+            } catch (RuntimeException e) {
+                throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL request body");
             }
-            return executeRequest(request.getQuery(), request.getOperationName(), request.getVariables(), httpRequest);
+            String requestQuery = request.getQuery();
+            if (requestQuery == null) {
+                requestQuery = "";
+            }
+            return executeRequest(requestQuery, request.getOperationName(), request.getVariables(), httpRequest);
         }
 
         // In addition to the above, we recommend supporting two additional cases:
@@ -166,18 +172,22 @@ public class GraphQLController {
         // * If the "application/graphql" Content-Type header is present,
         //   treat the HTTP POST body contents as the GraphQL query string.
 
-        if (APPLICATION_GRAPHQL_TYPE.equals(contentType)) {
+        if (contentType.filter(APPLICATION_GRAPHQL_TYPE::equals).isPresent()) {
             return executeRequest(body, null, null, httpRequest);
         }
 
         throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Could not process GraphQL request");
     }
 
-    private Map<String, Object> convertVariablesJson(String jsonMap) {
+    private Map<String, Object> convertVariablesJson(@Nullable String jsonMap) {
         if (jsonMap == null) {
             return Collections.emptyMap();
         }
-        return graphQLJsonSerializer.deserialize(jsonMap, Map.class);
+        try {
+            return graphQLJsonSerializer.deserialize(jsonMap, Map.class);
+        } catch (RuntimeException e) {
+            throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL variables");
+        }
     }
 
     /**
@@ -191,8 +201,8 @@ public class GraphQLController {
      */
     private Publisher<MutableHttpResponse<String>> executeRequest(
             String query,
-            String operationName,
-            Map<String, Object> variables,
+            @Nullable String operationName,
+            @Nullable Map<String, Object> variables,
             HttpRequest httpRequest) {
         GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
         // create empty response entity first and pass it to GraphQLInvocation
