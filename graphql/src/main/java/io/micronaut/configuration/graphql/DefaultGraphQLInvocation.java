@@ -21,7 +21,7 @@ import graphql.GraphQL;
 import io.micronaut.aop.InterceptedProxy;
 import io.micronaut.context.BeanContext;
 import io.micronaut.context.BeanProvider;
-import io.micronaut.core.annotation.Creator;
+import jakarta.inject.Inject;
 import org.jspecify.annotations.Nullable;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
@@ -58,7 +58,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      * @param graphQLExecutionInputCustomizer the {@link GraphQLExecutionInputCustomizer} instance
      * @param dataLoaderRegistry              the {@link DataLoaderRegistry} instance
      */
-    @Creator
+    @Inject
     public DefaultGraphQLInvocation(
             BeanContext beanContext,
             GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
