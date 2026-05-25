@@ -26,3 +26,5 @@ graphql:
 <2> Configures the GraphQL endpoint path. Default `/graphql`.
 
 You only must configure a bean of type `graphql.GraphQL` containing the GraphQL schema and runtime wiring.
+
+When GraphQL Java resolves nested fields through its default property lookup, Micronaut GraphQL first uses Micronaut bean introspection before falling back to GraphQL Java's default behavior. This means `@Introspected` result types work without additional reflection metadata in native image builds, while applications with a custom GraphQL Java default data fetcher keep their existing behavior.

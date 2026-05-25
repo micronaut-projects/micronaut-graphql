@@ -187,8 +187,7 @@ public class GraphQLController {
             @Nullable @Body String body,
             HttpRequest httpRequest) {
 
-        Optional<MediaType> opt = httpRequest.getContentType();
-        MediaType contentType = opt.orElse(null);
+        Optional<MediaType> contentType = httpRequest.getContentType();
 
         if (body == null) {
             body = "";
@@ -205,17 +204,18 @@ public class GraphQLController {
         //   "variables": { "myVariable": "someValue", ... }
         // }
 
-        if (APPLICATION_JSON_TYPE.equals(contentType)) {
+        if (contentType.filter(APPLICATION_JSON_TYPE::equals).isPresent()) {
             GraphQLRequestBody request;
             try {
                 request = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody.class);
             } catch (RuntimeException e) {
                 throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL request body");
             }
-            if (request.getQuery() == null) {
-                request.setQuery("");
+            String requestQuery = request.getQuery();
+            if (requestQuery == null) {
+                requestQuery = "";
             }
-            return executeRequest(request.getQuery(), request.getOperationName(), request.getVariables(), httpRequest);
+            return executeRequest(requestQuery, request.getOperationName(), request.getVariables(), httpRequest);
         }
 
         // In addition to the above, we recommend supporting two additional cases:
@@ -230,14 +230,14 @@ public class GraphQLController {
         // * If the "application/graphql" Content-Type header is present,
         //   treat the HTTP POST body contents as the GraphQL query string.
 
-        if (APPLICATION_GRAPHQL_TYPE.equals(contentType)) {
+        if (contentType.filter(APPLICATION_GRAPHQL_TYPE::equals).isPresent()) {
             return executeRequest(body, null, null, httpRequest);
         }
 
         throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Could not process GraphQL request");
     }
 
-    private Map<String, Object> convertVariablesJson(String jsonMap) {
+    private Map<String, Object> convertVariablesJson(@Nullable String jsonMap) {
         if (jsonMap == null) {
             return Collections.emptyMap();
         }
@@ -355,8 +355,8 @@ public class GraphQLController {
      */
     private Publisher<MutableHttpResponse<String>> executeRequest(
             String query,
-            String operationName,
-            Map<String, Object> variables,
+            @Nullable String operationName,
+            @Nullable Map<String, Object> variables,
             HttpRequest httpRequest) {
         GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
         // create empty response entity first and pass it to GraphQLInvocation
