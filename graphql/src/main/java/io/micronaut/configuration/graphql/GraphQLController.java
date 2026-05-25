@@ -144,11 +144,15 @@ public class GraphQLController {
                     } catch (RuntimeException _) {
                         throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL request body");
                     }
-                    if (requestBody.getQuery() == null) {
-                        requestBody.setQuery("");
+                    String requestQuery = requestBody.getQuery();
+                    if (requestQuery == null) {
+                        requestQuery = "";
+                        requestBody.setQuery(requestQuery);
                     }
-                    if (requestBody.getVariables() == null) {
-                        requestBody.setVariables(new LinkedHashMap<>());
+                    Map<String, Object> requestVariables = requestBody.getVariables();
+                    if (requestVariables == null) {
+                        requestVariables = new LinkedHashMap<>();
+                        requestBody.setVariables(requestVariables);
                     }
                     Map<String, Object> multipartMapping = convertVariablesJson(partToString(getRequiredPart(parts, "map")));
                     for (Map.Entry<String, Object> entry : multipartMapping.entrySet()) {
@@ -157,13 +161,13 @@ public class GraphQLController {
                             throw new HttpStatusException(UNPROCESSABLE_ENTITY, "Multipart field is not a file upload: " + entry.getKey());
                         }
                         for (String variablePath : asVariablePaths(entry.getValue())) {
-                            injectMultipartVariable(requestBody.getVariables(), variablePath, uploadedPart);
+                            injectMultipartVariable(requestVariables, variablePath, uploadedPart);
                         }
                     }
                     return Flux.from(executeRequest(
-                            requestBody.getQuery(),
+                            requestQuery,
                             requestBody.getOperationName(),
-                            requestBody.getVariables(),
+                            requestVariables,
                             httpRequest
                     ));
                 });

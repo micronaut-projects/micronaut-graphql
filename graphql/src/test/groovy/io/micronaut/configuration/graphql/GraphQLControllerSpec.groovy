@@ -21,6 +21,10 @@ import graphql.ExecutionResult
 import graphql.ExecutionResultImpl
 import graphql.GraphQL
 import graphql.GraphQLContext
+import graphql.Scalars
+import graphql.schema.GraphQLFieldDefinition
+import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLSchema
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
@@ -82,6 +86,16 @@ class GraphQLControllerSpec extends Specification {
 
     def setup() {
         graphQL = Mock()
+        graphQL.getGraphQLSchema() >> GraphQLSchema.newSchema()
+                .query(GraphQLObjectType.newObject()
+                        .name("Query")
+                        .field(GraphQLFieldDefinition.newFieldDefinition()
+                                .name("foo")
+                                .type(Scalars.GraphQLString)
+                                .build())
+                        .build())
+                .build()
+        graphQL.transform(_) >> graphQL
         GraphQLControllerSpecFactory.graphQL = graphQL
         embeddedServer = ApplicationContext.run(
                 EmbeddedServer,
