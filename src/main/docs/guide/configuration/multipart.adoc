@@ -1,0 +1,38 @@
+GraphQL multipart requests can be sent to the configured GraphQL endpoint using `multipart/form-data`
+following the https://github.com/jaydenseric/graphql-multipart-request-spec[GraphQL multipart request specification].
+
+Micronaut GraphQL expects the multipart request to contain:
+
+* an `operations` part with the GraphQL request payload as JSON
+* a `map` part describing which uploaded file part is injected into which GraphQL variables path
+* one or more file parts referenced by the `map`
+
+Uploaded files are exposed to GraphQL as Micronaut
+https://docs.micronaut.io/latest/api/io/micronaut/http/multipart/CompletedFileUpload.html[CompletedFileUpload]
+instances, so your GraphQL schema and runtime wiring must provide a compatible `Upload` scalar that accepts
+`CompletedFileUpload` values.
+
+[source,graphql]
+----
+scalar Upload
+
+input UploadInput {
+  files: [Upload!]!
+}
+
+type Mutation {
+  upload(input: UploadInput!): Boolean!
+}
+----
+
+After registering an `Upload` scalar, a multipart upload can be sent like this:
+
+[source,bash]
+----
+curl "$MICRONAUT_URL/graphql" \
+  -F 'operations={"query":"mutation ($input: UploadInput!) { upload(input: $input) }","variables":{"input":{"files":[null]}}}' \
+  -F 'map={"0":["variables.input.files.0"]}' \
+  -F '0=@upload.txt;type=text/plain'
+----
+
+The GraphQL data fetcher can then read the injected upload from the variables as a `CompletedFileUpload`.
