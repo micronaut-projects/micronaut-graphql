@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 original authors
+ * Copyright 2017-2026 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,10 @@ import graphql.ExecutionResult
 import graphql.ExecutionResultImpl
 import graphql.GraphQL
 import graphql.GraphQLContext
+import graphql.Scalars
+import graphql.schema.GraphQLFieldDefinition
+import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLSchema
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
@@ -33,16 +37,18 @@ import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
-import io.micronaut.http.MediaType
 import io.micronaut.http.client.exceptions.HttpClientResponseException
+import io.micronaut.http.MediaType
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.multipart.MultipartBody
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.cookie.Cookie
+import io.micronaut.http.multipart.CompletedFileUpload
 import io.micronaut.runtime.server.EmbeddedServer
 import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
@@ -63,13 +69,17 @@ class GraphQLControllerSpec extends Specification {
     @AutoCleanup
     EmbeddedServer embeddedServer
 
-    GraphQL graphQL
-    GraphQLClient graphQLClient
     @AutoCleanup
     HttpClient httpClient
 
+    GraphQL graphQL
+    GraphQLControllerClient graphQLClient
+
     ExecutionInput executionInput
     List<ExecutionInput> executionInputs
+    String uploadedPartName
+    String uploadedFilename
+    byte[] uploadedBytes
 
     CompletableFuture<ExecutionResult> executionResult = CompletableFuture.completedFuture(
             ExecutionResultImpl.newExecutionResult()
@@ -78,18 +88,38 @@ class GraphQLControllerSpec extends Specification {
 
     def setup() {
         graphQL = Mock()
+        graphQL.getGraphQLSchema() >> GraphQLSchema.newSchema()
+                .query(GraphQLObjectType.newObject()
+                        .name("Query")
+                        .field(GraphQLFieldDefinition.newFieldDefinition()
+                                .name("foo")
+                                .type(Scalars.GraphQLString)
+                                .build())
+                        .build())
+                .build()
+        graphQL.transform(_) >> graphQL
+        GraphQLControllerSpecFactory.graphQL = graphQL
         embeddedServer = ApplicationContext.run(
                 EmbeddedServer,
                 ["spec.name": GraphQLControllerSpec.simpleName],
                 Environment.TEST)
-        embeddedServer.applicationContext.registerSingleton(GraphQL, graphQL)
-        graphQLClient = embeddedServer.applicationContext.getBean(GraphQLClient)
         httpClient = embeddedServer.applicationContext.createBean(HttpClient, embeddedServer.getURL())
+        graphQLClient = embeddedServer.applicationContext.getBean(GraphQLControllerClient)
         executionInput = null
         executionInputs = []
+        uploadedPartName = null
+        uploadedFilename = null
+        uploadedBytes = null
         _ * graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
             this.executionInput = executionInput
             this.executionInputs << executionInput
+            def uploadedFiles = executionInput.variables?.input?.files
+            if (uploadedFiles instanceof List && uploadedFiles[0] instanceof CompletedFileUpload) {
+                CompletedFileUpload file = uploadedFiles[0] as CompletedFileUpload
+                uploadedPartName = file.name
+                uploadedFilename = file.filename
+                uploadedBytes = file.bytes
+            }
             if (executionInput.query == "{ testHeaders }") {
                 GraphQLContext graphQlContext = executionInput.getGraphQLContext()
 
@@ -312,6 +342,428 @@ class GraphQLControllerSpec extends Specification {
         executionInput.variables == [:]
     }
 
+    void "test post with multipart form data body"() {
+        given:
+        String query = "mutation (\$input: UploadInput!) { upload(input: \$input) }"
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", """{"query":"${query}","variables":{"input":{"files":[null]}}}""")
+                .addPart("map", '{"0":["variables.input.files.0"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        GraphQLResponseBody response = httpClient.toBlocking().retrieve(request, GraphQLResponseBody)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == query
+        executionInput.operationName == null
+        executionInput.variables.input.files[0] instanceof CompletedFileUpload
+
+        and:
+        uploadedPartName == "0"
+        uploadedFilename == "upload.txt"
+        uploadedBytes == "file-body".bytes
+    }
+
+    void "test post with multipart form data body defaults null query and variables"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":null,"variables":null}')
+                .addPart("map", '{}')
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        GraphQLResponseBody response = httpClient.toBlocking().retrieve(request, GraphQLResponseBody)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == ""
+        executionInput.operationName == null
+        executionInput.variables == [:]
+    }
+
+    void "test post with multipart form data body can map one upload to multiple variables"() {
+        given:
+        String query = "mutation (\$input: UploadInput!) { upload(input: \$input) }"
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", """{"query":"${query}","variables":{"input":{"files":[null,null]}}}""")
+                .addPart("map", '{"0":["variables.input.files.0","variables.input.files.1"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        GraphQLResponseBody response = httpClient.toBlocking().retrieve(request, GraphQLResponseBody)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == query
+        executionInput.operationName == null
+        executionInput.variables.input.files[0] instanceof CompletedFileUpload
+        executionInput.variables.input.files[1] instanceof CompletedFileUpload
+        executionInput.variables.input.files[0].filename == "upload.txt"
+        executionInput.variables.input.files[1].filename == "upload.txt"
+
+        and:
+        uploadedPartName == "0"
+        uploadedFilename == "upload.txt"
+        uploadedBytes == "file-body".bytes
+    }
+
+    void "test post with multipart form data body accepts string mapping entry"() {
+        given:
+        String query = "mutation (\$input: UploadInput!) { upload(input: \$input) }"
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", """{"query":"${query}","variables":{"input":{"files":[null]}}}""")
+                .addPart("map", '{"0":"variables.input.files.0"}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        GraphQLResponseBody response = httpClient.toBlocking().retrieve(request, GraphQLResponseBody)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == query
+        executionInput.operationName == null
+        executionInput.variables.input.files[0] instanceof CompletedFileUpload
+        executionInput.variables.input.files[0].filename == "upload.txt"
+    }
+
+    void "test post with multipart form data body can map upload into nested object list path"() {
+        given:
+        String query = "mutation (\$input: UploadInput!) { upload(input: \$input) }"
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", """{"query":"${query}","variables":{"input":{"files":[{"attachment":null}]}}}""")
+                .addPart("map", '{"0":["variables.input.files.0.attachment"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        GraphQLResponseBody response = httpClient.toBlocking().retrieve(request, GraphQLResponseBody)
+
+        then:
+        response.getSpecification()["data"] == "bar"
+
+        and:
+        executionInput.query == query
+        executionInput.operationName == null
+        executionInput.variables.input.files[0].attachment instanceof CompletedFileUpload
+        executionInput.variables.input.files[0].attachment.filename == "upload.txt"
+    }
+
+    void "test post with multipart form data body requires operations part"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("map", '{}')
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Missing multipart field: operations")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects malformed operations json"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", "{")
+                .addPart("map", '{}')
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.BAD_REQUEST
+        e.response.getBody(String).orElse("").contains("Invalid JSON in GraphQL request body")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects missing mapped file part"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":{"files":[null]}}}')
+                .addPart("map", '{"0":["variables.input.files.0"]}')
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Missing multipart field: 0")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects invalid mapping payload"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":{"files":[null]}}}')
+                .addPart("map", '{"0":[1]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Invalid multipart mapping payload")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects unsupported variable path"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":{"files":[null]}}}')
+                .addPart("map", '{"0":["input.files.0"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Unsupported multipart variable path: input.files.0")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects unknown list index"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":{"files":[null]}}}')
+                .addPart("map", '{"0":["variables.input.files.1"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Unknown multipart variable path: variables.input.files.1")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects non-numeric list index"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":{"files":[null]}}}')
+                .addPart("map", '{"0":["variables.input.files.foo"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Unknown multipart variable path: variables.input.files.foo")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects negative list index"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":{"files":[null]}}}')
+                .addPart("map", '{"0":["variables.input.files.-1"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Unknown multipart variable path: variables.input.files.-1")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body requires map part"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{}}')
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Missing multipart field: map")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects malformed map json"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":{"files":[null]}}}')
+                .addPart("map", "{")
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.BAD_REQUEST
+        e.response.getBody(String).orElse("").contains("Invalid JSON in GraphQL variables")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects non-file upload parts"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":null}}')
+                .addPart("map", '{"textField":["variables.input"]}')
+                .addPart("textField", "not a file")
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Multipart field is not a file upload: textField")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects missing object variable target"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{}}')
+                .addPart("map", '{"0":["variables.input"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Invalid multipart variable path: variables.input")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects non-null variable target"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":"existing"}}')
+                .addPart("map", '{"0":["variables.input"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Invalid multipart variable path: variables.input")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects non-null list variable target"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":{"files":["existing"]}}}')
+                .addPart("map", '{"0":["variables.input.files.0"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Invalid multipart variable path: variables.input.files.0")
+        executionInput == null
+    }
+
+    void "test post with multipart form data body rejects nested path through scalar value"() {
+        given:
+        MultipartBody body = MultipartBody.builder()
+                .addPart("operations", '{"query":"","variables":{"input":"existing"}}')
+                .addPart("map", '{"0":["variables.input.file.name"]}')
+                .addPart("0", "upload.txt", MediaType.TEXT_PLAIN_TYPE, "file-body".bytes)
+                .build()
+        HttpRequest<?> request = HttpRequest.POST("/graphql", body)
+                .contentType(MediaType.MULTIPART_FORM_DATA_TYPE)
+
+        when:
+        httpClient.toBlocking().exchange(request, String)
+
+        then:
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.UNPROCESSABLE_ENTITY
+        e.response.getBody(String).orElse("").contains("Unknown multipart variable path: variables.input.file.name")
+        executionInput == null
+    }
+
     void "test additional headers and cookies"() {
         given:
         String body = "{ testHeaders }"
@@ -383,58 +835,4 @@ class GraphQLControllerSpec extends Specification {
         e.status == HttpStatus.BAD_REQUEST
     }
 
-    @Client("/graphql")
-    static interface GraphQLClient {
-
-        @Get("{?query,operationName,variables}")
-        GraphQLResponseBody get(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
-
-        @Get(value = "{?query,operationName,variables}", processes = 'application/*')
-        HttpResponse<GraphQLResponseBody> getWithResponse(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables, @io.micronaut.http.annotation.Header String accept)
-
-        @Post(value = "{?query,operationName,variables}")
-        GraphQLResponseBody post(@QueryValue String query, @QueryValue @Nullable String operationName, @QueryValue @Nullable String variables)
-
-        @Post(produces = APPLICATION_JSON)
-        GraphQLResponseBody post(@Body GraphQLRequestBody body)
-
-        @Post(produces = APPLICATION_JSON, processes = 'application/*')
-        HttpResponse<GraphQLResponseBody> postJsonWithAccept(@Body GraphQLRequestBody body, @io.micronaut.http.annotation.Header String accept)
-
-        @Post(produces = APPLICATION_GRAPHQL)
-        GraphQLResponseBody post(@Body String body)
-
-        @Post(produces = APPLICATION_GRAPHQL)
-        HttpResponse<GraphQLResponseBody> postWithResponse(@Body String body)
-
-        @Post(consumes = APPLICATION_JSON)
-        GraphQLResponseBody postMalformedJson(@Body String body)
-
-    }
-
-    @Factory
-    static class GraphQLFactory {
-
-        @Bean
-        @Singleton
-        @Requires(property = "spec.name", value = "GraphQLControllerSpec")
-        GraphQL graphQL() {
-            graphQL
-        }
-    }
-}
-
-@Singleton
-@Primary
-@Requires(property = "spec.name", value = "GraphQLControllerSpec")
-class SetRequestResponseInputCustomizer implements GraphQLExecutionInputCustomizer {
-
-    @Override
-    Publisher<ExecutionInput> customize(ExecutionInput executionInput, HttpRequest httpRequest,
-                                        MutableHttpResponse<String> httpResponse) {
-        GraphQLContext graphQLContext = executionInput.getGraphQLContext();
-        graphQLContext.put("httpRequest", httpRequest);
-        graphQLContext.put("httpResponse", httpResponse);
-        return Publishers.just(executionInput);
-    }
 }
