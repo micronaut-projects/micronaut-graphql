@@ -39,7 +39,9 @@ public class ChatGraphQLTest {
 
     @Test
     public void queryMessages() {
-        Map<String, Object> result = execute("{ messages { id text from } }");
+        execute("mutation { chat(text: \"Hello world\") { from text time } }");
+
+        Map<String, Object> result = execute("{ messages { from text time } }");
 
         Map<String, Object> data = data(result);
         List<Map<String, Object>> messages = (List<Map<String, Object>>) data.get("messages");
@@ -47,9 +49,9 @@ public class ChatGraphQLTest {
         assertFalse(messages.isEmpty());
 
         Map<String, Object> firstMessage = messages.getFirst();
-        assertNotNull(firstMessage.get("id"));
-        assertNotNull(firstMessage.get("text"));
         assertNotNull(firstMessage.get("from"));
+        assertNotNull(firstMessage.get("text"));
+        assertNotNull(firstMessage.get("time"));
     }
 
     private Map<String, Object> execute(String query) {
