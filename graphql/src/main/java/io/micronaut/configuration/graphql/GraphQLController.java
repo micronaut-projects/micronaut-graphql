@@ -17,7 +17,6 @@ package io.micronaut.configuration.graphql;
 
 import graphql.ExecutionResult;
 import org.jspecify.annotations.Nullable;
-import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -34,16 +33,19 @@ import io.micronaut.http.multipart.CompletedPart;
 import io.micronaut.http.server.multipart.MultipartBody;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
+import io.micronaut.core.async.publisher.Publishers;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -209,6 +211,15 @@ public class GraphQLController {
         // }
 
         if (contentType.filter(APPLICATION_JSON_TYPE::equals).isPresent()) {
+            if (body.trim().startsWith("[")) {
+                try {
+                    GraphQLRequestBody[] requests = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody[].class);
+                    return executeBatchRequests(requests, httpRequest);
+                } catch (RuntimeException e) {
+                    throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL request body");
+                }
+            }
+
             GraphQLRequestBody request;
             try {
                 request = graphQLJsonSerializer.deserialize(body, GraphQLRequestBody.class);
@@ -250,6 +261,21 @@ public class GraphQLController {
         } catch (RuntimeException e) {
             throw new HttpStatusException(BAD_REQUEST, "Invalid JSON in GraphQL variables");
         }
+    }
+
+
+    private Publisher<MutableHttpResponse<String>> executeBatchRequests(GraphQLRequestBody[] requests, HttpRequest httpRequest) {
+        MutableHttpResponse<String> batchHttpResponse = HttpResponse.status(HttpStatus.OK);
+        List<GraphQLRequestBody> batchRequests = requests == null ? Collections.emptyList() : Arrays.asList(requests);
+        return Flux.fromIterable(batchRequests)
+                .concatMap(request -> {
+                    GraphQLRequestBody batchRequest = Objects.requireNonNullElseGet(request, GraphQLRequestBody::new);
+                    String query = batchRequest.getQuery() == null ? "" : batchRequest.getQuery();
+                    MutableHttpResponse<String> operationHttpResponse = HttpResponse.status(HttpStatus.OK);
+                    return Flux.from(executeGraphQLRequest(query, batchRequest.getOperationName(), batchRequest.getVariables(), httpRequest, operationHttpResponse));
+                })
+                .collectList()
+                .map(graphQLResponseBodies -> batchHttpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBodies)));
     }
 
     private CompletedPart getRequiredPart(Map<String, CompletedPart> parts, String name) {
@@ -362,11 +388,21 @@ public class GraphQLController {
             @Nullable String operationName,
             @Nullable Map<String, Object> variables,
             HttpRequest httpRequest) {
-        GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
-        // create empty response entity first and pass it to GraphQLInvocation
         MutableHttpResponse<String> httpResponse = HttpResponse.status(HttpStatus.OK);
-        Publisher<ExecutionResult> executionResult = graphQLInvocation.invoke(invocationData, httpRequest, httpResponse);
-        Publisher<GraphQLResponseBody> responseBody = graphQLExecutionResultHandler.handleExecutionResult(executionResult);
+        Publisher<GraphQLResponseBody> responseBody = executeGraphQLRequest(query, operationName, variables, httpRequest, httpResponse);
         return Publishers.map(responseBody, graphQLResponseBody -> httpResponse.body(graphQLJsonSerializer.serialize(graphQLResponseBody)));
     }
+
+    private Publisher<GraphQLResponseBody> executeGraphQLRequest(
+            String query,
+            @Nullable String operationName,
+            @Nullable Map<String, Object> variables,
+            HttpRequest httpRequest,
+            MutableHttpResponse<String> httpResponse) {
+        GraphQLInvocationData invocationData = new GraphQLInvocationData(query, operationName, variables);
+        // create empty response entity first and pass it to GraphQLInvocation
+        Publisher<ExecutionResult> executionResult = graphQLInvocation.invoke(invocationData, httpRequest, httpResponse);
+        return graphQLExecutionResultHandler.handleExecutionResult(executionResult);
+    }
 }
+

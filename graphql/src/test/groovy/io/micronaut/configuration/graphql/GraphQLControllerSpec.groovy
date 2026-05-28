@@ -33,6 +33,7 @@ import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import io.micronaut.core.annotation.Nullable
 import io.micronaut.core.async.publisher.Publishers
+import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
@@ -75,6 +76,7 @@ class GraphQLControllerSpec extends Specification {
     GraphQLControllerClient graphQLClient
 
     ExecutionInput executionInput
+    List<ExecutionInput> executionInputs
     String uploadedPartName
     String uploadedFilename
     byte[] uploadedBytes
@@ -104,11 +106,13 @@ class GraphQLControllerSpec extends Specification {
         httpClient = embeddedServer.applicationContext.createBean(HttpClient, embeddedServer.getURL())
         graphQLClient = embeddedServer.applicationContext.getBean(GraphQLControllerClient)
         executionInput = null
+        executionInputs = []
         uploadedPartName = null
         uploadedFilename = null
         uploadedBytes = null
-        graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
+        _ * graphQL.executeAsync(_) >> { ExecutionInput executionInput ->
             this.executionInput = executionInput
+            this.executionInputs << executionInput
             def uploadedFiles = executionInput.variables?.input?.files
             if (uploadedFiles instanceof List && uploadedFiles[0] instanceof CompletedFileUpload) {
                 CompletedFileUpload file = uploadedFiles[0] as CompletedFileUpload
@@ -141,6 +145,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == null
         executionInput.variables == [:]
@@ -158,6 +163,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == operationName
         executionInput.variables == [:]
@@ -176,6 +182,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == operationName
         executionInput.variables == ["variable": "variableValue"]
@@ -192,6 +199,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == null
         executionInput.variables == [:]
@@ -209,6 +217,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == operationName
         executionInput.variables == [:]
@@ -227,6 +236,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == query
         executionInput.operationName == operationName
         executionInput.variables == ["variable": "variableValue"]
@@ -244,6 +254,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == body.query
         executionInput.operationName == null
         executionInput.variables == [:]
@@ -262,6 +273,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == body.query
         executionInput.operationName == body.operationName
         executionInput.variables == [:]
@@ -281,9 +293,36 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == body.query
         executionInput.operationName == body.operationName
         executionInput.variables == body.variables
+    }
+
+    void "test post with application/json batch body"() {
+        given:
+        String body = '''
+[
+  {"query":"{ foo }"},
+  {"query":"query myQuery { foo }","operationName":"myQuery","variables":{"variable":"variableValue"}}
+]
+'''
+
+        when:
+        HttpResponse<List<GraphQLResponseBody>> response = httpClient.toBlocking().exchange(
+                io.micronaut.http.HttpRequest.POST("/graphql", body).contentType(APPLICATION_JSON),
+                Argument.listOf(GraphQLResponseBody))
+        List<GraphQLResponseBody> batchResponse = response.body()
+
+        then:
+        response.status() == HttpStatus.OK
+        batchResponse*.specification*.data == ["bar", "bar"]
+
+        and:
+        executionInputs.size() == 2
+        executionInputs*.query == ["{ foo }", "query myQuery { foo }"]
+        executionInputs*.operationName == [null, "myQuery"]
+        executionInputs*.variables == [[:], ["variable": "variableValue"]]
     }
 
     void "test post with application/graphql body"() {
@@ -297,6 +336,7 @@ class GraphQLControllerSpec extends Specification {
         response.getSpecification()["data"] == "bar"
 
         and:
+        executionInputs.size() == 1
         executionInput.query == body
         executionInput.operationName == null
         executionInput.variables == [:]
@@ -736,6 +776,9 @@ class GraphQLControllerSpec extends Specification {
         httpResponse.body().getSpecification()["data"] == "bar"
         httpResponse.header("X-Foo") == "bar"
         httpResponse.header("set-cookie") == "foo=bar"
+
+        and:
+        executionInputs.size() == 1
     }
 
     void "test get accepts application wildcard accept header"() {
