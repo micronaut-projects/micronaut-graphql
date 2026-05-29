@@ -15,11 +15,13 @@
  */
 package example.domain;
 
+import io.micronaut.core.annotation.Introspected;
 import java.time.ZonedDateTime;
 
 /**
  * @author Gerard Klijs
  */
+@Introspected
 public class ChatMessage {
 
     private String from;
