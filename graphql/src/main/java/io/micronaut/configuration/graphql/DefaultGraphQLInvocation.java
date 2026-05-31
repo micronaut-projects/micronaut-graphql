@@ -18,7 +18,10 @@ package io.micronaut.configuration.graphql;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import io.micronaut.aop.InterceptedProxy;
+import io.micronaut.context.BeanContext;
 import io.micronaut.context.BeanProvider;
+import jakarta.inject.Inject;
 import org.jspecify.annotations.Nullable;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
@@ -43,22 +46,43 @@ import java.util.concurrent.CompletableFuture;
 @Singleton
 public class DefaultGraphQLInvocation implements GraphQLInvocation {
 
-    private final GraphQL graphQL;
+    private final @Nullable BeanContext beanContext;
+    private final @Nullable GraphQL graphQL;
     private final GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer;
-    @Nullable
-    private final BeanProvider<DataLoaderRegistry> dataLoaderRegistry;
+    private final @Nullable BeanProvider<DataLoaderRegistry> dataLoaderRegistry;
 
     /**
      * Default constructor.
      *
-     * @param graphQL                         the {@link GraphQL} instance
+     * @param beanContext                     the bean context used to resolve the current {@link GraphQL} bean
      * @param graphQLExecutionInputCustomizer the {@link GraphQLExecutionInputCustomizer} instance
      * @param dataLoaderRegistry              the {@link DataLoaderRegistry} instance
      */
+    @Inject
+    public DefaultGraphQLInvocation(
+            BeanContext beanContext,
+            GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
+            @Nullable BeanProvider<DataLoaderRegistry> dataLoaderRegistry) {
+        this.beanContext = beanContext;
+        this.graphQL = null;
+        this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
+        this.dataLoaderRegistry = dataLoaderRegistry;
+    }
+
+    /**
+     * Compatibility constructor for direct instantiation.
+     *
+     * @param graphQL                         the {@link GraphQL} instance
+     * @param graphQLExecutionInputCustomizer the {@link GraphQLExecutionInputCustomizer} instance
+     * @param dataLoaderRegistry              the {@link DataLoaderRegistry} instance
+     * @deprecated Use {@link DefaultGraphQLInvocation(BeanContext, GraphQLExecutionInputCustomizer, BeanProvider)} instead.
+     */
+    @Deprecated(forRemoval = true, since = "5.1.0")
     public DefaultGraphQLInvocation(
             GraphQL graphQL,
             GraphQLExecutionInputCustomizer graphQLExecutionInputCustomizer,
             @Nullable BeanProvider<DataLoaderRegistry> dataLoaderRegistry) {
+        this.beanContext = null;
         this.graphQL = graphQL;
         this.graphQLExecutionInputCustomizer = graphQLExecutionInputCustomizer;
         this.dataLoaderRegistry = dataLoaderRegistry;
@@ -84,12 +108,32 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
                 .from(graphQLExecutionInputCustomizer.customize(executionInput, httpRequest, httpResponse))
                 .flatMap(customizedExecutionInput -> Mono.fromFuture(() -> {
                     try {
-                        return graphQL.executeAsync(customizedExecutionInput);
+                        return resolveGraphQL().executeAsync(customizedExecutionInput);
                     } catch (Throwable e) {
                         CompletableFuture<ExecutionResult> future = new CompletableFuture<>();
                         future.completeExceptionally(e);
                         return future;
                     }
                 }));
+    }
+
+    private GraphQL resolveGraphQL() {
+        if (beanContext != null) {
+            return beanContext.findProxyTargetBeanDefinition(GraphQL.class, null).isPresent()
+                    ? beanContext.getProxyTargetBean(GraphQL.class, null)
+                    : beanContext.getBean(GraphQL.class);
+        }
+        GraphQL resolvedGraphQL = graphQL;
+        if (resolvedGraphQL == null) {
+            throw new IllegalStateException("GraphQL instance is not available");
+        }
+        if (resolvedGraphQL instanceof InterceptedProxy<?> interceptedProxy) {
+            Object interceptedTarget = interceptedProxy.interceptedTarget();
+            if (interceptedTarget instanceof GraphQL target) {
+                return target;
+            }
+            throw new IllegalStateException("GraphQL proxy target is not available");
+        }
+        return resolvedGraphQL;
     }
 }
