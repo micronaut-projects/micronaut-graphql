@@ -12,7 +12,7 @@ micronaut-platform = "5.0.0"
 micronaut-gradle-plugin = "5.0.0"
 micronaut-kotlin = "5.0.0"
 micronaut-security = "5.3.0"
-micronaut-serde = "3.0.0"
+micronaut-serde = "3.1.0"
 micronaut-reactor = "4.0.0"
 
 [libraries]
