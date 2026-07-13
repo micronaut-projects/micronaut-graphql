@@ -7,7 +7,7 @@ managed-graphql-spqr = "0.12.4"
 graal-svm = "25.0.3"
 shadow = '9.5.1'
 
-micronaut = "5.1.5"
+micronaut = "5.1.6"
 micronaut-platform = "5.0.4"
 micronaut-gradle-plugin = "5.0.2"
 micronaut-kotlin = "5.0.0"
