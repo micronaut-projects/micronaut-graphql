@@ -263,7 +263,6 @@ public class GraphQLController {
         }
     }
 
-
     private Publisher<MutableHttpResponse<String>> executeBatchRequests(GraphQLRequestBody[] requests, HttpRequest httpRequest) {
         MutableHttpResponse<String> batchHttpResponse = HttpResponse.status(HttpStatus.OK);
         List<GraphQLRequestBody> batchRequests = requests == null ? Collections.emptyList() : Arrays.asList(requests);
