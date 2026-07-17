@@ -1,10 +1,13 @@
 package io.micronaut.configuration.graphql.ws
 
 import io.micronaut.context.annotation.Requires
+import io.micronaut.core.type.Argument
+import io.micronaut.json.JsonMapper
 import io.micronaut.websocket.CloseReason
 import io.micronaut.websocket.annotation.ClientWebSocket
 import io.micronaut.websocket.annotation.OnClose
 import io.micronaut.websocket.annotation.OnMessage
+import jakarta.inject.Inject
 
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
@@ -14,13 +17,17 @@ import java.util.concurrent.TimeUnit
 @ClientWebSocket(uri = "\${graphql.graphql-ws.path:/graphql-ws}", subprotocol = "graphql-transport-ws")
 abstract class GraphQLWsClient implements AutoCloseable {
 
+    @Inject
+    private JsonMapper jsonMapper
+
     private BlockingQueue<Message> responses = new ArrayBlockingQueue<>(10)
 
     boolean closed = false;
     CloseReason closeReason = null;
 
     @OnMessage
-    void onMessage(Message message) {
+    void onMessage(String messageStr) {
+        Message message = jsonMapper.readValue(messageStr, Argument.of(Message.class))
         responses.add(message);
     }
 

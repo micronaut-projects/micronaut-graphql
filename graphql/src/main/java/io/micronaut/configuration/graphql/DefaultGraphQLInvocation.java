@@ -75,7 +75,7 @@ public class DefaultGraphQLInvocation implements GraphQLInvocation {
      * @param graphQL                         the {@link GraphQL} instance
      * @param graphQLExecutionInputCustomizer the {@link GraphQLExecutionInputCustomizer} instance
      * @param dataLoaderRegistry              the {@link DataLoaderRegistry} instance
-     * @deprecated Use {@link DefaultGraphQLInvocation(BeanContext, GraphQLExecutionInputCustomizer, BeanProvider)} instead.
+     * @deprecated Use {@link DefaultGraphQLInvocation} with BeanContext, GraphQLExecutionInputCustomizer, and BeanProvider instead.
      */
     @Deprecated(forRemoval = true, since = "5.1.0")
     public DefaultGraphQLInvocation(
