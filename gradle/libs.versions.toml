@@ -4,7 +4,7 @@ managed-graphql-java-extended-scalars = "24.0"
 managed-graphql-java-tools = "14.0.1"
 managed-graphql-spqr = "0.12.4"
 
-graal-svm = "25.0.3"
+graal-svm = "25.0.4.1"
 shadow = '9.5.1'
 
 micronaut = "5.1.6"
