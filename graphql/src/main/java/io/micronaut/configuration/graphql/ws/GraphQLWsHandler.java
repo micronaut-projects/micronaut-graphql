@@ -19,6 +19,7 @@ import graphql.ExecutionResult;
 import io.micronaut.configuration.graphql.GraphQLConfiguration;
 import io.micronaut.configuration.graphql.GraphQLInvocation;
 import io.micronaut.configuration.graphql.GraphQLInvocationData;
+import io.micronaut.configuration.graphql.GraphQLJsonSerializer;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
@@ -65,6 +66,8 @@ public class GraphQLWsHandler {
 
     private final GraphQLWsConfiguration configuration;
 
+    private final GraphQLJsonSerializer graphQLJsonSerializer;
+
     private final ConcurrentSkipListSet<String> connections = new ConcurrentSkipListSet<>();
 
     private final ConcurrentMap<String, Publisher<? extends Message>> subscriptions = new ConcurrentHashMap<>();
@@ -75,11 +78,13 @@ public class GraphQLWsHandler {
      * @param scheduler The task scheduler for handling connection initialisation timeouts.
      * @param graphQLInvocation The graphql invocation helper for executing GraphQL operations.
      * @param configuration The configuration of the graphql-ws support.
+     * @param graphQLJsonSerializer The JSON serializer for deserializing incoming messages.
      */
-    public GraphQLWsHandler(ScheduledExecutorTaskScheduler scheduler, GraphQLInvocation graphQLInvocation, GraphQLWsConfiguration configuration) {
+    public GraphQLWsHandler(ScheduledExecutorTaskScheduler scheduler, GraphQLInvocation graphQLInvocation, GraphQLWsConfiguration configuration, GraphQLJsonSerializer graphQLJsonSerializer) {
         this.scheduler = scheduler;
         this.graphQLInvocation = graphQLInvocation;
         this.configuration = configuration;
+        this.graphQLJsonSerializer = graphQLJsonSerializer;
     }
 
     /**
@@ -106,14 +111,24 @@ public class GraphQLWsHandler {
     /**
      * Called on every message received from the client.
      *
-     * @param message Message received from a client
+     * @param messageStr JSON string received from a client
      * @param session WebSocketSession
      * @return {@code Publisher<Message>}
      */
     @OnMessage
     public Publisher<Message> onMessage(
-        Message message,
+        String messageStr,
         WebSocketSession session) {
+        Message message;
+        try {
+            message = graphQLJsonSerializer.deserialize(messageStr, Message.class);
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Invalid message received for session id {}: {}", session.getId(), e.getMessage());
+            }
+            session.close(new CloseReason(4400, "Invalid message."));
+            return Mono.empty();
+        }
         if (message instanceof ConnectionInitMessage) {
             if (LOG.isTraceEnabled()) {
                 LOG.trace("Received connection initialisation request for session id {}", session.getId());
