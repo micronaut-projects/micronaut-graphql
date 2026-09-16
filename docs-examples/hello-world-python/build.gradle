@@ -1,0 +1,30 @@
+plugins {
+    id("micronaut-graphql.docs-examples-conventions")
+    id("io.micronaut.build.internal.python")
+}
+
+// The examples of the guide, in Python, compiled by the Python compiler (micronaut-inject-python). The compiler
+// takes the (jar-resolved) compile classpath as its annotation processor path, so the Micronaut processors are
+// regular test dependencies rather than annotationProcessor ones. The Python tests only run with -Ppython-ci.
+micronaut {
+    testRuntime "junit5"
+    version.set(libs.versions.micronaut.platform.get())
+    coreVersion.set(libs.versions.micronaut.asProvider().get())
+}
+
+dependencies {
+    implementation(mnSerde.micronaut.serde.jackson)
+
+    testImplementation mn.micronaut.inject.python.test
+    testImplementation mn.micronaut.context.python
+    testImplementation mn.micronaut.http.client
+    testRuntimeOnly mnTest.junit.jupiter.engine
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    systemProperty "micronaut.python.pool.enabled", "false"
+    // Gradle enables assertions in test JVMs; an internal Truffle host-interop assertion trips on varargs overloads
+    enableAssertions = false
+}
