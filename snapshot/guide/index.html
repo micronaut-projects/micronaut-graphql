@@ -235,6 +235,15 @@
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.graphql:micronaut-graphql"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -281,6 +290,21 @@ public class HelloDataFetcher implements DataFetcher&lt;String&gt; {
         return String.format("Hello %s!", name);
     }
 }</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from graphql.schema import DataFetcher, DataFetchingEnvironment
+from jakarta.inject import Singleton
+
+@Singleton
+class HelloDataFetcher(DataFetcher[str]):
+
+    def get(self, env: DataFetchingEnvironment) -&gt; str:
+        name = env.getArgument("name")
+        if name is None or name.strip() == "":
+            name = "World"
+        return f"Hello {name}!"</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -369,6 +393,46 @@ public class GraphQLFactory {
         return GraphQL.newGraphQL(graphQLSchema).build();
     }
 }</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from graphql import GraphQL
+from graphql.schema import GraphQLSchema
+from graphql.schema.idl import RuntimeWiring, SchemaGenerator, SchemaParser, TypeDefinitionRegistry
+from jakarta.inject import Singleton
+from java.io import BufferedReader, InputStreamReader
+from micronaut.context.annotation import Bean, Factory
+from micronaut.core.io import ResourceResolver
+
+from .HelloDataFetcher import HelloDataFetcher
+
+@Factory  # <b class="conum">(1)</b>
+class GraphQLFactory:
+
+    @Bean
+    @Singleton
+    def graph_ql(self, resource_resolver: ResourceResolver, hello_data_fetcher: HelloDataFetcher) -&gt; GraphQL:  # <b class="conum">(2)</b>
+
+        schema_parser = SchemaParser()
+        schema_generator = SchemaGenerator()
+
+        # Parse the schema.
+        type_registry = TypeDefinitionRegistry()
+        type_registry.merge(schema_parser.parse(BufferedReader(InputStreamReader(
+            resource_resolver.getResourceAsStream("classpath:schema.graphqls").get()))))
+
+        # Create the runtime wiring.
+        runtime_wiring = (RuntimeWiring.newRuntimeWiring()
+                          .type("Query", lambda type_wiring: type_wiring
+                                .dataFetcher("hello", hello_data_fetcher))
+                          .build())
+
+        # Create the executable schema.
+        graphql_schema: GraphQLSchema = schema_generator.makeExecutableSchema(type_registry, runtime_wiring)
+
+        # Return the GraphQL bean.
+        return GraphQL.newGraphQL(graphql_schema).build()</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -535,6 +599,15 @@ Start your application by running <code>./gradlew run</code>, open your browser 
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.graphql:micronaut-graphql"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -654,6 +727,46 @@ public class GraphQLFactory {
         return GraphQL.newGraphQL(graphQLSchema).build();
     }
 }</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from graphql import GraphQL
+from graphql.schema import GraphQLSchema
+from graphql.schema.idl import RuntimeWiring, SchemaGenerator, SchemaParser, TypeDefinitionRegistry
+from jakarta.inject import Singleton
+from java.io import BufferedReader, InputStreamReader
+from micronaut.context.annotation import Bean, Factory
+from micronaut.core.io import ResourceResolver
+
+from .HelloDataFetcher import HelloDataFetcher
+
+@Factory  # <b class="conum">(1)</b>
+class GraphQLFactory:
+
+    @Bean
+    @Singleton
+    def graph_ql(self, resource_resolver: ResourceResolver, hello_data_fetcher: HelloDataFetcher) -&gt; GraphQL:  # <b class="conum">(2)</b>
+
+        schema_parser = SchemaParser()
+        schema_generator = SchemaGenerator()
+
+        # Parse the schema.
+        type_registry = TypeDefinitionRegistry()
+        type_registry.merge(schema_parser.parse(BufferedReader(InputStreamReader(
+            resource_resolver.getResourceAsStream("classpath:schema.graphqls").get()))))
+
+        # Create the runtime wiring.
+        runtime_wiring = (RuntimeWiring.newRuntimeWiring()
+                          .type("Query", lambda type_wiring: type_wiring
+                                .dataFetcher("hello", hello_data_fetcher))
+                          .build())
+
+        # Create the executable schema.
+        graphql_schema: GraphQLSchema = schema_generator.makeExecutableSchema(type_registry, runtime_wiring)
+
+        # Return the GraphQL bean.
+        return GraphQL.newGraphQL(graphql_schema).build()</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
