@@ -8,13 +8,13 @@ GraphQL over web sockets via the current graphql-ws protocol must be explicitly 
 The following configuration properties can be set for the graphql-ws support:
 
 .src/main/resources/application.yml
-[source,yaml]
+[configuration]
 ----
 graphql:
   graphql-ws:
-    enabled: false // <1>
-    path: /graphql-ws // <2>
-    connection-init-wait-timeout: 5s // <3>
+    enabled: false # <1>
+    path: /graphql-ws # <2>
+    connection-init-wait-timeout: 5s # <3>
 ----
 <1> Enables/disables the graphql-ws implementation of GraphQL over web sockets. Default `false`.
 <2> Configures the graphql-ws endpoint path. Default `/graphql-ws`.

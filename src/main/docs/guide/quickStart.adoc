@@ -11,7 +11,7 @@ dependency:micronaut-graphql[groupId="io.micronaut.graphql"]
 
 Configure the `/graphql` endpoint by adding to `application.yml`:
 
-[source,yaml]
+[configuration]
 ----
 graphql:
   enabled: true
