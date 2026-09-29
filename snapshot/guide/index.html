@@ -249,12 +249,61 @@ runtime = [
 <div class="paragraph">
 <p>Configure the <code>/graphql</code> endpoint by adding to <code>application.yml</code>:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">graphql.enabled=true
+graphql.graphiql.enabled=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
   enabled: true
   graphiql: # enables the /graphiql endpoint to test calls against your graph.
     enabled: true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">graphql = {enabled = true, graphiql = {enabled = true}}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">graphql {
+  enabled = true
+  graphiql {
+    enabled = true
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  graphql {
+    enabled = true
+    graphiql {
+      enabled = true
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "graphql": {
+    "enabled": true,
+    "graphiql": {
+      "enabled": true
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -636,12 +685,55 @@ runtime = [
 <div class="paragraph">
 <p>By default, the GraphQL endpoint is exposed on <code>/graphql</code> but this can be changed via the <code>graphql.path</code> application property.</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">src/main/resources/application.yml</div>
 <div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">graphql.enabled=true
+graphql.path=/graphql</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
-  enabled: true <i class="conum" data-value="1"></i><b>(1)</b>
-  path: /graphql <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+  enabled: true # <b class="conum">(1)</b>
+  path: /graphql # <b class="conum">(2)</b></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">graphql = {enabled = true, path = "/graphql"}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">graphql {
+  enabled = true
+  path = "/graphql"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  graphql {
+    enabled = true
+    path = "/graphql"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "graphql": {
+    "enabled": true,
+    "path": "/graphql"
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="colist arabic">
@@ -1034,14 +1126,67 @@ field that should be batched.</p>
 <div class="paragraph">
 <p>The following configuration properties can be set for the graphql-ws support:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">src/main/resources/application.yml</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">graphql.graphql-ws.enabled=false
+graphql.graphql-ws.path=/graphql-ws
+graphql.graphql-ws.connection-init-wait-timeout=5s</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">graphql:
   graphql-ws:
-    enabled: false <i class="conum" data-value="1"></i><b>(1)</b>
-    path: /graphql-ws <i class="conum" data-value="2"></i><b>(2)</b>
-    connection-init-wait-timeout: 5s <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+    enabled: false # <b class="conum">(1)</b>
+    path: /graphql-ws # <b class="conum">(2)</b>
+    connection-init-wait-timeout: 5s # <b class="conum">(3)</b></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">graphql = {graphql-ws = {enabled = false, path = "/graphql-ws", connection-init-wait-timeout = "5s"}}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">graphql {
+  graphqlWs {
+    enabled = false
+    path = "/graphql-ws"
+    connectionInitWaitTimeout = "5s"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  graphql {
+    graphql-ws {
+      enabled = false
+      path = "/graphql-ws"
+      connection-init-wait-timeout = "5s"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "graphql": {
+    "graphql-ws": {
+      "enabled": false,
+      "path": "/graphql-ws",
+      "connection-init-wait-timeout": "5s"
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="colist arabic">
