@@ -16,6 +16,7 @@
 package io.micronaut.graphql.dev;
 
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.env.DevelopmentMode;
 import io.micronaut.dev.tck.ReloadHarness;
 import io.micronaut.dev.tck.ReloadTck;
 import io.micronaut.inject.BeanDefinitionReference;
@@ -33,6 +34,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.WebSocket;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -45,15 +47,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Runs a GraphQL application through the development runtime. A changed schema file and a change of the
- * configuration under {@code graphql} are applied in place, by recreating the {@code GraphQL} bean; a change of the
- * GraphiQL page and a changed data fetcher start a new generation, which answers with the new data. GraphQL over
- * WebSocket follows both: an open connection runs its next operation on the recreated bean, and a restart closes it
- * for the client to connect again. Nothing of GraphQL keeps a retired generation reachable.
+ * Runs a GraphQL application through the development runtime. A changed schema file under {@code src/main/resources}
+ * and a change of the configuration under {@code graphql} are applied in place, by recreating the {@code GraphQL} bean,
+ * and a change of the GraphiQL page by recreating the GraphiQL controller; a changed data fetcher starts a new
+ * generation, which answers with the new data. GraphQL over WebSocket follows both: an open connection runs its next
+ * operation on the recreated bean, and a restart closes it for the client to connect again. Nothing of GraphQL keeps a
+ * retired generation reachable.
  */
 class GraphQLReloadTest {
 
-    private static final String RELOADER = "io.micronaut.configuration.graphql.DevelopmentGraphQLReloader";
+    private static final String RELOADER = "io.micronaut.graphql.dev.DevelopmentGraphQLReloader";
 
     private static final String PROPERTIES = """
         micronaut.server.port=-1
@@ -146,10 +149,9 @@ class GraphQLReloadTest {
                 .property("graphql.graphiql.enabled", "true")
                 .property("graphql.graphiql.page-title", "Before")
                 .property("graphql.graphql-ws.enabled", "true")
-                .property("graphql.greeting.text", "hi")
-                // a resource root of its own, which the development runtime reports to resource watches; a schema file
-                // under the configuration root is not reported to them yet
-                .manifest("resources.other", "src/main/resources/graphql");
+                .property("graphql.greeting.text", "hi");
+            // the schema is under the configuration root, src/main/resources, whose other files the development runtime
+            // reports to resource watches too
             harness.resource("graphql/schema.graphqls", "type Query { hello: String greeting: String }");
             harness.source("example.HelloFetcher", FETCHER.formatted("one"));
             harness.source("example.GreetingConfiguration", GREETING_CONFIGURATION);
@@ -179,17 +181,34 @@ class GraphQLReloadTest {
             assertEquals("{\"data\":{\"greeting\":\"hello\"}}", query(harness, "{ greeting }"));
             assertTrue(ws.execute("3", "{ greeting }").contains("\"greeting\":\"hello\""));
 
-            // the GraphiQL page is rendered once: a new generation renders it from the new configuration
+            // the GraphiQL controller renders its page once: it is created again, in the same generation, and the
+            // development router serves the next request from the new one
             harness.resource("application.properties", PROPERTIES.formatted("After", "hello"));
             harness.reload();
-            assertTrue(harness.generation() > generation);
-            generation = harness.generation();
+            assertEquals(generation, harness.generation());
             assertTrue(graphiql(harness).contains("<title>After</title>"));
             assertEquals("{\"data\":{\"added\":\"added\",\"greeting\":\"hello\"}}", query(harness, "{ added greeting }"));
-            // the restart closed the connection to the retired generation; the client connects again
-            assertTrue(ws.awaitClosed(), "The WebSocket connection to the retired generation is closed");
-            ws = GraphQLWs.connect(client, uri(harness, "/graphql-ws"));
-            assertTrue(ws.execute("1", "{ hello }").contains("\"hello\":\"one\""));
+            // the GraphQL over WebSocket connection stays open
+            assertTrue(ws.execute("4", "{ hello }").contains("\"hello\":\"one\""));
+
+            // the GraphQL and GraphiQL endpoints move: their controllers are created again, in the same generation, and
+            // the development router routes them at the new paths
+            harness.resource("application.properties", PROPERTIES.formatted("After", "hello") + "graphql.path=/gql\ngraphql.graphiql.path=/giql\n");
+            harness.reload();
+            assertEquals(generation, harness.generation());
+            assertEquals("{\"data\":{\"greeting\":\"hello\"}}", query(harness, "/gql", "{ greeting }"));
+            String page = get(harness, "/giql", 200);
+            assertTrue(page.contains("'/giql'") && page.contains("'/gql'"), "The GraphiQL page names the new paths");
+            get(harness, "/graphiql", 404);
+            assertEquals(404, post(harness, "/graphql", "{ greeting }").statusCode());
+            assertTrue(ws.execute("5", "{ greeting }").contains("\"greeting\":\"hello\""));
+
+            // and move back
+            harness.resource("application.properties", PROPERTIES.formatted("After", "hello"));
+            harness.reload();
+            assertEquals(generation, harness.generation());
+            assertTrue(graphiql(harness).contains("'/graphql'"));
+            assertEquals(404, post(harness, "/gql", "{ greeting }").statusCode());
 
             // the data fetcher changes: a new generation answers with the new data
             harness.source("example.HelloFetcher", FETCHER.formatted("two"));
@@ -213,6 +232,10 @@ class GraphQLReloadTest {
         try (ApplicationContext context = ApplicationContext.run()) {
             assertFalse(context.containsBean(Class.forName(RELOADER)));
         }
+        // in development mode it exists while GraphQL is disabled too, to ask for the restart that enables it
+        try (ApplicationContext context = ApplicationContext.run(Map.of(DevelopmentMode.PROPERTY, true, "graphql.enabled", false))) {
+            assertTrue(context.containsBean(Class.forName(RELOADER)));
+        }
     }
 
     /**
@@ -232,18 +255,30 @@ class GraphQLReloadTest {
     }
 
     private String query(ReloadHarness harness, String query) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder(uri(harness, "/graphql"))
-            .header("Content-Type", "application/graphql")
-            .POST(HttpRequest.BodyPublishers.ofString(query))
-            .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return query(harness, "/graphql", query);
+    }
+
+    private String query(ReloadHarness harness, String path, String query) throws IOException, InterruptedException {
+        HttpResponse<String> response = post(harness, path, query);
         assertEquals(200, response.statusCode(), response.body());
         return response.body();
     }
 
+    private HttpResponse<String> post(ReloadHarness harness, String path, String query) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder(uri(harness, path))
+            .header("Content-Type", "application/graphql")
+            .POST(HttpRequest.BodyPublishers.ofString(query))
+            .build();
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
     private String graphiql(ReloadHarness harness) throws IOException, InterruptedException {
-        HttpResponse<String> response = client.send(HttpRequest.newBuilder(uri(harness, "/graphiql")).GET().build(), HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, response.statusCode(), response.body());
+        return get(harness, "/graphiql", 200);
+    }
+
+    private String get(ReloadHarness harness, String path, int status) throws IOException, InterruptedException {
+        HttpResponse<String> response = client.send(HttpRequest.newBuilder(uri(harness, path)).GET().build(), HttpResponse.BodyHandlers.ofString());
+        assertEquals(status, response.statusCode(), response.body());
         return response.body();
     }
 

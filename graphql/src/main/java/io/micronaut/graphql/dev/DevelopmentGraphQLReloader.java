@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.graphql;
+package io.micronaut.graphql.dev;
 
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
@@ -21,6 +21,10 @@ import graphql.schema.GraphQLCodeRegistry;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import io.micronaut.configuration.graphql.DefaultGraphQLInvocation;
+import io.micronaut.configuration.graphql.GraphQLConfiguration;
+import io.micronaut.configuration.graphql.GraphQLController;
+import io.micronaut.configuration.graphql.GraphiQLController;
 import io.micronaut.configuration.graphql.ws.GraphQLWsConfiguration;
 import io.micronaut.context.BeanContext;
 import io.micronaut.context.BeanRegistration;
@@ -55,9 +59,13 @@ import java.util.List;
  *     <li>A class change applied in place that retires a classloader recreates the data fetchers too: they would hold,
  *     and run, classes of the retired generation.</li>
  *     <li>A change of the configuration under {@code graphql} recreates the {@link GraphQL} bean, which an application
- *     may build from it. A change of a path or of a switch that adds or removes an endpoint asks for a restart instead:
- *     it adds, moves or removes a route. So does a change under {@code graphql.graphiql} once the GraphiQL controller
- *     was created: it renders its page once, and its route keeps the instance it resolved first.</li>
+ *     may build from it. A change of a switch that adds or removes an endpoint, or of the GraphQL over WebSocket path,
+ *     asks for a restart instead: only a new context has the route.</li>
+ *     <li>A change under {@code graphql.graphiql} recreates the GraphiQL controller, which renders its page once. The
+ *     development router builds its whole route table again, at the current paths, when a controller is destroyed, so
+ *     the next request is served by the new controller. A change of {@code graphql.path} or
+ *     {@code graphql.graphiql.path} recreates the GraphQL and GraphiQL controllers the context holds, for the router to
+ *     route at the new paths, and asks for a restart when it holds neither.</li>
  * </ul>
  *
  * <p>The schema beans are the {@link TypeDefinitionRegistry}, {@link RuntimeWiring}, {@link GraphQLSchema} and
@@ -70,6 +78,9 @@ import java.util.List;
  *
  * <p>It holds the context only, never a GraphQL bean: a bean that received one is a dependent of it, which recreating
  * it would destroy along with its watches.</p>
+ *
+ * <p>It is outside the requirements of the GraphQL package, so it also exists while {@code graphql.enabled} is false or
+ * no {@link GraphQL} bean is defined yet, and asks for the restart that enables the endpoints.</p>
  *
  * @author graemerocher
  * @since 5.2.0
@@ -100,16 +111,28 @@ final class DevelopmentGraphQLReloader {
     );
 
     /**
-     * The properties that decide whether an endpoint exists, and where: a change adds, moves or removes a route.
+     * The properties that decide whether an endpoint exists, and the path of the GraphQL over WebSocket endpoint, which
+     * is not a controller: a change adds, moves or removes a route only a new context has.
      */
     private static final String[] ROUTES = {
         GraphQLConfiguration.ENABLED_CONFIG,
-        GraphQLConfiguration.PATH_CONFIG,
         GraphQLConfiguration.GraphiQLConfiguration.ENABLED_CONFIG,
-        GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphiQLConfiguration.PATH_CONFIG,
         GraphQLWsConfiguration.ENABLED_CONFIG,
         GraphQLConfiguration.PREFIX + "." + GraphQLWsConfiguration.PATH_CONFIG
     };
+
+    /**
+     * The paths of the GraphQL and GraphiQL controllers.
+     */
+    private static final String[] PATHS = {
+        GraphQLConfiguration.PATH_CONFIG,
+        GraphQLConfiguration.PREFIX + "." + GraphQLConfiguration.GraphiQLConfiguration.PATH_CONFIG
+    };
+
+    /**
+     * The controllers of the GraphQL endpoints.
+     */
+    private static final List<Class<?>> CONTROLLERS = List.of(GraphQLController.class, GraphiQLController.class);
 
     /**
      * The configuration the GraphiQL page is rendered from.
@@ -159,12 +182,36 @@ final class DevelopmentGraphQLReloader {
             LOG.debug("A GraphQL endpoint was enabled, disabled or moved: a restart applies it");
             return ReloadingConfigurationWatcher.Outcome.REQUIRES_RESTART;
         }
-        if (change.touches(GRAPHIQL) && !beanContext.getActiveBeanRegistrations(GraphiQLController.class).isEmpty()) {
-            // the page is rendered once, and recreating the controller would leave its route on the destroyed instance
-            LOG.debug("The GraphiQL configuration changed: a restart renders the page again");
+        ReloadingConfigurationWatcher.Outcome routes;
+        if (change.touchesAny(PATHS)) {
+            // the development router builds its whole table again, at the current paths, once a controller is
+            // destroyed: the GraphQL controllers the context holds are recreated for that, and the GraphiQL page, which
+            // names both paths, is rendered again by the new controller
+            routes = recreate(CONTROLLERS, "a GraphQL endpoint moved");
+            if (routes == ReloadingConfigurationWatcher.Outcome.IGNORED) {
+                // no controller to recreate: the table keeps the routes at the old paths
+                LOG.debug("A GraphQL endpoint moved before its controller was created: a restart applies it");
+                return ReloadingConfigurationWatcher.Outcome.REQUIRES_RESTART;
+            }
+        } else if (change.touches(GRAPHIQL)) {
+            // the controller renders the GraphiQL page once: a new one renders it from the new configuration, and the
+            // development router, which builds its table again when a controller is destroyed, routes to the new one
+            routes = recreate(List.of(GraphiQLController.class), "the configuration under " + GRAPHIQL + " changed");
+        } else {
+            routes = ReloadingConfigurationWatcher.Outcome.IGNORED;
+        }
+        ReloadingConfigurationWatcher.Outcome graphQL = recreate(false, "the configuration under " + GraphQLConfiguration.PREFIX + " changed");
+        return combine(routes, graphQL);
+    }
+
+    private static ReloadingConfigurationWatcher.Outcome combine(ReloadingConfigurationWatcher.Outcome first, ReloadingConfigurationWatcher.Outcome second) {
+        if (first == ReloadingConfigurationWatcher.Outcome.REQUIRES_RESTART || second == ReloadingConfigurationWatcher.Outcome.REQUIRES_RESTART) {
             return ReloadingConfigurationWatcher.Outcome.REQUIRES_RESTART;
         }
-        return recreate(false, "the configuration under " + GraphQLConfiguration.PREFIX + " changed");
+        if (first == ReloadingConfigurationWatcher.Outcome.APPLIED || second == ReloadingConfigurationWatcher.Outcome.APPLIED) {
+            return ReloadingConfigurationWatcher.Outcome.APPLIED;
+        }
+        return ReloadingConfigurationWatcher.Outcome.IGNORED;
     }
 
     private void onClassChange(ClassChangeEvent change) {
@@ -189,37 +236,72 @@ final class DevelopmentGraphQLReloader {
      * that does not track bean dependencies
      */
     private ReloadingConfigurationWatcher.Outcome recreate(boolean dataFetchers, String reason) {
+        List<Class<?>> types = new ArrayList<>();
+        if (dataFetchers) {
+            types.add(DataFetcher.class);
+        }
+        types.addAll(SCHEMA_TYPES);
+        types.add(GraphQL.class);
+        return recreate(types, reason);
+    }
+
+    /**
+     * Recreates the beans of the given types the context holds.
+     *
+     * @param types The types, in the order to recreate their beans
+     * @param reason Why, for the log
+     * @return {@link ReloadingConfigurationWatcher.Outcome#IGNORED} when no such bean was held,
+     * {@link ReloadingConfigurationWatcher.Outcome#APPLIED} when they were recreated, and
+     * {@link ReloadingConfigurationWatcher.Outcome#REQUIRES_RESTART} when one was held but kept, as by a context
+     * that does not track bean dependencies
+     */
+    private ReloadingConfigurationWatcher.Outcome recreate(List<Class<?>> types, String reason) {
         if (!(beanContext instanceof WatchableBeanContext context)) {
             return ReloadingConfigurationWatcher.Outcome.IGNORED;
         }
         // taken first: recreating one destroys the beans that received it, as the graph records them
-        List<Object> beans = new ArrayList<>();
-        if (dataFetchers) {
-            addActive(beans, DataFetcher.class);
-        }
-        for (Class<?> type : SCHEMA_TYPES) {
+        List<Held> beans = new ArrayList<>();
+        for (Class<?> type : types) {
             addActive(beans, type);
         }
-        addActive(beans, GraphQL.class);
         if (beans.isEmpty()) {
             return ReloadingConfigurationWatcher.Outcome.IGNORED;
         }
-        LOG.debug("Recreating the GraphQL bean: {}", reason);
+        LOG.debug("Recreating {}: {}", types, reason);
         boolean recreated = false;
-        for (Object bean : beans) {
-            // false for a bean destroyed with one recreated before it, and for all of them in a context that does
-            // not track bean dependencies: they are kept, and built again after a restart
-            recreated |= context.recreate(bean);
-        }
-        return recreated ? ReloadingConfigurationWatcher.Outcome.APPLIED : ReloadingConfigurationWatcher.Outcome.REQUIRES_RESTART;
-    }
-
-    private void addActive(List<Object> beans, Class<?> type) {
-        for (BeanRegistration<?> registration : beanContext.getActiveBeanRegistrations(type)) {
-            Object bean = registration.bean();
-            if (beans.stream().noneMatch(taken -> taken == bean)) {
-                beans.add(bean);
+        boolean kept = false;
+        for (Held held : beans) {
+            if (context.recreate(held.bean())) {
+                recreated = true;
+            } else if (isActive(held)) {
+                // a bean the context cannot recreate, such as a singleton registered at runtime, or any bean of a
+                // context that does not track bean dependencies: it is kept, and built again after a restart. A bean
+                // destroyed with one recreated before it is not active any more, and is built again when next asked for
+                kept = true;
             }
         }
+        return recreated && !kept ? ReloadingConfigurationWatcher.Outcome.APPLIED : ReloadingConfigurationWatcher.Outcome.REQUIRES_RESTART;
+    }
+
+    private boolean isActive(Held held) {
+        return beanContext.getActiveBeanRegistrations(held.type()).stream().anyMatch(registration -> registration.bean() == held.bean());
+    }
+
+    private void addActive(List<Held> beans, Class<?> type) {
+        for (BeanRegistration<?> registration : beanContext.getActiveBeanRegistrations(type)) {
+            Object bean = registration.bean();
+            if (beans.stream().noneMatch(taken -> taken.bean() == bean)) {
+                beans.add(new Held(bean, type));
+            }
+        }
+    }
+
+    /**
+     * A bean the context held, and the type it was found by.
+     *
+     * @param bean The bean
+     * @param type The type
+     */
+    private record Held(Object bean, Class<?> type) {
     }
 }
