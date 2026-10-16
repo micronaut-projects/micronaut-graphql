@@ -14,6 +14,32 @@ snippet::io.micronaut.graphql.docs.GraphQLFactory[tags="imports,clazz", project-
 
 If a schema field relies on GraphQL Java's default property resolution instead of an explicit `DataFetcher`, Micronaut GraphQL uses Micronaut bean introspection before falling back to GraphQL Java's default property fetcher. For native image applications, annotate returned domain types with `@Introspected` so nested properties can be resolved without additional reflection metadata. If you have configured a custom GraphQL Java default data fetcher, Micronaut GraphQL preserves that custom configuration.
 
+== Python schema and resolvers
+
+Python applications can use `micronaut.graphql.create_graphql(sdl, bindings=...)` to return the same
+`graphql.GraphQL` bean from a factory without constructing Java runtime-wiring builders.
+The function uses GraphQL Java's existing SDL parser and execution engine; parsing and schema
+validation errors are not wrapped or suppressed.
+
+`bindings` maps SDL object type names to field names. A field binding is either a synchronous
+Python callable, including a bound method, or a Python attribute name such as `"page_count"` for
+the SDL field `pageCount`. Fields without an explicit binding read the attribute or mapping key
+matching their SDL field name. Python objects do not need `@Introspected` for this attribute lookup.
+
+A factory method can bind existing Python resolver methods and map camelCase SDL fields to
+snake_case attributes:
+
+snippet::io.micronaut.graphql.docs.PythonGraphQLFactory[tags="python-factory-method", project-base="docs-examples/hello-world", source="test", language="python"]
+
+Resolvers receive `(source, info, **arguments)`. `source` exposes the parent object's Python
+attributes, arguments (including nested input objects and lists) are Python values, and omitted
+arguments preserve Python parameter defaults. `info.context` is a Python dictionary snapshot of
+the request's GraphQL context; changing that snapshot does not change the shared context.
+
+This API currently supports synchronous resolvers only. Coroutine functions and awaitable results
+are rejected explicitly; it does not start another event loop. The returned bean continues to use
+Micronaut's normal GraphQL HTTP endpoint and invocation infrastructure.
+
 There are various https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples[examples] using different technologies
 provided in the repository.
 
