@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from graphql import GraphQL
 from jakarta.inject import Singleton
 from micronaut.context.annotation import Factory, Replaces, Requires
-from micronaut.core.annotation import Introspected
 from micronaut.graphql import ResolverInfo, create_graphql
 
 from .GraphQLFactory import GraphQLFactory
@@ -16,14 +15,12 @@ type Author { firstName: String lastName: String }
 """
 
 
-@Introspected
 @dataclass
 class Author:
     first_name: str
     last_name: str
 
 
-@Introspected
 @dataclass
 class Book:
     id: str
@@ -51,8 +48,9 @@ class BookResolvers:
 
 @Factory
 @Requires(property="spec.name", value="PythonGraphQLApiTest")
-@Replaces(GraphQLFactory)
+@Replaces(factory=GraphQLFactory)
 class PythonGraphQLFactory:
+    # tag::python-factory-method[]
     @Singleton
     def graph_ql(self, resolvers: BookResolvers) -> GraphQL:
         return create_graphql(SCHEMA, bindings={
@@ -60,3 +58,4 @@ class PythonGraphQLFactory:
             "Book": {"author": resolvers.author, "pageCount": "page_count"},
             "Author": {"firstName": "first_name", "lastName": "last_name"},
         })
+    # end::python-factory-method[]

@@ -1,7 +1,6 @@
 from typing import Annotated
 
-from graphql import ExecutionInput, GraphQL
-from graphql.parser import InvalidSyntaxException
+from graphql import ExecutionInput, GraphQL, InvalidSyntaxError
 from graphql.schema.idl.errors import SchemaProblem
 from jakarta.inject import Inject
 from java.util import Map
@@ -67,11 +66,38 @@ class PythonGraphQLApiTest:
         assert result.getData().get("hello") == "Hello World"
 
     @Test
+    def test_nested_input_objects_are_python_dicts_and_lists(self) -> None:
+        def resolve(source, info, *, filter):
+            assert isinstance(filter, dict)
+            assert isinstance(filter["names"], list)
+            assert filter == {"names": ["Python", None], "nested": {"enabled": True}}
+            return filter["names"][0]
+
+        graphql = create_graphql("""
+            input Nested { enabled: Boolean }
+            input Filter { names: [String] nested: Nested }
+            type Query { hello(filter: Filter): String }
+            """, bindings={"Query": {"hello": resolve}})
+        result = graphql.execute('{ hello(filter: {names: ["Python", null], nested: {enabled: true}}) }')
+        assert result.getErrors().isEmpty(), str(result.getErrors())
+        assert result.getData().get("hello") == "Python"
+
+    @Test
+    def test_binding_a_field_declared_in_an_sdl_extension(self) -> None:
+        graphql = create_graphql("type Query { hello: String } extend type Query { goodbye: String }",
+                                 bindings={"Query": {"goodbye": lambda source, info: "Goodbye"}})
+        result = graphql.execute("{ goodbye }")
+        assert result.getErrors().isEmpty(), str(result.getErrors())
+        assert result.getData().get("goodbye") == "Goodbye"
+
+    @Test
     def test_invalid_sdl_preserves_parser_and_schema_errors(self) -> None:
         try:
             create_graphql("type Query {", bindings={})
-        except InvalidSyntaxException:
-            pass
+        except SchemaProblem as error:
+            assert error.getErrors().size() == 1
+            assert isinstance(error.getErrors().get(0), InvalidSyntaxError)
+            assert error.getErrors().get(0).getMessage()
         else:
             assert False, "Invalid SDL must not be accepted"
         try:
@@ -123,6 +149,37 @@ class PythonGraphQLApiTest:
 
         graphql = create_graphql("type Query { hello: String }", bindings={"Query": {"hello": resolve}})
         result = graphql.execute("{ hello }")
+        assert result.getData().get("hello") is None
+        assert result.getErrors().size() == 1
+        assert "async" in result.getErrors().get(0).getMessage().lower()
+
+    @Test
+    def test_default_attribute_cannot_silently_return_an_awaitable(self) -> None:
+        class AwaitableResult:
+            def __await__(self):
+                yield
+                return "Hello"
+
+        graphql = create_graphql("type Query { hello: String }", bindings={})
+        execution = (ExecutionInput.newExecutionInput().query("{ hello }")
+                     .root({"hello": AwaitableResult()}).build())
+        result = graphql.execute(execution)
+        assert result.getData().get("hello") is None
+        assert result.getErrors().size() == 1
+        assert "async" in result.getErrors().get(0).getMessage().lower()
+
+    @Test
+    def test_mapped_attribute_cannot_silently_return_an_awaitable(self) -> None:
+        class AwaitableResult:
+            def __await__(self):
+                yield
+                return "Hello"
+
+        graphql = create_graphql("type Query { hello: String }",
+                                 bindings={"Query": {"hello": "greeting"}})
+        execution = (ExecutionInput.newExecutionInput().query("{ hello }")
+                     .root({"greeting": AwaitableResult()}).build())
+        result = graphql.execute(execution)
         assert result.getData().get("hello") is None
         assert result.getErrors().size() == 1
         assert "async" in result.getErrors().get(0).getMessage().lower()
