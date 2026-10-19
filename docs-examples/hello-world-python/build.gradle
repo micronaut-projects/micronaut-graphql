@@ -18,6 +18,7 @@ dependencies {
     testImplementation mn.micronaut.inject.python.test
     testImplementation mn.micronaut.context.python
     testImplementation mn.micronaut.http.client
+    testRuntimeOnly mn.micronaut.context.python.netty
     testRuntimeOnly mnTest.junit.jupiter.engine
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
