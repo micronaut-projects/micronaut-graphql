@@ -21,7 +21,7 @@ Python applications can use `micronaut.graphql.create_graphql(sdl, bindings=...)
 The function uses GraphQL Java's existing SDL parser and execution engine; parsing and schema
 validation errors are not wrapped or suppressed.
 
-`bindings` maps SDL object type names to field names. A field binding is either a synchronous
+`bindings` maps SDL object type names to field names. A field binding is either a synchronous or asynchronous
 Python callable, including a bound method, or a Python attribute name such as `"page_count"` for
 the SDL field `pageCount`. Fields without an explicit binding read the attribute or mapping key
 matching their SDL field name. Python objects do not need `@Introspected` for this attribute lookup.
@@ -36,9 +36,16 @@ attributes, arguments (including nested input objects and lists) are Python valu
 arguments preserve Python parameter defaults. `info.context` is a Python dictionary snapshot of
 the request's GraphQL context; changing that snapshot does not change the shared context.
 
-This API currently supports synchronous resolvers only. Coroutine functions and awaitable results
-are rejected explicitly; it does not start another event loop. The returned bean continues to use
-Micronaut's normal GraphQL HTTP endpoint and invocation infrastructure.
+Coroutine functions, asynchronous callable objects, and awaitable results use Micronaut's asyncio
+runtime and GraphQL Java's `CompletionStage` support. This includes awaitable attribute and mapping
+values. HTTP applications need `micronaut-context-python-netty` for the Micronaut-managed Netty event
+loop. Async generators are not supported. The returned bean continues to use Micronaut's normal
+GraphQL HTTP endpoint and invocation infrastructure.
+
+An `async def` resolver can suspend with `await` and use the same bindings and request context
+as a synchronous resolver. This example uses Python's `asyncio` module:
+
+snippet::io.micronaut.graphql.docs.PythonGraphQLApiTest[tags="python-async-resolver", project-base="docs-examples/hello-world", source="test", language="python"]
 
 There are various https://github.com/micronaut-projects/micronaut-graphql/tree/master/examples[examples] using different technologies
 provided in the repository.
