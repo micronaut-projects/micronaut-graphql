@@ -1,9 +1,11 @@
+import asyncio
 from typing import Annotated
 
 from graphql import ExecutionInput, GraphQL, InvalidSyntaxError
 from graphql.schema.idl.errors import SchemaProblem
 from jakarta.inject import Inject
 from java.util import Map
+from java.util.concurrent import TimeUnit
 from micronaut.context import BeanContext
 from micronaut.context.annotation import Property
 from micronaut.graphql import create_graphql
@@ -126,60 +128,92 @@ class PythonGraphQLApiTest:
             assert False, "A binding must be a resolver or an attribute name"
 
     @Test
-    def test_async_resolvers_are_rejected_explicitly(self) -> None:
-        async def resolve(source, info):
-            return "Hello"
+    def test_async_resolver_receives_context_and_keyword_arguments(self) -> None:
+        # tag::python-async-resolver[]
+        async def resolve(source, info, *, name="World"):
+            await asyncio.sleep(0.01)
+            return info.context["greeting"] + " " + name
 
-        try:
-            create_graphql("type Query { hello: String }", bindings={"Query": {"hello": resolve}})
-        except TypeError as error:
-            assert "async" in str(error).lower()
-        else:
-            assert False, "Async resolvers need an explicit supported bridge"
+        graphql = create_graphql("type Query { hello(name: String): String }",
+                                 bindings={"Query": {"hello": resolve}})
+        # end::python-async-resolver[]
+        for query, expected in (('{ hello(name: "Python") }', "Hello Python"),
+                                ("{ hello }", "Hello World")):
+            execution = (ExecutionInput.newExecutionInput().query(query)
+                         .graphQLContext({"greeting": "Hello"}).build())
+            result = graphql.executeAsync(execution).get(5, TimeUnit.SECONDS)
+            assert result.getErrors().isEmpty(), str(result.getErrors())
+            assert result.getData().get("hello") == expected
 
     @Test
-    def test_synchronous_resolver_cannot_silently_return_an_awaitable(self) -> None:
+    def test_async_null_and_exception_results(self) -> None:
+        async def missing(source, info):
+            await asyncio.sleep(0.01)
+            return None
+
+        async def broken(source, info):
+            await asyncio.sleep(0.01)
+            raise ValueError("resolver failed after awaiting")
+
+        graphql = create_graphql("type Query { missing: String broken: String }",
+                                 bindings={"Query": {"missing": missing, "broken": broken}})
+        execution = ExecutionInput.newExecutionInput().query("{ missing broken }").build()
+        result = graphql.executeAsync(execution).get(5, TimeUnit.SECONDS)
+        assert result.getData().get("missing") is None
+        assert result.getData().get("broken") is None
+        assert result.getErrors().size() == 1
+        assert "resolver failed after awaiting" in result.getErrors().get(0).getMessage()
+
+    @Test
+    def test_synchronous_resolver_can_return_an_awaitable(self) -> None:
         class AwaitableResult:
             def __await__(self):
-                yield
-                return "Hello"
+                return asyncio.sleep(0.01, result="Hello").__await__()
 
         def resolve(source, info):
             return AwaitableResult()
 
         graphql = create_graphql("type Query { hello: String }", bindings={"Query": {"hello": resolve}})
-        result = graphql.execute("{ hello }")
-        assert result.getData().get("hello") is None
-        assert result.getErrors().size() == 1
-        assert "async" in result.getErrors().get(0).getMessage().lower()
+        execution = ExecutionInput.newExecutionInput().query("{ hello }").build()
+        result = graphql.executeAsync(execution).get(5, TimeUnit.SECONDS)
+        assert result.getErrors().isEmpty(), str(result.getErrors())
+        assert result.getData().get("hello") == "Hello"
 
     @Test
-    def test_default_attribute_cannot_silently_return_an_awaitable(self) -> None:
+    def test_default_attribute_can_return_an_awaitable(self) -> None:
         class AwaitableResult:
             def __await__(self):
-                yield
-                return "Hello"
+                return asyncio.sleep(0.01, result="Hello").__await__()
 
         graphql = create_graphql("type Query { hello: String }", bindings={})
         execution = (ExecutionInput.newExecutionInput().query("{ hello }")
                      .root({"hello": AwaitableResult()}).build())
-        result = graphql.execute(execution)
-        assert result.getData().get("hello") is None
-        assert result.getErrors().size() == 1
-        assert "async" in result.getErrors().get(0).getMessage().lower()
+        result = graphql.executeAsync(execution).get(5, TimeUnit.SECONDS)
+        assert result.getErrors().isEmpty(), str(result.getErrors())
+        assert result.getData().get("hello") == "Hello"
 
     @Test
-    def test_mapped_attribute_cannot_silently_return_an_awaitable(self) -> None:
+    def test_mapped_attribute_can_return_an_awaitable(self) -> None:
         class AwaitableResult:
             def __await__(self):
-                yield
-                return "Hello"
+                return asyncio.sleep(0.01, result="Hello").__await__()
 
         graphql = create_graphql("type Query { hello: String }",
                                  bindings={"Query": {"hello": "greeting"}})
         execution = (ExecutionInput.newExecutionInput().query("{ hello }")
                      .root({"greeting": AwaitableResult()}).build())
-        result = graphql.execute(execution)
-        assert result.getData().get("hello") is None
-        assert result.getErrors().size() == 1
-        assert "async" in result.getErrors().get(0).getMessage().lower()
+        result = graphql.executeAsync(execution).get(5, TimeUnit.SECONDS)
+        assert result.getErrors().isEmpty(), str(result.getErrors())
+        assert result.getData().get("hello") == "Hello"
+
+    @Test
+    def test_async_generators_are_rejected_explicitly(self) -> None:
+        async def resolve(source, info):
+            yield "Hello"
+
+        try:
+            create_graphql("type Query { hello: String }", bindings={"Query": {"hello": resolve}})
+        except TypeError as error:
+            assert "generator" in str(error).lower()
+        else:
+            assert False, "Async generators must not be accepted as field resolvers"

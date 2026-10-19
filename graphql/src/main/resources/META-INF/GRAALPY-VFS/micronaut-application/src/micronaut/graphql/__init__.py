@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Build a Micronaut GraphQL bean from SDL and synchronous Python resolvers."""
+"""Build a Micronaut GraphQL bean from SDL and Python resolvers."""
 
 from __future__ import annotations
 
@@ -30,6 +30,7 @@ _TypeRuntimeWiring = java.type("graphql.schema.idl.TypeRuntimeWiring")
 _ObjectTypeDefinition = java.type("graphql.language.ObjectTypeDefinition")
 _Map = java.type("java.util.Map")
 _List = java.type("java.util.List")
+_AsyncioRuntime = java.type("io.micronaut.context.python.PythonAsyncioRuntime")
 
 __all__ = ["ResolverInfo", "create_graphql"]
 
@@ -55,16 +56,20 @@ def _attribute(source, name):
     return getattr(source, name, None)
 
 
-def _synchronous_result(result):
-    if inspect.isawaitable(result) or inspect.isasyncgen(result):
-        if inspect.iscoroutine(result):
-            result.close()
-        raise TypeError("Async GraphQL resolvers are not supported")
+async def _await_result(result):
+    return await result
+
+
+def _resolver_result(result):
+    if inspect.isasyncgen(result):
+        raise TypeError("Async generator GraphQL resolvers are not supported")
+    if inspect.isawaitable(result):
+        return _AsyncioRuntime.toCompletionStage(_await_result(result))
     return result
 
 
 def _default_fetcher(environment):
-    return _synchronous_result(_attribute(environment.getSource(), environment.getFieldDefinition().getName()))
+    return _resolver_result(_attribute(environment.getSource(), environment.getFieldDefinition().getName()))
 
 
 def _resolver_fetcher(resolver):
@@ -73,26 +78,27 @@ def _resolver_fetcher(resolver):
                    for entry in environment.getGraphQlContext().stream().toList()}
         result = resolver(environment.getSource(), ResolverInfo(context),
                           **_python_value(environment.getArguments()))
-        return _synchronous_result(result)
+        return _resolver_result(result)
 
     return fetch
 
 
 def _attribute_fetcher(name):
-    return lambda environment: _synchronous_result(_attribute(environment.getSource(), name))
+    return lambda environment: _resolver_result(_attribute(environment.getSource(), name))
 
 
 def create_graphql(sdl: str, *, bindings: Mapping[str, Mapping[str, Callable[..., object] | str]]) -> _GraphQL:
     """Create a real GraphQL bean using GraphQL Java's SDL parser and execution engine.
 
-    Bindings map SDL type and field names to synchronous ``(source, info, **arguments)``
+    Bindings map SDL type and field names to ``(source, info, **arguments)``
     callables (including bound methods), or Python attribute names. Unbound fields use
     their SDL name as an attribute or mapping key. Arguments, including nested input
     objects and lists, are ordinary Python values; omitted arguments keep Python defaults.
     SDL parsing and schema validation errors propagate unchanged.
 
-    Async resolvers and awaitable results are rejected; this function does not create an
-    event loop. ``info.context`` is a snapshot, not a mutable shared GraphQL context.
+    Async callables and awaitable results use Micronaut's asyncio runtime and complete
+    through GraphQL Java's CompletionStage support. Async generators are not supported.
+    ``info.context`` is a snapshot, not a mutable shared GraphQL context.
     """
     registry = _SchemaParser().parse(sdl)
     if not isinstance(bindings, Mapping):
@@ -116,9 +122,9 @@ def create_graphql(sdl: str, *, bindings: Mapping[str, Mapping[str, Callable[...
                     raise ValueError(f"Attribute name for {type_name}.{field_name} must not be empty")
             elif not callable(binding):
                 raise TypeError(f"Binding for {type_name}.{field_name} must be a resolver or attribute name")
-            elif (inspect.iscoroutinefunction(binding) or inspect.isasyncgenfunction(binding)
-                  or inspect.iscoroutinefunction(getattr(binding, "__call__", None))):
-                raise TypeError("Async GraphQL resolvers are not supported")
+            elif (inspect.isasyncgenfunction(binding)
+                  or inspect.isasyncgenfunction(getattr(binding, "__call__", None))):
+                raise TypeError("Async generator GraphQL resolvers are not supported")
 
     wiring = _RuntimeWiring.newRuntimeWiring()
     for type_name in object_types:
