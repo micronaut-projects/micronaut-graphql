@@ -28,10 +28,19 @@ _SchemaGenerator = java.type("graphql.schema.idl.SchemaGenerator")
 _RuntimeWiring = java.type("graphql.schema.idl.RuntimeWiring")
 _TypeRuntimeWiring = java.type("graphql.schema.idl.TypeRuntimeWiring")
 _ObjectTypeDefinition = java.type("graphql.language.ObjectTypeDefinition")
+_CodeRegistry = java.type("graphql.schema.GraphQLCodeRegistry")
+_DataFetcherFactoryEnvironment = java.type("graphql.schema.DataFetcherFactoryEnvironment")
 _Map = java.type("java.util.Map")
 _List = java.type("java.util.List")
+_Collections = java.type("java.util.Collections")
+_WeakHashMap = java.type("java.util.WeakHashMap")
 
 __all__ = ["ResolverInfo", "create_graphql"]
+
+# The default data fetcher factory of each executed schema, by schema identity. A GraphQL bean's
+# schema is replaced after creation by Micronaut's introspection-aware default fetcher, so the
+# factory is looked up on the schema being executed rather than on the schema created here.
+_default_fetcher_factories = _Collections.synchronizedMap(_WeakHashMap())
 
 
 @dataclass(frozen=True)
@@ -55,6 +64,23 @@ def _attribute(source, name):
     return getattr(source, name, None)
 
 
+def _java_default_fetch(environment):
+    """Resolve a field of a Java source object with the schema's default data fetcher.
+
+    Java objects have no Python attributes: a bean property is a getter, which ``getattr``
+    does not resolve. The schema's default fetcher is GraphQL Java's property fetcher, or
+    Micronaut's introspection-aware fetcher once the bean has been created.
+    """
+    schema = environment.getGraphQLSchema()
+    factory = _default_fetcher_factories.get(schema)
+    if factory is None:
+        factory = _CodeRegistry.newCodeRegistry(schema.getCodeRegistry()).getDefaultDataFetcherFactory()
+        _default_fetcher_factories.put(schema, factory)
+    fetcher = factory.get(_DataFetcherFactoryEnvironment.newDataFetchingFactoryEnvironment()
+                          .fieldDefinition(environment.getFieldDefinition()).build())
+    return fetcher.get(environment)
+
+
 def _synchronous_result(result):
     if inspect.isawaitable(result) or inspect.isasyncgen(result):
         if inspect.iscoroutine(result):
@@ -64,7 +90,10 @@ def _synchronous_result(result):
 
 
 def _default_fetcher(environment):
-    return _synchronous_result(_attribute(environment.getSource(), environment.getFieldDefinition().getName()))
+    source = environment.getSource()
+    if source is not None and java.is_object(source) and not isinstance(source, _Map):
+        return _synchronous_result(_java_default_fetch(environment))
+    return _synchronous_result(_attribute(source, environment.getFieldDefinition().getName()))
 
 
 def _resolver_fetcher(resolver):
@@ -87,7 +116,8 @@ def create_graphql(sdl: str, *, bindings: Mapping[str, Mapping[str, Callable[...
 
     Bindings map SDL type and field names to synchronous ``(source, info, **arguments)``
     callables (including bound methods), or Python attribute names. Unbound fields use
-    their SDL name as an attribute or mapping key. Arguments, including nested input
+    their SDL name as an attribute or mapping key of a Python source; a Java source is
+    read by the schema's default data fetcher. Arguments, including nested input
     objects and lists, are ordinary Python values; omitted arguments keep Python defaults.
     SDL parsing and schema validation errors propagate unchanged.
 

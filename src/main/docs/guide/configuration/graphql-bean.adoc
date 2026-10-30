@@ -25,6 +25,8 @@ validation errors are not wrapped or suppressed.
 Python callable, including a bound method, or a Python attribute name such as `"page_count"` for
 the SDL field `pageCount`. Fields without an explicit binding read the attribute or mapping key
 matching their SDL field name. Python objects do not need `@Introspected` for this attribute lookup.
+A Java object returned by a resolver is read by the default data fetcher described above, so a
+Java bean property is resolved through Micronaut bean introspection or its getter.
 
 A factory method can bind existing Python resolver methods and map camelCase SDL fields to
 snake_case attributes:
