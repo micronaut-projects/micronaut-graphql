@@ -10,5 +10,6 @@ configuration:
   graphql-ws: Configuring GraphQL over websockets
   graphiql: Configuring GraphiQL
   jackson: Notes on using Jackson serialization
+devmode: Development Mode
 graphqlGuides: Guides
 repository: Repository

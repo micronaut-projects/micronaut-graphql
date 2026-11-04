@@ -1,0 +1,13 @@
+In development mode (`./gradlew mnDev` or `mvn mn:dev`), the `GraphQL` bean follows the changes of what it is built from without a restart where it can. A development-only bean, which does not exist outside development mode, recreates the `GraphQL` bean and the singletons it is built from that the context holds: `TypeDefinitionRegistry`, `RuntimeWiring`, `GraphQLSchema` and `GraphQLCodeRegistry`. The beans that received one of them are created again too. This happens when:
+
+* A schema file (`.graphqls`, `.graphql` or `.gqls`) changes under `src/main/resources` or another resource root the development runtime watches.
+* A `DataFetcher`, `RuntimeWiring`, `TypeDefinitionRegistry`, `GraphQLSchema` or `GraphQLCodeRegistry` bean is added or removed without a restart, or a class change applied in place retires a classloader. The data fetchers are then created again as well.
+* The configuration under `graphql` changes, which an application's `GraphQL` factory may read. The application restarts instead for a change of `graphql.enabled`, `graphql.graphiql.enabled`, `graphql.graphql-ws.enabled` or `graphql.graphql-ws.path`, which adds, removes or moves a route only a new application context has.
+
+The GraphQL endpoints follow their configuration without a restart too. A change under `graphql.graphiql`, such as `graphql.graphiql.page-title`, recreates the GraphiQL controller, which renders its page once. A change of `graphql.path` or `graphql.graphiql.path` recreates the GraphQL and GraphiQL controllers the application created. The development router builds its route table again when a controller is destroyed, so the next request is routed at the current paths to the new controllers, and the GraphQL over WebSocket connections stay open. A path changed before either controller was created restarts the application, as the routes are still at the old paths.
+
+A change of an application class otherwise restarts the application, which builds a new `GraphQL` bean.
+
+Each GraphQL operation looks the `GraphQL` bean up when it runs. After the bean is recreated in place, the next HTTP request and the next operation on an open GraphQL over WebSocket connection run on the new bean, while a subscription already running keeps the publisher it was given. A restart closes the WebSocket connections, and clients such as GraphiQL connect again.
+
+Nothing of GraphQL is kept across a restart: the module holds no expensive resource, such as a connection or a thread pool, that would be worth retaining.
