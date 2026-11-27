@@ -1,21 +1,12 @@
 {
   "extends": [
-    "config:base"
+    "local>micronaut-projects/micronaut-project-template//.github/renovate-global"
   ],
-  "addLabels": ["type: dependency-upgrade"],
-  "schedule": [
-    "every weekend"
-  ],
-  "prHourlyLimit": 1,
-  "prConcurrentLimit": 20,
-  "timezone": "Europe/Prague",
   "packageRules": [
     {
-      "matchPackagePatterns": ["actions.*"],
-      "dependencyDashboardApproval": true
-    },
-    {
-      "matchPackagePrefixes": ["com.graphql-java:"],
+      "matchPackageNames": [
+        "com.graphql-java:**"
+      ],
       "allowedVersions": "/^[0-9]+\\.[0-9]+(\\.[0-9]+)?$/"
     }
   ]
